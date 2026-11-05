@@ -27,8 +27,17 @@ export function connect(url = databaseUrl()) {
   return postgres(url, { max: 1, onnotice: () => {}, ssl: process.env.DATABASE_SSL === "true" ? "require" : false });
 }
 
+/**
+ * Migration files in order. MIGRATIONS_ONLY (comma-separated filename
+ * prefixes) restricts which files apply — used so parallel workstreams can
+ * test against their own databases without each other's in-progress files.
+ */
 export function migrationFiles(): string[] {
-  return readdirSync(MIGRATIONS_DIR).filter((f) => f.endsWith(".sql")).sort();
+  const only = (process.env.MIGRATIONS_ONLY ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+  return readdirSync(MIGRATIONS_DIR)
+    .filter((f) => f.endsWith(".sql"))
+    .filter((f) => !only.length || only.some((prefix) => f.startsWith(prefix)))
+    .sort();
 }
 
 /**
