@@ -60,19 +60,25 @@ export interface Projection {
   nearest: LatLng;
 }
 
+/** Two route segments closer than this to the best match count as "the same place". */
+export const SAME_PLACE_TOLERANCE_M = 25;
+
 /**
  * Project a point onto a polyline using a local equirectangular
  * approximation per segment (accurate to well under a metre at trail scale).
- * When `hintAlongM` is given, ties between distant parts of the route (e.g.
- * out-and-back legs that overlap) are broken in favour of the segment closest
- * to the previous progress, preventing progress from jumping.
+ *
+ * Without a hint, the nearest segment wins. With `hintAlongM` (e.g. current
+ * progress), every segment within SAME_PLACE_TOLERANCE_M of the nearest one
+ * is a candidate, and the candidate whose along-distance is closest to the
+ * hint wins (moving backwards costs double). This keeps progress continuous
+ * where route legs overlap (out-and-back, lollipop loops) instead of jumping
+ * to the other leg.
  */
 export function projectOntoLine(point: LatLng, coords: Position[], cumulative?: number[], hintAlongM?: number): Projection {
   if (coords.length < 2) throw new Error("projectOntoLine requires at least 2 coordinates");
   const cum = cumulative ?? cumulativeDistancesM(coords);
-  let best: Projection | null = null;
-  let bestScore = Infinity;
   const cosLat = Math.cos(toRad(point.lat));
+  const candidates: Projection[] = [];
   for (let i = 0; i < coords.length - 1; i++) {
     const a = posToLatLng(coords[i]);
     const b = posToLatLng(coords[i + 1]);
@@ -85,24 +91,24 @@ export function projectOntoLine(point: LatLng, coords: Position[], cumulative?: 
     const dy = by - ay;
     const len2 = dx * dx + dy * dy;
     const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, -(ax * dx + ay * dy) / len2));
-    const px = ax + t * dx;
-    const py = ay + t * dy;
-    const dist = Math.hypot(px, py);
-    const segLen = cum[i + 1] - cum[i];
-    const along = cum[i] + t * segLen;
-    // prefer continuity with previous progress when distances are similar
-    const score = hintAlongM === undefined ? dist : dist + Math.min(50, Math.abs(along - hintAlongM) * 0.05);
-    if (score < bestScore) {
-      bestScore = score;
-      best = {
-        distanceFromRouteM: dist,
-        alongM: along,
-        segmentIndex: i,
-        nearest: { lat: a.lat + t * (b.lat - a.lat), lng: a.lng + t * (b.lng - a.lng) },
-      };
-    }
+    const dist = Math.hypot(ax + t * dx, ay + t * dy);
+    candidates.push({
+      distanceFromRouteM: dist,
+      alongM: cum[i] + t * (cum[i + 1] - cum[i]),
+      segmentIndex: i,
+      nearest: { lat: a.lat + t * (b.lat - a.lat), lng: a.lng + t * (b.lng - a.lng) },
+    });
   }
-  return best!;
+  let best = candidates[0];
+  for (const c of candidates) if (c.distanceFromRouteM < best.distanceFromRouteM) best = c;
+  if (hintAlongM === undefined) return best;
+  const cost = (c: Projection) => (c.alongM >= hintAlongM ? c.alongM - hintAlongM : (hintAlongM - c.alongM) * 2);
+  let chosen = best;
+  for (const c of candidates) {
+    if (c.distanceFromRouteM > best.distanceFromRouteM + SAME_PLACE_TOLERANCE_M) continue;
+    if (cost(c) < cost(chosen)) chosen = c;
+  }
+  return chosen;
 }
 
 /** Interpolated point at a given distance along the route. */

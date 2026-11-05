@@ -65,7 +65,8 @@ h3 {
 .skip-link {
   position: absolute;
   left: 0.5rem;
-  top: -3rem;
+  top: 0;
+  transform: translateY(-120%);
   z-index: 100;
   background: var(--color-forest-800);
   color: white;
@@ -73,7 +74,7 @@ h3 {
   border-radius: 0.5rem;
 }
 .skip-link:focus {
-  top: 0.5rem;
+  transform: translateY(0.5rem);
 }
 
 @media (prefers-reduced-motion: reduce) {

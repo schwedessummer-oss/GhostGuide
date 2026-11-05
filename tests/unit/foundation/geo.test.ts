@@ -60,3 +60,18 @@ describe("geo", () => {
     expect(mismatch.valid).toBe(false);
   });
 });
+
+describe("projectOntoLine on overlapping legs", () => {
+  it("keeps progress on the current leg even when the hint is far behind", () => {
+    const outAndBack: Position[] = [...line, ...line.slice(0, -1).reverse()];
+    const cum = cumulativeDistancesM(outAndBack);
+    // hint 0 m, hiker actually at 900 m on the way out: must not jump to the return leg (1100 m)
+    expect(projectOntoLine(offsetMeters(origin, 900, 3), outAndBack, cum, 0).alongM).toBeCloseTo(900, -1);
+    // hint far along the return leg: stays on the return leg
+    expect(projectOntoLine(offsetMeters(origin, 900, 3), outAndBack, cum, 1950).alongM).toBeCloseTo(1100, -1);
+  });
+  it("still snaps to a clearly nearer segment regardless of the hint", () => {
+    const p = offsetMeters(origin, 500, 0);
+    expect(projectOntoLine(p, line, undefined, 0).alongM).toBeCloseTo(500, 0);
+  });
+});

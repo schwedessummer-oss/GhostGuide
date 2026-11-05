@@ -9,6 +9,7 @@ export function redact(value: unknown, depth = 0): unknown {
   if (depth > 6) return "[truncated]";
   if (Array.isArray(value)) return value.slice(0, 50).map((v) => redact(v, depth + 1));
   if (value && typeof value === "object") {
+    if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value.toISOString();
     if (value instanceof Error) return { name: value.name, message: redactString(value.message) };
     const out: Record<string, unknown> = {};
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
@@ -20,13 +21,24 @@ export function redact(value: unknown, depth = 0): unknown {
   return value;
 }
 
+// UUIDs and ISO dates/timestamps are digit-heavy but not personal data:
+// shield them so the phone/coordinate patterns below never mangle them.
+const PROTECTED = /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b|\b\d{4}-\d{2}-\d{2}(?:[T ]\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?(?:Z|[+-]\d{2}:?\d{2})?)?\b/gi;
+
 /** Scrub obvious secrets / PII patterns that slip into strings. */
 export function redactString(s: string): string {
-  return s
+  const shielded: string[] = [];
+  const masked = s.replace(PROTECTED, (m) => {
+    shielded.push(m);
+    return `\u0000${shielded.length - 1}\u0000`;
+  });
+  return masked
     .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, "[email]")
     .replace(/\b(sk|rk|pk|whsec)_(test|live)?_?[A-Za-z0-9]{8,}\b/g, "[key]")
-    .replace(/\+?\d[\d\s().-]{8,}\d/g, "[phone]")
     .replace(/-?\d{1,3}\.\d{4,}\s*,\s*-?\d{1,3}\.\d{4,}/g, "[coords]")
+    // phone numbers: 10–15 digits with optional separators
+    .replace(/(?<![\w-])\+?\d(?:[\s().-]{0,2}\d){9,14}(?![\w-])/g, "[phone]")
+    .replace(/\u0000(\d+)\u0000/g, (_, i) => shielded[Number(i)])
     .slice(0, 2000);
 }
 

@@ -55,3 +55,16 @@ describe("log redaction", () => {
     expect(redactString("key sk_test_abcdefghijklmnop")).toBe("key [key]");
   });
 });
+
+describe("log redaction keeps non-personal identifiers intact", () => {
+  it("does not mangle UUIDs, ISO dates or Date objects", () => {
+    const id = "4d1bf809-ae2f-412f-8670-94c674898aea";
+    expect(redactString(`booking ${id} on 2026-11-09 at 2026-11-09T16:30:00.000Z`)).toBe(
+      `booking ${id} on 2026-11-09 at 2026-11-09T16:30:00.000Z`,
+    );
+    const out = redact({ when: new Date("2026-11-09T16:30:00Z"), id }) as Record<string, unknown>;
+    expect(out.when).toBe("2026-11-09T16:30:00.000Z");
+    expect(out.id).toBe(id);
+    expect(redactString("call 555-555-0123 or +1 (555) 555 0123")).toBe("call [phone] or [phone]");
+  });
+});

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     "Discover a hike, get a personalized itinerary, download your trip, and hike with GPS-triggered audio narration and optional check-ins.",
   applicationName: "Ghost Guide",
   appleWebApp: { capable: true, title: "Ghost Guide", statusBarStyle: "default" },
+  icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {

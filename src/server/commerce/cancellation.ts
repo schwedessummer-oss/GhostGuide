@@ -15,6 +15,7 @@ import {
 import type { BookingStatus, TripStatus } from "@/domain/types";
 import { zonedTimeToUtc } from "@/lib/time";
 import { cancelFulfillmentsForBooking } from "@/server/fulfillment/cancel";
+import { cancelCheckinForTrip } from "@/server/checkins/service";
 import { getCommerceSettings } from "./settings";
 import { refundBalance, requestRefund } from "./refunds";
 import { tripStartTime } from "./checkout";
@@ -80,6 +81,8 @@ export async function cancelBookingCore(
   const checkins = await tx<{ id: string }[]>`select id from public.trip_checkins where trip_id = ${b.tripId}`;
   for (const c of checkins) await cancelQueuedJobs(tx, `checkin:${c.id}:`);
   await tx`update public.trips set status = 'cancelled' where id = ${b.tripId} and status in ('saved', 'booked')`;
+  // Safety contract: mark the check-in cancelled (version bump, undelivered notices suppressed).
+  await cancelCheckinForTrip(tx, b.tripId, "booking_cancelled");
   await recordAudit(tx, opts.actor, opts.auditAction, "booking", b.id, {
     from: b.status,
     to,
@@ -193,6 +196,7 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
     const actor = { id: user.id, roles: user.roles };
     if (!b) {
       await tx`update public.trips set status = 'cancelled' where id = ${trip.id} and status in ('saved', 'booked')`;
+      await cancelCheckinForTrip(tx, trip.id, "trip_cancelled");
       await recordAudit(tx, actor, "trip.cancelled_by_customer", "trip", trip.id, { booking: null });
       return { ok: true, alreadyCancelled: false, refundCents: 0, bookingStatus: null };
     }

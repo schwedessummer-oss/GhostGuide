@@ -16,6 +16,10 @@ export const PERIODIC_JOBS: { kind: string; everyMinutes: number }[] = [
   { kind: "payments.reconcile", everyMinutes: 60 },
   { kind: "locations.purge_expired", everyMinutes: 60 * 24 },
   { kind: "ops.purge_rate_limits", everyMinutes: 60 * 24 },
+  // Safety net for the self-rescheduling daily permit reminder run (ops
+  // handler). A second run on the same day is a no-op: reminders are
+  // deduplicated per trip/permit/day.
+  { kind: "permits.remind", everyMinutes: 60 * 24 },
 ];
 
 export function bucketKey(kind: string, everyMinutes: number, now: Date): string {
