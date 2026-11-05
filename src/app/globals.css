@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Ghost Guide design tokens — outdoor palette: forest greens on warm
+ * neutrals. All text/background pairings used by components meet WCAG AA
+ * (forest-700 on canvas ≈ 7.6:1; ink on canvas ≈ 15:1; muted on canvas ≈ 6.9:1).
+ */
+@theme {
+  --color-forest-950: #0f2318;
+  --color-forest-900: #173524;
+  --color-forest-800: #1f4630;
+  --color-forest-700: #2a5a3e;
+  --color-forest-600: #35704d;
+  --color-forest-500: #4a8a63;
+  --color-forest-200: #c7dccd;
+  --color-forest-100: #e2eee5;
+  --color-forest-50: #f1f7f2;
+
+  --color-canvas: #faf7f1;
+  --color-surface: #ffffff;
+  --color-sand-100: #f3eee4;
+  --color-sand-200: #e7dfd0;
+  --color-sand-300: #d6cab5;
+  --color-ink: #1d2420;
+  --color-muted: #545b55;
+
+  --color-amber-ink: #8a4b08;
+  --color-amber-bg: #fdf3e2;
+  --color-red-ink: #a3241a;
+  --color-red-bg: #fdecea;
+  --color-blue-ink: #1e4f9c;
+  --color-blue-bg: #eaf1fd;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radius-card: 1rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Visible, consistent focus ring for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--color-forest-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 100;
+  background: var(--color-forest-800);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+}
+.skip-link:focus {
+  top: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High-legibility mode for the active-hike screen in bright sunlight. */
+.high-contrast {
+  --color-muted: #2f3531;
 }

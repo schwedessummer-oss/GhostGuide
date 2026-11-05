@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+!.env.example
+
+# local demo data (storage, uploads)
+/.data/
+/test-results/
+/playwright-report/
