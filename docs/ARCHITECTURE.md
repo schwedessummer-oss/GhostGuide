@@ -169,7 +169,7 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
 | `src/components/trip/hike-actions-card.tsx` `HikeActionsCard({tripId})` | hike | commerce (trip dashboard) |
 | `src/server/commerce/staff-actions.ts` cancel/refund/retry/set-status | commerce | admin |
 | `src/domain/pricing.ts` `quotePrice` | foundation | commerce, admin, discover |
-| `src/server/catalog/trails.ts`, `src/server/trips/queries.ts` | foundation | all |
+| `src/server/catalog/trails.ts`, `src/server/trips/queries.ts`, `src/lib/time.ts` (zone-aware dates), `src/lib/format.ts` | foundation | all |
 
 ## Testing
 - `npm run test:unit` — pure domain logic (`tests/unit/<slice>/…`).
