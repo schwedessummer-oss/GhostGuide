@@ -16,7 +16,8 @@
     "db:seed": "tsx scripts/seed/index.ts",
     "db:reset": "tsx scripts/db/reset.ts",
     "jobs:run": "tsx --conditions=react-server scripts/run-jobs.ts",
-    "verify": "npm run typecheck && npm run lint && npm run test && npm run build"
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "setup:supabase": "tsx scripts/setup-supabase.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
