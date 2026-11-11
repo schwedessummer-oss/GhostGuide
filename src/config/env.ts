@@ -70,7 +70,14 @@ let cached: ServerEnv | null = null;
 
 export function env(): ServerEnv {
   if (cached) return cached;
-  const parsed = schema.safeParse(process.env);
+  const source: Record<string, string | undefined> = { ...process.env };
+  // On Vercel, default the public URL to the project's production domain
+  // (system env var) so a first deploy works before NEXT_PUBLIC_APP_URL is set.
+  if (!source.NEXT_PUBLIC_APP_URL) {
+    const vercelHost = source.VERCEL_PROJECT_PRODUCTION_URL || source.VERCEL_URL;
+    if (vercelHost) source.NEXT_PUBLIC_APP_URL = `https://${vercelHost}`;
+  }
+  const parsed = schema.safeParse(source);
   if (!parsed.success) {
     // Do not print values: they may be secrets.
     const fields = parsed.error.issues.map((i) => i.path.join(".")).join(", ");

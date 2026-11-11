@@ -49,12 +49,17 @@ notifications) until you configure real providers.
 
 ## 2. Vercel project
 1. Import the Git repository. Framework preset: Next.js. Build command `next build` (default).
-2. Environment variables (Production *and* Preview), see `.env.example`:
+2. Environment variables (Production *and* Preview), see `.env.example`.
+   Shortcut: after `npm run setup:supabase`, run `npm run vercel:env`. It builds the whole list
+   below from `.env.local` (switching to the transaction pooler on port 6543), generates
+   `AUTH_SECRET`/`CRON_SECRET` once (saved in `.env.local`), and copies it to the clipboard;
+   paste it into the first *Key* box in Vercel and the rows fill in.
+
 
    | Variable | Value |
    |---|---|
    | `APP_MODE` | `demo` for previews; `live` only after the launch checklist |
-   | `NEXT_PUBLIC_APP_URL` | `https://<your-domain>` |
+   | `NEXT_PUBLIC_APP_URL` | `https://<your-domain>`; optional on Vercel (defaults to the production domain) |
    | `DATABASE_URL` | Supabase transaction pooler URL |
    | `DATABASE_TRANSACTION_POOLER` / `DATABASE_SSL` | `true` / `true` |
    | `AUTH_PROVIDER` | `supabase` |
