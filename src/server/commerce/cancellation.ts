@@ -76,13 +76,17 @@ export async function cancelBookingCore(
   }
   const fulfillments = await cancelFulfillmentsForBooking(tx, b.id);
   await cancelQueuedJobs(tx, `booking:${b.id}:`);
-  // Queued check-in reminders for this trip are obsolete (dedup convention
-  // checkin:<checkinId>:v<version>:<step>); the safety slice owns the check-in row itself.
-  const checkins = await tx<{ id: string }[]>`select id from public.trip_checkins where trip_id = ${b.tripId}`;
-  for (const c of checkins) await cancelQueuedJobs(tx, `checkin:${c.id}:`);
-  await tx`update public.trips set status = 'cancelled' where id = ${b.tripId} and status in ('saved', 'booked')`;
-  // Safety contract: mark the check-in cancelled (version bump, undelivered notices suppressed).
-  await cancelCheckinForTrip(tx, b.tripId, "booking_cancelled");
+  const cancelledTrip = await tx`
+    update public.trips set status = 'cancelled' where id = ${b.tripId} and status in ('saved', 'booked') returning id`;
+  // Only when the TRIP is cancelled are its check-in and queued reminder /
+  // overdue jobs obsolete. A booking cancelled by staff while the hike is in
+  // progress (trip 'active') must never switch off the hiker's check-in.
+  if (cancelledTrip.length) {
+    const checkins = await tx<{ id: string }[]>`select id from public.trip_checkins where trip_id = ${b.tripId}`;
+    for (const c of checkins) await cancelQueuedJobs(tx, `checkin:${c.id}:`);
+    // Safety contract: mark the check-in cancelled (version bump, undelivered notices suppressed).
+    await cancelCheckinForTrip(tx, b.tripId, "booking_cancelled");
+  }
   await recordAudit(tx, opts.actor, opts.auditAction, "booking", b.id, {
     from: b.status,
     to,
@@ -195,8 +199,8 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
     const b = await lockBookingForCancel(tx, { tripId: trip.id });
     const actor = { id: user.id, roles: user.roles };
     if (!b) {
-      await tx`update public.trips set status = 'cancelled' where id = ${trip.id} and status in ('saved', 'booked')`;
-      await cancelCheckinForTrip(tx, trip.id, "trip_cancelled");
+      const cancelled = await tx`update public.trips set status = 'cancelled' where id = ${trip.id} and status in ('saved', 'booked') returning id`;
+      if (cancelled.length) await cancelCheckinForTrip(tx, trip.id, "trip_cancelled");
       await recordAudit(tx, actor, "trip.cancelled_by_customer", "trip", trip.id, { booking: null });
       return { ok: true, alreadyCancelled: false, refundCents: 0, bookingStatus: null };
     }

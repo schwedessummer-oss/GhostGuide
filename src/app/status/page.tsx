@@ -1,5 +1,7 @@
 import { Badge, Card, Container, PageHeader } from "@/components/ui";
 import { integrationStatus } from "@/config/env";
+import { getRunnerHealth, RUNNER_STALE_AFTER_MIN } from "@/server/jobs/health";
+import { formatAge } from "@/lib/format";
 
 export const metadata = { title: "Integration status" };
 export const dynamic = "force-dynamic";
@@ -16,14 +18,30 @@ const LABELS: Record<string, string> = {
   partners: "Partner services (lockers, shuttle, meals, satellite rental)",
 };
 
-export default function StatusPage() {
+export default async function StatusPage() {
   const status = integrationStatus();
+  const runner = await getRunnerHealth();
   return (
     <Container className="py-10">
       <PageHeader
         title="Integration status"
         description="Which parts of Ghost Guide are connected to real services in this deployment and which are simulated."
       />
+      <Card className="mb-6">
+        <h2 className="text-lg font-bold">Background checks</h2>
+        <p className="mt-1 text-[0.95rem] text-muted">
+          Check-in reminders and overdue notices are sent by a background job runner that should run about once a minute.
+        </p>
+        <p className="mt-3 flex flex-wrap items-center gap-2">
+          <Badge tone={runner.stale ? "red" : "forest"}>{runner.stale ? "Delayed" : "Running"}</Badge>
+          <span>
+            {runner.lastRunAt
+              ? `Last run ${formatAge(runner.lastRunAt)}.`
+              : "The job runner has not run yet in this deployment."}
+            {runner.stale ? ` Notices may be late until it runs again (expected at least every ${RUNNER_STALE_AFTER_MIN} minutes).` : ""}
+          </span>
+        </p>
+      </Card>
       <Card>
         <dl className="divide-y divide-sand-200">
           {Object.entries(status).map(([key, value]) => (

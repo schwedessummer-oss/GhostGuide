@@ -4,6 +4,7 @@ import { runDueJobs } from "@/server/jobs/queue";
 import { ensurePeriodicJobs } from "@/server/jobs/periodic";
 import { allJobHandlers } from "@/server/jobs/registry";
 import { log } from "@/server/log";
+import { recordRunnerHeartbeat } from "@/server/jobs/health";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -27,6 +28,7 @@ async function handle(request: Request) {
     for (const k of Object.keys(totals) as (keyof typeof totals)[]) totals[k] += s[k];
     if (s.claimed === 0) break;
   }
+  await recordRunnerHeartbeat(totals);
   log.info("cron.jobs", totals);
   return Response.json({ ok: true, ...totals, ms: Date.now() - started });
 }

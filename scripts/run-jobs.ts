@@ -11,10 +11,12 @@ async function main() {
   const { ensurePeriodicJobs } = await import("@/server/jobs/periodic");
   const { allJobHandlers } = await import("@/server/jobs/registry");
   const { closeDb } = await import("@/server/db");
+  const { recordRunnerHeartbeat } = await import("@/server/jobs/health");
   const watch = process.argv.includes("--watch");
   do {
     await ensurePeriodicJobs();
     const summary = await runDueJobs(allJobHandlers(), { limit: 50, workerId: "local-runner" });
+    await recordRunnerHeartbeat({ ...summary });
     console.log(new Date().toISOString(), JSON.stringify(summary));
     if (watch) await new Promise((r) => setTimeout(r, 15_000));
   } while (watch);
