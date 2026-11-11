@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { Copy, LocateFixed, MessageSquareText, Phone, Satellite, ShieldAlert, TreePine } from "lucide-react";
-import { Alert, Button, Card } from "@/components/ui";
-import { getStoredBundle } from "@/lib/offline/bundle-store";
+import { Alert, Button, Card, SimulatedBadge } from "@/components/ui";
+import { fetchBundleDetailed, getStoredBundle } from "@/lib/offline/bundle-store";
 import { loadHikeState, saveHikeState } from "@/lib/offline/hike-state";
+import { SIGN_IN_AGAIN, currentOwnerHint, enforceDeviceOwner } from "@/lib/offline/owner";
 import { accuracyGrade } from "@/domain/location-quality";
 import { formatAgo, formatClock, formatCoords } from "./format";
 import { useOnline } from "./use-online";
@@ -23,24 +24,47 @@ interface Region {
   emergencyGuidance: string;
 }
 
+type Access = "checking" | "owner" | "signed_out";
+
+async function confirmWithServer(tripId: string): Promise<{ tripId: string; ownerHint: string } | undefined> {
+  const timeout = new Promise<undefined>((resolve) => setTimeout(() => resolve(undefined), 6_000));
+  const fetched = fetchBundleDetailed(tripId)
+    .then((r) => (r.source === "network" ? { tripId, ownerHint: r.bundle.ownerHint } : undefined))
+    .catch(() => undefined);
+  return Promise.race([fetched, timeout]);
+}
+
 /**
  * Help screen (cached for offline use). Shows the last known location from
  * THIS DEVICE (IndexedDB) or, failing that, the last one the server
  * received; a clear stale warning; how to call/text 911; and what Ghost
  * Guide cannot do.
+ *
+ * Shared devices: the page (and its server-rendered location) may be the
+ * offline copy of someone else's download. Locations are shown only when the
+ * account signed in on this browser (`gg_owner` cookie) is the one the page
+ * and the on-device data belong to; otherwise the data is removed and the
+ * hiker is asked to sign in again. The emergency guidance always shows.
  */
 export function HelpScreen({
   tripId,
   serverLocation,
   region: serverRegion,
   staleMinutes: serverStale,
+  ownerHint: pageOwnerHint,
+  notificationsSimulated,
 }: {
   tripId: string;
   serverLocation: HelpLocation | null;
   region: Region | null;
   staleMinutes: number;
+  /** owner hint of the account this page was rendered for */
+  ownerHint: string;
+  /** check-in notices are simulated (demo) */
+  notificationsSimulated: boolean;
 }) {
   const online = useOnline();
+  const [access, setAccess] = useState<Access>("checking");
   const [device, setDevice] = useState<HelpLocation | null>(null);
   const [region, setRegion] = useState<Region | null>(serverRegion);
   const [staleMinutes, setStaleMinutes] = useState(serverStale);
@@ -52,16 +76,28 @@ export function HelpScreen({
   useEffect(() => {
     let alive = true;
     (async () => {
+      let owner = currentOwnerHint();
+      let confirmed: { tripId: string; ownerHint: string } | undefined;
+      if (owner !== pageOwnerHint && navigator.onLine) {
+        // A signed-in hiker whose browser lacks the device tag: the server confirms the trip (and sets the tag).
+        confirmed = await confirmWithServer(tripId);
+        owner = currentOwnerHint();
+      }
+      const check = await enforceDeviceOwner({ confirmed }).catch(() => ({ owner, purged: [] as string[] }));
+      if (!alive) return;
+      const mine = !!check.owner && (check.owner === pageOwnerHint || confirmed?.ownerHint === check.owner);
+      setAccess(mine ? "owner" : "signed_out");
+      if (!mine) return;
       const [state, stored] = await Promise.all([loadHikeState(tripId).catch(() => null), getStoredBundle(tripId).catch(() => undefined)]);
       if (!alive) return;
-      if (state?.lastFix) {
+      if (state?.lastFix && state.ownerHint === check.owner) {
         setDevice({ lat: state.lastFix.lat, lng: state.lastFix.lng, accuracyM: state.lastFix.accuracyM, recordedAt: state.lastFix.timestamp, source: "device" });
       }
-      if (stored?.bundle) {
+      if (stored?.bundle && stored.bundle.ownerHint === check.owner) {
         setRegion((r) => r ?? stored.bundle.region);
         setStaleMinutes(stored.bundle.settings.staleLocationMinutes);
       }
-    })();
+    })().catch(() => alive && setAccess((a) => (a === "checking" ? "signed_out" : a)));
     const t = setInterval(() => setNow(Date.now()), 10_000);
     const first = setTimeout(() => setNow(Date.now()), 0);
     return () => {
@@ -69,9 +105,11 @@ export function HelpScreen({
       clearInterval(t);
       clearTimeout(first);
     };
-  }, [tripId]);
+  }, [tripId, pageOwnerHint]);
 
-  const candidates = [device, serverLocation].filter((x): x is HelpLocation => !!x);
+  // Nothing location-related is shown until the device owner is confirmed.
+  // (A position measured just now on this phone is always shown: it is nobody's stored data.)
+  const candidates = (access === "owner" ? [device, serverLocation] : [device?.source === "fresh" ? device : null]).filter((x): x is HelpLocation => !!x);
   const loc = candidates.sort((a, b) => b.recordedAt - a.recordedAt)[0] ?? null;
   const ageMin = loc && now ? (now - loc.recordedAt) / 60_000 : 0;
   const stale = !!loc && now !== null && ageMin > staleMinutes;
@@ -103,8 +141,10 @@ export function HelpScreen({
         setNow(Date.now());
         setLocating(false);
         // Keep it as this trip's last known location on the device too.
-        const state = await loadHikeState(tripId).catch(() => null);
-        if (state) await saveHikeState({ ...state, lastFix: { lat: fix.lat, lng: fix.lng, accuracyM: fix.accuracyM, timestamp: fix.recordedAt } }).catch(() => undefined);
+        const state = access === "owner" ? await loadHikeState(tripId).catch(() => null) : null;
+        if (state && state.ownerHint === currentOwnerHint()) {
+          await saveHikeState({ ...state, lastFix: { lat: fix.lat, lng: fix.lng, accuracyM: fix.accuracyM, timestamp: fix.recordedAt } }).catch(() => undefined);
+        }
       },
       (err) => {
         setLocating(false);
@@ -161,7 +201,25 @@ export function HelpScreen({
         <h2 id="loc-heading" className="flex items-center gap-2 text-xl font-bold">
           <LocateFixed aria-hidden className="size-5" /> Your last known location
         </h2>
-        {loc ? (
+        {access === "signed_out" ? (
+          <div className="mt-3 space-y-3 rounded-xl border border-[#f1d9b0] bg-amber-bg p-3 text-amber-ink" role="status" data-testid="help-signed-out">
+            <p>
+              <strong>{SIGN_IN_AGAIN}.</strong> Location and trip data saved on this browser belong to an account that isn&apos;t signed in here, so they
+              aren&apos;t shown (and have been removed from this device).
+            </p>
+            <p>
+              <a className="font-semibold underline" href={`/login?next=${encodeURIComponent(`/trips/${tripId}/help`)}`}>
+                Sign in
+              </a>{" "}
+              — or use <strong>Get current location</strong> to read this phone&apos;s position now.
+            </p>
+          </div>
+        ) : null}
+        {access === "checking" ? (
+          <p className="mt-3 text-muted" role="status">
+            Checking this device…
+          </p>
+        ) : loc ? (
           <div className="mt-3 space-y-3" aria-live="polite">
             <p className="font-mono text-2xl font-bold tracking-tight" data-testid="help-coords">
               {formatCoords(loc.lat, loc.lng)}
@@ -191,7 +249,7 @@ export function HelpScreen({
           </div>
         ) : (
           <div className="mt-3 space-y-3">
-            <p className="text-muted">No location saved for this trip yet.</p>
+            {access === "owner" ? <p className="text-muted">No location saved for this trip yet.</p> : null}
             <Button variant="secondary" onClick={locateNow} disabled={locating}>
               <LocateFixed aria-hidden className="size-4" /> {locating ? "Getting location…" : "Get current location"}
             </Button>
@@ -213,6 +271,12 @@ export function HelpScreen({
           <li>
             If you set up a check-in, your contact is notified only after your expected return time plus grace period passes without a confirmation —
             that can be hours from now.
+            {notificationsSimulated ? (
+              <>
+                {" "}
+                <SimulatedBadge label="Simulated notices (demo)" /> In this demo no message is actually sent to your contact.
+              </>
+            ) : null}
           </li>
         </ul>
       </Alert>

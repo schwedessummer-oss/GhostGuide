@@ -137,11 +137,11 @@ describe("location retention", () => {
     await addPoints(me, t1.id, [1, 2]);
     await addPoints(other, t2.id, [1]);
     const res = await deleteLocationHistory(me);
-    expect(res).toEqual({ pointsDeleted: 2, lastFixesDeleted: 1 });
+    expect(res).toEqual({ pointsDeleted: 2, lastFixesDeleted: 1, noticesRedacted: 0 });
     expect(await sql()`select 1 from public.location_points where user_id = ${me.id}`).toHaveLength(0);
     expect(await sql()`select 1 from public.location_points where user_id = ${other.id}`).toHaveLength(1);
     const [audit] = await sql()`select actor_id, metadata from public.audit_logs where action = 'privacy.location_history_deleted' and actor_id = ${me.id}`;
-    expect(audit.metadata).toEqual({ pointsDeleted: 2, lastFixesDeleted: 1 });
+    expect(audit.metadata).toEqual({ pointsDeleted: 2, lastFixesDeleted: 1, noticesRedacted: 0 });
   });
 });
 

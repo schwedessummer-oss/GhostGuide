@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui";
 import { HelpScreen } from "@/components/hike/help-screen";
 import { requireUser } from "@/server/auth";
+import { ownerHint } from "@/server/auth/owner-hint";
+import { env, integrationStatus } from "@/config/env";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { getRegionById } from "@/server/catalog/trails";
 import { getServerLastLocation, getStaleLocationMinutes } from "@/server/hike/queries";
@@ -35,6 +37,8 @@ export default async function HelpPage({ params }: PageProps<"/trips/[id]/help">
         }
         region={region ? { name: region.name, emergencyNumber: region.emergencyNumber, emergencyGuidance: region.emergencyGuidance } : null}
         staleMinutes={staleMinutes}
+        ownerHint={ownerHint(env().AUTH_SECRET, user.id)}
+        notificationsSimulated={integrationStatus().notifications === "simulated"}
       />
     </Container>
   );

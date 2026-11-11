@@ -121,6 +121,35 @@ describe("buildItinerary", () => {
     expect(tight.notes.join(" ")).toMatch(/before the estimated halfway point/);
   });
 
+  it("surfaces partial closures and never implies continuing into the closed section", () => {
+    const reason = "Upper switchbacks closed for (fictional) trail maintenance. Turn around at the Signal Tower.";
+    const open = buildItinerary(outAndBack, pois, prefs({ startTime: "08:00" }), NOW, { latestFinishTime: "15:45" });
+    const it = buildItinerary(outAndBack, pois, prefs({ startTime: "08:00" }), NOW, { latestFinishTime: "15:45", partialClosures: [reason] });
+    // the schedule itself is unchanged (a full-route estimate) …
+    expect(it.turnaroundBy).toBe(open.turnaroundBy);
+    expect(it.estimatedFinishTime).toBe(open.estimatedFinishTime);
+    // … but the notes lead with the closure and say to follow it
+    expect(it.notes[0]).toMatch(/^Estimates only/);
+    expect(it.notes[1]).toBe(
+      "Partial closure on your date: Upper switchbacks closed for (fictional) trail maintenance. Turn around at the Signal Tower. Follow the closure, even if that means turning around earlier than this itinerary shows; the times here are estimates for the full route.",
+    );
+    const text = it.notes.join(" ");
+    expect(text).toMatch(/part of the route is closed on your date\. Turn around where the closure notice says, and by 09:45 at the latest/);
+    expect(text).not.toMatch(/even if you have not reached it/);
+    expect(open.notes.join(" ")).toMatch(/Turn around by 09:45 even if you have not reached it/);
+    // loops get the closure note too (there is no turnaround to adjust)
+    const loop = buildItinerary({ ...outAndBack, routeType: "loop" }, pois, prefs(), NOW, { partialClosures: ["Boardwalk section closed"] });
+    expect(loop.notes).toContain(
+      "Partial closure on your date: Boardwalk section closed. Follow the closure, even if that means turning around earlier than this itinerary shows; the times here are estimates for the full route.",
+    );
+  });
+
+  it("names the planned month for the latest-finish note (not 'this month')", () => {
+    const june = buildItinerary(outAndBack, pois, prefs({ plannedDate: "2027-06-15" }), NOW, { latestFinishTime: "20:15" });
+    expect(june.notes.join(" ")).toMatch(/off the trail by 20:15: a conservative planning estimate for June, not an exact sunset time/);
+    expect(june.notes.join(" ")).not.toMatch(/this month/);
+  });
+
   it("omits turnaround for loops and notes shuttles for point-to-point", () => {
     const loop = buildItinerary({ ...outAndBack, routeType: "loop" }, pois, prefs(), NOW);
     expect(loop.turnaroundBy).toBeUndefined();

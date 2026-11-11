@@ -11,6 +11,7 @@ import { isEnabled } from "@/server/flags";
 import { env } from "@/config/env";
 import {
   MAX_ADVANCE_DAYS,
+  getGearKitsAvailable,
   loadCheckoutTrip,
   loadOfferedAddons,
   previewQuote,
@@ -20,17 +21,21 @@ import {
 import { getAddonRemaining, getDayAvailability } from "@/server/commerce/inventory";
 import { getCommerceSettings } from "@/server/commerce/settings";
 import { getTripBookingView } from "@/server/commerce/queries";
+import { getClosuresOnDay, planForSelection } from "@/server/commerce/trip-plan";
 import { getPaymentProvider } from "@/integrations/payments";
 import { DEMO_PICKUP_POINTS } from "@/integrations/partners/shuttle/pickup-points";
-import { describeCancellationPolicy } from "@/domain/booking";
+import { closedOnDateMessage, describeCancellationPolicy, type ClosureVerdict } from "@/domain/booking";
+import { formatDate, formatMoney } from "@/lib/format";
 import { localDateInZone, formatInZone } from "@/lib/time";
 import { CheckoutForm, type AddonOption } from "./checkout-form";
 import { resumeCheckoutAction } from "./actions";
+import { ReleaseCheckoutForm } from "./release-form";
 
 export const metadata: Metadata = { title: "Book your hike" };
 export const dynamic = "force-dynamic";
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+const longDate = (d: string) => formatDate(d, { weekday: "long", month: "long", day: "numeric", year: "numeric" });
 
 export default async function CheckoutPage({ params, searchParams }: PageProps<"/trips/[id]/checkout">) {
   const { id } = await params;
@@ -48,25 +53,61 @@ export default async function CheckoutPage({ params, searchParams }: PageProps<"
     </p>
   );
 
-  // A pending checkout for this trip: offer to continue it instead of starting another.
+  // A pending checkout for this trip: show exactly what is held and offer to
+  // continue it or release it (to change the details) — never a silent resume.
   const existing = await getTripBookingView(user, trip.id);
   if (existing?.booking.status === "pending_payment" && existing.holdValid) {
     const tz = region?.timezone ?? "UTC";
+    const held = existing.booking;
+    const heldAddons = (held.priceBreakdown.lines ?? []).filter((l) => l.kind === "addon").map((l) => l.label);
     return (
       <Container className="max-w-2xl py-8 sm:py-10">
         {back}
         <PageHeader title="Checkout in progress" description={`You already started booking ${trip.trailName}.`} />
-        <Card>
-          <p>
+        {one(sp.changed) ? (
+          <Alert tone="amber" live="polite" className="mb-6" title="Your new choices were not applied">
+            A checkout is already holding spots with the details below. Continue with it, or release it to book with different details.
+          </Alert>
+        ) : null}
+        <Card aria-labelledby="held-heading">
+          <h2 id="held-heading" className="text-lg font-bold">
+            What is held for you
+          </h2>
+          <dl className="mt-3 grid gap-3 text-[0.95rem] sm:grid-cols-2">
+            <div>
+              <dt className="text-sm font-semibold text-muted">Hike date</dt>
+              <dd>{longDate(held.hikeDate)}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-muted">Group</dt>
+              <dd>
+                {held.partySize} {held.partySize === 1 ? "hiker" : "hikers"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-muted">Add-ons</dt>
+              <dd>{heldAddons.length ? heldAddons.join(", ") : "None"}</dd>
+            </div>
+            <div>
+              <dt className="text-sm font-semibold text-muted">Total</dt>
+              <dd className="font-semibold tabular-nums">{formatMoney(held.totalCents, held.currency)}</dd>
+            </div>
+          </dl>
+          <p className="mt-4">
             Your spots are held until{" "}
-            <strong>{existing.booking.holdExpiresAt ? formatInZone(existing.booking.holdExpiresAt, tz, { timeStyle: "short" }) : "soon"}</strong>.
-            Continue to finish payment.
+            <strong>
+              {held.holdExpiresAt ? formatInZone(held.holdExpiresAt, tz, { hour: "numeric", minute: "2-digit", timeZoneName: "short" }) : "soon"}
+            </strong>
+            . Nothing has been charged yet.
           </p>
-          <form action={resumeCheckoutAction.bind(null, trip.id, existing.booking.id)} className="mt-4">
-            <SubmitButton size="lg" pendingLabel="Opening checkout…">
-              Continue to payment
-            </SubmitButton>
-          </form>
+          <div className="mt-5 space-y-5">
+            <form action={resumeCheckoutAction.bind(null, trip.id, held.id)}>
+              <SubmitButton size="lg" pendingLabel="Opening checkout…">
+                Continue to payment
+              </SubmitButton>
+            </form>
+            <ReleaseCheckoutForm tripId={trip.id} bookingId={held.id} />
+          </div>
         </Card>
       </Container>
     );
@@ -105,11 +146,17 @@ export default async function CheckoutPage({ params, searchParams }: PageProps<"
 
   const [checkoutEnabled, offered, settings] = await Promise.all([isEnabled("checkout_enabled"), loadOfferedAddons(trip.regionId), getCommerceSettings()]);
   const requestedCodes = (one(sp.addons) ?? "").split(",").filter(Boolean);
+  // An impossible or out-of-range date never reaches the database.
   const dateError = validateHikeDate(date, startTime, tz, now);
-  const [availability, remaining] = await Promise.all([
-    getDayAvailability(trip.trailId, date),
-    dateError ? Promise.resolve({} as Record<string, number | null>) : getAddonRemaining(offered, date),
-  ]);
+  const [availability, remaining, gearKits, closures, selection] = dateError
+    ? [null, {} as Record<string, number | null>, {} as Record<string, number>, null, null]
+    : await Promise.all([
+        getDayAvailability(trip.trailId, date),
+        getAddonRemaining(offered, date),
+        getGearKitsAvailable(offered, trip.regionId, date),
+        getClosuresOnDay(trip.trailId, date, tz) as Promise<ClosureVerdict | null>,
+        trail && region ? planForSelection(trip, trail, region, { hikeDate: date, partySize, startTime }, now) : Promise.resolve(null),
+      ]);
   const addonOptions: AddonOption[] = offered.map((a) => ({
     code: a.code,
     name: a.name,
@@ -119,12 +166,21 @@ export default async function CheckoutPage({ params, searchParams }: PageProps<"
     pricingUnit: a.pricingUnit,
     requiresCustomerConfirmation: a.requiresCustomerConfirmation,
     remaining: remaining[a.id] ?? null,
+    gearKitsLeft: a.kind === "gear_locker" ? (gearKits[a.id] ?? null) : null,
   }));
   const selected = offered.filter((a) => requestedCodes.includes(a.code));
-  const occupancy = availability.capacity > 0 ? Math.min(1, availability.used / availability.capacity) : 1;
+  const occupancy = availability && availability.capacity > 0 ? Math.min(1, availability.used / availability.capacity) : 1;
   const quote = trail && !dateError ? await previewQuote({ trail, regionId: trip.regionId, hikeDate: date, partySize, addons: selected, occupancy }) : null;
   const provider = getPaymentProvider();
   const disabledReason = !checkoutEnabled ? "Booking is temporarily paused. Please check back soon." : view.unavailableReason;
+  // Same rules createCheckout enforces: a full closure on the hike day (active
+  // or scheduled), or a changed date/group that would finish after dark.
+  const dateBlockedReason = closures?.closed ? closedOnDateMessage(closures.closed) : (selection?.daylightError ?? null);
+  const dateNotices = (closures?.notices ?? []).map((c) => `${c.severity === "partial" ? "Partial closure" : "Advisory"} on this date: ${c.reason}`);
+  const replanNote =
+    selection?.changed && !dateBlockedReason && !dateError
+      ? `Your saved plan was for ${trip.plannedDate ? longDate(trip.plannedDate) : "another date"} with ${trip.partySize} ${trip.partySize === 1 ? "hiker" : "hikers"}. Once payment is confirmed, your itinerary is recalculated for ${longDate(date)} with ${partySize} ${partySize === 1 ? "hiker" : "hikers"}: estimated finish ${selection.plan.itinerary.estimatedFinishTime}, off the trail by ${selection.plan.latestFinishTime} (conservative estimate, not an exact sunset).`
+      : null;
 
   return (
     <Container className="py-8 sm:py-10">
@@ -135,6 +191,11 @@ export default async function CheckoutPage({ params, searchParams }: PageProps<"
         description={`Start time ${startTime} (${tz.replace(/_/g, " ")} time). Change the date, group size or add-ons and the price updates.`}
         actions={trip.trailIsDemo ? <DemoTrailBadge /> : null}
       />
+      {one(sp.released) ? (
+        <Alert tone="forest" live="polite" className="mb-6" title="Your held spots were released">
+          Nothing was charged. Adjust the date, group size or add-ons, then continue when you&apos;re ready.
+        </Alert>
+      ) : null}
       <CheckoutForm
         tripId={trip.id}
         idempotencyKey={randomUUID()}
@@ -145,7 +206,10 @@ export default async function CheckoutPage({ params, searchParams }: PageProps<"
         pickupPoints={DEMO_PICKUP_POINTS.map((p) => ({ key: p.key, label: p.label }))}
         quote={quote ? { lines: quote.lines, totalCents: quote.totalCents, currency: quote.currency } : null}
         quoteError={dateError}
-        availability={{ capacity: availability.capacity, remaining: availability.remaining, blocked: availability.blocked }}
+        availability={availability ? { capacity: availability.capacity, remaining: availability.remaining, blocked: availability.blocked } : null}
+        dateBlockedReason={dateBlockedReason}
+        dateNotices={dateNotices}
+        replanNote={replanNote}
         holdMinutes={settings.holdMinutes}
         providerSimulated={provider.simulated}
         demoMode={env().APP_MODE === "demo"}

@@ -5,7 +5,9 @@ import { getOwnedTrip } from "@/server/trips/queries";
 import { onHikeStarted, onTripFinished } from "@/server/checkins/service";
 import { enqueueJob } from "@/server/jobs/queue";
 import { log } from "@/server/log";
+import { isDemoMode } from "@/config/env";
 import type { TripStatus } from "@/domain/types";
+import { hikeStartWindow, startAllowed, startWindowMessage } from "@/lib/offline/start-window";
 import type { FinishResponse, SessionView, StartResponse } from "@/lib/offline/wire";
 import { FUTURE_TOLERANCE_MS, type FinishInput, type StartInput } from "./schemas";
 import { conflict, notFound, ok, type HikeResult } from "./result";
@@ -52,6 +54,25 @@ export function plausibleClientTime(iso: string | undefined, now: Date, notBefor
   return t.getTime() > now.getTime() ? now : t;
 }
 
+/** The date a trip's hike is booked for (live booking's hike date, else the trip's planned date) and its region time zone. */
+export async function bookedDateFor(tx: Tx, tripId: string): Promise<{ bookedDate: string | null; timezone: string } | null> {
+  const [row] = await tx<{ bookedDate: string | null; timezone: string }[]>`
+    select coalesce(
+             (select to_char(b.hike_date, 'YYYY-MM-DD') from public.bookings b
+              where b.trip_id = t.id and b.status in ('confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')
+              order by b.created_at desc limit 1),
+             to_char(t.planned_date, 'YYYY-MM-DD')) as booked_date,
+           r.timezone
+    from public.trips t join public.regions r on r.id = t.region_id
+    where t.id = ${tripId}`;
+  return row ?? null;
+}
+
+export interface StartOptions {
+  /** whether "Start anyway (demo)" may be honoured; defaults to APP_MODE=demo */
+  demoMode?: boolean;
+}
+
 /**
  * Start (or resume) the hike for a trip the user owns.
  * Idempotent: if a session is already open it is returned unchanged; a retry
@@ -59,8 +80,13 @@ export function plausibleClientTime(iso: string | undefined, now: Date, notBefor
  * `active` (lifecycle write via withSystem after the ownership check), the
  * check-in contract is notified, and a housekeeping job is enqueued in the
  * same transaction.
+ *
+ * A NEW session can only start on the booked date (region time zone), judged
+ * at the device's start time so an offline start synced after midnight still
+ * counts; an open session keeps going past midnight. In demo mode only, the
+ * hiker can explicitly start on another day (`demoStartAnyway`).
  */
-export async function startHike(user: SessionUser, input: StartInput, now = new Date()): Promise<HikeResult<StartResponse>> {
+export async function startHike(user: SessionUser, input: StartInput, now = new Date(), opts: StartOptions = {}): Promise<HikeResult<StartResponse>> {
   const trip = await getOwnedTrip(user, input.tripId);
   if (!trip) return notFound("Trip not found");
   if (trip.status !== "booked" && trip.status !== "active") {
@@ -92,6 +118,13 @@ export async function startHike(user: SessionUser, input: StartInput, now = new 
         }
         proposedId = null; // id collision with someone else's session: never reveal or reuse it
       }
+    }
+
+    const when = await bookedDateFor(tx, trip.id);
+    if (when) {
+      const w = hikeStartWindow(when.bookedDate, when.timezone, startedAt);
+      const demoOverride = input.demoStartAnyway === true && (opts.demoMode ?? isDemoMode());
+      if (!startAllowed(w) && !demoOverride) return conflict(startWindowMessage(w) ?? "This hike can only start on its booked date.");
     }
 
     const [session] = await tx<SessionRow[]>`

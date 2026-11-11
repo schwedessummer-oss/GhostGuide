@@ -4,6 +4,10 @@ import { TERRAIN_OPTIONS } from "@/domain/types";
 import { ACCESS_NEED_LABEL, ACCESS_NEEDS, EQUIPMENT_LABEL, EQUIPMENT_OPTIONS } from "@/domain/recommendation";
 import type { PlanErrors, PlanField, RawParams } from "@/server/discover/preferences";
 import { humanize } from "./format";
+import { FocusOnMount } from "./focus-helpers";
+
+/** id of the error summary: focused on load so the errors are announced first. */
+export const PLAN_ERRORS_ID = "plan-errors";
 
 /**
  * Personalization questionnaire. A plain GET form (works without
@@ -185,18 +189,21 @@ export function PlanForm({
   return (
     <form id="plan-form" method="get" action="/plan/results" className="space-y-6" noValidate>
       {errorEntries.length ? (
-        <Alert tone="red" live="assertive" title={`Please fix ${errorEntries.length} ${errorEntries.length === 1 ? "answer" : "answers"}`}>
-          <ul className="mt-1 list-disc space-y-1 pl-5">
-            {errorEntries.map(([field, message]) => (
-              <li key={field}>
-                <a href={`#${FIELD_ANCHOR[field]}`} className="font-semibold underline">
-                  {ERROR_LABEL[field]}
-                </a>
-                : {message}
-              </li>
-            ))}
-          </ul>
-        </Alert>
+        <div id={PLAN_ERRORS_ID} tabIndex={-1} className="scroll-mt-6 rounded-xl outline-offset-4 focus:outline-2 focus:outline-red-ink">
+          <Alert tone="red" live="assertive" title={`Please fix ${errorEntries.length} ${errorEntries.length === 1 ? "answer" : "answers"}`}>
+            <ul className="mt-1 list-disc space-y-1 pl-5">
+              {errorEntries.map(([field, message]) => (
+                <li key={field}>
+                  <a href={`#${FIELD_ANCHOR[field]}`} className="font-semibold underline">
+                    {ERROR_LABEL[field]}
+                  </a>
+                  : {message}
+                </li>
+              ))}
+            </ul>
+          </Alert>
+          <FocusOnMount targetId={PLAN_ERRORS_ID} />
+        </div>
       ) : null}
       {focusTrail ? <input type="hidden" name="trail" value={focusTrail.slug} /> : null}
 

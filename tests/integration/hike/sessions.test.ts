@@ -14,7 +14,7 @@ import { onHikeStarted, onTripFinished } from "@/server/checkins/service";
 import { finishHike, startHike } from "@/server/hike/sessions";
 import { hikeHandlers } from "@/server/jobs/handlers/hike";
 import { createCustomer } from "../../helpers/db";
-import { createTrip, iso } from "./helpers";
+import { confirmBooking, createTrip, iso, regionDate } from "./helpers";
 
 afterAll(closeDb);
 beforeEach(() => vi.clearAllMocks());
@@ -137,5 +137,67 @@ describe("hike.close_stale_session job", () => {
     // idempotent
     expect(await handler(job, { now: new Date(Date.now() + 96 * 3600_000) })).toMatchObject({ outcome: "noop" });
     await withSystem((tx) => tx`select 1`);
+  });
+});
+
+describe("hike start is limited to the booked date (region time zone)", () => {
+  const DAY = 86_400_000;
+
+  it("refuses a new start before or after the booked date, with the date in the message", async () => {
+    const user = await createCustomer("early-bird");
+    const early = await createTrip(user, "booked", "lantern-creek-loop", 10);
+    const r = await startHike(user, { tripId: early }, new Date(), { demoMode: false });
+    expect(r).toMatchObject({ ok: false, status: 409, error: expect.stringMatching(/^This hike is booked for \w+day, \w+ \d{1,2}\. You can start it on/) });
+    expect(await tripStatus(early)).toBe("booked");
+    expect(await sql()`select 1 from public.hike_sessions where trip_id = ${early}`).toHaveLength(0);
+    expect(onHikeStarted).not.toHaveBeenCalled();
+
+    const late = await createTrip(user, "booked", "lantern-creek-loop", -2);
+    expect(await startHike(user, { tripId: late }, new Date(), { demoMode: false })).toMatchObject({
+      ok: false,
+      status: 409,
+      error: expect.stringMatching(/which has passed/),
+    });
+    // on the day itself it starts
+    const today = await createTrip(user, "booked");
+    expect((await startHike(user, { tripId: today }, new Date(), { demoMode: false })).ok).toBe(true);
+  });
+
+  it("'Start anyway (demo)' is honoured only in demo mode", async () => {
+    const user = await createCustomer("demo-start");
+    const tripId = await createTrip(user, "booked", "lantern-creek-loop", 20);
+    expect(await startHike(user, { tripId, demoStartAnyway: true }, new Date(), { demoMode: false })).toMatchObject({ ok: false, status: 409 });
+    const r = await startHike(user, { tripId, demoStartAnyway: true }, new Date(), { demoMode: true });
+    expect(r.ok && r.value.created).toBe(true);
+    expect(await tripStatus(tripId)).toBe("active");
+  });
+
+  it("an open hike keeps going past midnight, and an offline start is judged by when it happened", async () => {
+    const user = await createCustomer("night-owl");
+    const tripId = await createTrip(user, "booked");
+    const first = await startHike(user, { tripId }, new Date(), { demoMode: false });
+    if (!first.ok) throw new Error(first.error);
+    // the next day (a resume / retry after midnight) returns the open session
+    const nextDay = new Date(Date.now() + DAY);
+    expect(await startHike(user, { tripId }, nextDay, { demoMode: false })).toMatchObject({ ok: true, value: { created: false, session: { id: first.value.session.id } } });
+
+    // started offline on the booked date, synced the next day: accepted
+    const t2 = await createTrip(user, "booked");
+    const clientSessionId = randomUUID();
+    const startedAt = new Date(Date.now() - 60_000);
+    const later = new Date(Date.now() + DAY - 2 * 3600_000); // within the 24 h plausibility window, on the next local day or later today
+    const r = await startHike(user, { tripId: t2, clientSessionId, startedAt: startedAt.toISOString() }, later, { demoMode: false });
+    expect(r.ok && r.value.session.id).toBe(clientSessionId);
+  });
+
+  it("uses the confirmed booking's hike date over the trip's planned date", async () => {
+    const user = await createCustomer("rebooked");
+    const tripId = await createTrip(user, "booked", "lantern-creek-loop", 7); // saved for next week…
+    await confirmBooking(user, tripId, await regionDate()); // …but booked (and paid) for today
+    expect((await startHike(user, { tripId }, new Date(), { demoMode: false })).ok).toBe(true);
+
+    const other = await createTrip(user, "booked"); // planned for today…
+    await confirmBooking(user, other, await regionDate("lantern-creek-loop", 3)); // …booked for in 3 days
+    expect(await startHike(user, { tripId: other }, new Date(), { demoMode: false })).toMatchObject({ ok: false, status: 409 });
   });
 });

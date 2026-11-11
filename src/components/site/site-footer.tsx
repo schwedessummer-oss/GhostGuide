@@ -15,19 +15,19 @@ export function SiteFooter() {
             emergency, call 911 or use a satellite communicator.
           </p>
         </div>
-        <ul className="space-y-2">
+        <ul>
           <li>
-            <Link className="underline underline-offset-2 hover:text-ink" href="/how-it-works">
+            <Link className="inline-flex min-h-11 items-center underline underline-offset-2 hover:text-ink" href="/how-it-works">
               How it works &amp; limitations
             </Link>
           </li>
           <li>
-            <Link className="underline underline-offset-2 hover:text-ink" href="/account/privacy">
+            <Link className="inline-flex min-h-11 items-center underline underline-offset-2 hover:text-ink" href="/account/privacy">
               Privacy &amp; location data
             </Link>
           </li>
           <li>
-            <Link className="underline underline-offset-2 hover:text-ink" href="/status">
+            <Link className="inline-flex min-h-11 items-center underline underline-offset-2 hover:text-ink" href="/status">
               Integration status
             </Link>
           </li>

@@ -109,7 +109,11 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
     (a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || (FIELD_LABEL[a.field] ?? a.field).localeCompare(FIELD_LABEL[b.field] ?? b.field),
   );
   const durationProv = trail.provenance.find((p) => p.field === "estimated_duration_min");
-  const verifiedDays = daysAgo(trail.factsVerifiedAt, now);
+  // factsVerifiedAt is when the facts were last REVIEWED. Only facts whose provenance kind is
+  // "verified" were checked against a source, so the wording follows the kinds (honesty rule).
+  const reviewedDays = daysAgo(trail.factsVerifiedAt, now);
+  const verifiedCount = trail.provenance.filter((p) => p.kind === "verified").length;
+  const allVerified = !trail.isDemo && trail.provenance.length > 0 && verifiedCount === trail.provenance.length;
   const poiById = new Map(trail.pois.map((p) => [p.id, p]));
   const stops = trail.narrations
     .filter((n) => n.status === "approved" && n.sourceId)
@@ -337,15 +341,23 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
 
         <section aria-labelledby="sources-heading">
           <SectionHeading id="sources-heading">Sources & information freshness</SectionHeading>
-          <Alert tone={verifiedDays !== null && verifiedDays > 180 ? "amber" : "blue"} className="mb-5">
-            {verifiedDays !== null ? (
+          <Alert tone={reviewedDays !== null && reviewedDays > 180 ? "amber" : "blue"} className="mb-5">
+            {reviewedDays !== null ? (
               <>
-                Trail facts were last verified <strong>{verifiedDays === 0 ? "today" : `${verifiedDays} day${verifiedDays === 1 ? "" : "s"} ago`}</strong> (
-                {formatDate(trail.factsVerifiedAt!)}).
-                {verifiedDays > 180 ? " This information may be out of date." : ""} Conditions change; check official sources before you go.
+                Trail facts were last {allVerified ? "verified" : "reviewed"}{" "}
+                <strong>{reviewedDays === 0 ? "today" : `${reviewedDays} day${reviewedDays === 1 ? "" : "s"} ago`}</strong> (
+                {formatDate(trail.factsVerifiedAt!)}).{" "}
+                {trail.isDemo
+                  ? "These are demonstration facts, invented for this demo: none of them is verified against a real source."
+                  : allVerified
+                    ? ""
+                    : verifiedCount === 0
+                      ? "None of them is verified against a source yet; the label on each fact below says where it comes from."
+                      : `${verifiedCount} of ${trail.provenance.length} facts are verified against a source; the label on each fact below says where it comes from.`}
+                {reviewedDays > 180 ? " This information may be out of date." : ""} Conditions change; check official sources before you go.
               </>
             ) : (
-              "These facts have not been verified yet."
+              "These facts have not been reviewed or verified yet."
             )}
           </Alert>
           <div className="grid gap-6 lg:grid-cols-2">
@@ -359,7 +371,11 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
                       <FactKindBadge kind={p.kind} />
                     </div>
                     {p.note ? <p className="mt-1 text-sm text-muted">{p.note}</p> : null}
-                    {p.verifiedAt ? <p className="mt-0.5 text-xs text-muted">Checked {formatDate(p.verifiedAt)}</p> : null}
+                    {p.verifiedAt ? (
+                      <p className="mt-0.5 text-xs text-muted">
+                        {p.kind === "verified" ? "Verified against the source" : "Last reviewed"} {formatDate(p.verifiedAt)}
+                      </p>
+                    ) : null}
                   </li>
                 ))}
               </ul>

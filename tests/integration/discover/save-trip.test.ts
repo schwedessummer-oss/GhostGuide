@@ -72,6 +72,23 @@ describe("saveTrip", () => {
     expect(ev.n).toBeGreaterThan(0);
   });
 
+  it("persists the partial closure in the saved itinerary and summary", async () => {
+    const fran = await createCustomer("fran");
+    const signal = await trailBySlug("old-signal-summit");
+    const p = prefs({ experience: "regular", fitness: "high", pace: "brisk", availableHours: 8, startTime: "07:00", accessibilityNeeds: [], preferredTerrain: [] });
+    const saved = await saveTrip(fran, p, signal.id);
+    const trip = await getOwnedTrip(fran, saved.tripId);
+    const itinerary = trip!.itinerary as Itinerary;
+    expect(itinerary.notes).toContainEqual(expect.stringMatching(/^Partial closure on your date: Upper switchbacks closed.*Turn around at the Signal Tower\. Follow the closure/));
+    expect(itinerary.notes.join(" ")).not.toMatch(/even if you have not reached it/);
+    // the same itinerary as the results page
+    const plan = await planTrip(p);
+    const shown = plan.suggestions.find((s) => s.trail.id === signal.id)!.itinerary;
+    expect(itinerary.notes).toEqual(shown.notes);
+    expect(trip!.aiSummary).toMatch(/partial closure on your date: follow the closure notice/);
+    expect(trip!.aiSummary).not.toMatch(/even if you have not reached the far end/);
+  });
+
   it("refuses a trail that the recommendation excludes for these preferences", async () => {
     const carol = await createCustomer("carol");
     const whisper = await trailBySlug("whisper-falls");

@@ -6,6 +6,8 @@ import { checkRateLimit } from "@/server/rate-limit";
 import { isEnabled } from "@/server/flags";
 import { getOwnedTrip, type TripRow } from "@/server/trips/queries";
 import { getRegionById } from "@/server/catalog/trails";
+import { finishHike } from "@/server/hike/sessions";
+import { env } from "@/config/env";
 import {
   EXTEND_PRESETS_MIN,
   GRACE_MAX,
@@ -19,11 +21,13 @@ import {
   extendTransition,
   extendedReturnAt,
   finishTransition,
+  isTerminal,
   parseLocalInputValue,
   setupTransition,
   type CheckinState,
 } from "@/domain/checkin";
 import type { CheckinStatus } from "@/domain/types";
+import { NOTIFICATION_TEMPLATES } from "@/server/notifications/create";
 import { applyTransition, lockCheckinByTrip, type CheckinRow } from "./core";
 import { getSafetySettings } from "./settings";
 
@@ -254,14 +258,16 @@ export async function confirmOkByUser(user: SessionUser, tripId: string, now = n
     if (row.status === "cancelled") return { ok: false, error: "Check-ins are off for this trip." };
     const result = confirmOkTransition(row, { tappedAt: now, now });
     await applyTransition(tx, row, result, { now, who: { actor: "user", actorId: user.id }, details: { source: "web" } });
+    if (result.state.version === row.version) {
+      return { ok: true, message: "Thanks — you're confirmed okay. Please still tap “Finish trip” when you're back." };
+    }
+    const extendedMsg = "Thanks — you're confirmed okay. We've extended your expected return by 60 minutes";
+    if (row.status !== "contact_notified") return { ok: true, message: `${extendedMsg}.` };
     return {
       ok: true,
-      message:
-        result.state.version !== row.version
-          ? row.status === "contact_notified"
-            ? "Thanks — you're confirmed okay. We've extended your expected return by 60 minutes and we're letting your contact know."
-            : "Thanks — you're confirmed okay. We've extended your expected return by 60 minutes."
-          : "Thanks — you're confirmed okay. Please still tap “Finish trip” when you're back.",
+      message: (await followUpExists(tx, row.id, NOTIFICATION_TEMPLATES.followUpOk, row.version))
+        ? `${extendedMsg} and we're letting your contact know${simulatedSuffix()}.`
+        : `${extendedMsg}. Your contact can no longer receive notices from us (removed, or consent withdrawn), so please tell them you're okay.`,
     };
   });
 }
@@ -286,20 +292,63 @@ export async function extendCheckinByUser(user: SessionUser, tripId: string, inp
   });
 }
 
-/** "Finish trip" from the check-in UI: completes the check-in (same as the hike slice's finish hook). */
+/**
+ * "Finish trip" from the check-in UI ("Yes, I'm back — finish trip").
+ *
+ * Ends the TRIP, the same way finishing from the hike screen does: when the
+ * trip is active (a hike was started), the hike slice's finishHike closes the
+ * open hike session, marks the trip completed and completes the check-in via
+ * onTripFinished in one transaction (cancelling queued jobs, suppressing
+ * undelivered notices, and following up with a contact who was already
+ * notified). A booked trip whose hike was never started in the app has no
+ * session to close; only its check-in is completed. Safe to call repeatedly.
+ */
 export async function finishTripByUser(user: SessionUser, tripId: string, now = new Date()): Promise<ActionResult> {
-  return withOwnedCheckin(user, tripId, async (row, tx) => {
-    if (row.status === "completed") return { ok: true, message: "This trip is already finished." };
-    if (row.status === "cancelled") return { ok: false, error: "Check-ins are off for this trip." };
-    const notified = !!row.contactNotifiedAt;
-    await applyTransition(tx, row, finishTransition(row, now), { now, who: { actor: "user", actorId: user.id }, details: { source: "web" } });
-    return {
-      ok: true,
-      message: notified
-        ? "Welcome back! Your trip is finished and we're letting your contact know."
-        : "Welcome back! Your trip is finished — no more check-in notices will be sent.",
-    };
+  const trip = z.uuid().safeParse(tripId).success ? await getOwnedTrip(user, tripId) : null;
+  if (!trip) return notFound();
+  if (await rateLimited(user)) return { ok: false, error: "Too many requests in a short time. Please wait a minute and try again." };
+  const before = await getOwnedCheckin(user, trip.id);
+  if (!before) return { ok: false, error: "Check-ins aren't set up for this trip." };
+  if (before.status === "cancelled" && trip.status !== "active") return { ok: false, error: "Check-ins are off for this trip." };
+  if (before.status === "completed" && trip.status !== "active") return { ok: true, message: "This trip is already finished." };
+
+  if (trip.status === "active") {
+    // Ownership was checked above; finishHike re-checks it and locks the
+    // trip, then the session, then the check-in (same lock order as the hike
+    // screen). Its "no recorded hike" conflict still completes the trip.
+    const r = await finishHike(user, { tripId: trip.id }, now);
+    if (!r.ok && r.status !== 409) return { ok: false, error: r.error };
+  }
+
+  // Complete the check-in if finishHike did not (booked trip, or the trip was
+  // already completed while the check-in stayed open).
+  const outcome = await withSystem(async (tx) => {
+    const row = await lockCheckinByTrip(tx, trip.id);
+    if (!row || row.userId !== user.id) return { notified: false, followUp: false };
+    if (!isTerminal(row.status)) {
+      await applyTransition(tx, row, finishTransition(row, now), { now, who: { actor: "user", actorId: user.id }, details: { source: "web" } });
+    }
+    return { notified: !!row.contactNotifiedAt, followUp: await followUpExists(tx, row.id, NOTIFICATION_TEMPLATES.followUpFinished, row.version) };
   });
+  if (before.status === "cancelled") return { ok: true, message: "Welcome back! Your trip is finished." };
+  return {
+    ok: true,
+    message: outcome.followUp
+      ? `Welcome back! Your trip is finished and we're letting your contact know${simulatedSuffix()}.`
+      : outcome.notified
+        ? "Welcome back! Your trip is finished. Your contact can no longer receive notices from us (removed, or consent withdrawn), so please tell them you're back."
+        : "Welcome back! Your trip is finished — no more check-in notices will be sent.",
+  };
 }
+
+/** Whether a follow-up notice of this kind exists for the check-in's episode (version). */
+async function followUpExists(tx: Tx, checkinId: string, template: string, version: number): Promise<boolean> {
+  const [row] = await tx`
+    select 1 from public.notifications where checkin_id = ${checkinId} and template = ${template} and checkin_version = ${version} limit 1`;
+  return !!row;
+}
+
+/** Demo mode: follow-ups are recorded as simulated, never sent. */
+const simulatedSuffix = () => (env().NOTIFY_PROVIDER !== "live" ? " (a simulated follow-up in this demo — nothing is actually sent)" : "");
 
 export const STATUS_IS_ACTIONABLE = (s: CheckinStatus) => s !== "completed" && s !== "cancelled";

@@ -71,6 +71,8 @@ export interface SyncHost {
     finishPending: boolean;
     finishedAt: number | null;
     progressM: number;
+    /** demo only: the hiker chose "Start anyway (demo)" off the booked date */
+    demoStartAnyway?: boolean;
   };
   onStartConfirmed(session: SessionView): void;
   onStartRejected(message: string): void;
@@ -225,6 +227,7 @@ export class OutboxSyncer {
         tripId: this.tripId,
         clientSessionId: s.localSessionId ?? undefined,
         startedAt: s.startedAt ? new Date(s.startedAt).toISOString() : undefined,
+        demoStartAnyway: s.demoStartAnyway || undefined,
       });
       if (r.data) this.host.onStartConfirmed(r.data.session);
       else if (classifySyncStatus(r.status) === "rejected") {

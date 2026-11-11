@@ -98,10 +98,8 @@ export function ShareManager({ tripId, shares }: { tripId: string; shares: Share
         {state?.error ? <Alert tone="red">{state.error}</Alert> : null}
         {state?.ok && state.message ? <Alert tone="forest">{state.message}</Alert> : null}
         {state?.ok && state.url ? (
-          <CopyField
-            url={state.url}
-            expires={state.expiresAt ? new Date(state.expiresAt).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" }) : "it expires"}
-          />
+          // expiresLabel is formatted on the server in the trail's time zone (with its abbreviation), like the list below.
+          <CopyField url={state.url} expires={state.expiresLabel ?? "it expires"} />
         ) : null}
       </div>
       {shares.length ? (

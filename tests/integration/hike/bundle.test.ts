@@ -13,8 +13,10 @@ import { recordDownload, submitFeedback, updatePermitStatus } from "@/server/hik
 import { startHike, finishHike } from "@/server/hike/sessions";
 import { getCompletionView, getHikeOverview, getPrepareView } from "@/server/hike/queries";
 import { validateLineString } from "@/domain/geo";
+import { syncHike } from "@/server/hike/sync";
+import { ownerHint } from "@/server/auth/owner-hint";
 import { createCustomer, trailBySlug } from "../../helpers/db";
-import { createTrip } from "./helpers";
+import { confirmBooking, createTrip, iso, regionDate } from "./helpers";
 
 afterAll(closeDb);
 
@@ -86,6 +88,56 @@ describe("offline trip bundle", () => {
     expect(rec.tts).toBe(false);
     expect(rec.audioUrl).toMatch(/^\/api\/media\/narration\/test\/recorded\.mp3\?exp=\d+&sig=[A-Za-z0-9_-]+$/);
     expect(r.value.manifest.items).toContainEqual(expect.objectContaining({ key: `audio:${n.id}`, kind: "audio", url: rec.audioUrl }));
+  });
+
+  it("is tagged with the owner's device hint and says check-in notices are simulated (demo)", async () => {
+    const owner = await createCustomer("bundle-tag");
+    const other = await createCustomer("bundle-tag-other");
+    const tripId = await createTrip(owner, "booked");
+    const r = await getTripBundle(owner, tripId);
+    if (!r.ok) throw new Error(r.error);
+    expect(r.value.ownerHint).toBe(ownerHint(process.env.AUTH_SECRET!, owner.id));
+    expect(r.value.ownerHint).not.toBe(ownerHint(process.env.AUTH_SECRET!, other.id));
+    expect(r.value.ownerHint).not.toContain(owner.id);
+    expect(r.value.notificationsSimulated).toBe(true);
+    expect(r.value.schemaVersion).toBe(2);
+  });
+
+  it("carries the booked date (the confirmed booking's hike date wins over the planned date)", async () => {
+    const owner = await createCustomer("bundle-date");
+    const tripId = await createTrip(owner, "booked", "lantern-creek-loop", 5);
+    const planned = await regionDate("lantern-creek-loop", 5);
+    const r1 = await getTripBundle(owner, tripId);
+    expect(r1.ok && r1.value.trip).toMatchObject({ plannedDate: planned, bookedDate: planned });
+    const booked = await regionDate("lantern-creek-loop", 9);
+    await confirmBooking(owner, tripId, booked);
+    const r2 = await getTripBundle(owner, tripId);
+    expect(r2.ok && r2.value.trip.bookedDate).toBe(booked);
+  });
+
+  it("lists the stops already narrated in the open session (so no device replays them)", async () => {
+    const owner = await createCustomer("bundle-heard");
+    const tripId = await createTrip(owner, "booked");
+    const s = await startHike(owner, { tripId });
+    if (!s.ok) throw new Error(s.error);
+    const r0 = await getTripBundle(owner, tripId);
+    expect(r0.ok && r0.value.session?.heardPoiIds).toEqual([]);
+    const pois = r0.ok ? r0.value.pois : [];
+    expect(pois.length).toBeGreaterThan(1);
+    const ev = (kind: "poi_triggered" | "poi_replayed" | "deviation_prompt", poiId?: string) => ({
+      id: randomUUID(),
+      kind,
+      occurredAt: iso(-60_000),
+      payload: poiId ? { poiId, source: kind === "poi_triggered" ? ("gps" as const) : ("manual" as const) } : { distanceM: 80 },
+    });
+    const synced = await syncHike(owner, {
+      sessionId: s.value.session.id,
+      points: [],
+      events: [ev("poi_triggered", pois[0].id), ev("poi_replayed", pois[1].id), ev("poi_triggered", pois[0].id), ev("deviation_prompt")],
+    });
+    expect(synced.ok).toBe(true);
+    const r = await getTripBundle(owner, tripId);
+    expect(r.ok && [...(r.value.session?.heardPoiIds ?? [])].sort()).toEqual([pois[0].id, pois[1].id].sort());
   });
 
   it("includes the open session so another device can resume", async () => {

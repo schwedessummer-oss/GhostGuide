@@ -38,11 +38,21 @@ export function templateExplanation(input: ExplainInput): string {
 
 export function templateSummary(input: SummarizeInput): string {
   const named = input.stops.slice(0, 3).map((s) => `${s.name} (around ${addMinutesToClock(input.startTime, s.etaOffsetMin)})`);
+  // The closure reasons themselves stay in the itinerary notes (approved catalog text);
+  // the summary only points to them, so it never paraphrases a closure.
+  const partial = (input.partialClosures ?? []).length > 0;
   const parts = [
     `Start ${input.trailName} at ${input.startTime} on ${input.plannedDate}.`,
+    partial
+      ? "Part of this route has a partial closure on your date: follow the closure notice in your itinerary, even if that means turning around before the far end."
+      : "",
     input.stops.length ? `Your ${input.stops.length} planned stop${input.stops.length === 1 ? "" : "s"} include ${named.join(", ")}.` : "",
-    `The estimated finish is around ${input.estimatedFinishTime}, about ${formatDuration(input.estimatedDurationMin)} in total. Treat every time here as an estimate.`,
-    input.turnaroundBy ? `Turn around by ${input.turnaroundBy} even if you have not reached the far end.` : "",
+    `The estimated ${partial ? "full-route " : ""}finish is around ${input.estimatedFinishTime}, about ${formatDuration(input.estimatedDurationMin)} in total. Treat every time here as an estimate.`,
+    input.turnaroundBy
+      ? partial
+        ? `Turn around by ${input.turnaroundBy} at the latest, or earlier where the closure requires it.`
+        : `Turn around by ${input.turnaroundBy} even if you have not reached the far end.`
+      : "",
     `Expect a drink reminder every ${input.reminders.hydrationEveryMin} minutes and a pace check every ${input.reminders.paceCheckEveryMin} minutes; these are general prompts, not medical advice.`,
   ];
   return parts.filter(Boolean).join(" ");

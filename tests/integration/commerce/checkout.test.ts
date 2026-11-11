@@ -1,10 +1,13 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { randomUUID } from "node:crypto";
 import { closeDb, sql, withSystem } from "@/server/db";
-import { createCheckout } from "@/server/commerce/checkout";
+import { createCheckout, getGearKitsAvailable, loadOfferedAddons, releasePendingCheckout, validateHikeDate } from "@/server/commerce/checkout";
+import { getDayAvailability } from "@/server/commerce/inventory";
+import { getClosuresOnDay } from "@/server/commerce/trip-plan";
+import { zonedTimeToUtc } from "@/lib/time";
 import { quotePrice } from "@/domain/pricing";
 import { createCustomer } from "../../helpers/db";
-import { booking, checkoutFor, freshDate, regionDate, savedTrip, setCapacity } from "./helpers";
+import { booking, checkoutFor, freshDate, regionDate, savedTrip, setCapacity, settle } from "./helpers";
 
 afterAll(closeDb);
 
@@ -191,5 +194,138 @@ describe("capacity", () => {
     }
     const b = await booking(first.ok ? first.bookingId : "");
     expect(b.status).toBe("pending_payment");
+  });
+});
+
+describe("checkout date rules", () => {
+  it("rejects impossible calendar dates without touching the database", async () => {
+    const user = await createCustomer("baddate");
+    const trip = await savedTrip(user);
+    for (const hikeDate of ["2026-13-45", "2026-12-32", "2027-02-30"]) {
+      const r = await checkoutFor(user, trip, { hikeDate });
+      expect(r, hikeDate).toMatchObject({ ok: false, code: "invalid", error: "Choose a valid date." });
+      expect(validateHikeDate(hikeDate, "09:00", "America/Los_Angeles"), hikeDate).toBe("Choose a valid date.");
+    }
+    expect(await sql()`select id from public.bookings where trip_id = ${trip.id}`).toHaveLength(0);
+  });
+
+  it("refuses a day with a SCHEDULED full closure (region-local day), allows the next day, and only warns for partial closures", async () => {
+    const day = await freshDate();
+    const user = await createCustomer("sched");
+    const trip = await savedTrip(user, { trail: "whisper-falls", plannedDate: day });
+    const tz = "America/Los_Angeles";
+    const next = new Date(Date.parse(`${day}T12:00:00Z`) + 86_400_000).toISOString().slice(0, 10);
+    const [c] = await withSystem(
+      (tx) => tx<{ id: string }[]>`
+        insert into public.trail_closures (trail_id, severity, reason, starts_at, ends_at)
+        values (${trip.trailId}, 'closed', 'Bridge repair (test)', ${zonedTimeToUtc(day, "00:00", tz)}::timestamptz, ${zonedTimeToUtc(next, "00:00", tz)}::timestamptz)
+        returning id`,
+    );
+    try {
+      const r = await checkoutFor(user, trip);
+      expect(r).toMatchObject({ ok: false, code: "unavailable" });
+      if (!r.ok) expect(r.error).toBe("The trail is closed on that date: Bridge repair (test). Please choose another date.");
+      expect((await getClosuresOnDay(trip.trailId, day, tz)).closed?.reason).toBe("Bridge repair (test)");
+      expect((await getClosuresOnDay(trip.trailId, next, tz)).closed).toBeNull();
+      expect(await sql()`select id from public.bookings where trip_id = ${trip.id}`).toHaveLength(0);
+      // The day after the closure ends can be booked.
+      expect((await checkoutFor(user, trip, { hikeDate: next })).ok).toBe(true);
+    } finally {
+      await withSystem((tx) => tx`delete from public.trail_closures where id = ${c.id}`);
+    }
+
+    const day2 = await freshDate();
+    const u2 = await createCustomer("partial");
+    const t2 = await savedTrip(u2, { trail: "whisper-falls", plannedDate: day2 });
+    const [p] = await withSystem(
+      (tx) => tx<{ id: string }[]>`
+        insert into public.trail_closures (trail_id, severity, reason, starts_at, ends_at)
+        values (${t2.trailId}, 'partial', 'Upper viewpoint closed (test)', ${zonedTimeToUtc(day2, "06:00", tz)}::timestamptz, ${zonedTimeToUtc(day2, "18:00", tz)}::timestamptz)
+        returning id`,
+    );
+    try {
+      expect((await getClosuresOnDay(t2.trailId, day2, tz)).notices.map((n) => n.reason)).toEqual(["Upper viewpoint closed (test)"]);
+      expect((await checkoutFor(u2, t2)).ok).toBe(true);
+    } finally {
+      await withSystem((tx) => tx`delete from public.trail_closures where id = ${p.id}`);
+    }
+  });
+
+  it("does not let a closure that ends before the hike block it", async () => {
+    const user = await createCustomer("ended");
+    const trip = await savedTrip(user, { trail: "whisper-falls" });
+    const [c] = await withSystem(
+      (tx) => tx<{ id: string }[]>`
+        insert into public.trail_closures (trail_id, severity, reason, starts_at, ends_at)
+        values (${trip.trailId}, 'closed', 'Short storm closure (test)', now() - interval '1 hour', now() + interval '1 day')
+        returning id`,
+    );
+    try {
+      expect((await checkoutFor(user, trip)).ok).toBe(true);
+    } finally {
+      await withSystem((tx) => tx`delete from public.trail_closures where id = ${c.id}`);
+    }
+  });
+});
+
+describe("checkout in progress", () => {
+  it("does not silently resume a held checkout for different details; releasing frees the spots and is idempotent", async () => {
+    const day = await freshDate();
+    const user = await createCustomer("release");
+    const trip = await savedTrip(user, { plannedDate: day });
+    const first = await checkoutFor(user, trip, { partySize: 2, addonCodes: ["meal-pack"] });
+    expect(first.ok).toBe(true);
+    if (!first.ok) return;
+    const held = await booking(first.bookingId);
+
+    // Back button + different group: refused with an explanation, not sent to pay the old booking.
+    const changed = await checkoutFor(user, trip, { partySize: 5, addonCodes: ["meal-pack"] });
+    expect(changed).toMatchObject({ ok: false, code: "in_progress" });
+    if (!changed.ok) expect(changed.error).toMatch(/already in progress for .* · 2 hikers/);
+    // Different add-ons are a different selection too; identical details still resume.
+    expect(await checkoutFor(user, trip, { partySize: 2, addonCodes: [] })).toMatchObject({ ok: false, code: "in_progress" });
+    expect(await checkoutFor(user, trip, { partySize: 2, addonCodes: ["meal-pack"] })).toMatchObject({ ok: true, bookingId: first.bookingId, resumed: true });
+
+    // Another customer cannot release it.
+    const intruder = await createCustomer("rel-intruder");
+    expect(await releasePendingCheckout(intruder, trip.id, first.bookingId)).toMatchObject({ ok: false, code: "not_found" });
+
+    const released = await releasePendingCheckout(user, trip.id, first.bookingId);
+    expect(released).toMatchObject({ ok: true, outcome: "released", held: { hikeDate: day, partySize: 2, addonCodes: ["meal-pack"] } });
+    expect((await booking(first.bookingId)).status).toBe("expired");
+    const [session] = await sql()<{ status: string }[]>`select status from public.demo_checkout_sessions where id = ${held.checkoutSessionId}`;
+    expect(session.status).toBe("expired"); // can no longer be paid
+    expect((await getDayAvailability(trip.trailId, day)).used).toBe(0);
+    expect(await releasePendingCheckout(user, trip.id, first.bookingId)).toMatchObject({ ok: true, outcome: "already_released" });
+
+    // Now the new details can be booked.
+    const second = await checkoutFor(user, trip, { partySize: 5 });
+    expect(second.ok).toBe(true);
+    if (second.ok) expect(second.bookingId).not.toBe(first.bookingId);
+  });
+
+  it("confirms instead of releasing when the session was already paid", async () => {
+    const user = await createCustomer("rel-paid");
+    const trip = await savedTrip(user);
+    const r = await checkoutFor(user, trip);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    await settle((await booking(r.bookingId)).checkoutSessionId!, "paid"); // paid, webhook not delivered yet
+    expect(await releasePendingCheckout(user, trip.id, r.bookingId)).toMatchObject({ ok: true, outcome: "paid", bookingId: r.bookingId });
+    expect((await booking(r.bookingId)).status).toBe("confirmed");
+  });
+});
+
+describe("add-on availability shown before submitting", () => {
+  it("reports locker kits available for the date (partner stock, not only the add-on's daily limit)", async () => {
+    const day = await freshDate();
+    const trail = await sql()<{ regionId: string }[]>`select region_id from public.trails where slug = 'miners-meadow-loop'`;
+    const offered = await loadOfferedAddons(trail[0].regionId);
+    const kits = await getGearKitsAvailable(offered, trail[0].regionId, day);
+    const gear = offered.find((a) => a.code === "gear-poles-pack")!;
+    // demo locker: 8 poles, 5 usable daypacks → 5 kits, although the add-on's daily limit is 10
+    expect(gear.dailyCapacity).toBe(10);
+    expect(kits[gear.id]).toBe(5);
+    expect(Object.keys(kits)).toEqual([gear.id]);
   });
 });

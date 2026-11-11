@@ -14,16 +14,19 @@ const COLLECTED: { what: string; why: string }[] = [
   { what: "Trip plans and bookings", why: "To build your itinerary and provide what you booked." },
   {
     what: "Precise location while a hike is in progress (only when you start a hike and allow location)",
-    why: "To trigger audio at points of interest, show your progress and, if you opt in, include your last reported location in a check-in notice.",
+    why: "To trigger audio at points of interest, show your progress and — unless you turn it off below (it is on by default) — include your last reported location in a check-in notice.",
   },
   { what: "Emergency contacts you add", why: "Only to send check-in notices you set up, after you confirm they agreed." },
-  { what: "Check-in activity and notices sent", why: "So you (and our safety staff, if needed) can see exactly what was sent and when." },
+  {
+    what: "Check-in activity and notices sent",
+    why: "So you (and our safety staff, if needed) can see exactly what was sent and when. Coordinates in stored notices are removed with your location history (by the retention setting below, or when you delete it).",
+  },
 ];
 
 export default async function PrivacyPage() {
   const user = await requireUser("/account/privacy");
   const [profile, stats] = await Promise.all([getProfile(user), locationHistoryStats(user)]);
-  const hasData = stats.points + stats.lastFixes > 0;
+  const hasData = stats.points + stats.lastFixes + stats.noticesWithLocation > 0;
 
   return (
     <Container className="max-w-4xl py-8 sm:py-10">
@@ -62,8 +65,8 @@ export default async function PrivacyPage() {
               the safety or administrator role can open precise locations and your contacts&apos; details; support, content and operations staff cannot.
             </li>
             <li>
-              <span className="font-semibold">Your emergency contact</span>, only inside a check-in notice when we haven&apos;t heard from you — and only if the
-              setting below is on.
+              <span className="font-semibold">Your emergency contact</span>, only inside a check-in notice when we haven&apos;t heard from you — and only while the
+              setting below is on (it is on by default).
             </li>
             <li>
               <span className="font-semibold">People you send a trip-share link to</span>, only if you tick “Include my last reported location” when creating that
@@ -87,7 +90,10 @@ export default async function PrivacyPage() {
           </h2>
           <p className="mt-2" aria-live="polite">
             {hasData
-              ? `You have ${stats.points} stored location point${stats.points === 1 ? "" : "s"}${stats.oldest ? ` (oldest from ${formatDate(stats.oldest)})` : ""} and ${stats.lastFixes} last-known location${stats.lastFixes === 1 ? "" : "s"}.`
+              ? `You have ${stats.points} stored location point${stats.points === 1 ? "" : "s"}${stats.oldest ? ` (oldest from ${formatDate(stats.oldest)})` : ""} and ${stats.lastFixes} last-known location${stats.lastFixes === 1 ? "" : "s"}.` +
+                (stats.noticesWithLocation
+                  ? ` ${stats.noticesWithLocation} stored check-in notice${stats.noticesWithLocation === 1 ? " contains" : "s contain"} a location.`
+                  : "")
               : "No location history is stored for your account."}
           </p>
           <div className="mt-4">

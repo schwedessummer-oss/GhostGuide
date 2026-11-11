@@ -11,7 +11,7 @@
  *  - SMS bodies stay within SMS_MAX_CHARS.
  */
 import { classifyLocation, DEFAULT_STALE_MINUTES } from "./staleness";
-import { formatCheckinTime, formatClock } from "./checkin";
+import { formatCheckinTime, formatClock, formatWhen } from "./checkin";
 
 export type NotifyChannel = "sms" | "email";
 
@@ -94,6 +94,22 @@ function truncate(s: string, max: number): string {
   return s.length <= max ? s : `${s.slice(0, max - 1).trimEnd()}…`;
 }
 
+/**
+ * Patterns for precise location written into stored notice bodies (by
+ * formatCoords / mapLink). Written so the same source works as a JS RegExp
+ * and a PostgreSQL ARE (regexp_replace), so "Delete my location history" and
+ * the retention purge can redact old notices in SQL.
+ */
+export const COORDS_PATTERN = "-?\\d{1,3}\\.\\d{5}, ?-?\\d{1,3}\\.\\d{5}";
+export const MAP_LINK_PATTERN = "https://www\\.openstreetmap\\.org/\\S*";
+export const LOCATION_REMOVED = "[location removed]";
+export const MAP_LINK_REMOVED = "[map link removed]";
+
+/** Replace coordinates and map links in a notice body (pure twin of the SQL redaction). */
+export function redactLocation(text: string): string {
+  return text.replace(new RegExp(MAP_LINK_PATTERN, "g"), MAP_LINK_REMOVED).replace(new RegExp(COORDS_PATTERN, "g"), LOCATION_REMOVED);
+}
+
 /** OpenStreetMap link for a coordinate (no tracking parameters). */
 export function mapLink(lat: number, lng: number): string {
   return `https://www.openstreetmap.org/?mlat=${lat.toFixed(5)}&mlon=${lng.toFixed(5)}#map=15/${lat.toFixed(5)}/${lng.toFixed(5)}`;
@@ -132,7 +148,7 @@ export function locationSentence(input: LocationSentenceInput, channel: NotifyCh
   const { lat, lng, accuracyM, recordedAt } = input.location;
   const age = classifyLocation(recordedAt, input.now, input.staleMinutes ?? DEFAULT_STALE_MINUTES);
   const acc = accuracyM != null && Number.isFinite(accuracyM) ? `, accuracy ±${Math.round(accuracyM)} m` : ", accuracy unknown";
-  const when = channel === "sms" ? formatClock(recordedAt, input.timeZone) : formatCheckinTime(recordedAt, input.timeZone);
+  const when = channel === "sms" ? formatWhen(recordedAt, input.timeZone, input.now) : formatCheckinTime(recordedAt, input.timeZone);
   const stale = age.state === "stale" ? ` [${age.label}]` : "";
   const base = `Last reported location: ${formatCoords(lat, lng)} at ${when}${acc}${stale}.`;
   return channel === "email" ? `${base}\nMap: ${mapLink(lat, lng)}` : base;
@@ -194,7 +210,7 @@ export function buildOverdueContactMessage(i: OverdueContactInput): BuiltMessage
     { text: `Ghost Guide check-in notice about ${who}.` },
     { text: `${name ?? "They"} planned to be back from ${trail} by ${expected}, and Ghost Guide has NOT received their “I'm okay” or “Finish trip” confirmation.` },
     { text: "This does not necessarily mean anything is wrong — phones often lose signal or battery on trails." },
-    ...(i.lastOkAt ? [{ text: `Their last “I'm okay” was at ${formatClock(i.lastOkAt, i.timeZone)}.`, optional: true }] : []),
+    ...(i.lastOkAt ? [{ text: `Their last “I'm okay” was at ${formatWhen(i.lastOkAt, i.timeZone, i.now)}.`, optional: true }] : []),
     { text: locationSentence(i, i.channel) },
     { text: "Ghost Guide has NOT contacted emergency services." },
     { text: `What you can do: try calling ${they}. If you are concerned, contact local emergency services (${num}) and share this information.` },

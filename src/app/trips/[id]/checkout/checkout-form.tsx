@@ -17,7 +17,10 @@ export interface AddonOption {
   priceCents: number;
   pricingUnit: "per_booking" | "per_person";
   requiresCustomerConfirmation: boolean;
+  /** units left today under the add-on's daily limit (null = unlimited) */
   remaining: number | null;
+  /** gear_locker only: complete locker kits the partner has for this date (null = not checked) */
+  gearKitsLeft?: number | null;
 }
 
 export interface CheckoutFormProps {
@@ -30,7 +33,14 @@ export interface CheckoutFormProps {
   pickupPoints: { key: string; label: string }[];
   quote: { lines: QuoteLine[]; totalCents: number; currency: string } | null;
   quoteError: string | null;
-  availability: { capacity: number; remaining: number; blocked: boolean };
+  /** null when the date is invalid (nothing was looked up) */
+  availability: { capacity: number; remaining: number; blocked: boolean } | null;
+  /** The selected date cannot be booked (closure that day, or finish after the latest-finish estimate). */
+  dateBlockedReason?: string | null;
+  /** Partial closures / advisories on the selected date (warnings only). */
+  dateNotices?: string[];
+  /** Explains that the itinerary will be recalculated for a changed date / group. */
+  replanNote?: string | null;
   holdMinutes: number;
   providerSimulated: boolean;
   demoMode: boolean;
@@ -38,6 +48,11 @@ export interface CheckoutFormProps {
 }
 
 const unitLabel = (a: AddonOption) => (a.pricingUnit === "per_person" ? "per person" : "per booking");
+const plural = (n: number, one: string, many: string) => `${n} ${n === 1 ? one : many}`;
+/** The seeded/partner description may already carry the SOS disclaimer; show it exactly once. */
+const SOS_DISCLAIMER = "Ghost Guide does not provide SOS; the device's own service applies.";
+const needsSosDisclaimer = (a: AddonOption) => a.kind === "satellite_device" && !/does not provide SOS/i.test(a.description);
+const gearShort = (a: AddonOption, partySize: number) => a.kind === "gear_locker" && a.gearKitsLeft != null && a.gearKitsLeft < partySize;
 
 export function CheckoutForm(props: CheckoutFormProps) {
   const router = useRouter();
@@ -60,8 +75,26 @@ export function CheckoutForm(props: CheckoutFormProps) {
   }
 
   const shuttleSelected = props.addons.some((a) => a.kind === "shuttle" && addonCodes.includes(a.code));
-  const soldOut = props.availability.blocked || props.availability.remaining < partySize;
-  const cannotSubmit = !!props.disabledReason || !!props.quoteError || soldOut || submitting || isUpdating;
+  const av = props.availability;
+  const soldOut = !av || av.blocked || av.remaining < partySize;
+  const selectedGearShort = props.addons.filter((a) => addonCodes.includes(a.code) && gearShort(a, partySize));
+
+  // Every reason the payment button is disabled is stated next to it (never a silent disabled button).
+  const blockers: string[] = [];
+  if (props.dateBlockedReason) blockers.push("This date can't be booked — see the note under the hike date, then choose another date.");
+  else if (av && !props.quoteError) {
+    if (av.blocked) blockers.push("This date is not available for booking. Please choose another date.");
+    else if (av.remaining <= 0) blockers.push("This date is fully booked. Please choose another date.");
+    else if (av.remaining < partySize)
+      blockers.push(`Only ${plural(av.remaining, "spot", "spots")} left on this date — reduce your group to ${av.remaining} or choose another date.`);
+  }
+  for (const a of selectedGearShort) {
+    blockers.push(
+      `Not enough locker gear for ${plural(partySize, "hiker", "hikers")} on this date (${plural(a.gearKitsLeft ?? 0, "kit", "kits")} left). Remove "${a.name}" or reduce your group.`,
+    );
+  }
+  const cannotSubmit =
+    !!props.disabledReason || !!props.quoteError || !!props.dateBlockedReason || soldOut || selectedGearShort.length > 0 || submitting || isUpdating;
 
   return (
     <form action={formAction} className="grid gap-6 lg:grid-cols-5" noValidate>
@@ -86,19 +119,37 @@ export function CheckoutForm(props: CheckoutFormProps) {
             />
           </Field>
           <p id="availability" className="text-sm" aria-live="polite">
-            {props.availability.blocked ? (
+            {!av ? (
+              <span className="text-muted">Choose a valid date to see availability.</span>
+            ) : props.dateBlockedReason ? (
+              <Badge tone="red">Not bookable on this date</Badge>
+            ) : av.blocked ? (
               <Badge tone="red">Not available on this date</Badge>
-            ) : props.availability.remaining <= 0 ? (
+            ) : av.remaining <= 0 ? (
               <Badge tone="red">Fully booked on this date</Badge>
             ) : (
               <>
-                <Badge tone={props.availability.remaining < 5 ? "amber" : "forest"}>
-                  {props.availability.remaining} of {props.availability.capacity} spots left
+                <Badge tone={av.remaining < 5 || av.remaining < partySize ? "amber" : "forest"}>
+                  {av.remaining} of {av.capacity} spots left
                 </Badge>{" "}
                 <span className="text-muted">Spots are only held once you continue to payment.</span>
               </>
             )}
           </p>
+          {props.dateBlockedReason ? (
+            <Alert tone="red" title="This date can't be booked">
+              {props.dateBlockedReason}
+            </Alert>
+          ) : null}
+          {props.dateNotices?.length ? (
+            <Alert tone="amber" title="Check before you book">
+              <ul className="list-disc space-y-1 pl-5">
+                {props.dateNotices.map((n) => (
+                  <li key={n}>{n}</li>
+                ))}
+              </ul>
+            </Alert>
+          ) : null}
           <Field label="Number of hikers" htmlFor="partySize" required>
             <Select
               id="partySize"
@@ -125,8 +176,10 @@ export function CheckoutForm(props: CheckoutFormProps) {
             <p className="text-sm text-muted">Provided by partners. Partner services in this demo are simulated.</p>
             {props.addons.map((a) => {
               const units = a.pricingUnit === "per_person" ? partySize : 1;
-              const unavailable = a.remaining != null && a.remaining < units && !addonCodes.includes(a.code);
               const checked = addonCodes.includes(a.code);
+              const capacityShort = a.remaining != null && a.remaining < units;
+              const noGear = gearShort(a, partySize);
+              const unavailable = (capacityShort || noGear) && !checked;
               return (
                 <div key={a.code} className="rounded-xl border border-sand-200 p-3 has-[:checked]:border-forest-600 has-[:checked]:bg-forest-50">
                   <label className="flex min-h-11 cursor-pointer items-start gap-3">
@@ -153,8 +206,14 @@ export function CheckoutForm(props: CheckoutFormProps) {
                       </span>
                       <span id={`addon-${a.code}-desc`} className="block text-sm text-muted">
                         {a.description}
-                        {a.kind === "satellite_device" ? " Ghost Guide does not provide SOS; the device's own service applies." : ""}
-                        {unavailable ? " Sold out for this date." : a.remaining != null && a.remaining < 4 ? ` Only ${a.remaining} left.` : ""}
+                        {needsSosDisclaimer(a) ? ` ${SOS_DISCLAIMER}` : ""}
+                        {noGear
+                          ? ` Not enough gear for ${plural(partySize, "hiker", "hikers")} on this date (${plural(a.gearKitsLeft ?? 0, "kit", "kits")} left).`
+                          : capacityShort
+                            ? " Sold out for this date."
+                            : a.remaining != null && a.remaining < 4
+                              ? ` Only ${a.remaining} left.`
+                              : ""}
                       </span>
                     </span>
                   </label>
@@ -225,13 +284,21 @@ export function CheckoutForm(props: CheckoutFormProps) {
             recalculated on our server when you continue.
           </p>
           <p className="text-sm text-muted">We hold your spots for {props.holdMinutes} minutes while you pay. Your booking is confirmed only once the payment provider confirms payment.</p>
+          {props.replanNote ? <p className="rounded-lg bg-blue-bg p-3 text-sm text-blue-ink">{props.replanNote}</p> : null}
           {state?.error ? (
             <Alert tone="red" live="assertive">
               {state.error}
             </Alert>
           ) : null}
           {props.disabledReason ? <Alert tone="amber">{props.disabledReason}</Alert> : null}
-          <Button type="submit" size="lg" className="w-full" disabled={cannotSubmit} aria-disabled={cannotSubmit}>
+          <div id="checkout-blockers" aria-live="polite" className="space-y-2">
+            {blockers.map((b) => (
+              <Alert key={b} tone="amber">
+                {b}
+              </Alert>
+            ))}
+          </div>
+          <Button type="submit" size="lg" className="w-full" disabled={cannotSubmit} aria-disabled={cannotSubmit} aria-describedby="checkout-blockers">
             <Lock aria-hidden className="size-4" />
             {submitting ? "Starting secure checkout…" : "Continue to secure payment"}
           </Button>

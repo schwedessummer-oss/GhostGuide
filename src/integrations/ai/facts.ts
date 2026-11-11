@@ -31,6 +31,9 @@ export function summarizeFacts(input: SummarizeInput): string {
     `Estimated duration: ${input.estimatedDurationMin} minutes (${formatDuration(input.estimatedDurationMin)}), an estimate`,
     `Estimated finish time: ${input.estimatedFinishTime}, an estimate`,
     ...(input.turnaroundBy ? [`Turn around by: ${input.turnaroundBy}`] : []),
+    ...(input.partialClosures ?? []).map(
+      (r) => `Partial closure on the planned date (the hiker must follow it, even if that means turning around before the far end; times are full-route estimates): ${r}`,
+    ),
     `Number of stops: ${input.stops.length}`,
     ...input.stops.map(
       (s, i) => `Stop ${i + 1}: ${s.name}, about ${s.etaOffsetMin} minutes after the start, around ${addMinutesToClock(input.startTime, s.etaOffsetMin)} (estimate)`,

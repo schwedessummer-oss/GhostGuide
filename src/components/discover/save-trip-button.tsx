@@ -5,11 +5,11 @@ import { BookmarkPlus, LogIn } from "lucide-react";
 import { Button } from "@/components/ui";
 
 /** Submit button with a pending state (the form itself works without JS). */
-export function SaveTripButton({ signedIn, trailName }: { signedIn: boolean; trailName: string }) {
+export function SaveTripButton({ signedIn, trailName, describedBy }: { signedIn: boolean; trailName: string; describedBy?: string }) {
   const { pending } = useFormStatus();
   return (
     <>
-      <Button type="submit" size="lg" disabled={pending} className="w-full sm:w-auto">
+      <Button type="submit" size="lg" disabled={pending} className="w-full sm:w-auto" data-save-trip="" aria-describedby={describedBy}>
         {signedIn ? <BookmarkPlus aria-hidden className="size-5" /> : <LogIn aria-hidden className="size-5" />}
         {pending ? "Saving…" : signedIn ? "Save this trip" : "Sign in to save this trip"}
         <span className="sr-only"> ({trailName})</span>

@@ -123,3 +123,22 @@ export async function idbOutboxCount(tripId: string): Promise<number> {
   const range = IDBKeyRange.bound([tripId, -Infinity], [tripId, Infinity]);
   return req(db.transaction("outbox", "readonly").objectStore("outbox").index("byTripSeq").count(range));
 }
+
+/** Delete every queued outbox entry of one trip. */
+export async function idbOutboxDeleteForTrip(tripId: string): Promise<void> {
+  const db = await openDb();
+  const tx = db.transaction("outbox", "readwrite");
+  const range = IDBKeyRange.bound([tripId, -Infinity], [tripId, Infinity]);
+  const store = tx.objectStore("outbox");
+  const keys = await req(store.index("byTripSeq").getAllKeys(range));
+  for (const k of keys) store.delete(k);
+  await done(tx);
+}
+
+/** Empty a whole store. */
+export async function idbClear(store: StoreName): Promise<void> {
+  const db = await openDb();
+  const tx = db.transaction(store, "readwrite");
+  tx.objectStore(store).clear();
+  await done(tx);
+}

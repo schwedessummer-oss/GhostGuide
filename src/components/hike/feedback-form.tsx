@@ -50,7 +50,7 @@ export function FeedbackForm({
         <div className="mt-2 grid gap-1 sm:grid-cols-2">
           {issues.map((i) => (
             <label key={i.value} className="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl px-1">
-              <input type="checkbox" name="issues" value={i.value} defaultChecked={initial?.issues.includes(i.value)} className="size-5 accent-forest-700" />
+              <input type="checkbox" name="issues" value={i.value} defaultChecked={initial?.issues.includes(i.value)} className="size-5 shrink-0 accent-forest-700" />
               <span>{i.label}</span>
             </label>
           ))}

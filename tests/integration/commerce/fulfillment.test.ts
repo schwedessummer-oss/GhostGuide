@@ -83,6 +83,32 @@ describe("partner fulfillment", () => {
     expect(done.details.orderRef).toBe(`demo_meal_${f.id}`);
   });
 
+  it("meal-pack pickup names the region locker nearest the booked trail, not a fixed locker", async () => {
+    const [region] = await sql()<{ id: string }[]>`select region_id as id from public.trails where slug = 'whisper-falls'`;
+    const [locker] = await withSystem(
+      (tx) => tx<{ id: string }[]>`
+        insert into public.gear_lockers (region_id, name, location_description, lat, lng, status, provider_key)
+        values (${region.id}, 'Whisper Falls Locker (test)', 'Next to the Whisper Falls kiosk (fictional)', 47.4981, -121.6604, 'online', 'demo')
+        returning id`,
+    );
+    try {
+      const wf = await confirmedBooking({ addonCodes: ["meal-pack"], trail: "whisper-falls" });
+      const [f] = await fulfillmentsOf(wf.bookingId);
+      await runFulfillment(f.id);
+      const [done] = await fulfillmentsOf(wf.bookingId);
+      expect(done.status).toBe("confirmed");
+      expect(done.details.pickup).toBe("Collect on your hike date at Whisper Falls Locker (test) — Next to the Whisper Falls kiosk (fictional).");
+      expect(done.details.lockerName).toBe("Whisper Falls Locker (test)");
+
+      const lc = await confirmedBooking({ addonCodes: ["meal-pack"], trail: "lantern-creek-loop" });
+      const [g] = await fulfillmentsOf(lc.bookingId);
+      await runFulfillment(g.id);
+      expect(String((await fulfillmentsOf(lc.bookingId))[0].details.pickup)).toContain("Lantern Creek Locker Bank (demo)");
+    } finally {
+      await withSystem((tx) => tx`delete from public.gear_lockers where id = ${locker.id}`);
+    }
+  });
+
   it("partial fulfillment: one add-on rejected, the other succeeds, booking unaffected", async () => {
     // demo kitchen rejects parties of exactly 7
     const { bookingId, user, trip } = await confirmedBooking({ addonCodes: ["meal-pack", "sat-communicator"], partySize: 7, trail: "hollow-pine-ridge" });

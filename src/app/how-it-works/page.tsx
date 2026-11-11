@@ -126,6 +126,10 @@ export default function HowItWorksPage() {
           <li>Precise location is visible only to you and to our safety staff; support staff and other users never see it.</li>
           <li>Location history is deleted automatically after your chosen retention period.</li>
           <li>Your emergency contact receives your last location only if a check-in becomes overdue and you allowed sharing it.</li>
+          <li>
+            A downloaded trip (with your last location on this device) opens offline only for the account that downloaded it. Signing out removes
+            downloaded trips from this browser; on a shared device, sign out when you&apos;re done.
+          </li>
         </ul>
         <p className="mt-4">
           <Link href="/account/privacy" className="inline-flex min-h-11 items-center font-semibold text-forest-800 underline">

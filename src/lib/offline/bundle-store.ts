@@ -32,23 +32,45 @@ export const putStoredBundle = (b: StoredBundle) => idbPut("bundles", b);
 export const deleteStoredBundle = (tripId: string) => idbDelete("bundles", tripId);
 export const listStoredBundles = () => idbGetAll<StoredBundle>("bundles");
 
+export type BundleFetchErrorKind = "offline" | "auth" | "not_found" | "not_bookable" | "server" | "slow";
+
 export class BundleFetchError extends Error {
   constructor(
     message: string,
+    /** HTTP status; 0 = the request never reached the server */
     readonly status: number,
+    readonly kind: BundleFetchErrorKind = status === 0 ? "offline" : status === 401 ? "auth" : status === 404 ? "not_found" : status === 409 ? "not_bookable" : "server",
   ) {
     super(message);
   }
 }
 
-/** Fetch the bundle from the API (network-first; the SW may answer from its trip cache offline). */
-export async function fetchBundle(tripId: string): Promise<TripBundle> {
+/** Response headers set by public/sw.js on answers it made up or served from a trip cache. */
+export const SW_OFFLINE_HEADER = "x-gg-offline";
+export const SW_SOURCE_HEADER = "x-gg-source";
+
+export const OFFLINE_NOT_DOWNLOADED = "You're offline and this trip isn't downloaded on this device.";
+
+export interface FetchedBundle {
+  bundle: TripBundle;
+  /** "network" = the server just issued it to the signed-in user; "cache" = the service worker's offline copy */
+  source: "network" | "cache";
+}
+
+/**
+ * Fetch the bundle from the API (network-first; offline, the service worker
+ * may answer from its trip cache, which is reported as `source: "cache"`).
+ * Errors say why: offline, signed out (401), not yours (404), not bookable
+ * (409) or a server problem.
+ */
+export async function fetchBundleDetailed(tripId: string): Promise<FetchedBundle> {
   let res: Response;
   try {
     res = await fetch(`/api/trips/${tripId}/bundle`, { credentials: "same-origin", cache: "no-store", headers: { accept: "application/json" } });
   } catch {
-    throw new BundleFetchError("You're offline and this trip isn't downloaded on this device.", 0);
+    throw new BundleFetchError(OFFLINE_NOT_DOWNLOADED, 0);
   }
+  if (res.headers.get(SW_OFFLINE_HEADER)) throw new BundleFetchError(OFFLINE_NOT_DOWNLOADED, 0);
   if (!res.ok) {
     const msg =
       res.status === 401
@@ -60,5 +82,13 @@ export async function fetchBundle(tripId: string): Promise<TripBundle> {
             : `The server could not prepare your trip (error ${res.status}). Try again.`;
     throw new BundleFetchError(msg, res.status);
   }
-  return (await res.json()) as TripBundle;
+  const bundle = (await res.json()) as TripBundle;
+  return { bundle, source: res.headers.get(SW_SOURCE_HEADER) === "cache" ? "cache" : "network" };
+}
+
+/** Fetch a fresh bundle from the server (an offline copy from the service worker counts as offline). */
+export async function fetchBundle(tripId: string): Promise<TripBundle> {
+  const r = await fetchBundleDetailed(tripId);
+  if (r.source !== "network") throw new BundleFetchError(OFFLINE_NOT_DOWNLOADED, 0);
+  return r.bundle;
 }

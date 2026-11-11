@@ -7,7 +7,8 @@ import { log } from "@/server/log";
 import { localDateInZone } from "@/lib/time";
 import { buildItinerary } from "@/domain/itinerary";
 import { recommendTrails } from "@/domain/recommendation";
-import { getLatestFinishTable, getVisibleTrailRegionId, loadCandidates } from "./catalog";
+import { getLatestFinishTable, getVisibleTrailRegionId, loadCandidates, partialClosuresOn } from "./catalog";
+import { permitNotes } from "./plan";
 import { parseTripPreferences, validatePlanTiming } from "./preferences";
 import { summarizeItineraryText } from "./ai";
 
@@ -67,9 +68,12 @@ export async function saveTrip(user: SessionUser, prefsInput: unknown, trailId: 
   }
 
   const permits = regional.permitsByTrail.get(trailId) ?? [];
+  // Same itinerary as the results page, including partial closures on the planned date.
+  const partialClosures = partialClosuresOn(regional, trailId, prefs.plannedDate, region.timezone);
   const itinerary = buildItinerary(trail, regional.pois.get(trailId) ?? [], prefs, now, {
     latestFinishTime: rec.latestFinishTime,
-    extraNotes: permits.map((p) => `Permit: ${p.name}${p.leadTimeDays !== null ? ` (allow about ${p.leadTimeDays} days)` : ""}.`),
+    partialClosures,
+    extraNotes: permitNotes(permits),
   });
 
   const trailheadIds = new Set((regional.pois.get(trailId) ?? []).filter((p) => p.kind === "trailhead").map((p) => p.id));
@@ -86,6 +90,7 @@ export async function saveTrip(user: SessionUser, prefsInput: unknown, trailId: 
       .filter((s) => !trailheadIds.has(s.poiId))
       .map((s) => ({ name: s.name, etaOffsetMin: s.etaOffsetMin })),
     reminders: itinerary.reminders,
+    partialClosures,
   });
 
   const recommendation = {

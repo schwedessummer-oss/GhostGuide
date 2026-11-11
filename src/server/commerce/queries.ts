@@ -4,7 +4,7 @@ import { withUser, type Tx } from "@/server/db";
 import type { SessionUser } from "@/server/auth";
 import type { BookingStatus, FulfillmentStatus } from "@/domain/types";
 import type { AddonKind, StoredPriceBreakdown } from "@/domain/booking";
-import { holdIsValid } from "@/domain/booking";
+import { holdIsValid, LIVE_BOOKING_STATUSES } from "@/domain/booking";
 import { revealAccessCodes } from "@/server/fulfillment/access-codes";
 
 /**
@@ -126,11 +126,27 @@ export async function getTripBookingView(user: SessionUser, tripId: string): Pro
 /** Booked-status summary per trip for the My Trips list. */
 export async function listTripBookingSummaries(
   user: SessionUser,
-): Promise<Record<string, { bookingId: string; status: BookingStatus; holdValid: boolean; awaitingShuttleFulfillmentId: string | null; receiptNumber: string | null }>> {
+): Promise<
+  Record<
+    string,
+    {
+      bookingId: string;
+      status: BookingStatus;
+      holdValid: boolean;
+      awaitingShuttleFulfillmentId: string | null;
+      receiptNumber: string | null;
+      /** The booked (or held) hike date and group, for live bookings. */
+      hikeDate: string;
+      partySize: number;
+      live: boolean;
+    }
+  >
+> {
   const rows = await withUser(
     user,
-    (tx) => tx<{ id: string; tripId: string; status: BookingStatus; holdExpiresAt: Date | null; receiptNumber: string | null; awaitingShuttle: string | null }[]>`
+    (tx) => tx<{ id: string; tripId: string; status: BookingStatus; holdExpiresAt: Date | null; receiptNumber: string | null; awaitingShuttle: string | null; hikeDate: string; partySize: number }[]>`
       select distinct on (b.trip_id) b.id, b.trip_id, b.status, b.hold_expires_at, b.receipt_number,
+        to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.party_size,
         (select f.id::text from public.fulfillments f where f.booking_id = b.id and f.provider_kind = 'shuttle' and f.status = 'awaiting_customer' limit 1) as awaiting_shuttle
       from public.bookings b
       where b.user_id = ${user.id}
@@ -146,6 +162,9 @@ export async function listTripBookingSummaries(
         holdValid: r.status === "pending_payment" && holdIsValid(r.holdExpiresAt, now),
         awaitingShuttleFulfillmentId: r.awaitingShuttle,
         receiptNumber: r.receiptNumber,
+        hikeDate: r.hikeDate,
+        partySize: r.partySize,
+        live: r.status === "pending_payment" ? holdIsValid(r.holdExpiresAt, now) : (LIVE_BOOKING_STATUSES as readonly string[]).includes(r.status),
       },
     ]),
   );
@@ -194,4 +213,28 @@ export async function getReceipt(user: SessionUser, bookingId: string): Promise<
     ]);
     return { booking, addons, payments, refunds, customerName: profile[0]?.fullName ?? null, customerEmail: user.email };
   });
+}
+
+export interface TripReminder {
+  id: string;
+  body: string;
+  status: string;
+  createdAt: Date;
+}
+
+/**
+ * In-app permit reminders for the owner's trip (written by the daily
+ * permits.remind job). Runs as the customer: RLS only exposes notifications
+ * whose user_id is the caller, and the query filters on it as well.
+ */
+export async function listTripReminders(user: SessionUser, tripId: string, limit = 5): Promise<TripReminder[]> {
+  if (!isUuid(tripId)) return [];
+  return withUser(
+    user,
+    (tx) => tx<TripReminder[]>`
+      select n.id, n.body, n.status, n.created_at from public.notifications n
+      where n.trip_id = ${tripId} and n.user_id = ${user.id} and n.channel = 'in_app' and n.template = 'permit_reminder'
+      order by n.created_at desc
+      limit ${limit}`,
+  );
 }

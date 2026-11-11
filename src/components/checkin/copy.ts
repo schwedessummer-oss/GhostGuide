@@ -1,6 +1,6 @@
 /** Shared, plain-language check-in copy (safe for client and server components). */
 export const CHECKIN_EXPLANATION =
-  "If we haven't received “I'm okay” or “Finish trip” from you by your expected return time plus the grace period, Ghost Guide will send your contact a notice with your last reported location (if you allow it). This is not continuous monitoring and not a rescue service; Ghost Guide never contacts 911 or Search and Rescue.";
+  "If we haven't received “I'm okay” or “Finish trip” from you by your expected return time plus the grace period, Ghost Guide will send your contact a notice with your last reported location (on by default — you can turn this off in Privacy & location). This is not continuous monitoring and not a rescue service; Ghost Guide never contacts 911 or Search and Rescue.";
 
 export const CHECKIN_LIMITS_NOTE =
   "Your phone has to reach the internet for “I'm okay” and location updates to arrive. Browsers can pause apps in the background or when the screen is locked, so Ghost Guide may not have your latest position. In an emergency, call 911 yourself.";

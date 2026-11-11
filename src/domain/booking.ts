@@ -3,8 +3,11 @@
  * numbers, customer-facing status copy. Pure and deterministic (no I/O), so
  * it is safe on client and server and fully unit tested.
  */
-import type { BookingStatus, FulfillmentStatus, TripStatus } from "./types";
+import type { BookingStatus, Closure, FulfillmentStatus, Itinerary, TripPreferences, TripStatus } from "./types";
 import type { Quote } from "./pricing";
+import { buildItinerary, clockToMinutes, type ItineraryPoi, type ItineraryTrail } from "./itinerary";
+import { closureOverlapsDay, DEFAULT_LATEST_FINISH_BY_MONTH, latestFinishFor, monthName } from "./recommendation";
+import { addMinutesToClock, localDateInZone } from "@/lib/time";
 
 // ---------------------------------------------------------------------------
 // State machine
@@ -164,18 +167,17 @@ export const RECEIPT_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 export const RECEIPT_NUMBER_PATTERN = /^GG-\d{8}-[A-Z0-9]{6}$/;
 
 /**
- * Format "GG-YYYYMMDD-XXXXXX" (UTC date of payment). `randomBytes` must hold at
- * least 6 bytes (callers pass crypto.randomBytes(6)); kept as a parameter so
- * this stays pure.
+ * Format "GG-YYYYMMDD-XXXXXX". The date is the payment date in `timeZone`
+ * (the trail region's zone, so it matches the dates printed on the receipt);
+ * without a zone it is the UTC date. `randomBytes` must hold at least 6 bytes
+ * (callers pass crypto.randomBytes(6)); kept as a parameter so this stays pure.
  */
-export function formatReceiptNumber(paidAt: Date, randomBytes: ArrayLike<number>): string {
+export function formatReceiptNumber(paidAt: Date, randomBytes: ArrayLike<number>, timeZone?: string): string {
   if (randomBytes.length < 6) throw new Error("receipt number needs 6 random bytes");
-  const y = paidAt.getUTCFullYear();
-  const m = String(paidAt.getUTCMonth() + 1).padStart(2, "0");
-  const d = String(paidAt.getUTCDate()).padStart(2, "0");
+  const day = timeZone ? localDateInZone(paidAt, timeZone) : paidAt.toISOString().slice(0, 10);
   let suffix = "";
   for (let i = 0; i < 6; i++) suffix += RECEIPT_ALPHABET[randomBytes[i] % RECEIPT_ALPHABET.length];
-  return `GG-${y}${m}${d}-${suffix}`;
+  return `GG-${day.replace(/-/g, "")}-${suffix}`;
 }
 
 export function isReceiptNumber(s: string): boolean {
@@ -313,4 +315,134 @@ export function nextActionForTrip(i: NextActionInput): { label: string; href: st
   if (i.awaitingShuttleFulfillmentId) return { label: "Confirm your shuttle", href: `${trip}/shuttle/${i.awaitingShuttleFulfillmentId}` };
   if (i.bookingStatus === "needs_attention") return { label: "See booking status", href: trip };
   return { label: "Prepare for your hike", href: trip };
+}
+
+// ---------------------------------------------------------------------------
+// Booked date: validity, closures and re-planning
+// ---------------------------------------------------------------------------
+
+/** A real calendar date written as YYYY-MM-DD (rejects 2026-02-30, 2026-13-45, 2026-12-32). */
+export function isRealIsoDate(s: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(s)) return false;
+  const d = new Date(`${s}T12:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
+}
+
+export type DayClosure = Pick<Closure, "severity" | "reason" | "startsAt" | "endsAt">;
+
+export interface ClosureVerdict {
+  /** A full ("closed") closure overlapping the region-local day: the date cannot be booked. */
+  closed: DayClosure | null;
+  /** Partial closures and advisories overlapping the day: shown as warnings. */
+  notices: DayClosure[];
+}
+
+/**
+ * Closures that matter for a hike on `date` (region-local calendar day),
+ * whether they are active now or scheduled. Same overlap rule as the planner.
+ */
+export function closureVerdict(closures: DayClosure[], date: string, timeZone: string): ClosureVerdict {
+  const onDay = closures
+    .filter((c) => closureOverlapsDay(c, date, timeZone))
+    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
+  return {
+    closed: onDay.find((c) => c.severity === "closed") ?? null,
+    notices: onDay.filter((c) => c.severity !== "closed"),
+  };
+}
+
+export function closedOnDateMessage(c: Pick<Closure, "reason">): string {
+  return `The trail is closed on that date: ${c.reason.replace(/[.\s]+$/, "")}. Please choose another date.`;
+}
+
+/** Defaults used only to compute estimates when a saved trip has no questionnaire answers. */
+const REPLAN_DEFAULTS: Pick<TripPreferences, "experience" | "fitness" | "pace" | "preferredTerrain" | "availableHours" | "accessibilityNeeds" | "equipment"> = {
+  experience: "some",
+  fitness: "moderate",
+  pace: "steady",
+  preferredTerrain: [],
+  availableHours: 8,
+  accessibilityNeeds: [],
+  equipment: [],
+};
+
+export interface ReplanInput {
+  trail: ItineraryTrail;
+  pois: ItineraryPoi[];
+  permits: { name: string; leadTimeDays: number | null }[];
+  /** The trip's saved questionnaire answers (may be partial or empty). */
+  preferences: Partial<TripPreferences>;
+  hikeDate: string;
+  startTime: string;
+  partySize: number;
+  /** Region latest-finish table (month → HH:MM); defaults to the built-in table. */
+  latestFinishByMonth?: Record<number, string>;
+  /** Reasons of partial closures on the booked (region-local) day, noted like the planner does. */
+  partialClosures?: string[];
+  now: Date;
+}
+
+export interface ReplanResult {
+  /** Saved answers with the booked date, start time and group size (no invented answers). */
+  preferences: Partial<TripPreferences>;
+  itinerary: Itinerary;
+  latestFinishTime: string;
+  /** The estimated finish is after the conservative latest-finish estimate for that month. */
+  finishesAfterLatest: boolean;
+}
+
+/**
+ * Rebuild the deterministic itinerary for the date / group actually booked,
+ * with exactly the same builder, pace factor and latest-finish table the
+ * planner uses when a trip is saved, so the daylight cutoff, turnaround and
+ * stop times match the booked day.
+ */
+export function replanForBooking(i: ReplanInput): ReplanResult {
+  const startTime = i.startTime.slice(0, 5);
+  const full: TripPreferences = {
+    ...REPLAN_DEFAULTS,
+    ...i.preferences,
+    plannedDate: i.hikeDate,
+    startTime,
+    partySize: i.partySize,
+  };
+  const latestFinishTime = latestFinishFor(i.hikeDate, i.latestFinishByMonth ?? DEFAULT_LATEST_FINISH_BY_MONTH);
+  const itinerary = buildItinerary(i.trail, i.pois, full, i.now, {
+    latestFinishTime,
+    partialClosures: i.partialClosures ?? [],
+    extraNotes: i.permits.map((p) => `Permit: ${p.name}${p.leadTimeDays !== null ? ` (allow about ${p.leadTimeDays} days)` : ""}.`),
+  });
+  const finishesAfterLatest = clockToMinutes(startTime) + itinerary.estimatedDurationMin > clockToMinutes(latestFinishTime);
+  return {
+    preferences: { ...i.preferences, plannedDate: i.hikeDate, startTime, partySize: i.partySize },
+    itinerary,
+    latestFinishTime,
+    finishesAfterLatest,
+  };
+}
+
+/** Customer message when a changed date / group would finish after the latest-finish estimate. */
+export function daylightProblem(r: Pick<ReplanResult, "finishesAfterLatest" | "latestFinishTime" | "itinerary">): string | null {
+  if (!r.finishesAfterLatest) return null;
+  const { startTime, estimatedDurationMin, plannedDate } = r.itinerary;
+  const finishMin = clockToMinutes(startTime) + estimatedDurationMin;
+  const finish = finishMin >= 1440 ? "after midnight" : addMinutesToClock(startTime, estimatedDurationMin);
+  return (
+    `On ${plannedDate} your estimated finish (${finish}) is after the conservative latest-finish estimate for ${monthName(plannedDate)} (${r.latestFinishTime}). ` +
+    "Choose a date with more daylight or a smaller group, or plan a new trip with an earlier start."
+  );
+}
+
+/** True when the trip's saved plan was not computed for this date / group / start time. */
+export function planDiffersFromBooking(
+  trip: { plannedDate: string | null; partySize: number; startTime: string | null; itinerary?: Partial<Itinerary> | null },
+  booked: { hikeDate: string; partySize: number; startTime: string },
+): boolean {
+  const itineraryDate = trip.itinerary?.plannedDate;
+  return (
+    trip.plannedDate !== booked.hikeDate ||
+    trip.partySize !== booked.partySize ||
+    (trip.startTime ?? "").slice(0, 5) !== booked.startTime.slice(0, 5) ||
+    (!!itineraryDate && itineraryDate !== booked.hikeDate)
+  );
 }

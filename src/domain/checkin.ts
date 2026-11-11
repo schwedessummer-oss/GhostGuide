@@ -370,6 +370,34 @@ export function formatClock(d: Date | string, timeZone: string): string {
   return formatInZone(d, timeZone, { hour: "numeric", minute: "2-digit", timeZoneName: "short" });
 }
 
+/**
+ * "3:30 PM PST" when `d` falls on the same local (region) day as `now`,
+ * otherwise "Sat, Nov 14, 3:30 PM PST" — a bare clock time is ambiguous on
+ * multi-day trips.
+ */
+export function formatWhen(d: Date | string, timeZone: string, now: Date = new Date()): string {
+  const date = new Date(d);
+  return localDateInZone(date, timeZone) === localDateInZone(now, timeZone) ? formatClock(date, timeZone) : formatCheckinTime(date, timeZone);
+}
+
+/**
+ * DST-neutral name of a time zone for labels next to time inputs, e.g.
+ * "Pacific Time" (the abbreviation of *today* can be wrong for a chosen date
+ * on the other side of a daylight-saving change). Falls back to the
+ * abbreviation in effect at `at`, then to the IANA name.
+ */
+export function timeZoneLabel(timeZone: string, at: Date = new Date()): string {
+  for (const timeZoneName of ["longGeneric", "short"] as const) {
+    try {
+      const part = new Intl.DateTimeFormat("en-US", { timeZone, timeZoneName }).formatToParts(at).find((p) => p.type === "timeZoneName")?.value;
+      if (part && !/^GMT[+-]/.test(part)) return part;
+    } catch {
+      // unsupported option or zone: try the next form
+    }
+  }
+  return timeZone;
+}
+
 // ---------------------------------------------------------------------------
 // Plain-language status text
 // ---------------------------------------------------------------------------
@@ -380,48 +408,90 @@ export interface StatusCopy {
   tone: "neutral" | "forest" | "amber" | "blue";
 }
 
-/** Owner-facing summary. Never says "emergency"; overdue means "no confirmation received". */
+export interface OwnerCopyOptions {
+  /**
+   * Whether the check-in's contact can receive a notice right now (selected,
+   * consent on file, a phone or email). Default true. When false the copy
+   * never promises a notice or follow-up that will not be sent.
+   */
+  contactReachable?: boolean;
+  /** Demo notification provider: notices are recorded as "simulated", never delivered. Default false. */
+  simulated?: boolean;
+  /** Reference time for "today" (clock-only times); default now. */
+  now?: Date;
+}
+
+/**
+ * Owner-facing summary. Never says "emergency"; overdue means "no
+ * confirmation received". Honest about who will (not) be notified and about
+ * simulated (demo) notices.
+ */
 export function describeCheckinForOwner(
   c: Pick<CheckinState, "status" | "expectedReturnAt" | "graceMinutes" | "lastOkAt" | "contactNotifiedAt" | "completedAt">,
   timeZone: string,
+  opts: OwnerCopyOptions = {},
 ): StatusCopy {
+  const reachable = opts.contactReachable ?? true;
+  const simulated = opts.simulated ?? false;
+  const now = opts.now ?? new Date();
   const due = formatCheckinTime(overdueDueAt(c), timeZone);
   const expected = formatCheckinTime(c.expectedReturnAt, timeZone);
+  const nobody = "No emergency contact who agreed to receive notices is on this check-in";
   switch (c.status) {
     case "scheduled":
       return {
         title: "Check-ins are on",
-        detail: `You're expected back by ${expected}. If we haven't heard “I'm okay” or “Finish trip” from you by ${due}, we'll send your contact a notice.`,
-        tone: "forest",
+        detail: reachable
+          ? `You're expected back by ${expected}. If we haven't heard “I'm okay” or “Finish trip” from you by ${due}, we'll send your contact a notice${simulated ? " (simulated in this demo — nothing is actually sent)" : ""}.`
+          : `You're expected back by ${expected}. ${nobody}, so nobody else will be notified if we haven't heard from you by ${due}.`,
+        tone: reachable ? "forest" : "amber",
       };
     case "active":
       return {
         title: "Waiting for your confirmation",
-        detail: `You're expected back by ${expected}. Tap “I'm okay” or “Finish trip” before ${due} so we don't send your contact a notice.`,
-        tone: "forest",
+        detail: reachable
+          ? `You're expected back by ${expected}. Tap “I'm okay” or “Finish trip” before ${due} so we don't send your contact a notice.`
+          : `You're expected back by ${expected}. Tap “I'm okay” or “Finish trip” when you can. ${nobody}, so nobody else will be notified if we haven't heard from you by ${due}.`,
+        tone: reachable ? "forest" : "amber",
       };
     case "confirmed_ok":
       return {
-        title: c.lastOkAt ? `You confirmed you're okay at ${formatClock(c.lastOkAt, timeZone)}` : "You confirmed you're okay",
-        detail: `Thanks. Please still tap “Finish trip” when you're back. Expected back by ${expected}; your contact gets a notice if we hear nothing by ${due}.`,
+        title: c.lastOkAt ? `You confirmed you're okay at ${formatWhen(c.lastOkAt, timeZone, now)}` : "You confirmed you're okay",
+        detail: reachable
+          ? `Thanks. Please still tap “Finish trip” when you're back. Expected back by ${expected}; your contact gets a notice if we hear nothing by ${due}.`
+          : `Thanks. Please still tap “Finish trip” when you're back. Expected back by ${expected}. ${nobody}, so nobody else will be notified if we hear nothing by ${due}.`,
         tone: "forest",
       };
     case "overdue":
       return {
         title: "We haven't received your confirmation",
-        detail: `Your expected return (${expected}) plus the grace period has passed. We're sending your contact a notice. If you're okay, tap “I'm okay” or “Finish trip” now and we'll let them know.`,
+        detail: reachable
+          ? `Your expected return (${expected}) plus the grace period has passed. ${
+              simulated
+                ? "We're recording a simulated notice to your contact (demo — nothing is actually sent)."
+                : "We're sending your contact a notice."
+            } If you're okay, tap “I'm okay” or “Finish trip” now and we'll let them know.`
+          : `Your expected return (${expected}) plus the grace period has passed. ${nobody}, so nobody else is being notified. If you're okay, tap “I'm okay” or “Finish trip” now.`,
         tone: "amber",
       };
-    case "contact_notified":
+    case "contact_notified": {
+      const at = c.contactNotifiedAt ? formatWhen(c.contactNotifiedAt, timeZone, now) : null;
+      const what = simulated
+        ? `We hadn't received your confirmation, so ${at ? `at ${at} ` : ""}we recorded a simulated notice to your contact. In this demo nothing is actually sent.`
+        : `We hadn't received your confirmation, so we sent your contact a notice${at ? ` at ${at}` : ""}.`;
+      const next = reachable
+        ? `If you're okay, tap “I'm okay” or “Finish trip” and we'll ${simulated ? "record a simulated follow-up for them" : "send them a follow-up"}.`
+        : "If you're okay, tap “I'm okay” or “Finish trip”. Your contact can no longer receive notices from us (removed, or consent withdrawn), so please tell them yourself.";
       return {
-        title: "Your contact was sent a notice",
-        detail: `We hadn't received your confirmation${c.contactNotifiedAt ? `, so we notified your contact at ${formatClock(c.contactNotifiedAt, timeZone)}` : ""}. If you're okay, tap “I'm okay” or “Finish trip” and we'll send them a follow-up.`,
+        title: simulated ? "A simulated notice was recorded for your contact (demo — nothing was sent)" : "Your contact was sent a notice",
+        detail: `${what} ${next}`,
         tone: "amber",
       };
+    }
     case "completed":
       return {
         title: "Trip finished",
-        detail: `${c.completedAt ? `You finished at ${formatClock(c.completedAt, timeZone)}. ` : ""}No more check-in notices will be sent for this trip.`,
+        detail: `${c.completedAt ? `You finished at ${formatWhen(c.completedAt, timeZone, now)}. ` : ""}No more check-in notices will be sent for this trip.`,
         tone: "neutral",
       };
     case "cancelled":
@@ -434,14 +504,21 @@ export function describeCheckinForOwner(
 export function describeCheckinForShare(
   c: Pick<CheckinState, "status" | "lastOkAt" | "completedAt"> | null,
   timeZone: string,
+  now: Date = new Date(),
 ): string {
   if (!c || c.status === "cancelled") return "Check-ins are not turned on for this trip.";
-  if (c.status === "completed") return c.completedAt ? `Finished the trip at ${formatClock(c.completedAt, timeZone)}` : "Finished the trip";
+  if (c.status === "completed") return c.completedAt ? `Finished the trip at ${formatWhen(c.completedAt, timeZone, now)}` : "Finished the trip";
   if (isOverdueState(c.status)) {
     return c.lastOkAt
-      ? `Last confirmed okay at ${formatClock(c.lastOkAt, timeZone)}. No confirmation received since the expected return time`
+      ? `Last confirmed okay at ${formatWhen(c.lastOkAt, timeZone, now)}. No confirmation received since the expected return time`
       : "No confirmation received by the expected return time";
   }
-  if (c.lastOkAt) return `Confirmed okay at ${formatClock(c.lastOkAt, timeZone)}`;
+  if (c.lastOkAt) return `Confirmed okay at ${formatWhen(c.lastOkAt, timeZone, now)}`;
   return "No confirmation received yet";
+}
+
+/** Whether the share page should explain that "no confirmation" doesn't mean something is wrong. */
+export function shareNeedsNoConfirmationNote(c: Pick<CheckinState, "status" | "lastOkAt"> | null): boolean {
+  if (!c) return false;
+  return isOverdueState(c.status) || (isAwaiting(c.status) && !c.lastOkAt);
 }

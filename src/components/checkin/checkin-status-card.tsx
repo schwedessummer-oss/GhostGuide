@@ -22,7 +22,8 @@ export async function CheckinStatusCard({ tripId }: { tripId: string }) {
   if (!trip) return null;
   const d = await loadCheckinCardData(user, trip);
   const c = d.checkin && d.checkin.status !== "cancelled" ? d.checkin : null;
-  const canShare = d.sharingEnabled && (trip.status === "booked" || trip.status === "active");
+  // Sharing ends with the trip: no new links once the trip or its check-in is finished.
+  const canShare = d.sharingEnabled && (trip.status === "booked" || trip.status === "active") && d.checkin?.status !== "completed";
   const shares = canShare ? await loadShares(user, trip.id) : [];
   const shareItems: ShareListItem[] = shares.map((s) => ({
     id: s.id,
@@ -47,8 +48,16 @@ export async function CheckinStatusCard({ tripId }: { tripId: string }) {
       <div className="mt-3 space-y-4">
         {c ? (
           <>
-            <CheckinStatusSummary checkin={c} contact={d.contact} timeZone={d.timeZone} tripId={trip.id} compact />
-            {isOpen(c.status) ? <CheckinQuickActions tripId={trip.id} minExtendLocal={d.minExtendLocal} tzAbbrev={d.tzAbbrev} compact /> : null}
+            <CheckinStatusSummary
+              checkin={c}
+              contact={d.contact}
+              contactReachable={d.contactReachable}
+              simulated={d.notificationsSimulated}
+              timeZone={d.timeZone}
+              tripId={trip.id}
+              compact
+            />
+            {isOpen(c.status) ? <CheckinQuickActions tripId={trip.id} minExtendLocal={d.minExtendLocal} tzLabel={d.tzLabel} compact /> : null}
           </>
         ) : trip.status === "booked" || trip.status === "active" ? (
           <>

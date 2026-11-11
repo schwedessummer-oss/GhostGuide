@@ -34,6 +34,7 @@ export function GpsSimulatorPanel({ snap, engine }: { snap: HikeSnapshot; engine
       </p>
       <div className="mt-3 space-y-3">
         <Checkbox
+          className="[&>input]:shrink-0"
           label="Use simulated GPS instead of this device's location"
           checked={enabled}
           onChange={(e) => engine.setSimulator({ enabled: e.target.checked })}

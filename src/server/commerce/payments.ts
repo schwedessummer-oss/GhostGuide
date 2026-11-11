@@ -10,6 +10,7 @@ import type { BookingStatus } from "@/domain/types";
 import { getPaymentProviderByName, WebhookSignatureError, type NormalizedPaymentEvent } from "@/integrations/payments";
 import { lockTrailDay, usedTrailCapacity } from "./inventory";
 import { applyRefundSucceeded, requestRefund } from "./refunds";
+import { syncTripToBooking } from "./trip-plan";
 
 /**
  * Provider-agnostic payment event processor. Used by BOTH webhook routes
@@ -269,9 +270,13 @@ async function handlePaid(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOut
 
 async function confirmBooking(tx: Tx, b: LockedBooking, paymentIntentId: string | null) {
   assertTransition(b.status, "confirmed");
+  // Receipt numbers carry the payment date in the trail region's zone (as printed on the receipt).
+  const [zone] = await tx<{ timezone: string }[]>`
+    select r.timezone from public.trails t join public.regions r on r.id = t.region_id where t.id = ${b.trailId}`;
+  const paidAt = new Date();
   let receipt = "";
   for (let i = 0; i < 5; i++) {
-    const candidate = formatReceiptNumber(new Date(), randomBytes(6));
+    const candidate = formatReceiptNumber(paidAt, randomBytes(6), zone?.timezone);
     const [taken] = await tx`select 1 from public.bookings where receipt_number = ${candidate}`;
     if (!taken) {
       receipt = candidate;
@@ -284,6 +289,16 @@ async function confirmBooking(tx: Tx, b: LockedBooking, paymentIntentId: string 
     set status = 'confirmed', paid_at = now(), payment_intent_id = ${paymentIntentId}, receipt_number = ${receipt}
     where id = ${b.id}`;
   await tx`update public.trips set status = 'booked' where id = ${b.tripId} and status = 'saved'`;
+  // The customer may have booked a different date or group than the saved plan:
+  // rewrite the trip (date, start, group, rebuilt itinerary) for what was paid for.
+  // A savepoint keeps a re-planning problem from blocking the payment confirmation itself.
+  let replanned = false;
+  try {
+    replanned = await tx.savepoint((sp) => syncTripToBooking(sp, b));
+  } catch (err) {
+    log.error("payments.trip_replan_failed", { bookingId: b.id, tripId: b.tripId, error: err instanceof Error ? err.message : String(err) });
+    await openTicket(tx, b, "Trip plan not updated for the booked date", "The booking is confirmed, but the trip's itinerary could not be rebuilt for the booked date and group. Please review the trip.");
+  }
   const created = await tx<{ id: string }[]>`
     insert into public.fulfillments (booking_id, booking_addon_id, provider_kind, provider_key, status)
     select ba.booking_id, ba.id, a.kind, a.provider_key, 'pending'
@@ -294,7 +309,7 @@ async function confirmBooking(tx: Tx, b: LockedBooking, paymentIntentId: string 
   for (const f of created) {
     await enqueueJob(tx, "fulfillment.process", { fulfillmentId: f.id }, { dedupKey: `fulfill:${f.id}`, maxAttempts: 5 });
   }
-  await recordAudit(tx, SYSTEM_ACTOR, "booking.confirmed", "booking", b.id, { receipt, fulfillments: created.length });
+  await recordAudit(tx, SYSTEM_ACTOR, "booking.confirmed", "booking", b.id, { receipt, fulfillments: created.length, tripReplanned: replanned });
 }
 
 async function refundUnattributable(tx: Tx, b: LockedBooking, paymentId: string, amountCents: number, reason: string) {

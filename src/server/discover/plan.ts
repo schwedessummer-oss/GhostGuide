@@ -4,7 +4,7 @@ import { localDateInZone } from "@/lib/time";
 import { buildItinerary } from "@/domain/itinerary";
 import { LATEST_FINISH_LABEL, recommendTrails, type ExclusionCode, type RankedTrail } from "@/domain/recommendation";
 import type { Itinerary, TripPreferences } from "@/domain/types";
-import { getLatestFinishTable, loadCandidates, type PlanTrail } from "./catalog";
+import { getLatestFinishTable, loadCandidates, partialClosuresOn, type PlanTrail } from "./catalog";
 
 /**
  * Plan a hike: run the deterministic recommendation over the region's
@@ -17,6 +17,8 @@ export interface PlanSuggestion {
   result: RankedTrail;
   itinerary: Itinerary;
   permits: { name: string; officialUrl: string; leadTimeDays: number | null }[];
+  /** Reasons of partial closures in effect on the planned date (the itinerary is a full-route estimate). */
+  partialClosures: string[];
   /** POI ids that are trailheads (shown as the start, not as a separate stop). */
   trailheadPoiIds: string[];
 }
@@ -40,6 +42,11 @@ export interface PlanResult {
   focus: { slug: string; status: "ranked" | "excluded" | "unknown" } | null;
 }
 
+/** Itinerary notes naming each permit (shared with saveTrip so both itineraries agree). */
+export function permitNotes(permits: { name: string; leadTimeDays: number | null }[]): string[] {
+  return permits.map((p) => `Permit: ${p.name}${p.leadTimeDays !== null ? ` (allow about ${p.leadTimeDays} days)` : ""}.`);
+}
+
 export async function planTrip(prefs: TripPreferences, opts: { now?: Date; focusSlug?: string } = {}): Promise<PlanResult> {
   const now = opts.now ?? new Date();
   const region = await getLaunchRegion();
@@ -53,15 +60,18 @@ export async function planTrip(prefs: TripPreferences, opts: { now?: Date; focus
   const suggestions: PlanSuggestion[] = rec.ranked.map((r, i) => {
     const trail = bundle.trails.get(r.trailId)!;
     const permits = bundle.permitsByTrail.get(r.trailId) ?? [];
+    const partialClosures = partialClosuresOn(bundle, r.trailId, prefs.plannedDate, region.timezone);
     return {
       rank: i + 1,
       trail,
       result: r,
       permits,
+      partialClosures,
       trailheadPoiIds: (bundle.pois.get(r.trailId) ?? []).filter((p) => p.kind === "trailhead").map((p) => p.id),
       itinerary: buildItinerary(trail, bundle.pois.get(r.trailId) ?? [], prefs, now, {
         latestFinishTime: rec.latestFinishTime,
-        extraNotes: permits.map((p) => `Permit: ${p.name}${p.leadTimeDays !== null ? ` (allow about ${p.leadTimeDays} days)` : ""}.`),
+        partialClosures,
+        extraNotes: permitNotes(permits),
       }),
     };
   });

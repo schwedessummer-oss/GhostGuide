@@ -21,9 +21,10 @@ export function setupFormProps(d: CheckinCardData, mode: "create" | "update") {
     contactsNeedingConsent: d.contacts.filter((c) => !c.hasConsent).map((c) => c.name),
     selectedContactId: d.checkin?.emergencyContactId ?? null,
     expectedReturnLocal: d.defaults.expectedReturnLocal,
-    tzAbbrev: d.tzAbbrev,
+    tzLabel: d.tzLabel,
     graceMinutes: d.defaults.graceMinutes,
     reminderOffsetsMin: d.defaults.reminderOffsetsMin,
+    shareLocation: d.shareLocation,
   };
 }
 
@@ -54,7 +55,15 @@ export async function CheckinSetupCard({ tripId }: { tripId: string }) {
       <div className="mt-4 space-y-4">
         {c && (isAwaiting(c.status) || isOverdueState(c.status) || c.status === "completed") ? (
           <>
-            <CheckinStatusSummary checkin={c} contact={d.contact} timeZone={d.timeZone} tripId={trip.id} compact />
+            <CheckinStatusSummary
+              checkin={c}
+              contact={d.contact}
+              contactReachable={d.contactReachable}
+              simulated={d.notificationsSimulated}
+              timeZone={d.timeZone}
+              tripId={trip.id}
+              compact
+            />
             <Link href={`/trips/${trip.id}/checkin`} className="inline-flex min-h-11 items-center font-semibold text-forest-800 underline">
               {isOverdueState(c.status) ? "Respond now: I'm okay / Finish trip" : "Check-in details and actions"}
             </Link>
@@ -77,7 +86,15 @@ export async function CheckinSetupCard({ tripId }: { tripId: string }) {
             Please tell someone you trust where you&apos;re going and when you expect to be back.
           </Alert>
         ) : (
-          <CheckinSetupForm {...setupFormProps(d, "create")} />
+          <>
+            {c?.status === "cancelled" ? (
+              // Shown after "Turn off check-ins" (the opt-out form and its message are gone once the page refreshes).
+              <Alert tone="neutral" title="Check-ins are off for this trip" live="polite">
+                No reminders or notices will be sent. You can turn them on again below.
+              </Alert>
+            ) : null}
+            <CheckinSetupForm {...setupFormProps(d, "create")} />
+          </>
         )}
         <p className="text-sm text-muted">{CHECKIN_LIMITS_NOTE}</p>
       </div>

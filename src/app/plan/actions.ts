@@ -33,7 +33,8 @@ export async function saveTripAction(formData: FormData): Promise<void> {
   const back = resultsPath(plan.prefs, plan.trailSlug);
 
   const user = await getCurrentUser();
-  if (!user) redirect(`/login?next=${encodeURIComponent(back)}`);
+  // Come back to the chosen card (trailId is a validated uuid), not the top of a long page.
+  if (!user) redirect(`/login?next=${encodeURIComponent(`${back}#trail-${trailId}`)}`);
 
   const limit = await checkRateLimit(`trips:save:${user.id}`, 30, 3600);
   if (!limit.allowed) redirect(withSaveError(back, "rate_limited", trailId));

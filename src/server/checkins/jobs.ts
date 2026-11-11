@@ -180,10 +180,31 @@ export async function processOverdueJob(payload: unknown, now: Date): Promise<Jo
 // ---------------------------------------------------------------------------
 // checkins.scan_overdue — periodic safety net (every minute)
 // ---------------------------------------------------------------------------
+
 /**
- * Finds awaiting check-ins past expected return + grace and (re)queues the
- * SAME `checkin:<id>:v<version>:overdue` job, so the check never runs twice
- * in parallel and a lost, dead or prematurely-finished job is recovered.
+ * Longest a safety-critical job (the overdue check, an overdue notice's send)
+ * may wait for a retry. The generic queue backs off exponentially up to an
+ * hour; for these jobs the once-a-minute scan pulls a later retry forward, so
+ * a transient failure delays a contact notice by about a minute, not an hour.
+ */
+export const SAFETY_RETRY_MAX_DELAY_SEC = 60;
+
+const SAFETY_NOTICE_TEMPLATES: readonly string[] = [NOTIFICATION_TEMPLATES.overdueContact, NOTIFICATION_TEMPLATES.overdueUser];
+
+/**
+ * Finds awaiting check-ins past expected return + grace and makes sure the
+ * SAME `checkin:<id>:v<version>:overdue` job runs now: enqueues it if it is
+ * missing (lost), re-queues it if it already ended (dead, cancelled, or
+ * finished too early), and pulls it forward if it is still queued for a
+ * later time (a retry backoff, or a schedule for a deadline that has since
+ * moved earlier). One key per version means the check never runs twice in
+ * parallel and never double-notifies (notice dedup keys back this up).
+ *
+ * It also keeps undelivered overdue notices of check-ins that are still
+ * overdue moving: their `notifications.send` jobs are pulled forward when a
+ * backoff would delay them by more than SAFETY_RETRY_MAX_DELAY_SEC, and
+ * revived if they ran out of attempts (transient failures only — permanent
+ * provider rejections end the job as succeeded and are not retried).
  */
 export async function scanOverdue(now: Date): Promise<JobOutcome> {
   const due = await withSystem(
@@ -207,11 +228,42 @@ export async function scanOverdue(now: Date): Promise<JobOutcome> {
       const rows = await tx`
         update public.jobs set status = 'queued', run_at = now(), finished_at = null, locked_at = null,
           max_attempts = greatest(max_attempts, attempts + 3), last_error = 'requeued by checkins.scan_overdue'
-        where dedup_key = ${key} and status in ('succeeded', 'failed', 'dead', 'cancelled')
+        where dedup_key = ${key}
+          and (status in ('succeeded', 'failed', 'dead', 'cancelled')
+               or (status = 'queued' and run_at > now()))
         returning id`;
       requeued += rows.length;
     });
   }
-  if (enqueued || requeued) log.warn("checkin.scan_overdue.recovered", { enqueued, requeued });
-  return { outcome: enqueued || requeued ? "done" : "noop", note: `${due.length} due, ${enqueued} enqueued, ${requeued} requeued` };
+  const sendsExpedited = await expediteSafetyNoticeSends();
+  if (enqueued || requeued || sendsExpedited) log.warn("checkin.scan_overdue.recovered", { enqueued, requeued, sendsExpedited });
+  return {
+    outcome: enqueued || requeued || sendsExpedited ? "done" : "noop",
+    note: `${due.length} due, ${enqueued} enqueued, ${requeued} requeued, ${sendsExpedited} notice sends expedited`,
+  };
+}
+
+/** Cap the retry delay of undelivered overdue notices whose check-in is still overdue (same version). */
+async function expediteSafetyNoticeSends(): Promise<number> {
+  const rows = await withSystem(
+    (tx) => tx`
+      with pending as (
+        select 'notify:' || n.id::text as key
+        from public.trip_checkins c
+        join public.notifications n on n.checkin_id = c.id and n.checkin_version = c.version
+        where c.status in ('overdue', 'contact_notified')
+          and n.template = any(${SAFETY_NOTICE_TEMPLATES as string[]}::text[])
+          and n.status in ('queued', 'failed')
+      )
+      update public.jobs j set
+        status = 'queued', run_at = now(), finished_at = null, locked_at = null,
+        max_attempts = greatest(j.max_attempts, j.attempts + 3),
+        last_error = coalesce(j.last_error, '') || ' [expedited by checkins.scan_overdue]'
+      from pending p
+      where j.dedup_key = p.key and j.kind = 'notifications.send'
+        and ((j.status = 'queued' and j.run_at > now() + make_interval(secs => ${SAFETY_RETRY_MAX_DELAY_SEC}))
+             or j.status = 'dead')
+      returning j.id`,
+  );
+  return rows.length;
 }

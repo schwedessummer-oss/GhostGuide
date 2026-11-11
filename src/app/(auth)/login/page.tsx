@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { Card, Container } from "@/components/ui";
 import { env } from "@/config/env";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { AuthForm } from "../auth-form";
+
+/** "Sign in to save" sends `next=/plan/results?…#trail-<id>`: say where the visitor will land. */
+function returnsToTrailCard(next: string | undefined): boolean {
+  const safe = safeRedirectPath(next, "");
+  return safe.startsWith("/plan/results?") && /#trail-[0-9a-f-]{36}$/.test(safe);
+}
 
 export const metadata: Metadata = { title: "Sign in" };
 
@@ -11,6 +18,9 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   return (
     <Container className="max-w-md py-12">
       <h1 className="mb-6 text-3xl font-bold">Sign in</h1>
+      {returnsToTrailCard(typeof next === "string" ? next : undefined) ? (
+        <p className="mb-4 text-muted">After you sign in, we&apos;ll take you back to the trail you chose so you can save it.</p>
+      ) : null}
       <Card>
         <AuthForm mode="signin" next={typeof next === "string" ? next : undefined} />
       </Card>

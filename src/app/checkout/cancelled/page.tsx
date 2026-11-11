@@ -7,7 +7,7 @@ import { getOwnedBooking } from "@/server/commerce/queries";
 import { holdIsValid } from "@/domain/booking";
 import { formatInZone } from "@/lib/time";
 
-export const metadata: Metadata = { title: "Checkout not completed", robots: { index: false } };
+export const metadata: Metadata = { title: "Checkout status", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function CheckoutCancelledPage({ searchParams }: PageProps<"/checkout/cancelled">) {
@@ -24,7 +24,9 @@ export default async function CheckoutCancelledPage({ searchParams }: PageProps<
     <Container className="max-w-2xl py-10">
       <Card>
         <div className="space-y-4" aria-live="polite">
-          <h1 className="text-3xl font-bold">{reason === "declined" ? "Payment declined" : "Checkout not completed"}</h1>
+          <h1 className="text-3xl font-bold">
+            {b.status === "confirmed" ? "Your booking is confirmed" : reason === "declined" ? "Payment declined" : "Checkout not completed"}
+          </h1>
           <p>
             Status: <BookingStatusBadge status={b.status} />
           </p>
@@ -34,8 +36,9 @@ export default async function CheckoutCancelledPage({ searchParams }: PageProps<
             </Alert>
           ) : stillHeld ? (
             <Alert tone="amber" title="Your spots are still held">
-              You haven&apos;t been charged. We hold your spots until {b.holdExpiresAt ? formatInZone(b.holdExpiresAt, b.timezone, { timeStyle: "short" }) : "shortly"}
-              {" "}if you want to finish paying.
+              You haven&apos;t been charged. We hold your spots until{" "}
+              {b.holdExpiresAt ? formatInZone(b.holdExpiresAt, b.timezone, { hour: "numeric", minute: "2-digit", timeZoneName: "short" }) : "shortly"} if you
+              want to finish paying. You can also release them and change the details from the checkout page.
             </Alert>
           ) : (
             <Alert tone="blue">
@@ -46,7 +49,7 @@ export default async function CheckoutCancelledPage({ searchParams }: PageProps<
           )}
           <div className="flex flex-wrap gap-3">
             {b.status !== "confirmed" ? (
-              <ButtonLink href={`${tripHref}/checkout`}>{stillHeld ? "Continue to payment" : "Try again"}</ButtonLink>
+              <ButtonLink href={`${tripHref}/checkout`}>{stillHeld ? "Continue or change details" : "Try again"}</ButtonLink>
             ) : null}
             <ButtonLink href={tripHref} variant="secondary">
               Back to your trip

@@ -126,23 +126,52 @@ export async function createContact(user: SessionUser, input: unknown): Promise<
   });
 }
 
-export async function updateContact(user: SessionUser, contactId: string, input: unknown): Promise<Result> {
+/**
+ * The form sends `consentFor` = JSON ["<phone>", "<email>"] as typed when the
+ * consent box was ticked (the box clears itself when those details change).
+ * True when that attestation covers exactly the details being saved.
+ */
+export function consentCoversDetails(consentFor: unknown, phone: string | null, email: string | null): boolean {
+  if (typeof consentFor !== "string" || !consentFor || consentFor.length > 800) return false;
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(consentFor);
+  } catch {
+    return false;
+  }
+  if (!Array.isArray(parsed) || parsed.length !== 2 || !parsed.every((x) => typeof x === "string")) return false;
+  const [p, e] = (parsed as string[]).map((x) => x.trim());
+  return (p ? normalizePhone(p) : null) === phone && (e ? e.toLowerCase() : null) === email;
+}
+
+/**
+ * Update a contact. Consent is an attestation about specific contact details:
+ * when the phone or email changes, a consent box that was merely pre-ticked
+ * from the old attestation does NOT carry over — consent is cleared
+ * (`consentCleared`) unless it was ticked again for the new details
+ * (`consentFor`, see consentCoversDetails). A contact without consent on
+ * file whose box is ticked now is a fresh attestation.
+ */
+export async function updateContact(user: SessionUser, contactId: string, input: unknown): Promise<Result<{ consentCleared?: boolean }>> {
   if (!isUuid(contactId)) return { ok: false, error: "Contact not found." };
   const parsed = contactSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrors(parsed.error) };
   const c = parsed.data;
+  const consentFor = input && typeof input === "object" ? (input as { consentFor?: unknown }).consentFor : undefined;
   return withUser(user, async (tx) => {
     const [existing] = await tx<{ phone: string | null; email: string | null; consentConfirmedAt: Date | null }[]>`
       select phone, email, consent_confirmed_at from public.emergency_contacts where id = ${contactId} and user_id = ${user.id} for update`;
     if (!existing) return { ok: false as const, error: "Contact not found." };
     const detailsChanged = existing.phone !== c.phone || existing.email !== c.email;
+    const reattested = !detailsChanged || !existing.consentConfirmedAt || consentCoversDetails(consentFor, c.phone, c.email);
+    const consent = c.consent && reattested;
     // Keep the original attestation time unless the reachable details changed.
-    const consentAt = c.consent ? (existing.consentConfirmedAt && !detailsChanged ? existing.consentConfirmedAt : new Date()) : null;
+    const consentAt = consent ? (existing.consentConfirmedAt && !detailsChanged ? existing.consentConfirmedAt : new Date()) : null;
     await tx`
       update public.emergency_contacts set name = ${c.name}, phone = ${c.phone}, email = ${c.email}, relationship = ${c.relationship},
-        consent_confirmed_at = ${consentAt}::timestamptz, consent_statement = ${c.consent ? CONSENT_STATEMENT : null}
+        consent_confirmed_at = ${consentAt}::timestamptz, consent_statement = ${consent ? CONSENT_STATEMENT : null}
       where id = ${contactId} and user_id = ${user.id}`;
-    return { ok: true as const };
+    return { ok: true as const, ...(c.consent && !consent ? { consentCleared: true } : {}) };
   });
 }
 

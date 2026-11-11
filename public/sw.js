@@ -5,14 +5,20 @@
  *   gg-static-<version>  /_next/static/* app files, cache-first (versioned; cleaned on activate)
  *   gg-shell-<version>   the /offline fallback page, web manifest and icons (versioned)
  *   gg-trip-v1-<tripId>  one cache per downloaded trip: hike + help pages, their app files,
- *                        the trip bundle and narration audio. Written ONLY when the page asks
- *                        (CACHE_TRIP) so a download can be verified (VERIFY_TRIP) and removed
- *                        (DELETE_TRIP). Trip caches survive service-worker updates.
+ *                        the trip bundle and narration audio, plus an owner tag (the account's
+ *                        non-secret owner hint). Written ONLY when the page asks (CACHE_TRIP) so a
+ *                        download can be verified (VERIFY_TRIP) and removed (DELETE_TRIP); sign-out
+ *                        removes them all (CLEAR_ALL). Trip caches survive service-worker updates.
+ *
+ * Shared devices: a cached trip page is only a stand-in when the network fails, the session
+ * expired (sign-in redirect) or the server errors — never for a 404 (another account) — and,
+ * where the browser lets the worker read cookies, only while the `gg_owner` cookie matches the
+ * trip's owner tag. The pages themselves also refuse to show another account's on-device data.
  *
  * Never cached: Mapbox (api.mapbox.com, *.tiles.mapbox.com, any *.mapbox.com) and every /api/
  * response other than the trip bundle / narration audio the page explicitly stores.
  */
-const SW_VERSION = "2026-11-05.1";
+const SW_VERSION = "2026-11-11.1";
 const STATIC_CACHE = `gg-static-${SW_VERSION}`;
 const SHELL_CACHE = `gg-shell-${SW_VERSION}`;
 const TRIP_CACHE_PREFIX = "gg-trip-v1-";
@@ -20,6 +26,9 @@ const SHELL_URLS = ["/offline", "/manifest.webmanifest", "/icons/icon-192.png", 
 const STATIC_CACHE_MAX_ENTRIES = 400;
 const NAVIGATION_TIMEOUT_MS = 6000;
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const OWNER_COOKIE = "gg_owner"; // src/server/auth/owner-hint.ts
+const OWNER_HINT_RE = /^[A-Za-z0-9_-]{8,128}$/;
+const OWNER_MARKER_PATH = "/__gg/trip-owner"; // stored inside each trip cache; never requested by pages
 const ASSET_RE = /(?:\/_next\/)?static\/(?:chunks|css|media)\/[^"'\\\s<>()]+?\.(?:js|css|woff2?|ttf|otf|png|svg|jpe?g|webp|avif|ico)(?:\?[^"'\\\s<>()]*)?/g;
 
 const tripCacheName = (tripId) => TRIP_CACHE_PREFIX + tripId;
@@ -27,6 +36,8 @@ const isMapbox = (url) => /(^|\.)mapbox\.com$/i.test(url.hostname);
 const isSignedStorageUrl = (url) => url.protocol === "https:" && url.pathname.includes("/storage/v1/object/sign/");
 const isTripPagePath = (path) => /^\/trips\/[0-9a-f-]{36}\/(hike|help)$/i.test(path);
 const isTripBundlePath = (path) => /^\/api\/trips\/[0-9a-f-]{36}\/bundle$/i.test(path);
+const tripIdOf = (path) => (path.match(/^\/(?:api\/)?trips\/([0-9a-f-]{36})\//i) || [])[1] || null;
+const ownerMarkerUrl = () => new URL(OWNER_MARKER_PATH, self.location.origin).href;
 const isRscRequest = (request, url) => request.headers.get("RSC") === "1" || url.searchParams.has("_rsc");
 
 /** Static app files referenced by a page's HTML (script/link tags and the inline RSC payload). */
@@ -57,6 +68,31 @@ async function matchInTrips(request, options) {
   return undefined;
 }
 
+/**
+ * May the person signed in on this browser use this trip's cached copy?
+ * true / false when the worker can read the `gg_owner` cookie (Cookie Store API) and the
+ * trip cache has an owner tag; null when it can't tell (the page then checks for itself).
+ */
+async function ownerMayUse(tripId) {
+  const store = self.cookieStore;
+  if (!tripId || !store || typeof store.get !== "function") return null;
+  let value = null;
+  try {
+    const c = await store.get(OWNER_COOKIE);
+    value = c && c.value ? decodeURIComponent(c.value) : null;
+  } catch {
+    return null;
+  }
+  if (!value) return false; // signed out on this browser
+  try {
+    const marker = await (await caches.open(tripCacheName(tripId))).match(ownerMarkerUrl());
+    if (!marker) return null; // downloaded before owner tags existed
+    return (await marker.text()) === value;
+  } catch {
+    return null;
+  }
+}
+
 async function putStatic(request, response) {
   const cache = await caches.open(STATIC_CACHE);
   await cache.put(request, response);
@@ -66,34 +102,39 @@ async function putStatic(request, response) {
 // ---------------------------------------------------------------------------
 // Lifecycle
 // ---------------------------------------------------------------------------
+/** The public offline fallback, manifest and icons (fetched signed-out: nothing personal is stored). */
+async function precacheShell() {
+  const shell = await caches.open(SHELL_CACHE);
+  await Promise.all(
+    SHELL_URLS.map(async (u) => {
+      try {
+        const res = await fetch(u, { credentials: "omit", cache: "no-store" });
+        if (!res.ok || res.redirected) return;
+        if (u === "/offline") {
+          const html = await res.clone().text();
+          await Promise.all(
+            extractAssets(html).map(async (a) => {
+              try {
+                const r = await fetch(a);
+                if (r.ok) await putStatic(a, r);
+              } catch {
+                /* best effort */
+              }
+            }),
+          );
+        }
+        await shell.put(u, res);
+      } catch {
+        /* best effort: install must not fail because one URL is unavailable */
+      }
+    }),
+  );
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
-      const shell = await caches.open(SHELL_CACHE);
-      await Promise.all(
-        SHELL_URLS.map(async (u) => {
-          try {
-            const res = await fetch(u, { credentials: "same-origin", cache: "no-store" });
-            if (!res.ok || res.redirected) return;
-            if (u === "/offline") {
-              const html = await res.clone().text();
-              await Promise.all(
-                extractAssets(html).map(async (a) => {
-                  try {
-                    const r = await fetch(a);
-                    if (r.ok) await putStatic(a, r);
-                  } catch {
-                    /* best effort */
-                  }
-                }),
-              );
-            }
-            await shell.put(u, res);
-          } catch {
-            /* best effort: install must not fail because one URL is unavailable */
-          }
-        }),
-      );
+      await precacheShell();
       await self.skipWaiting();
     })(),
   );
@@ -127,15 +168,22 @@ async function tripCacheFirst(request) {
   return hit || fetch(request);
 }
 
+/** A cached answer, marked so the page knows it did not come from the server just now. */
+function markedFromCache(res) {
+  const headers = new Headers(res.headers);
+  headers.set("x-gg-source", "cache");
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+}
+
 async function bundleNetworkFirst(request) {
   try {
     return await fetch(request);
   } catch {
     const hit = await matchInTrips(request);
-    if (hit) return hit;
+    if (hit && (await ownerMayUse(tripIdOf(new URL(request.url).pathname))) !== false) return markedFromCache(hit);
     return new Response(JSON.stringify({ error: "You're offline and this trip isn't downloaded on this device." }), {
       status: 503,
-      headers: { "content-type": "application/json" },
+      headers: { "content-type": "application/json", "x-gg-offline": "1" },
     });
   }
 }
@@ -161,21 +209,31 @@ const OFFLINE_HTML = `<!doctype html><html lang="en"><head><meta charset="utf-8"
 <h1 style="color:#1f4630">You're offline</h1><p>This page isn't saved on this device. Downloaded trips open from <a href="/trips">My trips</a> once you reconnect, or directly from their hike screen.</p>
 <p><strong>In an emergency call 911</strong> if you have any signal. Ghost Guide cannot contact help for you.</p></body></html>`;
 
+async function offlineFallback() {
+  const offline = await caches.match("/offline");
+  return offline || new Response(OFFLINE_HTML, { status: 503, headers: { "content-type": "text/html; charset=utf-8" } });
+}
+
 async function navigationNetworkFirst(request) {
   const url = new URL(request.url);
-  const cached = isTripPagePath(url.pathname) ? await matchInTrips(url.origin + url.pathname, { ignoreSearch: true }) : undefined;
+  const tripId = isTripPagePath(url.pathname) ? tripIdOf(url.pathname) : null;
+  const cached = tripId ? await matchInTrips(url.origin + url.pathname, { ignoreSearch: true }) : undefined;
+  let res;
   try {
     // Downloaded trip pages: do not leave a hiker staring at a spinner on a weak signal.
-    const res = cached ? await withTimeout(fetch(request), NAVIGATION_TIMEOUT_MS) : await fetch(request);
-    // A downloaded trip page must stay usable even if the session expired (redirect to
-    // sign-in) or the server errors: the page runs from on-device data anyway.
-    if (cached && (res.type === "opaqueredirect" || res.redirected || res.status >= 400)) return cached;
-    return res;
+    res = cached ? await withTimeout(fetch(request), NAVIGATION_TIMEOUT_MS) : await fetch(request);
   } catch {
-    if (cached) return cached;
-    const offline = await caches.match("/offline");
-    return offline || new Response(OFFLINE_HTML, { status: 503, headers: { "content-type": "text/html; charset=utf-8" } });
+    // No connection (or too slow): the downloaded page runs from on-device data — for its owner.
+    if (cached && (await ownerMayUse(tripId)) !== false) return cached;
+    return offlineFallback();
   }
+  if (!cached) return res;
+  // The session expired on the trail (sign-in redirect) or the server errors: keep the downloaded
+  // page usable for the same person. Never for a 404 (a different signed-in account), and not
+  // after an explicit sign-out (no owner cookie): then the network's answer (sign-in) is shown.
+  const authRedirect = res.type === "opaqueredirect" || res.redirected;
+  if ((authRedirect || res.status >= 500) && (await ownerMayUse(tripId)) !== false) return cached;
+  return res;
 }
 
 self.addEventListener("fetch", (event) => {
@@ -207,7 +265,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 // ---------------------------------------------------------------------------
-// Messages from the page: CACHE_TRIP / VERIFY_TRIP / DELETE_TRIP
+// Messages from the page: CACHE_TRIP / VERIFY_TRIP / DELETE_TRIP / CLEAR_ALL
 // ---------------------------------------------------------------------------
 function allowedForTrip(tripId, url) {
   if (isMapbox(url)) return false;
@@ -236,6 +294,9 @@ async function cacheTrip(data, reply) {
     return;
   }
   const cache = await caches.open(tripCacheName(tripId));
+  if (typeof data.ownerHint === "string" && OWNER_HINT_RE.test(data.ownerHint)) {
+    await cache.put(ownerMarkerUrl(), new Response(data.ownerHint, { headers: { "content-type": "text/plain" } }));
+  }
   const results = [];
   const assets = new Set();
   const items = data.urls.map((u) => String(u));
@@ -314,6 +375,18 @@ async function deleteTrip(data, reply) {
   reply({ type: "DELETE_TRIP_RESULT", tripId, deleted });
 }
 
+/**
+ * Sign-out (src/app/auth/logout/route.ts): remove every downloaded trip — pages, bundle with the
+ * itinerary and check-in details, narration audio. The static app files and the public offline
+ * page hold nothing personal; the offline page is re-stored in case the page already cleared it.
+ */
+async function clearAll(_data, reply) {
+  let deleted = 0;
+  for (const name of await tripCacheNames()) if (await caches.delete(name)) deleted++;
+  await precacheShell().catch(() => undefined);
+  reply({ type: "CLEAR_ALL_RESULT", deleted });
+}
+
 self.addEventListener("message", (event) => {
   const data = event.data || {};
   const port = event.ports && event.ports[0];
@@ -328,5 +401,6 @@ self.addEventListener("message", (event) => {
   if (data.type === "CACHE_TRIP") run(cacheTrip);
   else if (data.type === "VERIFY_TRIP") run(verifyTrip);
   else if (data.type === "DELETE_TRIP") run(deleteTrip);
+  else if (data.type === "CLEAR_ALL") run(clearAll);
   else if (data.type === "SKIP_WAITING") self.skipWaiting();
 });

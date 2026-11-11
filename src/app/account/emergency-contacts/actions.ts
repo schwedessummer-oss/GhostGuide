@@ -8,12 +8,15 @@ import { createContact, deleteContact, updateContact } from "@/server/account/co
 import type { AccountFormState } from "@/components/account/form-result";
 
 function contactInput(formData: FormData) {
+  const text = (name: string, max = 400) => String(formData.get(name) ?? "").slice(0, max);
   return {
-    name: String(formData.get("name") ?? ""),
-    phone: String(formData.get("phone") ?? ""),
-    email: String(formData.get("email") ?? ""),
-    relationship: String(formData.get("relationship") ?? ""),
+    name: text("name"),
+    phone: text("phone"),
+    email: text("email"),
+    relationship: text("relationship"),
     consent: formData.get("consent") === "on",
+    /** the phone/email the consent box was ticked for (set by the form; see updateContact) */
+    consentFor: text("consentFor", 800),
   };
 }
 
@@ -26,7 +29,7 @@ export async function createContactAction(_prev: AccountFormState, formData: For
   if (await limited(user.id)) return { ok: false, error: "Too many changes in a short time. Please wait a few minutes." };
   const input = contactInput(formData);
   const r = await createContact(user, input);
-  if (!r.ok) return { ok: false, error: r.error, fieldErrors: r.fieldErrors };
+  if (!r.ok) return { ok: false, error: r.error, fieldErrors: r.fieldErrors, values: input };
   refresh();
   return {
     ok: true,
@@ -38,10 +41,16 @@ export async function updateContactAction(contactId: string, _prev: AccountFormS
   const user = await requireUser("/account/emergency-contacts");
   if (!z.uuid().safeParse(contactId).success) return { ok: false, error: "Contact not found." };
   if (await limited(user.id)) return { ok: false, error: "Too many changes in a short time. Please wait a few minutes." };
-  const r = await updateContact(user, contactId, contactInput(formData));
-  if (!r.ok) return { ok: false, error: r.error, fieldErrors: r.fieldErrors };
+  const input = contactInput(formData);
+  const r = await updateContact(user, contactId, input);
+  if (!r.ok) return { ok: false, error: r.error, fieldErrors: r.fieldErrors, values: input };
   refresh();
-  return { ok: true, message: "Contact saved." };
+  return {
+    ok: true,
+    message: r.consentCleared
+      ? "Contact saved. Their phone or email changed, so their consent needs confirming again: tick the consent box and save once they've agreed to notices at the new details."
+      : "Contact saved.",
+  };
 }
 
 export async function deleteContactAction(contactId: string, _prev: AccountFormState, formData: FormData): Promise<AccountFormState> {

@@ -1,6 +1,7 @@
 /**
  * Page-side messaging with the service worker (public/sw.js).
- * Messages: CACHE_TRIP {tripId, urls}, VERIFY_TRIP {tripId, urls}, DELETE_TRIP {tripId}.
+ * Messages: CACHE_TRIP {tripId, urls, ownerHint}, VERIFY_TRIP {tripId, urls}, DELETE_TRIP {tripId},
+ * CLEAR_ALL (sign-out: every trip cache).
  * Replies arrive on a MessageChannel port.
  */
 export interface CacheResult {
@@ -69,9 +70,11 @@ export async function postToServiceWorker<T>(
   });
 }
 
-export const cacheTripUrls = (tripId: string, urls: string[], onProgress?: (p: CacheProgress) => void) =>
-  postToServiceWorker<CacheTripReply>({ type: "CACHE_TRIP", tripId, urls }, { onProgress, timeoutMs: 300_000 });
+export const cacheTripUrls = (tripId: string, urls: string[], onProgress?: (p: CacheProgress) => void, ownerHint?: string) =>
+  postToServiceWorker<CacheTripReply>({ type: "CACHE_TRIP", tripId, urls, ownerHint }, { onProgress, timeoutMs: 300_000 });
 
 export const verifyTripUrls = (tripId: string, urls: string[]) => postToServiceWorker<VerifyTripReply>({ type: "VERIFY_TRIP", tripId, urls });
 
 export const deleteTripCache = (tripId: string) => postToServiceWorker<{ type: "DELETE_TRIP_RESULT"; deleted: boolean }>({ type: "DELETE_TRIP", tripId });
+
+export const clearAllTripCaches = () => postToServiceWorker<{ type: "CLEAR_ALL_RESULT"; deleted: number }>({ type: "CLEAR_ALL" }, { timeoutMs: 10_000 });

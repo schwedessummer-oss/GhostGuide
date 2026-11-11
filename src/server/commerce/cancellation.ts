@@ -145,7 +145,7 @@ export async function getCancellationPreview(user: SessionUser, tripId: string, 
   if (trip.status === "cancelled") blockedReason = "This trip is already cancelled.";
   else if (trip.status === "active") blockedReason = "Your hike is in progress, so it can't be cancelled here. Finish or end the hike from the trip page.";
   else if (trip.status === "completed") blockedReason = "This trip is already completed.";
-  else if (data?.b.status === "pending_payment") blockedReason = "A checkout is in progress for this trip. Finish paying or let the hold expire before cancelling.";
+  else if (data?.b.status === "pending_payment") blockedReason = "A checkout is in progress for this trip. Finish paying, or release the held spots from the checkout page, before cancelling.";
   else if (data?.b.status === "needs_attention") blockedReason = "Our team is reviewing this booking. Please contact support to cancel it.";
   else if (data && data.b.status !== "confirmed") blockedReason = "This booking is already being cancelled.";
 
@@ -201,7 +201,7 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
       return { ok: true, alreadyCancelled: false, refundCents: 0, bookingStatus: null };
     }
     if (b.userId !== user.id) return { ok: false, code: "not_found", error: "Trip not found." };
-    if (b.status === "pending_payment") return { ok: false, code: "not_allowed", error: "A checkout is in progress. Finish paying or let the hold expire first." };
+    if (b.status === "pending_payment") return { ok: false, code: "not_allowed", error: "A checkout is in progress. Finish paying, or release the held spots from the checkout page, first." };
     if (b.status === "needs_attention") return { ok: false, code: "not_allowed", error: "Our team is reviewing this booking. Please contact support to cancel it." };
     if (b.status !== "confirmed") return { ok: true, alreadyCancelled: true, refundCents: 0, bookingStatus: b.status };
 

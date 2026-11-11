@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ChevronLeft, Sparkles } from "lucide-react";
+import { Bell, ChevronLeft, Sparkles } from "lucide-react";
 import { Alert, Badge, ButtonLink, Card, Container, PageHeader, SimulatedBadge } from "@/components/ui";
 import { BookingStatusBadge, DemoTrailBadge, TripStatusBadge } from "@/components/commerce/status-badges";
 import { PriceBreakdown } from "@/components/commerce/price-breakdown";
@@ -12,10 +12,11 @@ import { CheckinStatusCard } from "@/components/checkin/checkin-status-card";
 import { getCurrentUser, requireUser } from "@/server/auth";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { getRegionById, getTrailById } from "@/server/catalog/trails";
-import { getTripBookingView } from "@/server/commerce/queries";
+import { getTripBookingView, listTripReminders } from "@/server/commerce/queries";
 import { getCommerceSettings } from "@/server/commerce/settings";
+import { getClosuresOnDay } from "@/server/commerce/trip-plan";
 import { tripStartTime } from "@/server/commerce/checkout";
-import { BOOKING_STATUS_COPY, describeCancellationPolicy } from "@/domain/booking";
+import { BOOKING_STATUS_COPY, LIVE_BOOKING_STATUSES, describeCancellationPolicy } from "@/domain/booking";
 import { formatDate, formatMoney, titleCase } from "@/lib/format";
 import { formatInZone } from "@/lib/time";
 
@@ -35,16 +36,32 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
   const trip = await getOwnedTrip(user, id);
   if (!trip) notFound();
 
-  const [trail, region, view, settings] = await Promise.all([
+  const [trail, region, view, settings, reminders] = await Promise.all([
     getTrailById(trip.trailId),
     getRegionById(trip.regionId),
     getTripBookingView(user, trip.id),
     getCommerceSettings(),
+    listTripReminders(user, trip.id),
   ]);
   const tz = region?.timezone ?? "America/Los_Angeles";
   const b = view?.booking ?? null;
   const startTime = tripStartTime(trip);
-  const hikeDate = b?.hikeDate ?? trip.plannedDate;
+  // A live booking (held or paid) defines the hike date and group; an expired
+  // or failed checkout does not — then the saved plan does.
+  const liveBooking = b && (b.status === "pending_payment" ? view?.holdValid : LIVE_BOOKING_STATUSES.includes(b.status)) ? b : null;
+  const hikeDate = liveBooking?.hikeDate ?? trip.plannedDate;
+  const partySize = liveBooking?.partySize ?? trip.partySize;
+  const pendingDiffers =
+    !!liveBooking && liveBooking.status === "pending_payment" && (liveBooking.hikeDate !== trip.plannedDate || liveBooking.partySize !== trip.partySize);
+  const shuttleSimulated = view?.fulfillments.some((f) => f.kind === "shuttle" && f.simulated) ?? false;
+  // Closures scheduled for the hike day matter even before they become active.
+  const dayClosures = hikeDate && trip.status !== "completed" && trip.status !== "cancelled" ? await getClosuresOnDay(trip.trailId, hikeDate, tz) : null;
+  const closureNotices = [
+    ...(dayClosures?.closed ? [{ key: "closed", text: `Closed on your hike date: ${dayClosures.closed.reason}` }] : []),
+    ...(dayClosures?.notices ?? []).map((c, i) => ({ key: `n${i}`, text: `${c.severity === "partial" ? "Partial closure" : "Advisory"} on your hike date: ${c.reason}` })),
+    ...(trail?.activeClosures ?? []).map((c) => ({ key: c.id, text: c.reason })),
+  ].filter((n, i, all) => all.findIndex((m) => m.text.endsWith(n.text) || n.text.endsWith(m.text)) === i);
+  const realAi = !!trip.aiProvider?.startsWith("anthropic");
   const showHikeCards = trip.status === "booked" || trip.status === "active" || trip.status === "completed";
   const canCancel = (trip.status === "saved" && b?.status !== "pending_payment") || (trip.status === "booked" && b?.status === "confirmed");
   const flash = typeof sp.cancelled === "string" ? "cancelled" : typeof sp.shuttle === "string" ? "shuttle" : null;
@@ -63,7 +80,7 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
         description={
           <span>
             {hikeDate ? formatDate(hikeDate, { weekday: "long", month: "long", day: "numeric", year: "numeric" }) : "Date not set"} · start{" "}
-            {startTime} · {b?.partySize ?? trip.partySize} {(b?.partySize ?? trip.partySize) === 1 ? "hiker" : "hikers"}
+            {startTime} · {partySize} {partySize === 1 ? "hiker" : "hikers"}
           </span>
         }
         actions={
@@ -84,8 +101,9 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
           </Alert>
         ) : null}
         {flash === "shuttle" ? (
-          <Alert tone="forest" title="Shuttle confirmed" className="mb-6">
-            We sent your confirmed pickup to the shuttle partner. Its status is shown below.
+          <Alert tone="forest" title="Shuttle confirmation received" className="mb-6">
+            Thanks — you confirmed the pickup location, time and price. We&apos;re now requesting your ride from the shuttle partner
+            {shuttleSimulated ? " (simulated in this demo)" : ""}; the ride is booked only once the partner confirms. Its status is shown below.
           </Alert>
         ) : null}
       </div>
@@ -125,10 +143,23 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
               <div className="mt-4 space-y-4">
                 <p>{BOOKING_STATUS_COPY[b.status].description}</p>
                 {b.status === "pending_payment" && view?.holdValid ? (
-                  <div className="flex flex-wrap items-center gap-3">
-                    <ButtonLink href={`/trips/${trip.id}/checkout`}>Complete payment</ButtonLink>
-                    {b.holdExpiresAt ? <span className="text-sm text-muted">Spot held until {formatInZone(b.holdExpiresAt, tz, { timeStyle: "short" })}</span> : null}
-                  </div>
+                  <>
+                    <p className="text-[0.95rem]">
+                      <span className="font-semibold">Held:</span> {formatDate(b.hikeDate, { weekday: "short", month: "short", day: "numeric", year: "numeric" })} ·{" "}
+                      {b.partySize} {b.partySize === 1 ? "hiker" : "hikers"} · {formatMoney(b.totalCents, b.currency)}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <ButtonLink href={`/trips/${trip.id}/checkout`}>Complete payment</ButtonLink>
+                      <ButtonLink href={`/trips/${trip.id}/checkout`} variant="secondary">
+                        Change details
+                      </ButtonLink>
+                      {b.holdExpiresAt ? (
+                        <span className="text-sm text-muted">
+                          Spot held until {formatInZone(b.holdExpiresAt, tz, { hour: "numeric", minute: "2-digit", timeZoneName: "short" })}
+                        </span>
+                      ) : null}
+                    </div>
+                  </>
                 ) : null}
                 {b.receiptNumber ? (
                   <p>
@@ -179,6 +210,14 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
             <h2 id="itinerary-heading" className="text-xl font-bold">
               Itinerary
             </h2>
+            {pendingDiffers && liveBooking ? (
+              <p className="mt-3 rounded-lg bg-blue-bg p-3 text-sm text-blue-ink">
+                This itinerary is for your saved plan ({trip.plannedDate ? formatDate(trip.plannedDate, { month: "short", day: "numeric" }) : "no date"},{" "}
+                {trip.partySize} {trip.partySize === 1 ? "hiker" : "hikers"}). It will be recalculated for{" "}
+                {formatDate(liveBooking.hikeDate, { month: "short", day: "numeric", year: "numeric" })} with {liveBooking.partySize}{" "}
+                {liveBooking.partySize === 1 ? "hiker" : "hikers"} once your payment is confirmed.
+              </p>
+            ) : null}
             <div className="mt-4">
               <ItinerarySummary itinerary={trip.itinerary} startTime={startTime} />
             </div>
@@ -191,14 +230,14 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
                   <Sparkles aria-hidden className="size-5 text-forest-700" /> Trip summary
                 </h2>
                 <div className="flex gap-1.5">
-                  <Badge tone="blue">AI-generated</Badge>
-                  {!trip.aiProvider?.startsWith("anthropic") ? <SimulatedBadge label="Simulated AI (template)" /> : null}
+                  {/* Only text from a real model is labeled AI-generated; template text is labeled as simulated. */}
+                  {realAi ? <Badge tone="blue">AI-generated</Badge> : <SimulatedBadge label="Simulated AI (template)" />}
                 </div>
               </div>
               <p className="mt-3 whitespace-pre-line">{trip.aiSummary}</p>
               <p className="mt-3 text-sm text-muted">
-                Written automatically to explain your plan. It can be wrong and never changes your route, booking or safety information — rely on the
-                trail details, closures and itinerary above.
+                {realAi ? "Written by an AI model" : "Assembled from a fixed template (no AI model)"} to explain your plan. It can be wrong and never
+                changes your route, booking or safety information — rely on the trail details, closures and itinerary above.
               </p>
             </Card>
           ) : null}
@@ -206,6 +245,25 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
 
         <aside className="space-y-6" aria-label="Trip tools">
           {showHikeCards ? <CheckinStatusCard tripId={trip.id} /> : null}
+
+          {reminders.length ? (
+            <Card aria-labelledby="reminders-heading">
+              <h2 id="reminders-heading" className="flex items-center gap-2 text-lg font-bold">
+                <Bell aria-hidden className="size-5 text-forest-700" /> Reminders
+              </h2>
+              <ul className="mt-3 space-y-3 text-[0.95rem]">
+                {reminders.map((r) => (
+                  <li key={r.id} className="rounded-lg border border-sand-200 p-3">
+                    <p className="text-sm text-muted">Permit reminder · {formatInZone(r.createdAt, tz, { dateStyle: "medium" })}</p>
+                    <p className="mt-1">{r.body}</p>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-sm text-muted">
+                Reminders only. Apply through the official permit link; Ghost Guide does not obtain permits for you.
+              </p>
+            </Card>
+          ) : null}
 
           <Card aria-labelledby="trail-heading">
             <h2 id="trail-heading" className="text-lg font-bold">
@@ -239,11 +297,14 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
             ) : (
               <p className="mt-2 text-muted">This trail is no longer listed in the catalog.</p>
             )}
-            {trail?.activeClosures.length ? (
-              <Alert tone="amber" title="Closure notice" className="mt-3">
-                {trail.activeClosures.map((c) => (
-                  <p key={c.id}>{c.reason}</p>
+            {closureNotices.length ? (
+              <Alert tone={dayClosures?.closed ? "red" : "amber"} title="Closure notice" className="mt-3">
+                {closureNotices.map((c) => (
+                  <p key={c.key}>{c.text}</p>
                 ))}
+                {dayClosures?.closed && trip.status === "booked" ? (
+                  <p className="mt-2">Do not hike a closed trail. You can cancel from this page, or contact support about your booking.</p>
+                ) : null}
               </Alert>
             ) : null}
             {trail ? (

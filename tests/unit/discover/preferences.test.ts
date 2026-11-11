@@ -57,6 +57,32 @@ describe("parsePlanQuery", () => {
     if (!r.ok) expect(r.errors.maxMi).toMatch(/Minimum distance/);
   });
 
+  it("accepts the full advertised distance range (0.5–50 miles)", () => {
+    const max = parsePlanQuery(new URLSearchParams(base.replace("maxMi=5", "maxMi=50")));
+    expect(max.ok).toBe(true);
+    if (max.ok) expect(max.prefs.distanceKmMax).toBe(80.467);
+    const min = parsePlanQuery(new URLSearchParams(base.replace("minMi=2", "minMi=50").replace("&maxMi=5", "")));
+    expect(min.ok).toBe(true);
+    if (min.ok) expect(min.prefs.distanceKmMin).toBe(80.467);
+    // and a saved trip with those preferences re-validates
+    if (max.ok) expect(parseTripPreferences(max.prefs).ok).toBe(true);
+  });
+
+  it("reports distance errors in miles on the field that caused them", () => {
+    const tooFarMin = parsePlanQuery(new URLSearchParams(base.replace("minMi=2", "minMi=60").replace("&maxMi=5", "")));
+    expect(tooFarMin.ok).toBe(false);
+    if (!tooFarMin.ok) {
+      expect(tooFarMin.errors).toEqual({ minMi: "Minimum distance must be between 0 and 50 miles." });
+    }
+    const tooFarMax = parsePlanQuery(new URLSearchParams(base.replace("maxMi=5", "maxMi=51")));
+    if (!tooFarMax.ok) expect(tooFarMax.errors).toEqual({ maxMi: "Maximum distance must be between 0.5 and 50 miles." });
+    else throw new Error("expected 51 mi to be rejected");
+    const gain = parsePlanQuery(new URLSearchParams(base.replace("maxGainFt=1500", "maxGainFt=20000")));
+    if (!gain.ok) expect(gain.errors).toEqual({ maxGainFt: "Maximum elevation gain must be between 0 and 13,000 feet." });
+    else throw new Error("expected 20,000 ft to be rejected");
+    for (const r of [tooFarMin, tooFarMax, gain]) if (!r.ok) expect(Object.values(r.errors).join(" ")).not.toMatch(/km|expected number/);
+  });
+
   it("treats an empty query as a first visit", () => {
     const r = parsePlanQuery(new URLSearchParams("trail=lantern-creek-loop"));
     expect(r).toMatchObject({ ok: false, hasInput: false });

@@ -112,8 +112,49 @@ describe("recommendation over the seeded catalog", () => {
     expect(r.suggestions).toHaveLength(0);
     expect(r.excluded).toHaveLength(6);
     expect(r.relaxSuggestions.length).toBeGreaterThan(0);
-    expect(r.relaxSuggestions.join(" ")).toMatch(/Allow at least/);
-    expect(r.relaxSuggestions.join(" ")).toMatch(/Start earlier/);
+    // Lantern Creek Loop (step-free, dog-friendly) is blocked only by the latest-finish estimate.
+    expect(r.relaxSuggestions.join(" ")).toMatch(/Start earlier, by \d{2}:\d{2} at the latest, to finish Lantern Creek Loop before the latest-finish estimate for [A-Z][a-z]+ \(\d{2}:\d{2}\)/);
+    // Every other trail lacks a needed accessibility feature, so it is never named.
+    for (const name of ["Old Signal Summit", "Echo Basin Traverse", "Whisper Falls Trail", "Miner's Meadow Loop", "Hollow Pine Ridge"]) {
+      expect(r.relaxSuggestions.join(" ")).not.toContain(name);
+    }
+  });
+
+  it("never nudges a new, low-fitness hiker toward trails excluded by the experience rule or by access needs", async () => {
+    const p = broadPrefs({
+      experience: "new",
+      fitness: "low",
+      pace: "leisurely",
+      availableHours: 1,
+      startTime: "08:30",
+      bringingDog: true,
+      accessibilityNeeds: ["step_free", "avoid_exposure"],
+      plannedDate: daysFromNow(14),
+    });
+    const r = await planTrip(p);
+    expect(r.noMatch).toBe(true);
+    const text = r.relaxSuggestions.join("\n");
+    expect(text).toMatch(/Allow at least 1\.5 h to include Lantern Creek Loop\./);
+    for (const name of ["Old Signal Summit", "Echo Basin Traverse", "Whisper Falls Trail", "Miner's Meadow Loop", "Hollow Pine Ridge"]) {
+      expect(text).not.toContain(name);
+    }
+    // and the named change really includes it
+    const again = await planTrip({ ...p, availableHours: 1.5 });
+    expect(again.suggestions.map((s) => s.trail.slug)).toContain("lantern-creek-loop");
+  });
+
+  it("carries the partial closure into the itinerary of the partially closed trail only", async () => {
+    const r = await planTrip(broadPrefs());
+    const signal = r.suggestions.find((s) => s.trail.slug === "old-signal-summit")!;
+    expect(signal.partialClosures).toEqual([expect.stringMatching(/^Upper switchbacks closed.*Turn around at the Signal Tower\.$/)]);
+    expect(signal.itinerary.notes).toContainEqual(expect.stringMatching(/^Partial closure on your date: Upper switchbacks closed.*Follow the closure/));
+    expect(signal.itinerary.notes.join(" ")).not.toMatch(/even if you have not reached it/);
+    const hollow = r.suggestions.find((s) => s.trail.slug === "hollow-pine-ridge")!;
+    expect(hollow.partialClosures).toEqual([]);
+    expect(hollow.itinerary.notes.join(" ")).not.toMatch(/Partial closure/);
+    // a partial closure that has ended by the planned date is not shown
+    const later = await planTrip(broadPrefs({ plannedDate: daysFromNow(60) }));
+    expect(later.suggestions.find((s) => s.trail.slug === "old-signal-summit")!.partialClosures).toEqual([]);
   });
 
   it("highlights a requested trail", async () => {

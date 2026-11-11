@@ -115,6 +115,26 @@ describe("guardAiText", () => {
   });
 });
 
+describe("itinerary summary with a partial closure", () => {
+  const reason = "Upper switchbacks closed for (fictional) trail maintenance. Turn around at the Signal Tower.";
+  const closed = { ...summarizeInput, partialClosures: [reason] };
+
+  it("tells the hiker to follow the closure instead of continuing to the far end", async () => {
+    const s = await templateProvider.summarizeItinerary(closed);
+    expect(s.text).toMatch(/partial closure on your date: follow the closure notice in your itinerary, even if that means turning around before the far end/);
+    expect(s.text).toMatch(/Turn around by 10:25 at the latest, or earlier where the closure requires it\./);
+    expect(s.text).toMatch(/estimated full-route finish/);
+    expect(s.text).not.toMatch(/even if you have not reached the far end/);
+    // unchanged without a closure
+    expect((await templateProvider.summarizeItinerary(summarizeInput)).text).toMatch(/Turn around by 10:25 even if you have not reached the far end/);
+  });
+
+  it("gives the live model the closure as a fact, and the template still passes the guard", () => {
+    expect(summarizeFacts(closed)).toContain(reason);
+    expect(guardAiText(sanitizeAiText(templateSummary(closed)), summarizeFacts(closed))).toEqual({ ok: true });
+  });
+});
+
 describe("runGuarded (fallback behaviour)", () => {
   const template: AiText = { text: "Template text.", provider: "demo-template", simulated: true };
   const facts = explainFacts(explainInput);

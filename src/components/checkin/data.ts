@@ -7,15 +7,15 @@ import { env } from "@/config/env";
 import { listContacts, type ContactView } from "@/server/account/contacts";
 import { getCheckinDefaults, getOwnedCheckin, type CheckinView } from "@/server/checkins/manage";
 import { listShares, type ShareView } from "@/server/sharing/shares";
-import { formatInZone } from "@/lib/time";
-import { MIN_LEAD_MIN, toLocalInputValue } from "@/domain/checkin";
+import { getProfile } from "@/server/account/profile";
+import { MIN_LEAD_MIN, timeZoneLabel, toLocalInputValue } from "@/domain/checkin";
 
 /** Data the check-in cards and page render from (all reads are RLS-scoped to the user). */
 export interface CheckinCardData {
   trip: TripRow;
   timeZone: string;
-  /** e.g. "PST" — shown next to time inputs */
-  tzAbbrev: string;
+  /** DST-neutral zone name, e.g. "Pacific Time" — shown next to time inputs */
+  tzLabel: string;
   emergencyNumber: string;
   emergencyGuidance: string;
   checkinsEnabled: boolean;
@@ -24,18 +24,23 @@ export interface CheckinCardData {
   checkin: CheckinView | null;
   contacts: ContactView[];
   contact: ContactView | null;
+  /** the check-in's contact can receive a notice now (selected, consent on file, phone or email) */
+  contactReachable: boolean;
+  /** profiles.share_location_with_contacts (on by default) */
+  shareLocation: boolean;
   defaults: { expectedReturnLocal: string; graceMinutes: number; reminderOffsetsMin: number[] };
   /** earliest acceptable "pick a new return time" value (datetime-local, region time) */
   minExtendLocal: string;
 }
 
 export async function loadCheckinCardData(user: SessionUser, trip: TripRow): Promise<CheckinCardData> {
-  const [region, flags, checkin, contacts, defaults] = await Promise.all([
+  const [region, flags, checkin, contacts, defaults, profile] = await Promise.all([
     getRegionById(trip.regionId),
     getFlags(),
     getOwnedCheckin(user, trip.id),
     listContacts(user),
     getCheckinDefaults(trip),
+    getProfile(user),
   ]);
   const timeZone = region?.timezone ?? defaults.timeZone;
   const now = new Date();
@@ -46,10 +51,11 @@ export async function loadCheckinCardData(user: SessionUser, trip: TripRow): Pro
       : defaults.expectedReturnAt && defaults.expectedReturnAt.getTime() > now.getTime() + 10 * 60_000
         ? defaults.expectedReturnAt
         : fallbackReturn;
+  const contact = checkin?.emergencyContactId ? (contacts.find((c) => c.id === checkin.emergencyContactId) ?? null) : null;
   return {
     trip,
     timeZone,
-    tzAbbrev: formatInZone(now, timeZone, { timeZoneName: "short" }).split(" ").pop() ?? "",
+    tzLabel: timeZoneLabel(timeZone, expected),
     emergencyNumber: region?.emergencyNumber ?? "911",
     emergencyGuidance: region?.emergencyGuidance ?? "",
     checkinsEnabled: flags.checkins_enabled === true,
@@ -57,7 +63,9 @@ export async function loadCheckinCardData(user: SessionUser, trip: TripRow): Pro
     notificationsSimulated: env().NOTIFY_PROVIDER !== "live",
     checkin,
     contacts,
-    contact: checkin?.emergencyContactId ? (contacts.find((c) => c.id === checkin.emergencyContactId) ?? null) : null,
+    contact,
+    contactReachable: !!contact && contact.hasConsent && !!(contact.phone || contact.email),
+    shareLocation: profile.shareLocationWithContacts,
     defaults: {
       expectedReturnLocal: toLocalInputValue(expected, timeZone),
       graceMinutes: checkin && checkin.status !== "cancelled" ? checkin.graceMinutes : defaults.graceMinutes,

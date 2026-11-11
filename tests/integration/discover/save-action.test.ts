@@ -8,6 +8,7 @@ import { closeDb, withUser } from "@/server/db";
 import { signSession } from "@/server/auth/tokens";
 import { DEMO_SESSION_COOKIE, type SessionUser } from "@/server/auth";
 import { toPlanQuery } from "@/server/discover/preferences";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import type { TripPreferences } from "@/domain/types";
 import { createCustomer, daysFromNow, trailBySlug } from "../../helpers/db";
 
@@ -61,13 +62,16 @@ function form(fields: Record<string, string>) {
 }
 
 describe("saveTripAction", () => {
-  it("sends signed-out visitors to sign in and back to the same results", async () => {
+  it("sends signed-out visitors to sign in and back to the same results, at the chosen card", async () => {
     expect(DEMO_SESSION_COOKIE).toBe("gg_session");
     const { saveTripAction } = await import("@/app/plan/actions");
     const lantern = await trailBySlug("lantern-creek-loop");
     const q = toPlanQuery(prefs);
     const to = await redirectTarget(saveTripAction(form({ q, trailId: lantern.id })));
-    expect(to).toBe(`/login?next=${encodeURIComponent(`/plan/results?${q}`)}`);
+    expect(to).toBe(`/login?next=${encodeURIComponent(`/plan/results?${q}#trail-${lantern.id}`)}`);
+    // The fragment survives the sign-in redirect validation.
+    const next = new URL(to, "http://x.invalid").searchParams.get("next")!;
+    expect(safeRedirectPath(next)).toBe(`/plan/results?${q}#trail-${lantern.id}`);
   });
 
   it("saves for a signed-in customer and redirects to the trip, ignoring tampered fields", async () => {

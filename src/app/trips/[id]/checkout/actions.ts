@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireUser } from "@/server/auth";
 import { checkRateLimit } from "@/server/rate-limit";
-import { createCheckout, ensureCheckoutSession, simulateModeSchema } from "@/server/commerce/checkout";
+import { createCheckout, ensureCheckoutSession, releasePendingCheckout, simulateModeSchema } from "@/server/commerce/checkout";
 
 export type CheckoutFormState = { error?: string; newIdempotencyKey?: string } | undefined;
 
@@ -43,6 +43,8 @@ export async function startCheckoutAction(tripId: string, _prev: CheckoutFormSta
   if (!limit.allowed) return { error: "Too many checkout attempts. Please wait a few minutes and try again." };
 
   const result = await createCheckout(user, { ...parsed.data, simulate });
+  // A different checkout is already holding spots: show what is held, with continue / release.
+  if (!result.ok && result.code === "in_progress") redirect(`/trips/${tripId}/checkout?changed=1`);
   if (!result.ok) return { error: result.error, newIdempotencyKey: result.renewKey ? randomUUID() : undefined };
   redirect(result.url);
 }
@@ -54,4 +56,26 @@ export async function resumeCheckoutAction(tripId: string, bookingId: string): P
   if (!z.uuid().safeParse(bookingId).success) redirect(`/trips/${tripId}`);
   const url = await ensureCheckoutSession(user, bookingId).catch(() => null);
   redirect(url ?? `/trips/${tripId}`);
+}
+
+export type ReleaseFormState = { error?: string } | undefined;
+
+/**
+ * Release the held (unpaid) checkout so the details can be changed. The
+ * use-case closes the provider session first, then frees the spots; on
+ * success the customer returns to the form pre-filled with what was held.
+ */
+export async function releaseCheckoutAction(tripId: string, bookingId: string, _prev: ReleaseFormState, _formData: FormData): Promise<ReleaseFormState> {
+  void _formData;
+  if (!z.uuid().safeParse(tripId).success || !z.uuid().safeParse(bookingId).success) return { error: "Checkout not found." };
+  const user = await requireUser(`/trips/${tripId}/checkout`);
+  const limit = await checkRateLimit(`checkout-release:user:${user.id}`, 20, 600);
+  if (!limit.allowed) return { error: "Too many attempts. Please wait a few minutes and try again." };
+  const result = await releasePendingCheckout(user, tripId, bookingId);
+  if (!result.ok) return { error: result.error };
+  if (result.outcome === "paid") redirect(`/checkout/success?booking=${result.bookingId}`);
+  const qs = new URLSearchParams({ date: result.held.hikeDate, party: String(result.held.partySize), released: "1" });
+  if (result.held.addonCodes.length) qs.set("addons", result.held.addonCodes.join(","));
+  if (result.held.shuttlePickup) qs.set("pickup", result.held.shuttlePickup);
+  redirect(`/trips/${tripId}/checkout?${qs.toString()}`);
 }

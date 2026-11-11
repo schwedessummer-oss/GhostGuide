@@ -8,8 +8,9 @@ import { receivePaymentWebhook } from "./payments";
 /**
  * Use-cases behind the SIMULATED payment page (/checkout/demo/[sessionId]).
  * The page acts as the "provider": it settles the session and delivers a
- * signed webhook to /api/webhooks/demo-payments — the same processor Stripe
- * uses. The page itself never confirms a booking.
+ * signed event to the webhook processor behind /api/webhooks/demo-payments —
+ * the same processor Stripe events go through. The page itself never
+ * confirms a booking.
  */
 export interface DemoCheckoutView {
   session: DemoSessionRow;
@@ -37,56 +38,56 @@ export async function getDemoCheckoutView(user: SessionUser, sessionId: string):
 
 export interface Delivery {
   status: number;
-  outcome: string;
-  via: "http" | "in-process";
+  /** One of the processor's known outcomes, or "rejected" / "failed" — never text taken from a response. */
+  outcome: DeliveryOutcome;
+  via: "in-process";
 }
 
+const KNOWN_OUTCOMES = ["confirmed", "needs_attention", "payment_failed", "expired", "refund_synced", "noop", "duplicate", "ignored", "failed"] as const;
+export type DeliveryOutcome = (typeof KNOWN_OUTCOMES)[number] | "rejected";
+
 /**
- * Deliver a signed demo event to the webhook endpoint over HTTP (like a real
- * provider). If the app cannot reach itself (e.g. unusual local networking),
- * fall back to calling the identical handler in-process — still verifying
- * the signature.
+ * Deliver a signed demo event to the SAME webhook processor the
+ * /api/webhooks/demo-payments route uses, in-process. The signature is still
+ * verified (receivePaymentWebhook → parseWebhook), so this exercises the real
+ * verification and idempotency path.
+ *
+ * Security: the app never builds a URL from request headers to call itself
+ * (X-Forwarded-Host / -Proto are client-controlled, which made the former
+ * HTTP self-delivery an SSRF vector), and nothing from a remote response is
+ * ever shown to the customer: the outcome is mapped onto a fixed set.
  */
-export async function deliverDemoWebhook(rawBody: string, origin: string | null): Promise<Delivery> {
+export async function deliverDemoWebhook(rawBody: string): Promise<Delivery> {
   const headers = demoWebhookHeaders(rawBody);
-  if (origin) {
-    try {
-      const res = await fetch(`${origin}/api/webhooks/demo-payments`, { method: "POST", headers, body: rawBody, cache: "no-store" });
-      const json = (await res.json().catch(() => null)) as { received?: boolean; outcome?: string; error?: string } | null;
-      // Only trust a response that came from our own webhook handler.
-      if (json && (json.received === true || typeof json.error === "string")) {
-        return { status: res.status, outcome: json.outcome ?? json.error ?? "unknown", via: "http" };
-      }
-      log.warn("demo_payments.http_delivery_unexpected_response", { status: res.status });
-    } catch (err) {
-      log.warn("demo_payments.http_delivery_failed", { error: err instanceof Error ? err.message : String(err) });
-    }
-  }
   const res = await receivePaymentWebhook("demo", rawBody, new Headers(headers));
-  return { status: res.status, outcome: String(res.body.outcome ?? res.body.error ?? "unknown"), via: "in-process" };
+  const raw = res.body.outcome;
+  const outcome: DeliveryOutcome =
+    res.status === 200 && typeof raw === "string" && (KNOWN_OUTCOMES as readonly string[]).includes(raw) ? (raw as DeliveryOutcome) : res.status === 400 ? "rejected" : "failed";
+  if (outcome === "failed" || outcome === "rejected") log.warn("demo_payments.delivery_not_processed", { status: res.status });
+  return { status: res.status, outcome, via: "in-process" };
 }
 
 export type SimulateResult =
   | { ok: true; redirectTo: string; delivery: Delivery }
   | { ok: false; error: string };
 
-export async function simulateDemoPayment(user: SessionUser, sessionId: string, outcome: DemoOutcome, origin: string | null): Promise<SimulateResult> {
+export async function simulateDemoPayment(user: SessionUser, sessionId: string, outcome: DemoOutcome): Promise<SimulateResult> {
   const view = await getDemoCheckoutView(user, sessionId);
   if (!view) return { ok: false, error: "Checkout session not found." };
   const settled = await settleDemoSession(sessionId, outcome);
   if (!settled) return { ok: false, error: "This simulated checkout has already been completed or cancelled." };
-  const delivery = await deliverDemoWebhook(settled.body, origin);
+  const delivery = await deliverDemoWebhook(settled.body);
   const target = outcome === "paid" ? settled.session.successUrl : settled.session.cancelUrl;
   const redirectTo = outcome === "declined" ? `${target}&reason=declined` : outcome === "cancelled" ? `${target}&reason=cancelled` : target;
   return { ok: true, redirectTo, delivery };
 }
 
 /** Re-send the last event (same event id) to demonstrate duplicate-delivery handling. */
-export async function redeliverLastDemoEvent(user: SessionUser, sessionId: string, origin: string | null): Promise<{ ok: true; delivery: Delivery; eventId: string } | { ok: false; error: string }> {
+export async function redeliverLastDemoEvent(user: SessionUser, sessionId: string): Promise<{ ok: true; delivery: Delivery; eventId: string } | { ok: false; error: string }> {
   const view = await getDemoCheckoutView(user, sessionId);
   if (!view) return { ok: false, error: "Checkout session not found." };
   const body = view.session.lastEventBody;
   if (!body) return { ok: false, error: "No webhook has been delivered for this session yet." };
   const eventId = (JSON.parse(body) as { id: string }).id;
-  return { ok: true, delivery: await deliverDemoWebhook(body, origin), eventId };
+  return { ok: true, delivery: await deliverDemoWebhook(body), eventId };
 }

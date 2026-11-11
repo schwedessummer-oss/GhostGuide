@@ -95,7 +95,7 @@ export default async function TrailsPage({ searchParams }: PageProps<"/trails">)
             <div>
               <h2 id="results-heading" className="text-xl font-bold">
                 {trails.length} {trails.length === 1 ? "trail" : "trails"}
-                {applied.length ? " match your filters" : ""}
+                {applied.length ? (trails.length === 1 ? " matches your filters" : " match your filters") : ""}
               </h2>
               {applied.length ? <p className="text-sm text-muted">{applied.join(" · ")}</p> : null}
             </div>
@@ -125,6 +125,7 @@ export default async function TrailsPage({ searchParams }: PageProps<"/trails">)
                   <TrailsOverviewSvg routes={routes} label={`Schematic overview of ${routes.length} trail routes in ${region.name}. Each numbered marker is a trailhead; the list below has the same trails.`} />
                   <figcaption className="mt-2 text-sm text-muted">
                     Schematic route overview without a basemap (no map tiles configured). Dashed routes are closed. Not for navigation.
+                    <span className="sm:hidden"> On small screens the map shows numbers only: the list below names each trail.</span>
                   </figcaption>
                 </figure>
               )}

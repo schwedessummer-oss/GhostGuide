@@ -3,7 +3,8 @@ import { z } from "zod";
 import { withSystem, withUser } from "@/server/db";
 import type { SessionUser } from "@/server/auth";
 import { recordAudit } from "@/server/audit";
-import { normalizePhone } from "@/domain/notification-messages";
+import { COORDS_PATTERN, MAP_LINK_PATTERN, normalizePhone } from "@/domain/notification-messages";
+import { redactNoticeLocationsForUser } from "@/server/notifications/redact";
 
 /**
  * Profile and privacy settings. Writes go through withUser (RLS + column
@@ -118,28 +119,38 @@ export async function updatePrivacySettings(user: SessionUser, input: unknown): 
 
 /**
  * "Delete my location history now": every location point and last-known
- * location of THIS user, in one transaction with its audit entry. Runs as
- * trusted code scoped explicitly to user.id (audit_logs is not writable by
- * API roles).
+ * location of THIS user, plus the coordinates and map links inside stored
+ * notice bodies (redacted, the rest of each notice is kept), in one
+ * transaction with its audit entry. Runs as trusted code scoped explicitly
+ * to user.id (audit_logs and notifications are not writable by API roles).
  */
-export async function deleteLocationHistory(user: SessionUser): Promise<{ pointsDeleted: number; lastFixesDeleted: number }> {
+export async function deleteLocationHistory(
+  user: SessionUser,
+): Promise<{ pointsDeleted: number; lastFixesDeleted: number; noticesRedacted: number }> {
   return withSystem(async (tx) => {
     const points = await tx`delete from public.location_points where user_id = ${user.id} returning id`;
     const fixes = await tx`delete from public.hike_last_locations where user_id = ${user.id} returning hike_session_id`;
+    const noticesRedacted = await redactNoticeLocationsForUser(tx, user.id);
     await recordAudit(tx, { id: user.id, roles: user.roles }, "privacy.location_history_deleted", "profile", user.id, {
       pointsDeleted: points.length,
       lastFixesDeleted: fixes.length,
+      noticesRedacted,
     });
-    return { pointsDeleted: points.length, lastFixesDeleted: fixes.length };
+    return { pointsDeleted: points.length, lastFixesDeleted: fixes.length, noticesRedacted };
   });
 }
 
 /** Counts shown on the privacy page (own data, RLS). */
-export async function locationHistoryStats(user: SessionUser): Promise<{ points: number; oldest: Date | null; lastFixes: number }> {
+export async function locationHistoryStats(
+  user: SessionUser,
+): Promise<{ points: number; oldest: Date | null; lastFixes: number; noticesWithLocation: number }> {
   return withUser(user, async (tx) => {
     const [p] = await tx<{ points: number; oldest: Date | null }[]>`
       select count(*)::int as points, min(recorded_at) as oldest from public.location_points where user_id = ${user.id}`;
     const [f] = await tx<{ n: number }[]>`select count(*)::int as n from public.hike_last_locations where user_id = ${user.id}`;
-    return { points: p?.points ?? 0, oldest: p?.oldest ?? null, lastFixes: f?.n ?? 0 };
+    const [n] = await tx<{ n: number }[]>`
+      select count(*)::int as n from public.notifications
+      where user_id = ${user.id} and (body ~ ${COORDS_PATTERN} or body ~ ${MAP_LINK_PATTERN})`;
+    return { points: p?.points ?? 0, oldest: p?.oldest ?? null, lastFixes: f?.n ?? 0, noticesWithLocation: n?.n ?? 0 };
   });
 }

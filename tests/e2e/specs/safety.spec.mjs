@@ -263,6 +263,24 @@ async function runJobsTwice() {
   return [a, b];
 }
 
+/**
+ * Run the cron job endpoint until `done()` holds, like the real once-a-minute
+ * cron. The overdue safety net (`checkins.scan_overdue`) is a periodic job
+ * with one run per minute bucket, so when another cron call already used
+ * this minute's run, recovering a forced-overdue check-in can take up to a
+ * minute. Then run twice more so duplicates would show up.
+ */
+async function runJobsUntil(done, what, timeoutMs = 90_000) {
+  const deadline = Date.now() + timeoutMs;
+  for (;;) {
+    await runJobs();
+    if (done()) break;
+    if (Date.now() > deadline) assert.fail(`timed out after ${timeoutMs / 1000}s of job runs waiting for ${what}`);
+    await new Promise((r) => setTimeout(r, 5_000));
+  }
+  await runJobsTwice();
+}
+
 /** Open each "Show message" disclosure in the notice history and return the visible text of each entry. */
 async function historyEntries(page) {
   const items = historyCard(page).locator("ol > li");
@@ -495,20 +513,31 @@ test("emergency contacts: changing a consented contact's phone or email requires
   const { page, email } = await customer("reconsent", `Rae Reconsent ${run}`);
   await addContact(page, { name: "Quinn Original", email: `quinn@${run}.example.com`, consent: true });
   await page.reload();
-  const quinn = contactCard(page, "Quinn Original");
+  let quinn = contactCard(page, "Quinn Original");
   await quinn.locator("summary", { hasText: "Edit Quinn Original" }).click();
+  const box = quinn.getByRole("checkbox", { name: /I confirm this person has agreed/ });
+  assert.equal(await box.isChecked(), true, "consent is shown as confirmed for the saved address");
   await quinn.getByRole("textbox", { name: "Email", exact: true }).fill(`someone-else@${run}.example.com`);
-  // Expected: either the box is cleared as soon as the address changes (so saving stores no consent), or saving is refused
-  // until consent is re-confirmed. Never: the new address silently inherits the old attestation.
+  assert.equal(await box.isChecked(), false, "changing the email clears the consent box");
+  await assertText(quinn, /You changed their phone or email, so the consent box was cleared/);
   await quinn.getByRole("button", { name: "Save contact" }).click();
-  await quinn.getByRole("status").filter({ hasText: /\S/ }).first().waitFor({ timeout: UI });
-  const [[storedEmail, consentAt]] = sql(
-    `select email, coalesce(consent_confirmed_at::text, '') from public.emergency_contacts where id = '${contactId(email, "Quinn Original")}'`,
-  );
-  assert.ok(
-    storedEmail !== `someone-else@${run}.example.com` || consentAt === "",
-    "a new email address must not inherit consent without an explicit re-confirmation (the consent box was still pre-ticked and consent was kept)",
-  );
+  await assertText(quinn.getByRole("status"), /Contact saved/);
+  const stored = () =>
+    sql(`select email, coalesce(consent_confirmed_at::text, '') from public.emergency_contacts where id = '${contactId(email, "Quinn Original")}'`)[0];
+  let [storedEmail, consentAt] = stored();
+  assert.equal(storedEmail, `someone-else@${run}.example.com`, "new email saved");
+  assert.equal(consentAt, "", "a new email address must not inherit consent without an explicit re-confirmation");
+  await page.reload();
+  quinn = contactCard(page, "Quinn Original");
+  await assertText(quinn, /Consent needed/);
+
+  // ticking the box again for the new address re-attests consent
+  await quinn.locator("summary", { hasText: "Edit Quinn Original" }).click();
+  await quinn.getByRole("checkbox", { name: /I confirm this person has agreed/ }).check();
+  await quinn.getByRole("button", { name: "Save contact" }).click();
+  await assertText(quinn.getByRole("status"), /Contact saved\./);
+  [storedEmail, consentAt] = stored();
+  assert.notEqual(consentAt, "", "consent re-confirmed for the new address");
 });
 
 // ---------------------------------------------------------------------------
@@ -528,6 +557,10 @@ test("privacy: retention setting, location-sharing toggle (honoured in a real no
     await assertText(main, /does not monitor you continuously/);
     await assertText(main, /Only staff with the safety or administrator role can open precise locations/);
     assert.equal(await page.getByLabel(/Keep my precise location history for/).inputValue(), "30", "default retention is 30 days");
+    // location in notices is ON by default, and the copy says so (not "if you opt in")
+    assert.equal(await page.getByRole("checkbox", { name: /Include my last reported location in check-in notices/ }).isChecked(), true);
+    await assertText(main, /it is on by default/);
+    assert.doesNotMatch(await main.innerText(), /if you opt in/i);
     await assertText(main, /You have 1 stored location point .* and 1 last-known location/);
   });
 
@@ -597,7 +630,7 @@ test("privacy: retention setting, location-sharing toggle (honoured in a real no
     });
     assert.equal(sync.status(), 200);
     forceOverdue(tripId);
-    await runJobsTwice();
+    await runJobsUntil(() => checkinStatus(tripId) === "contact_notified", "the overdue notice to the contact");
     const contactNotices = notices(tripId).filter((n) => n.template === "checkin_overdue_contact");
     assert.equal(contactNotices.length, 1, `exactly one notice for the one consented contact (SMS only): ${JSON.stringify(notices(tripId))}`);
     const [n] = contactNotices;
@@ -695,9 +728,9 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     assert.equal(notices(tripId).length, 0, "no notices before the deadline");
   });
 
-  await t.test("forced overdue + two job runs → exactly one simulated notice to the consented contact, none to the other", async () => {
+  await t.test("forced overdue + job runs → exactly one simulated notice to the consented contact, none to the other", async () => {
     forceOverdue(tripId);
-    await runJobsTwice();
+    await runJobsUntil(() => checkinStatus(tripId) === "contact_notified", "the overdue notice to the contact");
     const all = notices(tripId);
     const contactNotices = all.filter((n) => n.template === "checkin_overdue_contact");
     assert.equal(contactNotices.length, 1, `exactly one contact notice after forcing overdue and running jobs twice: ${JSON.stringify(all)}`);
@@ -727,7 +760,7 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
 
   await t.test("the owner sees the notice, with its exact text and a 'Simulated' label, in the trip's notice history", async () => {
     await page.goto(`/trips/${tripId}/checkin`);
-    await assertText(statusCard(page), /Your contact was sent a notice|We haven't received your confirmation/);
+    await assertText(statusCard(page), /A simulated notice was recorded for your contact|We haven't received your confirmation/);
     const entries = await historyEntries(page);
     const contactEntries = entries.filter((e) => /Check-in notice to your contact/.test(e));
     assert.equal(contactEntries.length, 1, `one contact notice in history:\n${entries.join("\n---\n")}`);
@@ -748,7 +781,9 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     const status = await statusCard(page).innerText();
     const activity = await timelineCard(page).innerText();
     assert.doesNotMatch(status, /Your contact was sent a notice|we notified your contact/i, `status claims delivery of a simulated notice:\n${status}`);
-    assert.doesNotMatch(activity, /Notice delivered to your contact/, `activity claims delivery of a simulated notice:\n${activity}`);
+    assert.doesNotMatch(activity, /Notice delivered to your contact|Notice sent to your contact/, `activity claims delivery of a simulated notice:\n${activity}`);
+    assert.match(status, /simulated/i, "the status says the notice was simulated");
+    assert.match(activity, /Simulated notice to your contact recorded/);
   });
 
   await t.test("safety@ sees the notice in /admin/notifications and the check-in in /admin/safety", async () => {
@@ -783,6 +818,11 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     await page.goto(`/trips/${tripId}/checkin`);
     await page.getByRole("button", { name: "Finish trip" }).first().click();
     await assertText(page.locator("main"), /Are you back from your hike\?/);
+    // focus follows the two-step confirmation (not lost to <body>, and not on "Yes" so a double Enter can't finish by accident)
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Are you back from your hike?");
+    await page.getByRole("button", { name: "Not yet" }).first().click();
+    assert.equal(await page.evaluate(() => document.activeElement?.textContent?.trim()), "Finish trip", "focus returns to the trigger on cancel");
+    await page.getByRole("button", { name: "Finish trip" }).first().click();
     await page.getByRole("button", { name: /Yes, I'm back — finish trip/ }).click();
     await assertText(statusCard(page), /Trip finished/);
     await assertText(statusCard(page), /No more check-in notices will be sent for this trip/);
@@ -822,6 +862,26 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     assert.doesNotMatch(text, /On the trail|Hike in progress|Resume hike/, "after 'Yes, I'm back — finish trip' the dashboard must not still say the hike is in progress");
     const [[tripStatus]] = sql(`select status from public.trips where id = '${tripId}'`);
     assert.equal(tripStatus, "completed", "trip completed by 'Finish trip'");
+    const [[sessionStatus]] = sql(`select status from public.hike_sessions where trip_id = '${tripId}' order by started_at desc limit 1`);
+    assert.equal(sessionStatus, "finished", "hike session closed by 'Finish trip'");
+  });
+
+  await t.test("\"Delete my location history now\" also removes the coordinates stored in the sent notice", async () => {
+    const [contactNotice] = notices(tripId).filter((n) => n.template === "checkin_overdue_contact");
+    assert.match(noticeBody(contactNotice.id), COORDS, "the stored notice had coordinates");
+    await page.goto("/account/privacy");
+    const delCard = page.locator("section", { has: page.getByRole("heading", { name: "Delete my location history now" }) });
+    await assertText(delCard, /stored check-in notice contains a location/);
+    await delCard.getByRole("checkbox", { name: /I understand this permanently deletes/ }).check();
+    await delCard.getByRole("button", { name: "Delete my location history now" }).click();
+    await assertText(delCard.getByRole("status"), /Removed the location from 1 stored notice\./);
+    const body = noticeBody(contactNotice.id);
+    assert.doesNotMatch(body, COORDS, `coordinates survived the deletion:\n${body}`);
+    assert.doesNotMatch(body, /openstreetmap/);
+    assert.match(body, /\[location removed\]/);
+    assert.match(body, /Ghost Guide has NOT contacted emergency services/, "the rest of the notice is kept");
+    await page.goto(`/trips/${tripId}/checkin`);
+    assert.doesNotMatch(await historyCard(page).innerText(), COORDS);
   });
 
   await t.test("another customer cannot open this trip's check-ins (404)", async () => {
@@ -871,17 +931,18 @@ test("withdrawn consent after setup: nobody else is notified, and every message 
 
   await t.test("forced overdue: no contact notice; the hiker is told nobody else is being notified", async () => {
     forceOverdue(tripId);
-    await runJobsTwice();
+    await runJobsUntil(() => notices(tripId).some((n) => n.template === "checkin_overdue_user" && n.status !== "queued"), "the hiker's own overdue notice");
     const all = notices(tripId);
     assert.equal(all.filter((n) => n.recipientKind === "emergency_contact").length, 0, `no notice to a contact without consent: ${JSON.stringify(all)}`);
     const own = all.filter((n) => n.template === "checkin_overdue_user");
-    assert.equal(own.length, 1, `the hiker's own "we haven't heard from you" notice after forcing overdue and running jobs twice: ${JSON.stringify(all)}`);
+    assert.equal(own.length, 1, `exactly one "we haven't heard from you" notice to the hiker after forcing overdue: ${JSON.stringify(all)}`);
     assert.match(noticeBody(own[0].id), /no one else is being notified/);
     assert.equal(checkinStatus(tripId), "overdue");
     await page.goto(`/trips/${tripId}/checkin`);
     await assertText(timelineCard(page), /Your contact was not notified/);
     const status = await statusCard(page).innerText();
-    assert.doesNotMatch(status, /We're sending your contact a notice/, `status must not promise a notice that will never be sent:\n${status}`);
+    assert.doesNotMatch(status, /We're sending your contact a notice|simulated notice to your contact/, `status must not promise a notice that will never be sent:\n${status}`);
+    assert.match(status, /nobody else is being notified/);
     // safety staff still see the unconfirmed check-in, flagged as without a reachable contact
     const { page: staff } = await safetyStaff();
     await staff.goto("/admin/safety");
@@ -931,6 +992,8 @@ test("trip share links: neutral public view, location only when included, revoke
     if (includeLocation) await loc.check();
     await card.getByRole("button", { name: "Create share link" }).click();
     await assertText(card.getByRole("status"), /Link created\. Copy it now/);
+    // same zone-labeled format as the list ("Works until Thu, Nov 5, 3:30 AM PST"), not the browser's zone
+    await assertText(card, /Your new link \(works until [A-Z][a-z]{2}, [A-Z][a-z]{2} \d{1,2}, \d{1,2}:\d{2} [AP]M P[SD]T\)/);
     const url = await card.getByLabel(/Your new link/).inputValue();
     assert.match(url, /\/share\/[A-Za-z0-9_-]{20,64}$/);
     return url;
@@ -1022,7 +1085,14 @@ test("trip share links: neutral public view, location only when included, revoke
       const text = await anon.locator("main").innerText();
       assert.match(text, /Finished the trip/);
       assert.doesNotMatch(text, COORDS, `a finished hike must not expose the last position on a share link:\n${text}`);
+      assert.match(text, /The hike has ended, so location is no longer shown/);
+      assert.doesNotMatch(text, /“No confirmation” only means/, "the no-confirmation caveat is only shown when there is no confirmation");
     }
+    // no new links for a finished trip
+    await page.goto(`/trips/${tripId}`);
+    const card = page.locator("section", { has: page.getByRole("heading", { name: "Check-ins", level: 2 }) });
+    await assertText(card, /Trip finished/);
+    assert.equal(await card.getByRole("button", { name: "Create share link" }).count(), 0, "sharing is not offered after finishing");
     assert.deepEqual(anonErrors, []);
   });
 });

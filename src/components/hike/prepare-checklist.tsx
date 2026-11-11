@@ -73,7 +73,7 @@ export function PrepareChecklist({ tripId }: { tripId: string }) {
             <label className="flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-sand-200 p-3 has-[:checked]:border-forest-600 has-[:checked]:bg-forest-50">
               <input
                 type="checkbox"
-                className="mt-1 size-5 accent-forest-700"
+                className="mt-1 size-5 shrink-0 accent-forest-700"
                 checked={checked.has(item.id)}
                 onChange={(e) => toggle(item.id, e.target.checked)}
               />

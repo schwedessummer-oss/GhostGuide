@@ -165,3 +165,21 @@ export function recordManualPlay(state: GeofenceState, poiId: string, now: numbe
 export function heardPoiIds(state: GeofenceState): string[] {
   return Object.keys(state.triggered);
 }
+
+/**
+ * Merge stops the server already knows were narrated in this session (synced
+ * poi_triggered / poi_replayed events) into the device state, so a device
+ * that lost or never had its local state does not auto-play them again.
+ * Existing local records win; merged ones count as heard (source "gps").
+ */
+export function mergeHeardPois(state: GeofenceState, poiIds: readonly string[], at: number): GeofenceState {
+  const missing = poiIds.filter((id) => !state.triggered[id]);
+  if (!missing.length) return state;
+  const triggered = { ...state.triggered };
+  for (const id of missing) triggered[id] = { at, source: "gps" };
+  return {
+    ...state,
+    triggered,
+    candidates: Object.fromEntries(Object.entries(state.candidates).filter(([id]) => !triggered[id])),
+  };
+}

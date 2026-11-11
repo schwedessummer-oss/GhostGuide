@@ -79,9 +79,11 @@ export default async function SharePage({ params }: PageProps<"/share/[token]">)
               </span>
             </p>
           ) : null}
-          <p className="mt-3 text-sm text-muted">
-            “No confirmation” only means Ghost Guide hasn&apos;t heard from {v.hikerFirstName ?? "them"} — phones often lose signal on trails.
-          </p>
+          {v.showNoConfirmationNote ? (
+            <p className="mt-3 text-sm text-muted">
+              “No confirmation” only means Ghost Guide hasn&apos;t heard from {v.hikerFirstName ?? "them"} — phones often lose signal on trails.
+            </p>
+          ) : null}
         </Card>
 
         {v.locationIncluded ? (

@@ -5,7 +5,7 @@ import { log } from "@/server/log";
 import type { LineStringGeometry } from "@/domain/geo";
 import type { Closure, Difficulty, RouteType } from "@/domain/types";
 import type { CandidateTrail } from "@/domain/recommendation";
-import { DEFAULT_LATEST_FINISH_BY_MONTH } from "@/domain/recommendation";
+import { closureOverlapsDay, DEFAULT_LATEST_FINISH_BY_MONTH } from "@/domain/recommendation";
 import type { ItineraryPoi, ItineraryTrail } from "@/domain/itinerary";
 import { zonedTimeToUtc } from "@/lib/time";
 
@@ -194,6 +194,16 @@ export async function loadCandidates(
   });
 
   return { candidates, trails: trailMap, pois: poisByTrail, permitsByTrail };
+}
+
+/**
+ * Reasons of the PARTIAL closures on a trail that overlap the planned
+ * region-local day (oldest first). The itinerary must surface these: the
+ * schedule is computed for the full route.
+ */
+export function partialClosuresOn(bundle: CandidateBundle, trailId: string, plannedDate: string, timeZone: string): string[] {
+  const c = bundle.candidates.find((x) => x.trail.id === trailId);
+  return (c?.closures ?? []).filter((cl) => cl.severity === "partial" && closureOverlapsDay(cl, plannedDate, timeZone)).map((cl) => cl.reason);
 }
 
 /** Region of a publicly visible (published/closed) trail, or null. */

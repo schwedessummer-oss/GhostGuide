@@ -201,6 +201,7 @@ let page;
 let pageErrors;
 let tripId;
 let savedTripId;
+let hikeDate;
 const synced = { events: new Map(), points: new Map(), sessionIds: new Set() };
 
 before(async () => {
@@ -210,7 +211,7 @@ before(async () => {
   pageErrors = watchErrors(page);
   recordSyncedEvents(page, synced);
   await signUp(page, "owner");
-  const hikeDate = addDays(regionToday(), randInt(10, 80));
+  hikeDate = addDays(regionToday(), randInt(10, 80));
   tripId = await createSavedTrip(page, hikeDate);
   await bookTrip(page, tripId);
   await runJobsUntilQuiet();
@@ -306,6 +307,13 @@ test("another customer (and a signed-out visitor) cannot read the trip bundle or
   assert.equal(own.status(), 200, "owner can read their bundle");
   const bundle = await own.json();
   assert.equal(bundle.trip.id, tripId);
+  assert.equal(bundle.trip.bookedDate, hikeDate, "bundle carries the booked date");
+  assert.match(bundle.ownerHint ?? "", /^[A-Za-z0-9_-]{16,}$/, "bundle is tagged with the owner's device hint");
+  assert.match(own.headers()["set-cookie"] ?? "", /gg_owner=[A-Za-z0-9_-]+/, "the bundle response (re)sets the device owner cookie");
+  // Starting weeks before the booked date is refused (the demo override is explicit).
+  const early = await ctx.request.post("/api/hike/start", { data: { tripId } });
+  assert.equal(early.status(), 409, "cannot start before the booked date");
+  assert.match((await early.json()).error, /You can start it on/);
   assert.ok(bundle.narrations.length > 0 && bundle.narrations.every((n) => n.sourceCitation), "only cited narration is bundled");
   // Cookie-authenticated writes refuse other origins (CSRF), even for the owner.
   const csrf = await ctx.request.post("/api/hike/start", { data: { tripId }, headers: { origin: "https://evil.example" } });
@@ -454,12 +462,21 @@ test("hike journey: prepare → download → simulated hike → offline → help
     const start = page.getByTestId("hike-start");
     assert.ok(await start.isDisabled(), "Start is disabled until the limitations are acknowledged");
     await assertText(main, /Tick the box above to start/);
+    // The ready screen shows the booked date; the trip is booked weeks ahead, so a real start must wait for that day.
+    const booked = page.getByTestId("hike-booked-date");
+    assert.match(await booked.innerText(), /^\w+day, \w+ \d{1,2}, \d{4}$/, "booked date shown in words");
+    await assertText(page.getByTestId("hike-date-notice"), /You can start on \w{3}, \w{3} \d{1,2}\./);
     await page.getByTestId("limitations-ack").check();
-    assert.ok(await start.isEnabled(), "Start enabled after acknowledging");
+    assert.ok(await start.isDisabled(), "Start stays disabled before the booked date");
+    // Demo mode only: an explicit, labelled start-anyway.
+    const demoStart = page.getByTestId("hike-start-demo");
+    await assertText(page.getByTestId("hike-demo-start"), /Demo only/);
+    assert.ok(await demoStart.isEnabled(), "Start anyway (demo) enabled after acknowledging");
+    assert.equal((await demoStart.innerText()).trim(), "Start anyway (demo)");
 
     await page.getByTestId("sim-toggle").check();
     await page.getByTestId("sim-speedup").selectOption("10");
-    await start.click();
+    await demoStart.click();
     await waitPhase(page, "active", UI);
     assert.ok(await page.locator("header").getByText("Simulated GPS").first().isVisible(), "the hike header labels simulated GPS");
     await assertText(page.getByTestId("hike-accuracy"), /± \d+ m/, UI);
@@ -505,6 +522,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
       return { top: Math.round(r.top), bottom: Math.round(r.bottom), vh: window.innerHeight };
     });
     assert.ok(box.bottom > 0 && box.top < box.vh, `off-route prompt should be in the viewport when it appears (rect top ${box.top}, bottom ${box.bottom}, viewport ${box.vh})`);
+    assert.ok(await prompt.evaluate((el) => el === document.activeElement || el.contains(document.activeElement)), "focus moves to the off-route prompt");
+    assert.equal(await prompt.getAttribute("aria-live"), "assertive");
   });
 
   await t.test("the off-route prompt is worded carefully and can be dismissed", async () => {
@@ -562,8 +581,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
     await page.reload({ timeout: NAV });
     await waitPhase(page, "active");
     const after = await progressPct(page);
-    // State is saved on the device as you go; at most a few seconds of (10× simulated) walking may be redone.
-    assert.ok(after > 0 && after >= pct - 3, `progress restored, not reset (before ${pct}%, after ${after}%)`);
+    // State is saved on the device as you go and synchronously when the page unloads: progress never goes backwards.
+    assert.ok(after > 0 && after >= pct - 1, `progress restored, not reset (before ${pct}%, after ${after}%)`);
     assert.ok(await page.getByTestId("sim-toggle").isChecked(), "simulator setting restored");
     const stops = page.getByRole("list", { name: "Stops on this route" });
     await assertText(stops.locator("li").filter({ hasText: firstHeard.name }), /Heard/);
@@ -640,6 +659,9 @@ test("hike journey: prepare → download → simulated hike → offline → help
     await page.getByRole("heading", { level: 1, name: "You're offline" }).waitFor({ timeout: NAV });
     const item = page.locator("li").filter({ hasText: TRAIL_NAME }).filter({ has: page.getByRole("link", { name: "Hike screen" }) });
     await item.waitFor({ timeout: UI });
+    const itemText = await item.innerText();
+    assert.doesNotMatch(itemText, /\d{4}-\d{2}-\d{2}/, `date is formatted, not raw ISO: ${itemText}`);
+    assert.match(itemText, /\w{3}, \w{3} \d{1,2}, \d{4}/);
     assert.equal(await item.getByRole("link", { name: "Hike screen" }).getAttribute("href"), `/trips/${tripId}/hike`);
     assert.equal(await item.getByRole("link", { name: "Help" }).getAttribute("href"), `/trips/${tripId}/help`);
     assert.equal(await page.getByRole("link", { name: "Call 911" }).getAttribute("href"), "tel:911");
@@ -707,8 +729,20 @@ test("hike journey: prepare → download → simulated hike → offline → help
     await page.goto(`/trips/${tripId}/hike`, { timeout: NAV });
     await waitPhase(page, "finished");
     await assertText(page.locator("main"), /Your finish reached Ghost Guide/);
-    const start = await ctx.request.post("/api/hike/start", { data: { tripId } });
+    const start = await ctx.request.post("/api/hike/start", { data: { tripId, demoStartAnyway: true } });
     assert.equal(start.status(), 409, "a completed trip cannot be started again");
+
+    // The offline fallback no longer offers the finished trip.
+    await ctx.setOffline(true);
+    try {
+      await page.goto("/trips", { timeout: NAV });
+      await page.getByRole("heading", { level: 1, name: "You're offline" }).waitFor({ timeout: NAV });
+      await assertText(page.locator("main"), /No downloaded trips on this device|Call 911/);
+      await sleep(500);
+      assert.equal(await page.locator("li").filter({ hasText: TRAIL_NAME }).count(), 0, "finished trip not listed offline");
+    } finally {
+      await ctx.setOffline(false);
+    }
   });
 
   await t.test("no unexpected console errors during the journey", async () => {
@@ -716,20 +750,59 @@ test("hike journey: prepare → download → simulated hike → offline → help
   });
 
   await t.test("after signing out, this browser no longer shows the hiker's trip or location to the next person", async () => {
-    await page.goto("/", { timeout: NAV });
-    const status = await page.evaluate(async () => (await fetch("/auth/logout", { method: "POST" })).status);
-    assert.ok(status < 400, `logout ok (${status})`);
+    // Sign out the way the header's "Sign out" button does (a form POST navigation): the sign-out
+    // page wipes this device's trip data and the service worker's trip caches, then goes home.
+    await page.goto("/trips", { timeout: NAV });
+    await Promise.all([
+      page.waitForURL((u) => new URL(u).pathname === "/", { timeout: NAV }),
+      page.evaluate(() => {
+        const f = document.createElement("form");
+        f.method = "post";
+        f.action = "/auth/logout";
+        document.body.append(f);
+        f.submit();
+      }),
+    ]);
+    await sleep(500);
     assert.equal((await ctx.request.get(`/api/trips/${tripId}/bundle`)).status(), 401, "signed out");
+    assert.equal(await page.evaluate(() => document.cookie.includes("gg_owner=")), false, "device owner tag cleared");
     for (const sub of ["help", "hike"]) {
       await page.goto(`/trips/${tripId}/${sub}`, { timeout: NAV });
       await sleep(1500); // let the page read on-device data if it renders
       const url = new URL(page.url());
       const coords = await page.getByTestId("help-coords").count();
-      const hikeShown = await page.getByTestId("hike-app").count();
+      // A cached copy may still open, but only to ask for sign-in: never with the previous hiker's trip.
+      const hikePhase = await page.getByTestId("hike-app").getAttribute("data-phase", { timeout: 1000 }).catch(() => null);
+      const hikeShown = hikePhase !== null && hikePhase !== "no_bundle" && hikePhase !== "loading";
+      const text = await page.locator("main").innerText().catch(() => "");
       assert.ok(
-        url.pathname.startsWith("/login") || (coords === 0 && hikeShown === 0),
-        `/trips/<id>/${sub} after sign-out should ask to sign in, not show the previous hiker's data (url ${url.pathname}, coordinates shown: ${coords > 0}, hike screen shown: ${hikeShown > 0})`,
+        url.pathname.startsWith("/login") || (coords === 0 && !hikeShown && /Sign in again to use this trip offline/.test(text)),
+        `/trips/<id>/${sub} after sign-out should ask to sign in, not show the previous hiker's data (url ${url.pathname}, coordinates shown: ${coords > 0}, hike phase: ${hikePhase})`,
       );
     }
+    // Nothing of the trip is left on the device.
+    const left = await page.evaluate(async (id) => {
+      const cacheNames = (await caches.keys()).filter((n) => n.startsWith("gg-trip-"));
+      const mirror = Object.keys(localStorage).filter((k) => k.startsWith("gg-hike-"));
+      const dbs = (await indexedDB.databases?.()) ?? [];
+      let bundles = 0;
+      if (dbs.some((d) => d.name === "ghostguide")) {
+        bundles = await new Promise((resolve) => {
+          const open = indexedDB.open("ghostguide");
+          open.onsuccess = () => {
+            const db = open.result;
+            if (!db.objectStoreNames.contains("bundles")) return resolve(0);
+            const r = db.transaction("bundles").objectStore("bundles").count();
+            r.onsuccess = () => resolve(r.result);
+            r.onerror = () => resolve(-1);
+          };
+          open.onerror = () => resolve(-1);
+        });
+      }
+      return { cacheNames, mirror, bundles, id };
+    }, tripId);
+    assert.deepEqual(left.cacheNames, [], "trip caches removed after sign-out");
+    assert.deepEqual(left.mirror, [], "hike state mirror removed after sign-out");
+    assert.equal(left.bundles, 0, "downloaded bundles removed after sign-out");
   });
 });

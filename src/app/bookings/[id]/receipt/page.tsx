@@ -30,6 +30,9 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
   const simulated = b.paymentProvider === "demo";
   const paid = r.payments.filter((p) => p.status !== "failed").reduce((s, p) => s + p.amountCents, 0);
   const refunded = r.refunds.filter((x) => x.status === "succeeded").reduce((s, x) => s + x.amountCents, 0);
+  const zoneLabel = tz.replace(/_/g, " ");
+  // dateStyle/timeStyle cannot be combined with timeZoneName, so spell the fields out.
+  const withZone: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" };
 
   return (
     <Container className="max-w-3xl py-8 sm:py-10">
@@ -53,7 +56,7 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
             <p className="font-mono text-lg">{b.receiptNumber}</p>
           </div>
           <div className="text-right text-sm">
-            <p>Paid {b.paidAt ? formatInZone(b.paidAt, tz) : "—"}</p>
+            <p>Paid {b.paidAt ? formatInZone(b.paidAt, tz, withZone) : "—"}</p>
             <p className="mt-1">
               <BookingStatusBadge status={b.status} />
             </p>
@@ -99,19 +102,19 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
           <table className="mt-2 w-full text-left text-[0.95rem]">
             <thead>
               <tr className="border-b border-sand-200 text-sm text-muted">
-                <th scope="col" className="py-2 font-semibold">Date</th>
-                <th scope="col" className="py-2 font-semibold">Method</th>
-                <th scope="col" className="py-2 font-semibold">Status</th>
-                <th scope="col" className="py-2 text-right font-semibold">Amount</th>
+                <th scope="col" className="py-2 pr-3 font-semibold">Date</th>
+                <th scope="col" className="py-2 pr-3 font-semibold">Method</th>
+                <th scope="col" className="py-2 pr-3 font-semibold">Status</th>
+                <th scope="col" className="py-2 pl-3 text-right font-semibold">Amount</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-sand-200">
               {r.payments.map((p) => (
                 <tr key={p.id}>
-                  <td className="py-2">{formatInZone(p.createdAt, tz, { dateStyle: "medium" })}</td>
-                  <td className="py-2">{p.provider === "demo" ? "Simulated provider" : "Card (Stripe)"}</td>
-                  <td className="py-2">{titleCase(p.status)}</td>
-                  <td className="py-2 text-right tabular-nums">{formatMoney(p.amountCents, p.currency)}</td>
+                  <td className="py-2 pr-3">{formatInZone(p.createdAt, tz, { dateStyle: "medium" })}</td>
+                  <td className="py-2 pr-3">{p.provider === "demo" ? "Simulated provider" : "Card (Stripe)"}</td>
+                  <td className="py-2 pr-3">{titleCase(p.status)}</td>
+                  <td className="whitespace-nowrap py-2 pl-3 text-right tabular-nums">{formatMoney(p.amountCents, p.currency)}</td>
                 </tr>
               ))}
             </tbody>
@@ -126,19 +129,22 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
             <table className="mt-2 w-full text-left text-[0.95rem]">
               <thead>
                 <tr className="border-b border-sand-200 text-sm text-muted">
-                  <th scope="col" className="py-2 font-semibold">Date</th>
-                  <th scope="col" className="py-2 font-semibold">Reason</th>
-                  <th scope="col" className="py-2 font-semibold">Status</th>
-                  <th scope="col" className="py-2 text-right font-semibold">Amount</th>
+                  <th scope="col" className="py-2 pr-3 font-semibold">Date</th>
+                  <th scope="col" className="py-2 pr-3 font-semibold">Reason</th>
+                  <th scope="col" className="py-2 pr-3 font-semibold">Status</th>
+                  <th scope="col" className="py-2 pl-3 text-right font-semibold">Amount</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-sand-200">
                 {r.refunds.map((x) => (
                   <tr key={x.id}>
-                    <td className="py-2">{formatInZone(x.createdAt, tz, { dateStyle: "medium" })}</td>
-                    <td className="py-2">{x.reason}</td>
-                    <td className="py-2">{x.status === "succeeded" ? "Refunded" : x.status === "failed" ? "Delayed — retrying" : "Processing"}</td>
-                    <td className="py-2 text-right tabular-nums">−{formatMoney(x.amountCents, b.currency)}</td>
+                    <td className="py-2 pr-3">{formatInZone(x.createdAt, tz, { dateStyle: "medium" })}</td>
+                    <td className="py-2 pr-3">{x.reason}</td>
+                    <td className="py-2 pr-3">{x.status === "succeeded" ? "Refunded" : x.status === "failed" ? "Delayed — retrying" : "Processing"}</td>
+                    <td className="whitespace-nowrap py-2 pl-3 text-right tabular-nums">
+                      {x.amountCents > 0 ? "−" : ""}
+                      {formatMoney(x.amountCents, b.currency)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -154,7 +160,10 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
             </div>
             <div className="flex justify-between">
               <dt>Refunded</dt>
-              <dd className="tabular-nums">−{formatMoney(refunded, b.currency)}</dd>
+              <dd className="tabular-nums">
+                {refunded > 0 ? "−" : ""}
+                {formatMoney(refunded, b.currency)}
+              </dd>
             </div>
             <div className="flex justify-between text-lg font-bold">
               <dt>Net</dt>
@@ -164,7 +173,8 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
         </section>
 
         <footer className="mt-10 text-xs text-muted">
-          <p>Prices include all pricing-rule adjustments shown above. Taxes are not itemized in this MVP.</p>
+          <p>Dates and times are in the trail&apos;s local time zone ({zoneLabel}); the receipt number carries the payment date in that zone.</p>
+          <p className="mt-1">Prices include all pricing-rule adjustments shown above. Taxes are not itemized in this MVP.</p>
           {simulated ? <p className="mt-1">This receipt documents a simulated demo transaction and is not a record of a real payment.</p> : null}
         </footer>
       </article>

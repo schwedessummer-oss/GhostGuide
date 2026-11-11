@@ -37,6 +37,8 @@ export interface SummarizeInput {
   turnaroundBy?: string;
   stops: { name: string; etaOffsetMin: number }[];
   reminders: { hydrationEveryMin: number; paceCheckEveryMin: number };
+  /** Reasons of partial closures on the planned date (approved catalog data; times are full-route estimates). */
+  partialClosures?: string[];
 }
 
 export interface AiCallOptions {

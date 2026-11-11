@@ -68,22 +68,45 @@ const EVENT_LABEL: Record<string, string> = {
   extended: "Expected return changed",
   finished: "Trip finished",
   overdue: "No confirmation by expected return + grace period",
-  contact_notified: "Notice delivered to your contact",
-  contact_notified_late: "Notice reached your contact after you had responded",
-  contact_not_notified: "Your contact was not notified (no contact with consent)",
-  reminder_queued: "Reminder sent to you",
+  // contact_notified = the notice was handed to the provider (sent), not confirmed delivered
+  contact_notified: "Notice sent to your contact",
+  contact_notified_late: "Notice was sent to your contact after you had responded",
+  contact_not_notified: "Your contact was not notified",
+  reminder_queued: "Reminder to you queued",
   cancelled: "Check-ins turned off",
 };
 
+/** Why a contact was not notified (checkin_events.details.reason). */
+const NOT_NOTIFIED_REASON: Record<string, string> = {
+  no_contact_selected: "no emergency contact on this check-in",
+  no_consent_on_file: "no consent on file",
+  consent_withdrawn: "their consent was withdrawn",
+  contact_removed: "the contact was removed",
+  no_valid_phone_or_email: "no valid phone number or email address",
+};
+
+/** Demo mode: nothing is sent, so never say "sent"/"delivered". */
+const SIMULATED_EVENT_LABEL: Record<string, string> = {
+  contact_notified: "Simulated notice to your contact recorded (demo — nothing was sent)",
+  contact_notified_late: "Simulated notice to your contact recorded after you had responded (demo — nothing was sent)",
+  reminder_queued: "Simulated reminder to you recorded (demo — nothing is sent)",
+};
+
 /** What happened, newest first (plain language). */
-export function CheckinTimeline({ events, timeZone }: { events: CheckinEventView[]; timeZone: string }) {
+export function CheckinTimeline({ events, timeZone, simulated = false }: { events: CheckinEventView[]; timeZone: string; simulated?: boolean }) {
+  const label = (kind: string) => (simulated ? (SIMULATED_EVENT_LABEL[kind] ?? EVENT_LABEL[kind]) : EVENT_LABEL[kind]);
   const visible = events.filter((e) => EVENT_LABEL[e.kind] && !e.kind.endsWith("_skipped"));
   if (!visible.length) return <p className="text-muted">Nothing has happened yet.</p>;
   return (
     <ol className="space-y-2 border-l-2 border-forest-200 pl-4">
       {visible.map((e) => (
         <li key={e.id}>
-          <p className="font-semibold">{EVENT_LABEL[e.kind]}</p>
+          <p className="font-semibold">
+            {label(e.kind)}
+            {e.kind === "contact_not_notified" && typeof e.details.reason === "string" && NOT_NOTIFIED_REASON[e.details.reason]
+              ? ` (${NOT_NOTIFIED_REASON[e.details.reason]})`
+              : ""}
+          </p>
           <p className="text-sm text-muted">
             {formatCheckinTime(e.createdAt, timeZone)}
             {e.kind === "cancelled" && e.details.reason === "trip_cancelled" ? " · trip cancelled" : ""}

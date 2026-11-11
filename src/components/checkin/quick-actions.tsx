@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { CheckCircle2, Clock, Flag } from "lucide-react";
 import { Alert, Button, Input } from "@/components/ui";
 import { EXTEND_PRESETS_MIN } from "@/domain/checkin";
@@ -20,13 +20,14 @@ function Result({ state }: { state: CheckinFormState }) {
 export function CheckinQuickActions({
   tripId,
   minExtendLocal,
-  tzAbbrev,
+  tzLabel,
   compact = false,
 }: {
   tripId: string;
   /** datetime-local value for the "pick a time" input's minimum */
   minExtendLocal: string;
-  tzAbbrev: string;
+  /** DST-neutral zone name, e.g. "Pacific Time" */
+  tzLabel: string;
   compact?: boolean;
 }) {
   const [okState, okAction, okPending] = useActionState<CheckinFormState, FormData>(confirmOkAction.bind(null, tripId), undefined);
@@ -34,6 +35,22 @@ export function CheckinQuickActions({
   const [finState, finAction, finPending] = useActionState<CheckinFormState, FormData>(finishAction.bind(null, tripId), undefined);
   const [confirmingFinish, setConfirmingFinish] = useState(false);
   const pickId = `extend-until-${tripId.slice(0, 8)}${compact ? "-c" : ""}`;
+  const finishQuestionId = `finish-question-${tripId.slice(0, 8)}${compact ? "-c" : ""}`;
+  // Keyboard / screen-reader users keep their place: the question gets focus
+  // when the confirmation opens (not "Yes", so a double Enter can't finish the
+  // trip by accident), and the trigger gets it back on "Not yet".
+  const finishTriggerRef = useRef<HTMLButtonElement>(null);
+  const finishQuestionRef = useRef<HTMLParagraphElement>(null);
+  const finishToggled = useRef(false);
+  useEffect(() => {
+    if (!finishToggled.current) return;
+    if (confirmingFinish) finishQuestionRef.current?.focus();
+    else finishTriggerRef.current?.focus();
+  }, [confirmingFinish]);
+  const toggleFinish = (open: boolean) => {
+    finishToggled.current = true;
+    setConfirmingFinish(open);
+  };
 
   return (
     <div className="space-y-4">
@@ -62,7 +79,7 @@ export function CheckinQuickActions({
           <summary className="min-h-11 cursor-pointer content-center font-semibold text-forest-800">Pick a new return time</summary>
           <form action={extAction} className="mt-2 space-y-2">
             <label htmlFor={pickId} className="block text-sm font-semibold">
-              New expected return ({tzAbbrev || "region time"})
+              New expected return ({tzLabel || "region time"})
             </label>
             <Input id={pickId} name="until" type="datetime-local" required min={minExtendLocal} />
             <Button type="submit" variant="secondary" disabled={extPending} className="w-full">
@@ -77,19 +94,21 @@ export function CheckinQuickActions({
 
       <div>
         {!confirmingFinish ? (
-          <Button type="button" variant="secondary" className="w-full" onClick={() => setConfirmingFinish(true)}>
+          <Button ref={finishTriggerRef} type="button" variant="secondary" className="w-full" onClick={() => toggleFinish(true)}>
             <Flag aria-hidden className="size-4" /> Finish trip
           </Button>
         ) : (
-          <form action={finAction} className="space-y-2 rounded-xl border border-forest-200 bg-forest-50 p-3">
-            <p className="font-semibold">Are you back from your hike?</p>
-            <p className="text-sm">Finishing ends check-ins for this trip: no more reminders or notices will be sent.</p>
+          <form action={finAction} className="space-y-2 rounded-xl border border-forest-200 bg-forest-50 p-3" aria-labelledby={finishQuestionId}>
+            <p id={finishQuestionId} ref={finishQuestionRef} tabIndex={-1} className="font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-600">
+              Are you back from your hike?
+            </p>
+            <p className="text-sm">Finishing ends your hike and check-ins for this trip: no more reminders or notices will be sent.</p>
             <input type="hidden" name="confirmFinish" value="yes" />
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button type="submit" disabled={finPending} className="flex-1">
                 {finPending ? "Finishing…" : "Yes, I'm back — finish trip"}
               </Button>
-              <Button type="button" variant="ghost" onClick={() => setConfirmingFinish(false)} className="flex-1">
+              <Button type="button" variant="ghost" onClick={() => toggleFinish(false)} className="flex-1">
                 Not yet
               </Button>
             </div>

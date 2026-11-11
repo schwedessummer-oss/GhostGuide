@@ -78,8 +78,27 @@ export type ItineraryPoi = Pick<Poi, "id" | "name" | "kind" | "lat" | "lng" | "s
 export interface ItineraryOptions {
   /** Conservative latest-finish estimate for the planned date (HH:MM), used for the turnaround time. */
   latestFinishTime?: string | null;
+  /**
+   * Reasons of the PARTIAL closures in effect on the planned (region-local)
+   * day. The catalog does not record where on the route a partial closure
+   * starts, so the schedule stays a full-route estimate; the notes tell the
+   * hiker to follow the closure notice and never imply continuing into it.
+   */
+  partialClosures?: string[];
   /** Extra notes (e.g. permit names) to append. */
   extraNotes?: string[];
+}
+
+const stripTrailingPeriod = (s: string) => s.trim().replace(/[.\s]+$/, "");
+
+/** "June" for "2027-06-15" (the calendar month of a YYYY-MM-DD date). */
+function monthOf(date: string): string {
+  return new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(`${date.slice(0, 10)}T12:00:00Z`));
+}
+
+/** Itinerary note for a partial closure on the planned day (stored on trips.itinerary.notes). */
+export function partialClosureNote(reason: string): string {
+  return `Partial closure on your date: ${stripTrailingPeriod(reason)}. Follow the closure, even if that means turning around earlier than this itinerary shows; the times here are estimates for the full route.`;
 }
 
 interface PlacedStop {
@@ -167,8 +186,11 @@ export function buildItinerary(
   const startMin = clockToMinutes(prefs.startTime);
 
   let turnaroundBy: string | undefined;
+  const partialClosures = (opts.partialClosures ?? []).map((r) => r.trim()).filter(Boolean);
   const notes: string[] = [
     `Estimates only: ${trail.estimatedDurationMin} min catalog estimate × your pace factor ${paceFactor.toFixed(2)}, plus about ${STOP_DWELL_MIN} min at each narration stop. Real times vary with conditions, breaks and route finding.`,
+    // Closures come right after the estimate caveat: they override the schedule below.
+    ...partialClosures.map(partialClosureNote),
   ];
 
   if (trail.routeType === "out_and_back") {
@@ -184,7 +206,9 @@ export function buildItinerary(
     }
     turnaroundBy = addMinutesToClock("00:00", Math.max(0, turnaroundMin));
     notes.push(
-      `Out-and-back: you should reach the halfway point around ${addMinutesToClock(prefs.startTime, halfwayEtaMin)} (est.). Turn around by ${turnaroundBy} even if you have not reached it, so you can return with a ${TURNAROUND_MARGIN_MIN}-minute margin.`,
+      partialClosures.length
+        ? `Out-and-back: on the full route you would reach the halfway point around ${addMinutesToClock(prefs.startTime, halfwayEtaMin)} (est.), but part of the route is closed on your date. Turn around where the closure notice says, and by ${turnaroundBy} at the latest, so you can return with a ${TURNAROUND_MARGIN_MIN}-minute margin.`
+        : `Out-and-back: you should reach the halfway point around ${addMinutesToClock(prefs.startTime, halfwayEtaMin)} (est.). Turn around by ${turnaroundBy} even if you have not reached it, so you can return with a ${TURNAROUND_MARGIN_MIN}-minute margin.`,
     );
     if (turnaroundMin < startMin + halfwayEtaMin) {
       notes.push("Your turnaround time comes before the estimated halfway point: you may not reach the far end. Consider starting earlier.");
@@ -197,7 +221,7 @@ export function buildItinerary(
     notes.push("A permit is required for this trail. Apply through the official link on the trail page; Ghost Guide does not obtain permits for you.");
   }
   if (opts.latestFinishTime) {
-    notes.push(`Plan to be off the trail by ${opts.latestFinishTime}: a conservative planning estimate for this month, not an exact sunset time.`);
+    notes.push(`Plan to be off the trail by ${opts.latestFinishTime}: a conservative planning estimate for ${monthOf(prefs.plannedDate)}, not an exact sunset time.`);
   }
   notes.push("Hydration and pace reminders are general prompts, not personalized medical advice.");
   if (opts.extraNotes?.length) notes.push(...opts.extraNotes);

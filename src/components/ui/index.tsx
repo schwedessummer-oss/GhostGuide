@@ -208,7 +208,7 @@ export function Textarea({ className, ...props }: ComponentProps<"textarea">) {
 export function Checkbox({ label, className, ...props }: ComponentProps<"input"> & { label: ReactNode }) {
   return (
     <label className={clsx("flex min-h-11 cursor-pointer items-center gap-3 rounded-xl px-1", className)}>
-      <input type="checkbox" className="size-5 accent-forest-700" {...props} />
+      <input type="checkbox" className="size-5 shrink-0 accent-forest-700" {...props} />
       <span>{label}</span>
     </label>
   );
@@ -222,7 +222,7 @@ export function Radio({ label, description, className, ...props }: ComponentProp
         className,
       )}
     >
-      <input type="radio" className="mt-1 size-5 accent-forest-700" {...props} />
+      <input type="radio" className="mt-1 size-5 shrink-0 accent-forest-700" {...props} />
       <span>
         <span className="block font-semibold">{label}</span>
         {description ? <span className="block text-sm text-muted">{description}</span> : null}

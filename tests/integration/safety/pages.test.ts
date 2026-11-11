@@ -111,7 +111,10 @@ describe("check-in page and cards", () => {
     signIn(user);
     const { default: Page } = await import("@/app/trips/[id]/checkin/page");
     const html = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));
-    expect(html).toContain("Your contact was sent a notice");
+    // demo provider: the status and activity say "simulated", never "sent"/"delivered"
+    expect(html).toContain("A simulated notice was recorded for your contact");
+    expect(html).toContain("Simulated notice to your contact recorded");
+    expect(html).not.toMatch(/Your contact was sent a notice|we notified your contact|Notice delivered to your contact/);
     expect(html).toContain("Simulated — not delivered");
     expect(html).toContain("Check-in notice to your contact");
     expect(html).not.toMatch(/emergency detected|in danger/i);
@@ -229,5 +232,100 @@ describe("account pages", () => {
     expect(p).toEqual({ locationRetentionDays: 14, shareLocationWithContacts: false });
     expect(await acct.deleteLocationHistoryAction(undefined, form({}))).toMatchObject({ ok: false });
     expect(await acct.deleteLocationHistoryAction(undefined, form({ confirmDelete: "on" }))).toMatchObject({ ok: true });
+  });
+});
+
+describe("QA regressions on the safety pages", () => {
+  const uniq = () => `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+
+  it("overdue with consent withdrawn: the status never promises a notice and offers no dead #change link", async () => {
+    const user = await createCustomer("ui-withdrawn");
+    const trip = await bookedTrip(user);
+    const contact = await consentedContact(user, { phone: "", email: `w-${uniq()}@example.com` });
+    const now = new Date();
+    const c = await optIn(user, trip.id, contact, { now, minutesAhead: 20, graceMinutes: 15, reminders: [] });
+    await sql()`update public.emergency_contacts set consent_confirmed_at = null, consent_statement = null where id = ${contact}`;
+    await runCheckinJobs(c.id, addMin(now, 40));
+    expect((await checkinRow(trip.id)).status).toBe("overdue");
+    signIn(user);
+    const { default: Page } = await import("@/app/trips/[id]/checkin/page");
+    const html = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));
+    expect(html).toContain("We haven&#x27;t received your confirmation");
+    expect(html).not.toContain("sending your contact a notice");
+    expect(html).not.toContain("recording a simulated notice to your contact");
+    expect(html).toContain("nobody else is being notified");
+    expect(html).toContain("Your contact was not notified");
+
+    // contact deleted instead: same honesty, and the "choose a contact" link goes where a contact can be set up
+    await sql()`delete from public.emergency_contacts where id = ${contact}`;
+    const html2 = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));
+    expect(html2).toContain("No emergency contact on this check-in");
+    expect(html2).not.toContain(`/trips/${trip.id}/checkin#change`);
+    expect(html2).toContain(`/account/emergency-contacts?trip=${trip.id}`);
+    expect(html2).not.toContain("sending your contact a notice");
+  });
+
+  it("turning check-ins off leaves a visible 'Check-ins are off' confirmation; zone labels are DST-neutral", async () => {
+    const user = await createCustomer("ui-optout");
+    const trip = await bookedTrip(user);
+    await optIn(user, trip.id, await consentedContact(user, { phone: "", email: `o-${uniq()}@example.com` }));
+    signIn(user);
+    const { default: Page } = await import("@/app/trips/[id]/checkin/page");
+    const on = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));
+    expect(on).toContain("Expected return (Pacific Time)");
+    const actions = await import("@/components/checkin/actions");
+    expect(await actions.optOutAction(trip.id, undefined, form({}))).toMatchObject({ ok: true });
+    const off = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));
+    expect(off).toContain("Check-ins are off for this trip");
+    expect(off).toContain("Turn on check-ins");
+  });
+
+  it("rejected submissions echo the submitted values so the forms keep the customer's input", async () => {
+    const user = await createCustomer("ui-echo");
+    const trip = await bookedTrip(user);
+    const contact = await consentedContact(user, { phone: "", email: `e-${uniq()}@example.com` });
+    signIn(user);
+    const acct = await import("@/app/account/actions");
+    expect(await acct.updateProfileAction(undefined, form({ fullName: "Fran Edited", phone: "12", units: "metric" }))).toMatchObject({
+      ok: false,
+      fieldErrors: { phone: expect.any(String) },
+      values: { fullName: "Fran Edited", phone: "12", units: "metric" },
+    });
+    expect(await acct.updatePrivacyAction(undefined, form({ locationRetentionDays: "0", shareLocationWithContacts: "on" }))).toMatchObject({
+      ok: false,
+      values: { locationRetentionDays: "0", shareLocationWithContacts: true },
+    });
+    const contacts = await import("@/app/account/emergency-contacts/actions");
+    expect(await contacts.createContactAction(undefined, form({ name: "Typo Tess", phone: "55", email: "", relationship: "pal", consent: "on" }))).toMatchObject({
+      ok: false,
+      values: { name: "Typo Tess", phone: "55", relationship: "pal", consent: true },
+    });
+    const actions = await import("@/components/checkin/actions");
+    const bad = await actions.setupCheckinAction(
+      trip.id,
+      undefined,
+      form({ contactId: contact, expectedReturn: "2020-01-01T10:00", graceMinutes: "45", reminders: ["60"], understand: "on" }),
+    );
+    expect(bad).toMatchObject({ ok: false, values: { contactId: contact, expectedReturn: "2020-01-01T10:00", graceMinutes: "45", reminders: ["60"], understand: true } });
+    // success: nothing echoed, the form shows the saved state
+    expect(await acct.updateProfileAction(undefined, form({ fullName: "Fran Fixed", phone: "", units: "metric" }))).toEqual({ ok: true, message: "Profile saved." });
+  });
+
+  it("a new share link's expiry is labeled in the trail's zone; sharing is no longer offered once the trip is finished", async () => {
+    const user = await createCustomer("ui-sharelabel");
+    const trip = await bookedTrip(user, { status: "active" });
+    await optIn(user, trip.id, await consentedContact(user, { phone: "", email: `s-${uniq()}@example.com` }));
+    signIn(user);
+    const actions = await import("@/components/checkin/actions");
+    const created = await actions.createShareAction(trip.id, undefined, form({ hours: "6" }));
+    expect(created).toMatchObject({ ok: true, expiresLabel: expect.stringMatching(/ P[SD]T$/) });
+    const { CheckinStatusCard } = await import("@/components/checkin/checkin-status-card");
+    expect(await render((await CheckinStatusCard({ tripId: trip.id }))!)).toContain("Share your trip");
+    expect(await actions.finishAction(trip.id, undefined, form({ confirmFinish: "yes" }))).toMatchObject({ ok: true });
+    const [t] = await sql()<{ status: string }[]>`select status from public.trips where id = ${trip.id}`;
+    expect(t.status).toBe("completed");
+    const card = await render((await CheckinStatusCard({ tripId: trip.id }))!);
+    expect(card).toContain("Trip finished");
+    expect(card).not.toContain("Create share link");
   });
 });

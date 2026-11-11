@@ -45,9 +45,12 @@ export default async function CancelTripPage({ params }: PageProps<"/trips/[id]/
       {!p.canCancel ? (
         <Alert tone="amber" title="This trip can't be cancelled here">
           <p>{p.blockedReason}</p>
-          <ButtonLink href={`/trips/${id}`} variant="secondary" className="mt-3">
-            Back to trip
-          </ButtonLink>
+          <div className="mt-3 flex flex-wrap gap-3">
+            {b?.status === "pending_payment" ? <ButtonLink href={`/trips/${id}/checkout`}>Review or release the checkout</ButtonLink> : null}
+            <ButtonLink href={`/trips/${id}`} variant="secondary">
+              Back to trip
+            </ButtonLink>
+          </div>
         </Alert>
       ) : (
         <div className="space-y-6">

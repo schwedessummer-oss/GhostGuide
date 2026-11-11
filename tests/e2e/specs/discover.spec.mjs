@@ -275,6 +275,18 @@ test("terrain filter shows trails with any selected terrain", { timeout: 60_000 
   }
 });
 
+test("results heading agrees in number: '1 trail matches your filters'", { timeout: 60_000 }, async () => {
+  const { context, page } = await openPage();
+  try {
+    await page.goto("/trails?terrain=lake");
+    const heading = (await page.locator("#results-heading").innerText()).trim();
+    const count = await resultsCount(page);
+    assert.equal(heading, count === 1 ? "1 trail matches your filters" : `${count} trails match your filters`);
+  } finally {
+    await context.close();
+  }
+});
+
 test("accessibility filter requires every selected feature", { timeout: 60_000 }, async () => {
   const { context, page } = await openPage();
   try {
@@ -380,6 +392,38 @@ test("?view=map without a Mapbox token shows the schematic SVG overview plus a t
   }
 });
 
+test("mobile map overview: large marker touch targets, numbers instead of tiny labels, list names each trail", { timeout: 60_000 }, async () => {
+  const { context, page } = await openPage({ width: 390, height: 844 });
+  try {
+    await page.goto("/trails?view=map");
+    const svg = page.locator("figure svg[role=group]");
+    await svg.waitFor();
+    // Name labels are hidden on small screens (they would render at ~7 px); the numbered list names every trail.
+    const visibleLabels = await svg.locator("a text").evaluateAll(
+      (els) => els.filter((t) => getComputedStyle(t).display !== "none" && !/^\d+$/.test(t.textContent.trim())).length,
+    );
+    assert.equal(visibleLabels, 0, "no trail-name labels drawn on the phone-sized map");
+    assert.match(await page.locator("figure figcaption").innerText(), /the list below names each trail/);
+    // Each marker has an invisible touch target (44 px where neighbours allow, never below the 24 px minimum)
+    // that does not overlap its neighbours, and the numbers are readable.
+    const targets = await svg.locator("[data-hit-target]").evaluateAll((els) => els.map((e) => e.getBoundingClientRect()).map((r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2, d: r.width })));
+    assert.ok(targets.length >= 1);
+    for (const t of targets) assert.ok(t.d >= 24, `marker touch target only ${t.d.toFixed(0)} px across`);
+    assert.ok(Math.max(...targets.map((t) => t.d)) >= 43, "isolated markers get a 44 px target");
+    for (let i = 0; i < targets.length; i++)
+      for (let j = i + 1; j < targets.length; j++) {
+        const dist = Math.hypot(targets[i].x - targets[j].x, targets[i].y - targets[j].y);
+        assert.ok(dist + 1 >= (targets[i].d + targets[j].d) / 2, `touch targets ${i + 1} and ${j + 1} overlap`);
+      }
+    const numberPx = await svg.locator("a text").first().evaluate((t) => t.getBoundingClientRect().height);
+    assert.ok(numberPx >= 10, `marker numbers render at ${numberPx.toFixed(1)} px`);
+    // The numbered text list stays the accessible way in.
+    assert.equal(await page.getByRole("heading", { name: "Trails on the map" }).count(), 1);
+  } finally {
+    await context.close();
+  }
+});
+
 // ---------------------------------------------------------------------------
 // /trails/[slug]
 // ---------------------------------------------------------------------------
@@ -415,8 +459,11 @@ test("trail detail shows facts, estimate-labeled duration, provenance, sources +
     assert.match(provText, /Difficulty rating\s*Operator note/);
     assert.ok(!/\bVerified\b/.test(provText), "no seeded demo fact is verified, so none may carry a Verified badge");
     assert.match(await sources.innerText(), /Verified = confirmed against a source · Estimate = calculated, not measured · Operator note = .* · Demonstration = invented for the demo\./);
-    // Sources + freshness
-    assert.match(await sources.innerText(), /Trail facts were last \w+ .*(today|\d+ days? ago)/);
+    // Sources + freshness: demo facts are "reviewed", never described as verified.
+    const sourcesText = await sources.innerText();
+    assert.match(sourcesText, /Trail facts were last reviewed .*(today|\d+ days? ago)/);
+    assert.match(sourcesText, /demonstration facts, invented for this demo: none of them is verified against a real source/);
+    assert.ok(!/last verified/.test(sourcesText), "demo facts must not be described as verified");
     assert.ok((await sources.getByText("Demo source").count()) >= 1, "demo sources are labeled");
     assert.match(await sources.innerText(), /Retrieved [A-Z][a-z]{2} \d{1,2}, \d{4}/);
 
@@ -513,6 +560,10 @@ test("plan validation: a past date is rejected accessibly", { timeout: 60_000 },
     await page.getByRole("heading", { level: 1, name: "Check your answers" }).waitFor();
     const summary = page.getByRole("alert").filter({ hasText: /Please fix 1 answer/ });
     assert.match(await summary.innerText(), /Date: Choose today or a later date\./);
+    // The title says something is wrong, and focus moves to the error summary (GOV.UK pattern).
+    assert.match(await page.title(), /^Error: Check your answers/);
+    await page.waitForFunction(() => document.activeElement?.id === "plan-errors");
+    assert.match(await page.evaluate(() => document.activeElement.innerText), /Please fix 1 answer/);
     await expectFieldError(page, "date", /Choose today or a later date\./);
     // The rest of the answers are preserved in the form.
     assert.equal(await page.locator("#hours").inputValue(), "4");
@@ -533,6 +584,11 @@ test("plan validation: minimum distance above maximum is rejected", { timeout: 6
     await page.getByRole("heading", { level: 1, name: "Check your answers" }).waitFor();
     await expectFieldError(page, "maxMi", /Minimum distance must not be more than the maximum\./);
     assert.equal(await page.locator("#minMi").inputValue(), "6");
+
+    // Out-of-range distances are explained in miles, on the field that caused them.
+    await gotoResults(page, { experience: "some", fitness: "moderate", pace: "steady", hours: "4", minMi: "60", date: regionDate(10), start: "08:30", party: "2" });
+    await expectFieldError(page, "minMi", /Minimum distance must be between 0 and 50 miles\./);
+    assert.equal(await page.locator("#maxMi-error").count(), 0, "a minimum-distance problem is not reported on the maximum field");
   } finally {
     await context.close();
   }
@@ -571,10 +627,12 @@ test("plan validation: the full advertised distance range (up to 50 miles) is ac
   // The form says 0.5–50 miles (max=50); 50 mi must not be rejected with a km-based error.
   const { context, page } = await openPage();
   try {
-    await gotoResults(page, { experience: "some", fitness: "moderate", pace: "steady", hours: "4", maxMi: "50", date: regionDate(10), start: "08:30", party: "2" });
-    const h1 = await page.getByRole("heading", { level: 1 }).innerText();
-    const errorText = (await page.locator("#maxMi-error").count()) ? await page.locator("#maxMi-error").innerText() : "";
-    assert.notEqual(h1, "Check your answers", `50 mi was rejected: "${errorText}"`);
+    for (const field of ["maxMi", "minMi"]) {
+      await gotoResults(page, { experience: "some", fitness: "moderate", pace: "steady", hours: "4", [field]: "50", date: regionDate(10), start: "08:30", party: "2" });
+      const h1 = await page.getByRole("heading", { level: 1 }).innerText();
+      const errorText = (await page.locator(`#${field}-error`).count()) ? await page.locator(`#${field}-error`).innerText() : "";
+      assert.notEqual(h1, "Check your answers", `${field}=50 was rejected: "${errorText}"`);
+    }
   } finally {
     await context.close();
   }
@@ -602,6 +660,11 @@ test("results: ranked suggestions with score breakdown, itinerary and simulated-
     const howItWorks = await page.getByText("How suggestions work").locator("..").innerText();
     assert.match(howItWorks, /no AI decides anything/);
     assert.match(await page.locator("main").innerText(), /Demonstration results/);
+    assert.match(await page.title(), /^Your hike suggestions/);
+    // The latest-finish estimate names the planned month (the date may be in a different month from today).
+    const plannedMonth = new Intl.DateTimeFormat("en-US", { month: "long", timeZone: "UTC" }).format(new Date(`${regionDate(14)}T12:00:00Z`));
+    assert.match(await page.locator("main").innerText(), new RegExp(`Plan to be off the trail by \\d{2}:\\d{2} in ${plannedMonth}:`));
+    assert.ok(!/off the trail by \d{2}:\d{2} this month/.test(await page.locator("main").innerText()));
 
     const articles = page.locator("main article");
     const n = await articles.count();
@@ -632,7 +695,7 @@ test("results: ranked suggestions with score breakdown, itinerary and simulated-
       // Itinerary with estimate labels
       const itin = card.getByRole("region", { name: /Suggested itinerary/ });
       const itinText = await itin.innerText();
-      assert.match(itinText, /\(all times est\.\)/);
+      assert.match(itinText, /\(all times est\.( for the full route)?\)/);
       assert.match(itinText, /07:00 · Start at /);
       assert.match(itinText, /≈ \d{2}:\d{2} · Finish \(about .+\)/);
       assert.match(itinText, /Reminders are general prompts, not medical advice\./);
@@ -646,11 +709,18 @@ test("results: ranked suggestions with score breakdown, itinerary and simulated-
       assert.equal(await card.getByRole("button", { name: /Sign in to save this trip/ }).count(), 1);
     }
 
-    // Partial closure lowers the score and is surfaced as a note.
+    // Partial closure lowers the score, is surfaced as a note, AND appears in the itinerary itself
+    // before the turnaround, which must not imply continuing to the (closed) far end.
     const old = articles.filter({ has: page.getByRole("heading", { name: "Old Signal Summit" }) });
-    if (await old.count()) {
-      assert.match(await old.innerText(), /Partial closure: Upper switchbacks closed/);
-    }
+    assert.equal(await old.count(), 1, "Old Signal Summit fits a strong hiker 14 days out");
+    assert.match(await old.innerText(), /Partial closure: Upper switchbacks closed/);
+    const oldItin = await old.getByRole("region", { name: /Suggested itinerary/ }).innerText();
+    assert.match(oldItin, /\(all times est\. for the full route\)/);
+    assert.match(oldItin, /Partial closure on your date\s+Upper switchbacks closed.*Turn around at the Signal Tower\./s);
+    assert.match(oldItin, /Turn around by \d{2}:\d{2} at the latest, or earlier where the closure requires it/);
+    assert.ok(!/even if you haven't reached the far end/.test(oldItin), "itinerary must not imply continuing into the closed section");
+    assert.ok(oldItin.indexOf("Partial closure on your date") < oldItin.indexOf("Turn around by"), "closure is shown before the turnaround");
+    assert.match(oldItin, /Finish \(about .+ for the full route\)/);
     // Permit trail links to the official page from the results.
     const echo = articles.filter({ has: page.getByRole("heading", { name: "Echo Basin Traverse" }) });
     assert.equal(await echo.count(), 1, "Echo Basin fits a strong hiker 14 days out");
@@ -714,10 +784,12 @@ test("results: a no-match plan says so plainly and offers relax suggestions", { 
   try {
     await gotoResults(page, { ...NO_MATCH, date: regionDate(14) });
     await page.getByRole("heading", { level: 1, name: "No trail fits all of your answers" }).waitFor();
+    assert.match(await page.title(), /^No matching trails/);
     assert.equal(await page.locator("main article").count(), 0, "no suggestion cards");
     const main = await page.locator("main").innerText();
     assert.match(main, /None of the \d+ trails in our catalog meets every constraint/);
     assert.match(main, /never invent one/);
+    assert.ok(!/verified catalog/.test(main), "the demo catalog is not verified");
     assert.match(main, /What you could change/);
     assert.match(main, /Allow at least 1\.5 h to include Lantern Creek Loop/);
     // Excluded list is expanded by default and explains each trail.
@@ -745,8 +817,15 @@ test("results: relax suggestions only name trails that the suggested change woul
     const items = await relax.locator("li").allInnerTexts();
     assert.ok(items.length > 0);
     for (const item of items) {
-      assert.ok(!/Old Signal Summit|Echo Basin Traverse/.test(item), `relax suggestion names a trail still excluded for other reasons: "${item}"`);
+      assert.ok(
+        !/Old Signal Summit|Echo Basin Traverse|Whisper Falls Trail|Miner's Meadow Loop|Hollow Pine Ridge/.test(item),
+        `relax suggestion names a trail still excluded for other reasons: "${item}"`,
+      );
     }
+    // Lantern Creek Loop is blocked only by time, so that is the one trail named.
+    assert.ok(items.some((i) => /^Allow at least 1\.5 h to include Lantern Creek Loop\b/.test(i)), items.join(" | "));
+    // Experience/fitness and accessibility exclusions are explained without naming trails.
+    assert.ok(items.some((i) => /rated above what we suggest for your experience and fitness, so we won't suggest them/.test(i)));
   } finally {
     await context.close();
   }
@@ -779,22 +858,31 @@ test("save while signed out -> sign in -> back to results -> save -> /trips/<id>
     await page.getByRole("heading", { level: 1, name: "Your hike suggestions" }).waitFor();
     assert.match(await page.getByRole("status").filter({ hasText: "Whisper Falls Trail fits your answers" }).innerText(), /ranks #\d+ of \d+/);
     const card = page.locator("main article").filter({ has: page.getByRole("heading", { name: "Whisper Falls Trail" }) });
+    const cardId = await card.getAttribute("id");
+    assert.match(cardId, /^trail-[0-9a-f-]{36}$/);
     await Promise.all([page.waitForURL(/\/login\?next=/), card.getByRole("button", { name: /Sign in to save this trip/ }).click()]);
     const next = new URL(page.url()).searchParams.get("next");
     assert.ok(next.startsWith("/plan/results?"), `next should return to results, got ${next}`);
-    const nextParams = new URLSearchParams(next.split("?")[1]);
-    assert.equal(nextParams.get("trail"), "whisper-falls");
-    assert.equal(nextParams.get("date"), date);
+    const nextUrl = new URL(next, BASE);
+    assert.equal(nextUrl.searchParams.get("trail"), "whisper-falls");
+    assert.equal(nextUrl.searchParams.get("date"), date);
+    assert.equal(nextUrl.hash, `#${cardId}`, "next returns to the chosen card");
+    await page.getByText("we'll take you back to the trail you chose").waitFor();
 
     await page.getByLabel("Email").fill(ownerEmail);
     await page.getByLabel("Password").fill(CUSTOMER_PASSWORD);
     await Promise.all([page.waitForURL(/\/plan\/results\?/, { timeout: 30_000 }), page.getByRole("button", { name: "Sign in" }).click()]);
     await page.getByRole("heading", { level: 1, name: "Your hike suggestions" }).waitFor();
     assert.equal(new URL(page.url()).searchParams.get("date"), date, "same answers after sign-in");
+    assert.equal(new URL(page.url()).hash, `#${cardId}`, "back at the chosen card");
 
     const card2 = page.locator("main article").filter({ has: page.getByRole("heading", { name: "Whisper Falls Trail" }) });
     const save = card2.getByRole("button", { name: /^Save this trip/ });
     assert.equal(await save.count(), 1, "signed-in visitors see Save this trip");
+    // Focus lands on that card's Save button, and the card is on screen.
+    await page.waitForFunction((id) => document.activeElement?.closest("article")?.id === id && document.activeElement.tagName === "BUTTON", cardId);
+    const box = await card2.boundingBox();
+    assert.ok(box && box.y < 844 && box.y + box.height > 0, "the chosen card is scrolled into view");
     await Promise.all([page.waitForURL(/\/trips\/[0-9a-f-]{36}$/, { timeout: 30_000 }), save.click()]);
     tripPath = new URL(page.url()).pathname;
 
@@ -852,7 +940,7 @@ test("sign-in `next` (used by Save) never redirects off-site", { timeout: 90_000
       await context.close();
     }
   }
-  for (const next of ["//evil.example/x", "/\\evil.example/x", "/\t/evil.example/x"]) {
+  for (const next of ["//evil.example/x", "/\\evil.example/x", "/\t/evil.example/x", "/\n/evil.example/x"]) {
     const { context, page } = await openPage();
     try {
       const offsite = [];
@@ -872,6 +960,8 @@ test("sign-in `next` (used by Save) never redirects off-site", { timeout: 90_000
       await page.waitForTimeout(1000);
       assert.equal(new URL(page.url()).hostname, new URL(BASE).hostname, `next=${JSON.stringify(next)} sent the user to ${page.url()}`);
       assert.deepEqual(offsite, [], `next=${JSON.stringify(next)} requested an off-site page`);
+      // An unsafe `next` falls back to My trips (and never crashes the sign-in action).
+      assert.equal(new URL(page.url()).pathname, "/trips", `next=${JSON.stringify(next)} should fall back to /trips`);
     } finally {
       await context.close();
     }

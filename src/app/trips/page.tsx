@@ -24,6 +24,9 @@ function TripCard({ trip, summary }: { trip: TripRow; summary?: Summary }) {
     resumeUrl: `/trips/${trip.id}/checkout`,
     awaitingShuttleFulfillmentId: summary?.awaitingShuttleFulfillmentId,
   });
+  // A live (held or paid) booking defines the hike date and group shown here.
+  const date = summary?.live ? summary.hikeDate : trip.plannedDate;
+  const party = summary?.live ? summary.partySize : trip.partySize;
   return (
     <li>
       <Card className="flex h-full flex-col gap-4">
@@ -47,13 +50,13 @@ function TripCard({ trip, summary }: { trip: TripRow; summary?: Summary }) {
           <div className="flex items-center gap-2">
             <CalendarDays aria-hidden className="size-4 text-forest-700" />
             <dt className="sr-only">Date</dt>
-            <dd>{trip.plannedDate ? formatDate(trip.plannedDate, { weekday: "short", month: "short", day: "numeric", year: "numeric" }) : "Date not set"}</dd>
+            <dd>{date ? formatDate(date, { weekday: "short", month: "short", day: "numeric", year: "numeric" }) : "Date not set"}</dd>
           </div>
           <div className="flex items-center gap-2">
             <Users aria-hidden className="size-4 text-forest-700" />
             <dt className="sr-only">Party size</dt>
             <dd>
-              {trip.partySize} {trip.partySize === 1 ? "hiker" : "hikers"}
+              {party} {party === 1 ? "hiker" : "hikers"}
             </dd>
           </div>
         </dl>

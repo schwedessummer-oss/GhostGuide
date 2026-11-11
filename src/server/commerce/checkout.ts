@@ -8,12 +8,14 @@ import { log } from "@/server/log";
 import { getOwnedTrip, type TripRow } from "@/server/trips/queries";
 import { getRegionById, getTrailById, isTrailAvailable, type Region, type TrailDetail } from "@/server/catalog/trails";
 import { quotePrice, type AddonSelection, type Quote } from "@/domain/pricing";
-import { holdIsValid, toProviderLineItems, type StoredPriceBreakdown } from "@/domain/booking";
+import { closedOnDateMessage, holdIsValid, isRealIsoDate, toProviderLineItems, type StoredPriceBreakdown } from "@/domain/booking";
 import { localDateInZone, zonedTimeToUtc } from "@/lib/time";
+import { formatDate } from "@/lib/format";
 import { getPaymentProvider, getPaymentProviderByName } from "@/integrations/payments";
 import { getCommerceSettings } from "./settings";
 import { loadPricingRules, lockAddonDay, lockTrailDay, usedAddonCapacity, usedTrailCapacity } from "./inventory";
-import { expireHoldIfUnpaid } from "./reconcile";
+import { abandonPendingBooking, expireHoldIfUnpaid } from "./reconcile";
+import { closuresOnDay, planForSelection } from "./trip-plan";
 import { getGearLockerProvider } from "@/integrations/partners";
 import { GEAR_KIT_KINDS } from "@/server/fulfillment/process";
 
@@ -62,7 +64,7 @@ export const simulateModeSchema = z.enum(["fail", "fail_once", "reject"]);
 
 export const checkoutInputSchema = z.object({
   tripId: z.uuid(),
-  hikeDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a valid date"),
+  hikeDate: z.string().refine(isRealIsoDate, "Choose a valid date."),
   partySize: z.coerce.number().int().min(1).max(12),
   addonCodes: z.array(z.string().regex(/^[a-z0-9-]{1,60}$/)).max(10).default([]),
   idempotencyKey: z.uuid(),
@@ -80,6 +82,7 @@ export type CheckoutErrorCode =
   | "sold_out"
   | "already_booked"
   | "expired"
+  | "in_progress"
   | "provider_error";
 
 export type CheckoutResult =
@@ -95,6 +98,8 @@ export function tripStartTime(trip: Pick<TripRow, "startTime" | "itinerary" | "p
 
 /** Date rules shared by the checkout page and the use-case. */
 export function validateHikeDate(hikeDate: string, startTime: string, timezone: string, now = new Date()): string | null {
+  // Reject impossible calendar dates before anything (Date.UTC would roll 2026-12-32 over to January).
+  if (!isRealIsoDate(hikeDate)) return "Choose a valid date.";
   const today = localDateInZone(now, timezone);
   if (hikeDate < today) return "That date is in the past.";
   const max = localDateInZone(new Date(now.getTime() + MAX_ADVANCE_DAYS * 86_400_000), timezone);
@@ -109,9 +114,15 @@ export function validateHikeDate(hikeDate: string, startTime: string, timezone: 
   return null;
 }
 
+/**
+ * Date-independent bookability (catalog status, validated route, demo rules).
+ * Closures are checked for the selected hike date — active or scheduled —
+ * by closuresOnDay, so a closure that ends before the hike does not block it
+ * and one scheduled for the hike day does.
+ */
 export function trailBookability(trail: TrailDetail | null): string | null {
   if (!trail) return "This trail is no longer available.";
-  if (!isTrailAvailable(trail, trail.activeClosures)) return "This trail is currently closed or not available for booking.";
+  if (!isTrailAvailable(trail, [])) return "This trail is currently closed or not available for booking.";
   if (trail.isDemo && env().APP_MODE === "live") return "Demonstration trails cannot be booked.";
   return null;
 }
@@ -124,6 +135,11 @@ interface BookingKeyRow {
   holdExpiresAt: Date | null;
   checkoutSessionId: string | null;
   paymentProvider: string;
+}
+
+interface LiveBookingRow extends BookingKeyRow {
+  hikeDate: string;
+  partySize: number;
 }
 
 function urlsFor(providerName: string, bookingId: string) {
@@ -213,6 +229,9 @@ export async function createCheckout(user: SessionUser, raw: CheckoutInput): Pro
   const startTime = tripStartTime(trip);
   const dateError = validateHikeDate(input.hikeDate, startTime, region.timezone);
   if (dateError) return fail("invalid", dateError);
+  // A date or group the saved plan was not computed for gets the planner's daylight rule.
+  const selection = await planForSelection(trip, trail, region, { hikeDate: input.hikeDate, partySize: input.partySize, startTime });
+  if (selection.daylightError) return fail("unavailable", selection.daylightError);
 
   const offered = await loadOfferedAddons(trip.regionId);
   const codes = [...new Set(input.addonCodes)];
@@ -254,19 +273,39 @@ export async function createCheckout(user: SessionUser, raw: CheckoutInput): Pro
     | { kind: "created"; bookingId: string; quote: Quote; holdExpiresAt: Date; breakdown: StoredPriceBreakdown }
     | { kind: "existing"; booking: BookingKeyRow }
     | { kind: "error"; result: CheckoutResult };
+  const requestedCodes = [...codes].sort().join(",");
 
   let outcome: TxOutcome;
   try {
     outcome = await withSystem(async (tx): Promise<TxOutcome> => {
-      const [live] = await tx<BookingKeyRow[]>`
-        select id, user_id, trip_id, status, hold_expires_at, checkout_session_id, payment_provider
+      const [live] = await tx<LiveBookingRow[]>`
+        select id, user_id, trip_id, status, hold_expires_at, checkout_session_id, payment_provider,
+               to_char(hike_date, 'YYYY-MM-DD') as hike_date, party_size
         from public.bookings
         where trip_id = ${trip.id} and status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')
         for update`;
       if (live) {
-        if (live.status === "pending_payment") return { kind: "existing", booking: live };
-        return { kind: "error", result: fail("already_booked", "This trip already has a booking.") };
+        if (live.status !== "pending_payment") return { kind: "error", result: fail("already_booked", "This trip already has a booking.") };
+        // Same details: resume it. Different details: never silently send the
+        // customer to pay the OLD booking — they must continue or release it.
+        const held = await tx<{ code: string }[]>`
+          select a.code from public.booking_addons ba join public.addons a on a.id = ba.addon_id where ba.booking_id = ${live.id}`;
+        const heldCodes = held.map((h) => h.code).sort().join(",");
+        if (live.hikeDate === input.hikeDate && live.partySize === input.partySize && heldCodes === requestedCodes) {
+          return { kind: "existing", booking: live };
+        }
+        return {
+          kind: "error",
+          result: fail(
+            "in_progress",
+            `A checkout is already in progress for ${formatDate(live.hikeDate, { weekday: "short", month: "short", day: "numeric", year: "numeric" })} · ${live.partySize} ${live.partySize === 1 ? "hiker" : "hikers"}. Continue it, or release it to change the details.`,
+          ),
+        };
       }
+
+      // Closures active OR scheduled on the hike day (region-local) are checked here, not just today's.
+      const closures = await closuresOnDay(tx, trip.trailId, input.hikeDate, region.timezone);
+      if (closures.closed) return { kind: "error", result: fail("unavailable", closedOnDateMessage(closures.closed)) };
 
       const day = await lockTrailDay(tx, trip.trailId, input.hikeDate);
       if (day.blocked) return { kind: "error", result: fail("sold_out", "That date is not available. Please choose another date.") };
@@ -430,4 +469,89 @@ export async function previewQuote(params: {
     addons: params.addons.map((a) => ({ code: a.code, name: a.name, priceCents: a.priceCents, pricingUnit: a.pricingUnit })),
     currency: params.trail.currency,
   });
+}
+
+/** Locker kits available per gear_locker add-on for a day and region (partner availability, read-only). */
+export async function getGearKitsAvailable(addons: AddonRow[], regionId: string, day: string): Promise<Record<string, number>> {
+  const gear = addons.filter((a) => a.kind === "gear_locker");
+  if (!gear.length) return {};
+  return withSystem(async (tx) => {
+    const out: Record<string, number> = {};
+    for (const a of gear) {
+      try {
+        const res = await getGearLockerProvider(a.providerKey).checkAvailability(
+          tx,
+          regionId,
+          day,
+          GEAR_KIT_KINDS.map((kind) => ({ kind, count: 1 })),
+        );
+        out[a.id] = Math.min(...res.byKind.map((k) => k.available));
+      } catch (err) {
+        log.warn("checkout.gear_availability_failed", { addonId: a.id, error: err instanceof Error ? err.message : String(err) });
+        out[a.id] = 0;
+      }
+    }
+    return out;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Releasing a pending checkout ("Change details / start over")
+// ---------------------------------------------------------------------------
+
+export interface HeldSelection {
+  hikeDate: string;
+  partySize: number;
+  addonCodes: string[];
+  shuttlePickup: string | null;
+}
+
+export type ReleaseCheckoutResult =
+  | { ok: true; outcome: "released" | "already_released"; held: HeldSelection }
+  | { ok: true; outcome: "paid"; bookingId: string }
+  | { ok: false; code: "not_found" | "provider_error"; error: string };
+
+/**
+ * Release the customer's own unpaid checkout so they can change the date,
+ * group or add-ons: the provider session is closed FIRST (so it can no longer
+ * be paid), then the booking expires and its held spots are freed. If the
+ * provider reports the session was already paid, the payment is processed
+ * normally instead (booking confirmed). Idempotent: releasing twice, or a
+ * booking that already expired or failed, is a no-op that returns the held
+ * selection.
+ */
+export async function releasePendingCheckout(user: SessionUser, tripId: string, bookingId: string): Promise<ReleaseCheckoutResult> {
+  if (!z.uuid().safeParse(tripId).success || !z.uuid().safeParse(bookingId).success) return { ok: false, code: "not_found", error: "Checkout not found." };
+  const [b] = await withSystem(
+    (tx) => tx<{ id: string; status: string; hikeDate: string; partySize: number }[]>`
+      select id, status, to_char(hike_date, 'YYYY-MM-DD') as hike_date, party_size
+      from public.bookings where id = ${bookingId} and user_id = ${user.id} and trip_id = ${tripId}`,
+  );
+  if (!b) return { ok: false, code: "not_found", error: "Checkout not found." };
+  const addons = await withSystem(
+    (tx) => tx<{ code: string; details: { shuttlePickup?: string } | null }[]>`
+      select a.code, ba.details from public.booking_addons ba join public.addons a on a.id = ba.addon_id
+      where ba.booking_id = ${b.id} order by a.code`,
+  );
+  const held: HeldSelection = {
+    hikeDate: b.hikeDate,
+    partySize: b.partySize,
+    addonCodes: addons.map((a) => a.code),
+    shuttlePickup: addons.find((a) => a.details?.shuttlePickup)?.details?.shuttlePickup ?? null,
+  };
+  if (b.status === "expired" || b.status === "payment_failed") return { ok: true, outcome: "already_released", held };
+  if (b.status !== "pending_payment") return { ok: true, outcome: "paid", bookingId: b.id };
+
+  const outcome = await abandonPendingBooking(b.id, "Checkout released by the customer to change details");
+  if (outcome === "error") {
+    return { ok: false, code: "provider_error", error: "We could not reach the payment provider to close this checkout, so your spots are still held. Please try again in a moment." };
+  }
+  if (outcome === "confirmed" || outcome === "needs_attention") return { ok: true, outcome: "paid", bookingId: b.id };
+  if (outcome === "skipped") {
+    // Settled concurrently (e.g. the payment webhook won the race): report what it became.
+    const [now] = await withSystem((tx) => tx<{ status: string }[]>`select status from public.bookings where id = ${b.id}`);
+    if (now && now.status !== "expired" && now.status !== "payment_failed" && now.status !== "pending_payment") return { ok: true, outcome: "paid", bookingId: b.id };
+  }
+  log.info("checkout.released", { bookingId: b.id, outcome });
+  return { ok: true, outcome: outcome === "expired" ? "released" : "already_released", held };
 }

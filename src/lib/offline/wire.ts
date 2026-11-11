@@ -6,7 +6,7 @@
 import type { OfflineManifest } from "@/domain/offline-manifest";
 import type { CheckinStatus, Itinerary, RouteType, TripStatus } from "@/domain/types";
 
-export const BUNDLE_SCHEMA_VERSION = 1;
+export const BUNDLE_SCHEMA_VERSION = 2;
 
 export interface BundlePoi {
   id: string;
@@ -36,10 +36,21 @@ export interface BundleNarration {
 export interface TripBundle {
   schemaVersion: number;
   generatedAt: string;
+  /**
+   * Non-secret tag of the account this bundle was issued to (same value as the
+   * readable `gg_owner` cookie, see src/server/auth/owner-hint.ts). Offline
+   * screens refuse to show, and purge, on-device trip data whose tag does not
+   * match the cookie, so the next person on a shared device cannot read it.
+   */
+  ownerHint: string;
+  /** true when check-in notices are simulated (demo): screens must say no message is actually sent */
+  notificationsSimulated: boolean;
   trip: {
     id: string;
     status: TripStatus;
     plannedDate: string | null;
+    /** the date the hike is booked for (confirmed booking's hike date, else the planned date), region-local YYYY-MM-DD */
+    bookedDate: string | null;
     startTime: string | null;
     partySize: number;
     itinerary: Partial<Itinerary>;
@@ -75,7 +86,14 @@ export interface TripBundle {
   expectedReturnAt: string | null;
   checkin: { status: CheckinStatus; expectedReturnAt: string; graceMinutes: number } | null;
   /** the open (or latest) hike session, so a reload on another device can resume */
-  session: { id: string; status: "active" | "paused" | "finished" | "abandoned"; startedAt: string; finishedAt: string | null } | null;
+  session: {
+    id: string;
+    status: "active" | "paused" | "finished" | "abandoned";
+    startedAt: string;
+    finishedAt: string | null;
+    /** stops already narrated in this session (synced poi_triggered / poi_replayed events): never auto-play again */
+    heardPoiIds: string[];
+  } | null;
   settings: { staleLocationMinutes: number };
   manifest: OfflineManifest;
 }
@@ -156,6 +174,8 @@ export interface StartRequest {
   tripId: string;
   clientSessionId?: string;
   startedAt?: string;
+  /** APP_MODE=demo only: the hiker explicitly chose "Start anyway (demo)" on a day other than the booked date */
+  demoStartAnyway?: boolean;
 }
 
 export interface SessionView {

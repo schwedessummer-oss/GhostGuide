@@ -23,6 +23,11 @@ export const kmToMi = (km: number) => Math.round((km / KM_PER_MI) * 100) / 100;
 export const ftToM = (ft: number) => Math.round(ft * M_PER_FT * 10) / 10;
 export const mToFt = (m: number) => Math.round(m / M_PER_FT);
 
+/** Questionnaire distance limits (miles) and their metric equivalents on saved preferences. */
+export const MAX_DISTANCE_MI = 50;
+export const MAX_DISTANCE_KM = miToKm(MAX_DISTANCE_MI); // 80.467
+export const MAX_ELEVATION_GAIN_FT = 13000;
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const HHMM = /^([01]\d|2[0-3]):[0-5]\d$/;
 
@@ -44,8 +49,9 @@ export const tripPreferencesSchema = z
     preferredTerrain: z.array(z.enum(TERRAIN_OPTIONS)).max(TERRAIN_OPTIONS.length).transform(unique),
     pace: z.enum(PACES),
     availableHours: z.number().min(1).max(14),
-    distanceKmMin: z.number().min(0).max(80).optional(),
-    distanceKmMax: z.number().min(0.5).max(80).optional(),
+    // The form allows 0–50 mi; 50 mi is 80.467 km, so the metric limit must not be rounded down.
+    distanceKmMin: z.number().min(0).max(MAX_DISTANCE_KM).optional(),
+    distanceKmMax: z.number().min(0.5).max(MAX_DISTANCE_KM).optional(),
     maxElevationGainM: z.number().min(0).max(4000).optional(),
     plannedDate: z.string().refine(isRealDate, "Use a valid date (YYYY-MM-DD)."),
     startTime: z.string().regex(HHMM, "Use a 24-hour time like 08:30."),
@@ -104,7 +110,7 @@ export function toRawParams(input: URLSearchParams | RawParams): RawParams {
 const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 const all = (v: string | string[] | undefined) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
 
-const optionalNumber = (min: number, max: number, label: string) =>
+const optionalNumber = (min: number, max: number, label: string, unit: string) =>
   z
     .string()
     .trim()
@@ -114,7 +120,7 @@ const optionalNumber = (min: number, max: number, label: string) =>
       if (s === undefined || s === "") return undefined;
       const n = Number(s);
       if (!Number.isFinite(n) || n < min || n > max) {
-        ctx.addIssue({ code: "custom", message: `${label} must be between ${min} and ${max}.` });
+        ctx.addIssue({ code: "custom", message: `${label} must be between ${min.toLocaleString("en-US")} and ${max.toLocaleString("en-US")} ${unit}.` });
         return z.NEVER;
       }
       return n;
@@ -131,9 +137,9 @@ const formSchema = z.object({
     .min(1, "Enter the hours you have available.")
     .transform((s) => Number(s))
     .pipe(z.number({ error: "Enter a number of hours." }).min(1, "Allow at least 1 hour.").max(14, "Plan at most 14 hours for a day hike.")),
-  minMi: optionalNumber(0, 50, "Minimum distance"),
-  maxMi: optionalNumber(0.5, 50, "Maximum distance"),
-  maxGainFt: optionalNumber(0, 13000, "Maximum elevation gain"),
+  minMi: optionalNumber(0, MAX_DISTANCE_MI, "Minimum distance", "miles"),
+  maxMi: optionalNumber(0.5, MAX_DISTANCE_MI, "Maximum distance", "miles"),
+  maxGainFt: optionalNumber(0, MAX_ELEVATION_GAIN_FT, "Maximum elevation gain", "feet"),
   date: z.string({ error: "Choose a date." }).refine(isRealDate, "Choose a valid date."),
   start: z
     .string({ error: "Choose a start time." })
@@ -163,6 +169,31 @@ export type PlanParseResult =
 export function hasPlanInput(raw: RawParams): boolean {
   return PLAN_FIELDS.some((f) => f !== "trail" && raw[f] !== undefined);
 }
+
+/** Saved-preference key → questionnaire field (for errors found after unit conversion). */
+const PREFERENCE_FIELD: Record<keyof TripPreferences, PlanField> = {
+  experience: "experience",
+  fitness: "fitness",
+  preferredTerrain: "terrain",
+  pace: "pace",
+  availableHours: "hours",
+  distanceKmMin: "minMi",
+  distanceKmMax: "maxMi",
+  maxElevationGainM: "maxGainFt",
+  plannedDate: "date",
+  startTime: "start",
+  accessibilityNeeds: "needs",
+  partySize: "party",
+  equipment: "gear",
+  bringingDog: "dog",
+};
+
+/** Plain-language range errors in the form's units (never the internal km/m limits). */
+const RANGE_MESSAGE: Partial<Record<PlanField, string>> = {
+  minMi: `Minimum distance must be between 0 and ${MAX_DISTANCE_MI} miles.`,
+  maxMi: `Maximum distance must be between 0.5 and ${MAX_DISTANCE_MI} miles.`,
+  maxGainFt: `Maximum elevation gain must be between 0 and ${MAX_ELEVATION_GAIN_FT.toLocaleString("en-US")} feet.`,
+};
 
 export function parsePlanQuery(input: URLSearchParams | RawParams): PlanParseResult {
   const raw = toRawParams(input);
@@ -199,11 +230,12 @@ export function parsePlanQuery(input: URLSearchParams | RawParams): PlanParseRes
   };
   const checked = tripPreferencesSchema.safeParse(prefsCandidate);
   if (!checked.success) {
+    // Second pass (metric). Attach each issue to the form field it came from, in the form's units.
     const errors: PlanErrors = {};
     for (const issue of checked.error.issues) {
-      const key = issue.path[0];
-      const field: PlanField = key === "distanceKmMax" || key === "distanceKmMin" ? "maxMi" : "date";
-      if (!errors[field]) errors[field] = issue.message;
+      const field = PREFERENCE_FIELD[String(issue.path[0]) as keyof TripPreferences] ?? "date";
+      const message = issue.code === "custom" ? issue.message : (RANGE_MESSAGE[field] ?? issue.message);
+      if (!errors[field]) errors[field] = message;
     }
     return { ok: false, errors, hasInput: true };
   }

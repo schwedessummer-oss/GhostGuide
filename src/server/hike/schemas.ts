@@ -57,6 +57,8 @@ export const startRequestSchema = z.object({
   tripId: z.uuid(),
   clientSessionId: z.uuid().optional(),
   startedAt: isoDate.optional(),
+  /** honoured only when APP_MODE=demo: "Start anyway (demo)" on a day other than the booked date */
+  demoStartAnyway: z.boolean().optional(),
 });
 export type StartInput = z.infer<typeof startRequestSchema>;
 

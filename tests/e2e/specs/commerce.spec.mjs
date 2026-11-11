@@ -22,7 +22,7 @@
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
-import { BASE, PASSWORD, login, newBrowser, runJobs } from "../helpers.mjs";
+import { BASE, login, newBrowser, runJobs } from "../helpers.mjs";
 
 const TZ = "America/Los_Angeles"; // demo region (Ghost Ridge) time zone
 const TRAIL_SLUG = "lantern-creek-loop";
@@ -58,6 +58,9 @@ const randInt = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
 /** "Sat, Nov 21" style label (UTC formatting of a calendar date, like the app). */
 const shortDay = (iso) => new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T12:00:00Z`));
 const longDay = (iso) => new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T12:00:00Z`));
+/** Seeded latest-finish estimates for the demo region (app_settings.latest_finish_by_month). */
+const LATEST_FINISH = { 1: "15:45", 2: "16:30", 3: "17:15", 4: "19:00", 5: "19:45", 6: "20:15", 7: "20:00", 8: "19:00", 9: "18:15", 10: "17:15", 11: "15:45", 12: "15:45" };
+const latestFinishFor = (iso) => LATEST_FINISH[Number(iso.slice(5, 7))];
 
 /** "$1,234.50" / "-$7.60" / "−$7.60" → cents */
 function cents(text) {
@@ -280,8 +283,18 @@ test("checkout shows transparent, server-computed price lines: weekday vs Saturd
   // Shuttle pickup is chosen here but confirmed (time + price) only after booking.
   await assertText(owner.locator("main"), /confirm the exact pickup time and price before any ride is requested/i);
 
-  // A satellite rental must not imply SOS from Ghost Guide.
+  // A satellite rental must not imply SOS from Ghost Guide — and the disclaimer is stated once, not twice.
   await assertText(owner.locator("main"), /does not provide SOS/);
+  const sosMentions = ((await mainText(owner)).match(/does not provide SOS/g) ?? []).length;
+  assert.equal(sosMentions, 1, "the SOS disclaimer appears exactly once");
+
+  // An impossible date in the URL renders the form with a clear message (no 500), and payment is disabled.
+  for (const bad of ["2026-13-45", "2026-12-32", "2027-02-30"]) {
+    const res = await owner.goto(`/trips/${tripId}/checkout?date=${bad}&party=2`);
+    assert.equal(res.status(), 200, `${bad} must not be a server error`);
+    await assertText(owner.locator("main"), /Choose a valid date\./);
+    assert.ok(await owner.getByRole("button", { name: /Continue to secure payment/ }).isDisabled(), `payment disabled for ${bad}`);
+  }
 
   // Nothing is held or booked by just looking at prices.
   await owner.goto(`/trips/${tripId}`);
@@ -386,6 +399,27 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     assert.match(text, /4 hikers/, "My trips card should show the booked party size");
   });
 
+  await t.test("after booking, the trip itself is re-planned for the booked date and group (itinerary, summary, labels)", async () => {
+    await owner.goto(`/trips/${tripId}`);
+    const text = await mainText(owner);
+    assert.match(text, new RegExp(`${longDay(saturday)}, \\d{4} · start 08:30 · 4 hikers`), "header shows the booked date and group");
+    assert.ok(text.includes(`Plan to be off the trail by ${latestFinishFor(saturday)}`), `itinerary uses the booked month's latest-finish estimate (${latestFinishFor(saturday)})`);
+    if (latestFinishFor(saturday) !== latestFinishFor(plannedDate)) {
+      assert.ok(!text.includes(`Plan to be off the trail by ${latestFinishFor(plannedDate)}`), "no stale latest-finish estimate from the planned month");
+    }
+    // The template summary names the booked date and is labeled as simulated, not "AI-generated".
+    assert.ok(text.includes(`on ${saturday}`), "trip summary names the booked date");
+    assert.ok(!text.includes(`on ${plannedDate}.`), "trip summary no longer names the originally planned date");
+    assert.ok(text.includes("Simulated AI (template)"));
+    assert.ok(!text.includes("AI-generated"), "template text is not labeled AI-generated");
+    // The prepare page agrees.
+    await owner.goto(`/trips/${tripId}/prepare`);
+    assert.ok((await mainText(owner)).includes(longDay(saturday)), "Prepare shows the booked date");
+    // A stale "cancel" return URL for a paid booking does not say the checkout failed.
+    await owner.goto(`/checkout/cancelled?booking=${bookingId}`);
+    assert.equal(await owner.getByRole("heading", { level: 1 }).innerText(), "Your booking is confirmed");
+  });
+
   await t.test("jobs run → each add-on shows its own partner status; locker code visible to the owner; shuttle awaits confirmation", async () => {
     await runJobsUntilQuiet();
     await owner.goto(`/trips/${tripId}`);
@@ -430,7 +464,9 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     // Explicit confirmation → request sent.
     await box.check();
     await Promise.all([owner.waitForURL(new RegExp(`/trips/${tripId}\\?shuttle=`), { timeout: NAV }), confirmBtn.click()]);
-    await assertText(owner.locator("main"), /Shuttle confirmed/);
+    // Honest copy: the confirmation was received and the ride is being requested (not "confirmed" yet).
+    await assertText(owner.locator("main"), /Shuttle confirmation received/);
+    await assertText(owner.locator("main"), /now requesting your ride from the shuttle partner \(simulated in this demo\)/);
     await assertText(owner.locator("main"), /Shuttle: (requested|ride confirmed)/);
     await runJobsUntilQuiet();
     await owner.reload();
@@ -451,6 +487,11 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     const payments = owner.getByRole("table").filter({ has: owner.getByRole("columnheader", { name: "Method" }) }).first();
     assert.equal(await payments.locator("tbody tr").count(), 1, "one payment on the receipt");
     assert.match(await payments.locator("tbody tr").first().innerText(), /Simulated provider/);
+    // Nothing refunded yet: "$0.00", never "−$0.00"; the paid time names its zone.
+    const summary = await owner.getByRole("region", { name: "Summary" }).innerText();
+    assert.match(summary, /Refunded\s*\$0\.00/);
+    assert.ok(!/[−-]\$0\.00/.test(summary), `no negative zero: ${summary}`);
+    assert.match(await mainText(owner), /Paid \w{3} \d{1,2}, \d{4}, \d{1,2}:\d{2}\s[AP]M\sP[SD]T/);
   });
 
   await t.test("cancel: policy and refund are shown before confirming; booking ends refunded after jobs", async () => {
@@ -494,6 +535,46 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     await owner.goto(`/trips/${tripId}/cancel`);
     await assertText(owner.locator("main"), /already cancelled/);
   });
+});
+
+// ---------------------------------------------------------------------------
+// 2b. A held checkout shows what is held and can be released to change details
+// ---------------------------------------------------------------------------
+
+test("checkout in progress: shows what is held, refuses silently switching details, and can be released", { timeout: 240_000 }, async () => {
+  const day = nextDow(addDays(today, 7 * randInt(6, 40)), 1); // a Monday
+  const tripId = await createSavedTrip(owner, { date: day, party: 2 });
+  await owner.goto(`/trips/${tripId}/checkout`);
+  await setCheckoutChoices(owner, { date: day, party: 2 });
+  await continueToPayment(owner);
+
+  // Back to the checkout: the held date, group and total are spelled out, with continue AND release.
+  await owner.goto(`/trips/${tripId}/checkout`);
+  const main = owner.locator("main");
+  await assertText(main, /Checkout in progress/);
+  await assertText(main, /What is held for you/);
+  const held = await mainText(owner);
+  assert.ok(held.includes(longDay(day)), `held date shown: ${held}`);
+  assert.match(held, /2 hikers/);
+  assert.match(held, /Total\s*\n?\s*\$[\d,.]+/);
+  assert.ok(await owner.getByRole("button", { name: "Continue to payment" }).isVisible());
+
+  // Release → back on the form, pre-filled with what was held, nothing booked.
+  await Promise.all([
+    owner.waitForURL((u) => u.pathname === `/trips/${tripId}/checkout` && u.searchParams.get("released") === "1", { timeout: NAV }),
+    owner.getByRole("button", { name: "Release these spots and change details" }).click(),
+  ]);
+  await assertText(main, /Your held spots were released/);
+  assert.equal(await owner.locator("#hikeDate").inputValue(), day);
+  assert.ok(!(await mainText(owner)).includes("Checkout in progress"));
+
+  // New details now go through: 3 hikers.
+  await setCheckoutChoices(owner, { date: day, party: 3 });
+  await continueToPayment(owner);
+  assert.match(await mainText(owner), /3 hikers/, "the simulated checkout is for the NEW group size");
+  // Clean up: cancel and return (releases this hold too).
+  await Promise.all([owner.waitForURL(/\/checkout\/cancelled/, { timeout: NAV }), owner.getByRole("button", { name: "Cancel and return" }).click()]);
+  await assertText(main, /Checkout not completed/);
 });
 
 // ---------------------------------------------------------------------------

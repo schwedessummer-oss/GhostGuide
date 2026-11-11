@@ -56,7 +56,7 @@ async function lookupSession(b: PendingRow, operation: string): Promise<Provider
 }
 
 /** Feed a paid provider session through the normal processor (synthetic event id). */
-async function processPaidSession(b: PendingRow, s: ProviderSession, source: "reconcile" | "expire"): Promise<ProcessOutcome> {
+async function processPaidSession(b: PendingRow, s: ProviderSession, source: "reconcile" | "expire" | "release"): Promise<ProcessOutcome> {
   return processPaymentEvent({
     provider: b.paymentProvider === "stripe" ? "stripe" : "demo",
     eventId: `${source}:${s.sessionId}`,
@@ -100,6 +100,45 @@ export async function expireHoldIfUnpaid(bookingId: string): Promise<HoldOutcome
     (tx) => tx`
       update public.bookings set status = 'expired'
       where id = ${b.id} and status = 'pending_payment' and hold_expires_at <= now()
+      returning id`,
+  );
+  return rows.length ? "expired" : "skipped";
+}
+
+/**
+ * Release a pending (unpaid) checkout before its hold lapses, e.g. when the
+ * customer wants to change the details. Race-safe order: close the provider
+ * session FIRST so it can no longer be paid, then look it up — a session that
+ * was paid in the meantime is processed normally (confirmed) — and only then
+ * expire the booking, which frees its held capacity and add-ons. A provider
+ * failure leaves the hold in place ("error"). Idempotent.
+ */
+export async function abandonPendingBooking(bookingId: string, reason: string): Promise<HoldOutcome> {
+  const [b] = await withSystem(
+    (tx) => tx<PendingRow[]>`
+      select id, checkout_session_id, payment_provider from public.bookings where id = ${bookingId} and status = 'pending_payment'`,
+  );
+  if (!b) return "skipped";
+  if (b.checkoutSessionId) {
+    try {
+      await getPaymentProviderByName(b.paymentProvider).expireSession?.(b.checkoutSessionId);
+    } catch (err) {
+      log.warn("payments.release_expire_session_failed", { bookingId: b.id, error: err instanceof Error ? err.message : String(err) });
+      return "error";
+    }
+    const s = await lookupSession(b, "release.get_session");
+    if (s === "error") return "error";
+    if (s && s.paymentStatus === "paid") {
+      const outcome = await processPaidSession(b, s, "release");
+      return outcome === "confirmed" ? "confirmed" : outcome === "needs_attention" ? "needs_attention" : "skipped";
+    }
+    if (s && s.status === "open") return "error"; // could not close it: keep the hold rather than risk a late payment
+  }
+  const rows = await withSystem(
+    (tx) => tx`
+      update public.bookings
+      set status = 'expired', hold_expires_at = least(coalesce(hold_expires_at, now()), now()), cancellation_reason = ${reason}
+      where id = ${b.id} and status = 'pending_payment'
       returning id`,
   );
   return rows.length ? "expired" : "skipped";

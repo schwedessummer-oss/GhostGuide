@@ -22,19 +22,24 @@ export interface SetupFormProps {
   contactsNeedingConsent: string[];
   selectedContactId: string | null;
   expectedReturnLocal: string;
-  /** e.g. "PST" */
-  tzAbbrev: string;
+  /** DST-neutral zone name, e.g. "Pacific Time" */
+  tzLabel: string;
   graceMinutes: number;
   reminderOffsetsMin: number[];
+  /** profiles.share_location_with_contacts — whether notices include the last reported location */
+  shareLocation: boolean;
 }
 
 /** Opt-in / update form for trip check-ins. All values are re-validated on the server. */
 export function CheckinSetupForm(props: SetupFormProps) {
   const [state, action, pending] = useActionState<CheckinFormState, FormData>(setupCheckinAction.bind(null, props.tripId), undefined);
+  // After a rejected submit, React resets the form to its defaults: use what was submitted as the defaults.
+  const v = state?.ok ? undefined : state?.values;
   const idp = `checkin-${props.mode}-${props.tripId.slice(0, 8)}`;
   const graceChoices = (GRACE_CHOICES as readonly number[]).includes(props.graceMinutes)
     ? [...GRACE_CHOICES]
     : [...GRACE_CHOICES, props.graceMinutes].sort((a, b) => a - b);
+  const selectedContactId = v?.contactId && props.contacts.some((c) => c.id === v.contactId) ? v.contactId : props.selectedContactId;
   const reminderChoices = [...new Set([...REMINDER_OFFSET_CHOICES, ...props.reminderOffsetsMin])].sort((a, b) => b - a);
   const addContactHref = `/account/emergency-contacts?trip=${props.tripId}`;
 
@@ -69,7 +74,7 @@ export function CheckinSetupForm(props: SetupFormProps) {
               name="contactId"
               value={c.id}
               required
-              defaultChecked={props.selectedContactId ? props.selectedContactId === c.id : i === 0}
+              defaultChecked={selectedContactId ? selectedContactId === c.id : i === 0}
               className="mt-1 size-5 accent-forest-700"
             />
             <span>
@@ -86,12 +91,24 @@ export function CheckinSetupForm(props: SetupFormProps) {
         </Link>
       </fieldset>
 
-      <Field label={`Expected return (${props.tzAbbrev || "region time"})`} htmlFor={`${idp}-return`} hint="When you expect to be back at the trailhead. Times are in the trail's local time zone." required>
-        <Input id={`${idp}-return`} name="expectedReturn" type="datetime-local" required defaultValue={props.expectedReturnLocal} aria-describedby={`${idp}-return-hint`} />
+      <Field
+        label={`Expected return (${props.tzLabel || "region time"})`}
+        htmlFor={`${idp}-return`}
+        hint="When you expect to be back at the trailhead. Times are in the trail's local time zone."
+        required
+      >
+        <Input
+          id={`${idp}-return`}
+          name="expectedReturn"
+          type="datetime-local"
+          required
+          defaultValue={v?.expectedReturn || props.expectedReturnLocal}
+          aria-describedby={`${idp}-return-hint`}
+        />
       </Field>
 
       <Field label="Grace period" htmlFor={`${idp}-grace`} hint="Extra time after your expected return before we send your contact a notice." required>
-        <Select id={`${idp}-grace`} name="graceMinutes" defaultValue={String(props.graceMinutes)} aria-describedby={`${idp}-grace-hint`}>
+        <Select id={`${idp}-grace`} name="graceMinutes" defaultValue={v?.graceMinutes || String(props.graceMinutes)} aria-describedby={`${idp}-grace-hint`}>
           {graceChoices.map((g) => (
             <option key={g} value={g}>
               {minutesLabel(g)}
@@ -106,7 +123,13 @@ export function CheckinSetupForm(props: SetupFormProps) {
         <div className="grid grid-cols-2 gap-x-4 sm:grid-cols-3">
           {reminderChoices.map((o) => (
             <label key={o} className="flex min-h-11 cursor-pointer items-center gap-3 px-1">
-              <input type="checkbox" name="reminders" value={o} defaultChecked={props.reminderOffsetsMin.includes(o)} className="size-5 accent-forest-700" />
+              <input
+                type="checkbox"
+                name="reminders"
+                value={o}
+                defaultChecked={v ? v.reminders.includes(String(o)) : props.reminderOffsetsMin.includes(o)}
+                className="size-5 accent-forest-700"
+              />
               <span>{o < 60 ? `${o} min` : minutesLabel(o)} before</span>
             </label>
           ))}
@@ -116,8 +139,15 @@ export function CheckinSetupForm(props: SetupFormProps) {
       <div id={`${idp}-explain`} className="rounded-xl border border-sand-200 bg-sand-100 p-4 text-[0.95rem]">
         <p className="font-semibold">How check-ins work</p>
         <p className="mt-1">{CHECKIN_EXPLANATION}</p>
+        <p className="mt-2 text-sm">
+          Your last reported location in notices:{" "}
+          <span className="font-semibold">{props.shareLocation ? "included (on)" : "not included (off)"}</span>.{" "}
+          <Link href="/account/privacy" className="font-semibold text-forest-800 underline">
+            Change in Privacy &amp; location
+          </Link>
+        </p>
         <label className="mt-3 flex min-h-11 cursor-pointer items-start gap-3">
-          <input type="checkbox" name="understand" required className="mt-1 size-5 accent-forest-700" />
+          <input type="checkbox" name="understand" required defaultChecked={v?.understand ?? false} className="mt-1 size-5 accent-forest-700" />
           <span>I understand. Ghost Guide only sends a notice to my contact; it does not monitor me or contact emergency services.</span>
         </label>
       </div>

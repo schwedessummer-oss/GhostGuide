@@ -154,6 +154,33 @@ export async function quoteShuttle(f: FulfillmentContext, attempt: number, picku
   });
 }
 
+/**
+ * Where a meal pack is collected: the booking region's online locker closest
+ * to the booked trail's trailhead, or the trailhead itself when the region has
+ * no online locker. Never a fixed, hard-coded locker.
+ */
+export async function mealPackPickup(
+  tx: Tx,
+  f: Pick<FulfillmentContext, "regionId" | "trailheadName" | "trailheadLat" | "trailheadLng">,
+): Promise<{ location: string; instruction: string; lockerName: string | null; locationDescription: string | null }> {
+  const [locker] = await tx<{ name: string; locationDescription: string }[]>`
+    select name, location_description from public.gear_lockers
+    where region_id = ${f.regionId} and status = 'online'
+    order by case when lat is null or lng is null then 1 else 0 end,
+             power(coalesce(lat, 0) - ${f.trailheadLat}, 2) + power(coalesce(lng, 0) - ${f.trailheadLng}, 2), name
+    limit 1`;
+  if (locker) {
+    return {
+      location: `${locker.name} — ${locker.locationDescription}`,
+      instruction: `Collect on your hike date at ${locker.name} — ${locker.locationDescription.replace(/[.\s]+$/, "")}.`,
+      lockerName: locker.name,
+      locationDescription: locker.locationDescription,
+    };
+  }
+  const trailhead = f.trailheadName ?? "the trailhead";
+  return { location: trailhead, instruction: `Collect on your hike date at ${trailhead}.`, lockerName: null, locationDescription: null };
+}
+
 async function runPartner(f: FulfillmentContext, attempt: number) {
   const ctx = partnerCtx(f, attempt);
   switch (f.providerKind) {
@@ -183,10 +210,8 @@ async function runPartner(f: FulfillmentContext, attempt: number) {
     }
     case "meal_pack": {
       const provider = getMealPackProvider(f.providerKey);
-      const order = await provider.placeOrder(
-        { hikeDate: f.hikeDate, quantity: f.quantity, partySize: f.partySize, pickupLocation: "Trailhead gear locker (demo)" },
-        ctx,
-      );
+      const pickup = await withSystem((tx) => mealPackPickup(tx, f));
+      const order = await provider.placeOrder({ hikeDate: f.hikeDate, quantity: f.quantity, partySize: f.partySize, pickupLocation: pickup.location }, ctx);
       await withSystem(async (tx) => {
         const current = await loadFulfillmentContext(tx, f.id, true);
         if (!current || !["pending", "failed"].includes(current.status)) return;
@@ -194,7 +219,8 @@ async function runPartner(f: FulfillmentContext, attempt: number) {
           simulated: true,
           orderRef: order.orderRef,
           quantity: f.quantity,
-          pickup: "Collect at the Lantern Creek locker bank on your hike date (demo).",
+          ...(pickup.lockerName ? { lockerName: pickup.lockerName, locationDescription: pickup.locationDescription } : {}),
+          pickup: pickup.instruction,
         });
       });
       return;

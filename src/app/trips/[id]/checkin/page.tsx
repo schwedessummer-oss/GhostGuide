@@ -33,6 +33,11 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
 
   const d = await loadCheckinCardData(user, trip);
   const c = d.checkin && d.checkin.status !== "cancelled" ? d.checkin : null;
+  // Each piece of explanatory copy appears once: the setup form carries the
+  // explanation and the setup card the limits note, so the sidebar only
+  // repeats them when neither is on the page.
+  const eligible = trip.status === "booked" || trip.status === "active";
+  const setupFormShown = c ? isAwaiting(c.status) : eligible && d.checkinsEnabled && d.contacts.some((x) => x.hasConsent);
   const [events, notifications] = await Promise.all([d.checkin ? listCheckinEvents(user, d.checkin.id) : Promise.resolve([]), listTripNotifications(user, trip.id)]);
 
   return (
@@ -57,7 +62,14 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
                 Status
               </h2>
               <div className="mt-4">
-                <CheckinStatusSummary checkin={c} contact={d.contact} timeZone={d.timeZone} tripId={trip.id} />
+                <CheckinStatusSummary
+                  checkin={c}
+                  contact={d.contact}
+                  contactReachable={d.contactReachable}
+                  simulated={d.notificationsSimulated}
+                  timeZone={d.timeZone}
+                  tripId={trip.id}
+                />
               </div>
             </Card>
           ) : (
@@ -70,7 +82,7 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
                 Let us know how it&apos;s going
               </h2>
               <div className="mt-4 max-w-md">
-                <CheckinQuickActions tripId={trip.id} minExtendLocal={d.minExtendLocal} tzAbbrev={d.tzAbbrev} />
+                <CheckinQuickActions tripId={trip.id} minExtendLocal={d.minExtendLocal} tzLabel={d.tzLabel} />
               </div>
             </Card>
           ) : null}
@@ -110,7 +122,7 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
                 Check-in activity
               </h2>
               <div className="mt-4">
-                <CheckinTimeline events={events} timeZone={d.timeZone} />
+                <CheckinTimeline events={events} timeZone={d.timeZone} simulated={d.notificationsSimulated} />
               </div>
             </Card>
           ) : null}
@@ -121,14 +133,14 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
             <h2 id="how-heading" className="text-lg font-bold">
               How check-ins work
             </h2>
-            {c ? <p className="mt-2 text-[0.95rem]">{CHECKIN_EXPLANATION}</p> : null}
+            {!setupFormShown ? <p className="mt-2 text-[0.95rem]">{CHECKIN_EXPLANATION}</p> : null}
             <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted">
               <li>“I&apos;m okay” before your expected return keeps your plan; reminders continue.</li>
               <li>“I&apos;m okay” after your expected return moves it 60 minutes later, so silence is still noticed.</li>
-              <li>“Finish trip” ends check-ins. If your contact already got a notice, we send them a follow-up.</li>
+              <li>“Finish trip” ends your hike and check-ins. If your contact already got a notice, we send them a follow-up.</li>
               <li>A notice means only that we haven&apos;t heard from you — not that something is wrong.</li>
             </ul>
-            <p className="mt-3 text-sm text-muted">{CHECKIN_LIMITS_NOTE}</p>
+            {c ? <p className="mt-3 text-sm text-muted">{CHECKIN_LIMITS_NOTE}</p> : null}
           </Card>
 
           <Alert tone="red" title="In an emergency">

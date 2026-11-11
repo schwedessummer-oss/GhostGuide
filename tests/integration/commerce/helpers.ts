@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { sql, withSystem, withUser } from "@/server/db";
+import { sql, withSystem, withUser, type JsonValue } from "@/server/db";
 import type { SessionUser } from "@/server/auth";
 import { createCheckout, type CheckoutInput } from "@/server/commerce/checkout";
 import { receivePaymentWebhook } from "@/server/commerce/payments";
@@ -39,16 +39,59 @@ export async function freshDate(): Promise<string> {
   });
 }
 
+/**
+ * Like freshDate, but in a given calendar month (YYYY-MM) within the booking
+ * window, for tests that depend on the month's latest-finish estimate.
+ */
+export async function freshDateInMonth(yearMonth: string): Promise<string> {
+  return withSystem(async (tx) => {
+    await tx`select pg_advisory_xact_lock(hashtext('commerce-test-dates'))`;
+    const today = regionDate(1);
+    const max = regionDate(360);
+    for (let d = 1; d <= 28; d++) {
+      const day = `${yearMonth}-${String(d).padStart(2, "0")}`;
+      if (day < today || day > max) continue;
+      const [used] = await tx`
+        select 1 from public.trail_day_inventory where day = ${day}::date
+        union all select 1 from public.trips where planned_date = ${day}::date limit 1`;
+      if (used) continue;
+      await tx`
+        insert into public.trail_day_inventory (trail_id, day, note)
+        select id, ${day}::date, 'test date claim' from public.trails where slug = 'cinder-spur-draft'`;
+      return day;
+    }
+    throw new Error(`no free test date in ${yearMonth}`);
+  });
+}
+
+/** The next occurrence of a month (1–12) as YYYY-MM, at least ~2 weeks out (region time). */
+export function upcomingMonth(month: number): string {
+  const start = regionDate(14);
+  let y = Number(start.slice(0, 4));
+  if (Number(start.slice(5, 7)) > month) y += 1;
+  return `${y}-${String(month).padStart(2, "0")}`;
+}
+
 export async function savedTrip(
   user: SessionUser,
-  opts: { trail?: string; plannedDate?: string; startTime?: string; partySize?: number } = {},
+  opts: {
+    trail?: string;
+    plannedDate?: string;
+    startTime?: string;
+    partySize?: number;
+    preferences?: Record<string, unknown>;
+    itinerary?: Record<string, unknown>;
+    aiSummary?: string;
+  } = {},
 ): Promise<{ id: string; trailId: string; regionId: string; plannedDate: string }> {
   const trail = await trailBySlug(opts.trail ?? "lantern-creek-loop");
   const plannedDate = opts.plannedDate ?? (await freshDate());
   const [trip] = await withUser(user, (tx) =>
     tx<{ id: string }[]>`
-      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size)
-      values (${user.id}, ${trail.regionId}, ${trail.id}, ${plannedDate}::date, ${opts.startTime ?? "09:00"}::time, ${opts.partySize ?? 2})
+      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size, preferences, itinerary, ai_summary, ai_provider)
+      values (${user.id}, ${trail.regionId}, ${trail.id}, ${plannedDate}::date, ${opts.startTime ?? "09:00"}::time, ${opts.partySize ?? 2},
+              ${tx.json((opts.preferences ?? {}) as JsonValue)}, ${tx.json((opts.itinerary ?? {}) as JsonValue)},
+              ${opts.aiSummary ?? null}, ${opts.aiSummary ? "demo-template" : null})
       returning id`,
   );
   return { id: trip.id, trailId: trail.id, regionId: trail.regionId, plannedDate };

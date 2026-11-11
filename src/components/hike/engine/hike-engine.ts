@@ -21,13 +21,15 @@ import {
   vertexIndexAt,
   type RouteModel,
 } from "@/domain/progress";
-import { DEFAULT_GEOFENCE_SETTINGS, geofenceStep, recordManualPlay, type GeofencePoi } from "@/domain/geofence";
+import { DEFAULT_GEOFENCE_SETTINGS, geofenceStep, mergeHeardPois, recordManualPlay, type GeofencePoi } from "@/domain/geofence";
 import { DEFAULT_DEVIATION_SETTINGS, deviationStep, dismissDeviation, type DeviationState } from "@/domain/deviation";
 import { clearReminders, dueReminders, nextReminderInMs, reminderMessage, type ReminderKind } from "@/domain/reminders";
 import { shouldSamplePoint } from "@/domain/outbox";
 import { DEFAULT_SIMULATOR_CONFIG, createSimulatorState, simulatorStep, type SimulatorConfig } from "@/domain/gps-simulator";
-import { fetchBundle, getStoredBundle, putStoredBundle } from "@/lib/offline/bundle-store";
-import { initialHikeState, loadHikeState, saveHikeState, type HikeSettings, type PersistedHikeState } from "@/lib/offline/hike-state";
+import { BundleFetchError, fetchBundleDetailed, getStoredBundle, putStoredBundle, type FetchedBundle } from "@/lib/offline/bundle-store";
+import { beginSaveHikeState, initialHikeState, loadHikeState, type HikeSettings, type PersistedHikeState } from "@/lib/offline/hike-state";
+import { SIGN_IN_AGAIN, currentOwnerHint, enforceDeviceOwner, purgeTripFromDevice } from "@/lib/offline/owner";
+import { hikeStartWindow, startAllowed, type StartWindow } from "@/lib/offline/start-window";
 import { enqueueEvent, enqueuePoint, OutboxSyncer, type SyncSnapshot } from "@/lib/offline/outbox";
 import { uuid } from "@/lib/offline/hash";
 import type { BundleNarration, BundlePoi, HikeEventData, HikeEventKind, TripBundle } from "@/lib/offline/wire";
@@ -35,6 +37,12 @@ import { NarrationPlayer, vibrate, type PlaybackMode } from "./audio";
 import { WakeLockController, type WakeLockStatus } from "./wake-lock";
 
 export type HikePhase = "loading" | "no_bundle" | "error" | "ready" | "active" | "paused" | "finished";
+/**
+ * Why the hike can't open: offline without a download; signed out / another
+ * account on this browser (on-device data removed); session expired (401);
+ * not yours (404); not booked (409); server error (5xx); too slow; storage.
+ */
+export type HikeErrorKind = "offline" | "signed_out" | "auth" | "not_found" | "not_bookable" | "server" | "slow" | "storage";
 export type GpsState = "idle" | "waiting" | "tracking" | "denied" | "unavailable" | "unsupported";
 
 export interface PoiView extends BundlePoi {
@@ -63,6 +71,7 @@ export interface NarrationNow {
 export interface HikeSnapshot {
   phase: HikePhase;
   error: string | null;
+  errorKind: HikeErrorKind | null;
   tripId: string;
   demoMode: boolean;
   bundle: TripBundle | null;
@@ -105,11 +114,16 @@ export interface HikeSnapshot {
   finishPending: boolean;
   finishSynced: boolean;
   gapWarning: string | null;
+  /** may the hike start now (booked date in the region's time zone)? null until the bundle is loaded */
+  startWindow: StartWindow | null;
 }
 
 const EMPTY_SYNC: SyncSnapshot = { online: true, status: "idle", queued: 0, lastSyncAt: null, nextAttemptAt: null, message: null, dropped: 0 };
+/** Routine fixes are saved at most this often; state transitions (stops heard, prompts, controls) are saved at once. */
 const SAVE_EVERY_MS = 5_000;
 const ONLINE_BUNDLE_TIMEOUT_MS = 6_000;
+const OFFLINE_NO_DOWNLOAD = "This trip isn't downloaded on this device and you appear to be offline.";
+const SLOW_NO_DOWNLOAD = "Ghost Guide's server is taking too long to respond, and this trip isn't downloaded on this device. Try again in a moment.";
 
 function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
   return new Promise((resolve, reject) => {
@@ -147,6 +161,7 @@ export class HikeEngine {
   private lastSavedFixAt: number | null = null;
   private phase: HikePhase = "loading";
   private error: string | null = null;
+  private errorKind: HikeErrorKind | null = null;
   private gps: HikeSnapshot["gps"] = { source: "device", state: "idle", message: null };
   private distanceFromRouteM: number | null = null;
   private reminder: ReminderNotice | null = null;
@@ -201,6 +216,7 @@ export class HikeEngine {
     return {
       phase: this.phase,
       error: this.error,
+      errorKind: this.errorKind,
       tripId: this.tripId,
       demoMode: this.demoMode,
       bundle: this.bundle,
@@ -248,43 +264,86 @@ export class HikeEngine {
       finishPending: !!s?.finishPending,
       finishSynced: !!s?.finishSynced,
       gapWarning: this.gapWarning,
+      startWindow: this.startWindowAt(now),
     };
+  }
+
+  private startWindowAt(now: number): StartWindow | null {
+    const b = this.bundle;
+    if (!b) return null;
+    return hikeStartWindow(b.trip.bookedDate ?? b.trip.plannedDate, b.region.timezone, now);
   }
 
   // ---------------------------------------------------------------- lifecycle
   async init() {
     const gen = ++this.generation;
     this.phase = "loading";
+    this.error = null;
+    this.errorKind = null;
     this.emit();
     try {
       const stored = await getStoredBundle(this.tripId).catch(() => undefined);
-      let bundle = stored?.bundle ?? null;
-      this.bundleSource = stored?.source ?? null;
-      this.downloadComplete = stored?.verification?.complete ?? null;
+      let fresh: FetchedBundle | null = null;
+      let fetchError: { kind: HikeErrorKind; message: string } | null = null;
       if (typeof navigator === "undefined" || navigator.onLine) {
         try {
-          const fresh = await withTimeout(fetchBundle(this.tripId), ONLINE_BUNDLE_TIMEOUT_MS);
-          bundle = fresh;
-          // Keep the offline copy current (pages/audio caches are unaffected).
-          await putStoredBundle(
-            stored
-              ? { ...stored, bundle: fresh }
-              : { tripId: this.tripId, bundle: fresh, storedAt: Date.now(), source: "online", assetUrls: [], verification: null },
-          ).catch(() => undefined);
-          if (!stored) this.bundleSource = "online";
-        } catch {
-          /* offline or slow: use the stored copy */
+          fresh = await withTimeout(fetchBundleDetailed(this.tripId), ONLINE_BUNDLE_TIMEOUT_MS);
+        } catch (err) {
+          fetchError = err instanceof BundleFetchError ? { kind: err.kind, message: err.message } : { kind: "slow", message: SLOW_NO_DOWNLOAD };
         }
+      } else {
+        fetchError = { kind: "offline", message: OFFLINE_NO_DOWNLOAD };
+      }
+      if (gen !== this.generation) return;
+
+      // Shared-device privacy: only data tagged for the account signed in on this
+      // browser is used; anything else is removed before it can be shown.
+      const confirmed = fresh?.source === "network" ? { tripId: this.tripId, ownerHint: fresh.bundle.ownerHint } : undefined;
+      const check = await enforceDeviceOwner({ confirmed }).catch(() => ({ owner: currentOwnerHint(), purged: [] as string[] }));
+      if (gen !== this.generation) return;
+      const owner = check.owner;
+      const localOk = !!stored && !check.purged.includes(this.tripId) && !!owner && (stored.bundle.ownerHint === owner || !!confirmed);
+      const refused = fetchError?.kind === "not_bookable" || fetchError?.kind === "not_found";
+
+      let bundle: TripBundle | null = null;
+      if (fresh && confirmed) bundle = fresh.bundle;
+      else if (refused) bundle = null; // the server says this trip can't be hiked by this account
+      else if (fresh && owner && fresh.bundle.ownerHint === owner) bundle = fresh.bundle; // the service worker's offline copy
+      else if (localOk) bundle = stored!.bundle;
+
+      this.bundleSource = localOk ? stored!.source : fresh?.source === "cache" ? "download" : fresh ? "online" : null;
+      this.downloadComplete = localOk ? (stored!.verification?.complete ?? null) : null;
+      if (fresh && confirmed) {
+        // Keep the offline copy current (pages/audio caches are unaffected).
+        await putStoredBundle(
+          localOk
+            ? { ...stored!, bundle: fresh.bundle }
+            : { tripId: this.tripId, bundle: fresh.bundle, storedAt: Date.now(), source: "online", assetUrls: [], verification: null },
+        ).catch(() => undefined);
       }
       if (gen !== this.generation) return;
       if (!bundle) {
+        let removed = check.purged.includes(this.tripId) || (!!stored && !localOk);
+        if (fresh?.source === "cache") {
+          // The service worker still had another account's copy: remove it too.
+          await purgeTripFromDevice(this.tripId);
+          removed = true;
+        }
+        if (gen !== this.generation) return;
+        let e: { kind: HikeErrorKind; message: string };
+        if (fetchError && fetchError.kind !== "offline") e = fetchError.kind === "auth" && removed ? { kind: "auth", message: `${SIGN_IN_AGAIN}.` } : fetchError;
+        else if (removed) e = { kind: "signed_out", message: `${SIGN_IN_AGAIN}.` };
+        else e = { kind: "offline", message: OFFLINE_NO_DOWNLOAD };
         this.phase = "no_bundle";
-        this.error = "This trip isn't downloaded on this device and you appear to be offline.";
+        this.errorKind = e.kind;
+        this.error = e.message;
         this.emit();
         return;
       }
       this.applyBundle(bundle);
-      let s = (await loadHikeState(this.tripId).catch(() => null)) ?? initialHikeState(this.tripId, bundle.trip.itinerary);
+      let s = await loadHikeState(this.tripId).catch(() => null);
+      if (s && !confirmed && s.ownerHint !== bundle.ownerHint) s = null; // never resume someone else's hike
+      s = { ...(s ?? initialHikeState(this.tripId, bundle.trip.itinerary)), ownerHint: bundle.ownerHint };
       s = this.reconcile(s, bundle);
       if (gen !== this.generation) return;
       this.s = s;
@@ -297,18 +356,27 @@ export class HikeEngine {
       document.addEventListener("visibilitychange", this.onVisibility);
       window.addEventListener("pagehide", this.onPageHide);
       this.phase = this.phaseFromStatus();
+      // State is restored (and saved) before any new fix is processed.
+      await this.save(true);
+      if (gen !== this.generation) return;
       if (s.status === "active" || s.status === "paused") {
         this.startLocation();
         if (s.status === "active") this.wake.request();
       }
-      await this.save(true);
       this.emit();
     } catch (err) {
       if (gen !== this.generation) return;
       this.phase = "error";
+      this.errorKind = "storage";
       this.error = err instanceof Error ? err.message : "Could not load this hike.";
       this.emit();
     }
+  }
+
+  /** Try loading again (after a server error, a slow response or signing in). */
+  retry() {
+    if (this.phase !== "no_bundle" && this.phase !== "error") return;
+    void this.init();
   }
 
   dispose() {
@@ -349,6 +417,10 @@ export class HikeEngine {
         pauses: session.status === "paused" ? [{ start: Date.now(), end: null }] : [],
       };
     }
+    // Stops already narrated in this session (reported by the server) are never auto-played again.
+    if (session?.heardPoiIds?.length && (s.serverSessionId === session.id || s.localSessionId === session.id)) {
+      s = { ...s, geofence: mergeHeardPois(s.geofence, session.heardPoiIds, Date.now()) };
+    }
     if (bundle.trip.status === "completed") {
       s = {
         ...s,
@@ -387,6 +459,7 @@ export class HikeEngine {
           finishPending: s.finishPending,
           finishedAt: s.finishedAt,
           progressM: s.progress.alongM,
+          demoStartAnyway: !!s.demoStartAnyway,
         };
       },
       onStartConfirmed: (session: { id: string }) => {
@@ -397,6 +470,7 @@ export class HikeEngine {
       },
       onFinishConfirmed: () => {
         this.mutate((s) => ({ ...s, finishPending: false, finishSynced: true }), true);
+        void this.markCompletedOnDevice();
       },
       onSynced: (at: number) => {
         this.mutate((s) => ({ ...s, lastSyncAt: at }));
@@ -412,18 +486,48 @@ export class HikeEngine {
     this.emit();
   }
 
+  /**
+   * Persist the hike state: a synchronous localStorage mirror first (it
+   * survives a reload or navigation that interrupts IndexedDB), then
+   * IndexedDB. Routine saves are throttled; `force` saves at once.
+   */
   private async save(force = false) {
     if (!this.s) return;
     const now = Date.now();
     if (!force && now - this.lastSaveAt < SAVE_EVERY_MS) return;
     this.lastSaveAt = now;
     this.dirty = false;
+    const state = this.s;
+    const savedFix = state.lastFix?.timestamp ?? null;
+    let save: ReturnType<typeof beginSaveHikeState>;
     try {
-      await saveHikeState(this.s);
-      this.lastSavedFixAt = this.s.lastFix?.timestamp ?? null;
+      save = beginSaveHikeState(state, now); // the mirror is written before this returns
+    } catch {
+      this.dirty = true;
+      return;
+    }
+    if (save.mirrored) this.markSaved(savedFix);
+    try {
+      await save.committed;
+      this.markSaved(savedFix);
     } catch {
       this.dirty = true;
     }
+  }
+
+  /** "Saved on device" only moves forward, and only once a copy really is on the device. */
+  private markSaved(fixAt: number | null) {
+    if (fixAt === null || (this.lastSavedFixAt !== null && fixAt <= this.lastSavedFixAt)) return;
+    this.lastSavedFixAt = fixAt;
+    this.emit();
+  }
+
+  /** The trip is finished on the server: the offline copy says so too (the offline list leaves it out). */
+  private async markCompletedOnDevice() {
+    if (this.bundle) this.bundle = { ...this.bundle, trip: { ...this.bundle.trip, status: "completed" } };
+    const stored = await getStoredBundle(this.tripId).catch(() => undefined);
+    if (stored) await putStoredBundle({ ...stored, bundle: { ...stored.bundle, trip: { ...stored.bundle.trip, status: "completed" } } }).catch(() => undefined);
+    this.emit();
   }
 
   private readonly onVisibility = () => {
@@ -442,6 +546,7 @@ export class HikeEngine {
     this.emit();
   };
 
+  // Reload, the Help link and offline navigations are full page loads: save synchronously (mirror) on the way out.
   private readonly onPageHide = () => {
     void this.save(true);
   };
@@ -518,6 +623,15 @@ export class HikeEngine {
     this.simTimer = setInterval(() => {
       if (!this.s?.simulator.state || !this.route) return;
       const cfg = this.s.simulator.config;
+      if (this.s.status === "paused") {
+        // A paused (simulated) hiker stands still: repeat the current position, don't walk on.
+        const last = this.s.lastFix;
+        if (last && !cfg.signalLost) {
+          this.gps = { source: "simulator", state: "tracking", message: "Simulated GPS" };
+          this.onFix({ ...last, timestamp: Date.now() });
+        }
+        return;
+      }
       // At high speed-up emit several fixes per second (≈ one per 12 m walked) so
       // geofences still see consecutive fixes inside each stop's radius.
       const substeps = Math.min(10, Math.max(1, Math.ceil((cfg.speedMps * Math.max(1, cfg.speedUp)) / 12)));
@@ -547,6 +661,8 @@ export class HikeEngine {
     const factor = this.speedFactor();
     const a = assessFix(s.filter, fix, now, { ...DEFAULT_LOCATION_QUALITY, maxSpeedMps: DEFAULT_LOCATION_QUALITY.maxSpeedMps * factor });
     let next: PersistedHikeState = { ...s, filter: a.state };
+    // A stop heard or an off-route prompt must never be lost to a reload: save those at once.
+    let important = this.lastSavedFixAt === null;
     if (!a.accepted) {
       this.s = next;
       return;
@@ -580,6 +696,7 @@ export class HikeEngine {
       );
       next.deviation = d.state;
       this.s = next;
+      if (g.triggered.length || d.event) important = true;
       for (const poiId of g.triggered) this.onPoiTriggered(poiId, "gps");
       if (d.event === "prompt") {
         void this.queueEvent("deviation_prompt", { distanceM: Math.round(projection.distanceFromRouteM) });
@@ -607,7 +724,7 @@ export class HikeEngine {
     this.s = next;
     this.dirty = true;
     this.gapWarning = null;
-    void this.save();
+    void this.save(important);
     this.emit();
   }
 
@@ -665,6 +782,7 @@ export class HikeEngine {
     if (poi && this.s) {
       this.s = { ...this.s, geofence: recordManualPlay(this.s.geofence, poi.id, Date.now()) };
       this.dirty = true;
+      void this.save(true); // heard now: a reload must not make it "Upcoming" (and auto-play it) again
       void this.queueEvent("poi_replayed", { poiId: poi.id, narrationId, source: "manual" });
     }
     this.enqueueNarration({ narration, poiName: poi?.name ?? null, source: "manual" });
@@ -687,12 +805,28 @@ export class HikeEngine {
     this.mutate((s) => ({ ...s, limitationsAckAt: ack ? Date.now() : null }), true);
   }
 
-  start() {
+  /**
+   * Start the hike — on the booked date only (region time zone). In demo mode
+   * the hiker may explicitly choose "Start anyway (demo)" on another day.
+   */
+  start(opts: { demoStartAnyway?: boolean } = {}) {
     if (!this.s || this.s.status !== "not_started" || !this.s.limitationsAckAt) return;
-    this.player.unlock(); // inside the tap: allows narration later
     const now = Date.now();
+    const w = this.startWindowAt(now);
+    const offDate = !!w && !startAllowed(w);
+    const anyway = !!opts.demoStartAnyway && this.demoMode;
+    if (offDate && !anyway) return;
+    this.player.unlock(); // inside the tap: allows narration later
     this.mutate(
-      (s) => ({ ...s, status: "active", localSessionId: s.localSessionId ?? uuid(), startedAt: now, startSynced: false, startError: null }),
+      (s) => ({
+        ...s,
+        status: "active",
+        localSessionId: s.localSessionId ?? uuid(),
+        startedAt: now,
+        startSynced: false,
+        startError: null,
+        demoStartAnyway: offDate && anyway,
+      }),
       true,
     );
     this.phase = "active";

@@ -84,9 +84,10 @@ export function HikeSettingsPanel({ snap, engine }: { snap: HikeSnapshot; engine
           </Select>
         </Field>
         <div className="space-y-1">
-          <Checkbox label="Mute narration (show transcript only)" checked={s.muted} onChange={(e) => engine.updateSettings({ muted: e.target.checked })} />
-          <Checkbox label="Vibrate on arrivals, prompts and reminders" checked={s.vibrate} onChange={(e) => engine.updateSettings({ vibrate: e.target.checked })} />
+          <Checkbox className="[&>input]:shrink-0" label="Mute narration (show transcript only)" checked={s.muted} onChange={(e) => engine.updateSettings({ muted: e.target.checked })} />
+          <Checkbox className="[&>input]:shrink-0" label="Vibrate on arrivals, prompts and reminders" checked={s.vibrate} onChange={(e) => engine.updateSettings({ vibrate: e.target.checked })} />
           <Checkbox
+            className="[&>input]:shrink-0"
             label="High-contrast display (bright sunlight)"
             checked={s.highContrast}
             onChange={(e) => engine.updateSettings({ highContrast: e.target.checked })}

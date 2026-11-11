@@ -127,7 +127,7 @@ export async function seedCommerce(sql: postgres.Sql) {
     values (${bookingId}, ${hiker.id}, ${bookedTrip.id}, ${wf.id}, ${bookedDate}::date, ${partySize}, 'confirmed', ${quote.currency},
             ${quote.subtotalCents}, ${quote.addonsCents}, ${quote.totalCents}, ${sql.json(breakdown as unknown as postgres.JSONValue)}, 'demo',
             ${sessionId}, ${paymentIntent}, ${new Date(paidAt.getTime() + 25 * 60_000)}::timestamptz, ${paidAt}::timestamptz,
-            ${formatReceiptNumber(paidAt, randomBytes(6))}, ${randomUUID()}, ${new Date(paidAt.getTime() - 5 * 60_000)}::timestamptz)`;
+            ${formatReceiptNumber(paidAt, randomBytes(6), tz)}, ${randomUUID()}, ${new Date(paidAt.getTime() - 5 * 60_000)}::timestamptz)`;
   await sql`
     insert into public.demo_checkout_sessions (id, booking_id, user_id, amount_total, currency, line_items, success_url, cancel_url, status,
                                                payment_status, payment_intent_id, idempotency_key, expires_at)

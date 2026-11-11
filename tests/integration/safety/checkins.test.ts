@@ -283,6 +283,11 @@ describe("contacts and cancellation", () => {
     expect(toContact[0].status).toBe("suppressed");
     expect(toContact[0].error).toMatch(/no consent/);
     expect((await checkinRow(trip.id)).status).toBe("overdue");
+    // recorded on the check-in so the hiker's activity says the contact was not notified (once per version)
+    await runCheckinJobs(c.id, addMin(now, 42));
+    const ev = await sql()`select details from public.checkin_events where checkin_id = ${c.id} and kind = 'contact_not_notified'`;
+    expect(ev).toHaveLength(1);
+    expect(ev[0].details).toMatchObject({ reason: "consent_withdrawn", version: c.version });
   });
 
   it("cancelCheckinForTrip cancels the check-in and its jobs; jobs self-heal when only the trip was cancelled", async () => {

@@ -498,68 +498,164 @@ function scoreTrail(
 // Relax suggestions
 // ---------------------------------------------------------------------------
 
-function relaxSuggestions(
-  excluded: { c: CandidateTrail; exclusions: Exclusion[]; durationMin: number }[],
-  prefs: TripPreferences,
-  latestFinish: string,
-): string[] {
-  const out: string[] = [];
-  const by = (code: ExclusionCode) => excluded.filter((e) => e.exclusions.some((x) => x.code === code));
-  // Trails blocked by ONLY this constraint are the most useful to mention.
-  const onlyBy = (code: ExclusionCode) => excluded.filter((e) => e.exclusions.length && e.exclusions.every((x) => x.code === code));
-  const names = (list: { c: CandidateTrail }[]) => list.map((e) => e.c.trail.name).join(", ");
+/** The questionnaire's upper limit for available hours (a longer suggestion could not be acted on). */
+export const MAX_PLAN_HOURS = 14;
 
-  const time = by("time");
+/**
+ * Constraints a hiker can reasonably change without changing the date (a new
+ * date changes closures, permits, capacity and the latest-finish month all
+ * at once, so it is only suggested on its own). Experience/fitness, the
+ * accessibility needs, catalog status and geometry are never "relaxed": we
+ * never name a trail excluded by them.
+ */
+const COMBINABLE: ExclusionCode[] = ["time", "latest_finish", "distance", "elevation", "dogs"];
+/** At most this many "several changes" suggestions (they are long). */
+const MAX_COMBINED = 3;
+
+type ExcludedEval = { c: CandidateTrail; exclusions: Exclusion[]; durationMin: number };
+
+const hoursNeeded = (durationMin: number) => Math.ceil((durationMin / 60) * 2) / 2;
+
+function joinAnd(parts: string[]): string {
+  if (parts.length <= 1) return parts.join("");
+  return `${parts.slice(0, -1).join(", ")} and ${parts[parts.length - 1]}`;
+}
+
+/**
+ * Every suggestion that names a trail is TRUE ON ITS OWN: making exactly the
+ * change described (and nothing else) would make that trail pass every hard
+ * filter. Trails that are also excluded for experience/fitness, accessibility,
+ * catalog status or geometry are never named.
+ */
+function relaxSuggestions(excluded: ExcludedEval[], prefs: TripPreferences, latestFinish: string): string[] {
+  const out: string[] = [];
+  let named = 0;
+  const month = monthName(prefs.plannedDate);
+  const latestFinishMin = clockToMinutes(latestFinish);
+  const codesOf = (e: ExcludedEval) => new Set(e.exclusions.map((x) => x.code));
+  const by = (code: ExclusionCode) => excluded.filter((e) => e.exclusions.some((x) => x.code === code));
+  /** Trails blocked by this constraint and nothing else: the change alone would include them. */
+  const onlyBy = (code: ExclusionCode) => excluded.filter((e) => e.exclusions.length > 0 && e.exclusions.every((x) => x.code === code));
+  const names = (list: ExcludedEval[]) => joinAnd(list.map((e) => e.c.trail.name));
+  const are = (list: unknown[]) => (list.length > 1 ? "are" : "is");
+  const startByFor = (durationMin: number) => (durationMin < latestFinishMin ? addMinutesToClock(latestFinish, -durationMin) : null);
+
+  const time = onlyBy("time")
+    .filter((e) => hoursNeeded(e.durationMin) <= MAX_PLAN_HOURS)
+    .sort((a, b) => a.durationMin - b.durationMin || a.c.trail.name.localeCompare(b.c.trail.name, "en"));
   if (time.length) {
-    const need = Math.min(...time.map((e) => e.durationMin));
-    const hours = Math.ceil((need / 60) * 2) / 2;
-    const closest = time.find((e) => e.durationMin === need)!;
-    out.push(`Allow at least ${hoursLabel(hours)} to include ${closest.c.trail.name} (${time.length} trail${time.length > 1 ? "s" : ""} need more than ${hoursLabel(prefs.availableHours)}).`);
+    const [first, ...rest] = time;
+    const more = rest.length ? ` (${rest.map((e) => `${hoursLabel(hoursNeeded(e.durationMin))} for ${e.c.trail.name}`).join(", ")})` : "";
+    out.push(`Allow at least ${hoursLabel(hoursNeeded(first.durationMin))} to include ${first.c.trail.name}${more}.`);
+    named++;
   }
-  const dist = by("distance");
+
+  const dist = onlyBy("distance");
   if (dist.length) {
     const ds = dist.map((e) => e.c.trail.distanceKm);
     const shortest = Math.min(...ds);
     const longest = Math.max(...ds);
-    out.push(
-      `Widen your distance range: ${names(dist)} ${dist.length > 1 ? "are" : "is"} between ${km(shortest)} and ${km(longest)}.`,
-    );
+    const range = shortest === longest ? km(shortest) : `between ${km(shortest)} and ${km(longest)}`;
+    out.push(`Widen your distance range to include ${names(dist)} (${range}).`);
+    named++;
   }
-  const elev = by("elevation");
+
+  const elev = onlyBy("elevation");
   if (elev.length) {
     const lowest = Math.min(...elev.map((e) => e.c.trail.elevationGainM));
     out.push(`Raise your maximum elevation gain to ${formatElevation(lowest)} to include ${elev.find((e) => e.c.trail.elevationGainM === lowest)!.c.trail.name}.`);
+    named++;
   }
-  const lf = by("latest_finish");
+
+  const lf = onlyBy("latest_finish");
   if (lf.length) {
     const shortest = Math.min(...lf.map((e) => e.durationMin));
     const name = lf.find((e) => e.durationMin === shortest)!.c.trail.name;
-    if (shortest < clockToMinutes(latestFinish)) {
-      const startBy = addMinutesToClock(latestFinish, -shortest);
-      out.push(`Start earlier, by ${startBy} at the latest, to finish ${name} before the latest-finish estimate (${latestFinish}), or pick a month with more daylight.`);
-    } else {
-      out.push(`${name} takes longer (est.) than the hours before this month's latest-finish estimate (${latestFinish}); pick a month with more daylight.`);
-    }
+    const startBy = startByFor(shortest);
+    out.push(
+      startBy
+        ? `Start earlier, by ${startBy} at the latest, to finish ${name} before the latest-finish estimate for ${month} (${latestFinish}), or pick a month with more daylight.`
+        : `${name} takes longer (est.) than the hours before the latest-finish estimate for ${month} (${latestFinish}); pick a month with more daylight.`,
+    );
+    named++;
   }
-  const permit = by("permit");
+
+  const permit = onlyBy("permit");
   if (permit.length) {
     const lead = Math.max(...permit.flatMap((e) => e.c.permits.map((p) => p.leadTimeDays ?? 0)));
     out.push(`Choose a date at least ${lead} days from today to allow permit lead time for ${names(permit)}.`);
+    named++;
   }
-  const closure = by("closure");
-  if (closure.length) out.push(`${names(closure)} ${closure.length > 1 ? "are" : "is"} fully closed on your date: choose a different date.`);
+
+  const closure = onlyBy("closure");
+  if (closure.length) {
+    out.push(`${names(closure)} ${are(closure)} fully closed on your date: choose a different date.`);
+    named++;
+  }
+
+  const dogs = onlyBy("dogs");
+  if (dogs.length) {
+    out.push(`Plan without a dog to include ${names(dogs)} (dogs not allowed or policy unverified).`);
+    named++;
+  }
+
+  const cap = onlyBy("capacity");
+  if (cap.length) {
+    out.push(`Choose another date or a smaller group: ${names(cap)} ${cap.length > 1 ? "have" : "has"} no room for your party.`);
+    named++;
+  }
+
+  // Several changes together (never a date change, never a safety or accessibility rule).
+  let combined = 0;
+  for (const e of excluded) {
+    if (combined >= MAX_COMBINED) break;
+    const codes = codesOf(e);
+    if (codes.size < 2 || ![...codes].every((c) => COMBINABLE.includes(c))) continue;
+    const t = e.c.trail;
+    const parts: string[] = [];
+    let feasible = true;
+    for (const code of COMBINABLE) {
+      if (!codes.has(code)) continue;
+      if (code === "time") {
+        const h = hoursNeeded(e.durationMin);
+        if (h > MAX_PLAN_HOURS) feasible = false;
+        parts.push(`allow at least ${hoursLabel(h)}`);
+      } else if (code === "latest_finish") {
+        const startBy = startByFor(e.durationMin);
+        if (!startBy) feasible = false;
+        else parts.push(`start by ${startBy} at the latest`);
+      } else if (code === "distance") {
+        if (prefs.distanceKmMin !== undefined && t.distanceKm < prefs.distanceKmMin * (1 - DISTANCE_TOLERANCE)) parts.push(`lower your shortest distance to ${km(t.distanceKm)}`);
+        else parts.push(`raise your longest distance to ${km(t.distanceKm)}`);
+      } else if (code === "elevation") {
+        parts.push(`raise your maximum elevation gain to ${formatElevation(t.elevationGainM)}`);
+      } else if (code === "dogs") {
+        parts.push("plan without a dog");
+      }
+    }
+    if (!feasible) continue;
+    out.push(`${t.name} would fit if you ${joinAnd(parts)}.`);
+    combined++;
+    named++;
+  }
+
+  // Constraints we explain but never relax: no trail is named.
   const access = by("accessibility");
   if (access.length) {
     out.push(
-      `${access.length} trail${access.length > 1 ? "s" : ""} don't list every accessibility feature you need. We won't suggest a trail that doesn't meet your needs; only remove a need if it is genuinely optional for you.`,
+      `${access.length} trail${access.length > 1 ? "s" : ""} ${access.length > 1 ? "don't" : "doesn't"} list every accessibility feature you need. We won't suggest a trail that doesn't meet your needs; only remove a need if it is genuinely optional for you.`,
     );
   }
-  const dogs = by("dogs");
-  if (dogs.length) out.push(`Plan without a dog to include ${names(dogs)} (dogs not allowed or policy unverified).`);
-  const exp = onlyBy("experience");
-  if (exp.length) out.push(`${names(exp)} ${exp.length > 1 ? "are" : "is"} rated above what we suggest for your experience and fitness. Building up with easier hikes first is the best way to get there.`);
-  const cap = by("capacity");
-  if (cap.length) out.push(`Choose another date or a smaller group: ${names(cap)} ${cap.length > 1 ? "have" : "has"} no room for your party.`);
+  const exp = by("experience");
+  if (exp.length) {
+    out.push(
+      `${exp.length} trail${exp.length > 1 ? "s are" : " is"} rated above what we suggest for your experience and fitness, so we won't suggest ${exp.length > 1 ? "them" : "it"} for this plan. Building up with easier hikes first is the best way to get there.`,
+    );
+  }
+
+  if (!named && excluded.length) {
+    out.push("No simple change to your answers would add a trail from our catalog. The reasons for each trail are listed below.");
+  }
   return out;
 }
 

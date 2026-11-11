@@ -18,8 +18,18 @@ import { createShare, revokeShare } from "@/server/sharing/shares";
  * the user from the session, validates the trip id, and calls a use-case
  * that checks ownership (404 semantics) and validates all input with zod.
  */
-export type CheckinFormState = { ok?: boolean; message?: string; error?: string } | undefined;
-export type ShareFormState = { ok?: boolean; message?: string; error?: string; url?: string; expiresAt?: string } | undefined;
+/** What the customer submitted in the setup form, echoed back on an error so React's post-action form reset keeps it. */
+export interface SetupFormValues {
+  contactId: string;
+  expectedReturn: string;
+  graceMinutes: string;
+  reminders: string[];
+  understand: boolean;
+}
+export type CheckinFormState = { ok?: boolean; message?: string; error?: string; values?: SetupFormValues } | undefined;
+export type ShareFormState =
+  | { ok?: boolean; message?: string; error?: string; url?: string; expiresAt?: string; /** preformatted in the trail's time zone */ expiresLabel?: string }
+  | undefined;
 
 const tripIdSchema = z.uuid();
 
@@ -39,14 +49,26 @@ async function authed(tripId: string) {
 export async function setupCheckinAction(tripId: string, _prev: CheckinFormState, formData: FormData): Promise<CheckinFormState> {
   const user = await authed(tripId);
   if (!user) return { ok: false, error: "Trip not found." };
-  const input = {
-    contactId: String(formData.get("contactId") ?? ""),
-    expectedReturnLocal: String(formData.get("expectedReturn") ?? ""),
-    graceMinutes: String(formData.get("graceMinutes") ?? ""),
-    reminderOffsetsMin: formData.getAll("reminders").map((v) => String(v)),
+  const values: SetupFormValues = {
+    contactId: String(formData.get("contactId") ?? "").slice(0, 64),
+    expectedReturn: String(formData.get("expectedReturn") ?? "").slice(0, 25),
+    graceMinutes: String(formData.get("graceMinutes") ?? "").slice(0, 8),
+    reminders: formData
+      .getAll("reminders")
+      .slice(0, 20)
+      .map((v) => String(v).slice(0, 8)),
+    understand: formData.get("understand") === "on",
   };
-  if (formData.get("understand") !== "on") return { ok: false, error: "Please confirm you understand how check-ins work." };
-  return toState(await setupCheckin(user, tripId, input));
+  if (!values.understand) return { ok: false, error: "Please confirm you understand how check-ins work.", values };
+  const state = toState(
+    await setupCheckin(user, tripId, {
+      contactId: values.contactId,
+      expectedReturnLocal: values.expectedReturn,
+      graceMinutes: values.graceMinutes,
+      reminderOffsetsMin: values.reminders,
+    }),
+  );
+  return state?.ok ? state : { ...state, values };
 }
 
 export async function optOutAction(tripId: string, _prev: CheckinFormState, formData: FormData): Promise<CheckinFormState> {
@@ -88,7 +110,13 @@ export async function createShareAction(tripId: string, _prev: ShareFormState, f
   if (!r.ok) return { ok: false, error: r.notFound ? "Trip not found." : r.error };
   refresh();
   // The token is shown exactly once; only its hash is stored.
-  return { ok: true, message: "Link created. Copy it now — for your privacy we can't show it again.", url: r.url, expiresAt: r.expiresAt.toISOString() };
+  return {
+    ok: true,
+    message: "Link created. Copy it now — for your privacy we can't show it again.",
+    url: r.url,
+    expiresAt: r.expiresAt.toISOString(),
+    expiresLabel: r.expiresLabel,
+  };
 }
 
 export async function revokeShareAction(tripId: string, _prev: ShareFormState, formData: FormData): Promise<ShareFormState> {

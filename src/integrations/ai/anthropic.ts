@@ -107,7 +107,7 @@ export function createAnthropicProvider(cfg: AnthropicConfig): AiProvider {
     },
     summarizeItinerary(input: SummarizeInput, opts?: AiCallOptions) {
       return complete(
-        `Facts (computed by the planner; do not add others):\n${summarizeFacts(input)}\n\nIn at most 120 words of plain text, summarize this hiking itinerary for the hiker, noting that times are estimates and reminders are general.`,
+        `Facts (computed by the planner; do not add others):\n${summarizeFacts(input)}\n\nIn at most 120 words of plain text, summarize this hiking itinerary for the hiker, noting that times are estimates and reminders are general. If a partial closure is listed, tell the hiker to follow it even if that means turning around early; never suggest continuing past it.`,
         opts,
       );
     },

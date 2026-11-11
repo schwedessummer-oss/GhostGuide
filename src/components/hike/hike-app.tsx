@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
-import { CheckCircle2, CloudOff, Loader2, ShieldAlert } from "lucide-react";
-import { Alert, Badge, ButtonLink, Card, SimulatedBadge } from "@/components/ui";
+import { CheckCircle2, CloudOff, Loader2, RefreshCw, ShieldAlert } from "lucide-react";
+import { Alert, Badge, Button, ButtonLink, Card, SimulatedBadge } from "@/components/ui";
 import { RouteView } from "@/components/map/route-view";
 import { HikeEngine, type HikeSnapshot } from "./engine/hike-engine";
 import { HikeStatus } from "./hike-status";
@@ -62,20 +63,17 @@ export function HikeApp({ tripId, demoMode }: { tripId: string; demoMode: boolea
           <Loader2 aria-hidden className="size-5 motion-safe:animate-spin" /> Loading your trip from this device…
         </p>
       ) : snap.phase === "no_bundle" || snap.phase === "error" ? (
-        <Alert tone={snap.phase === "error" ? "red" : "amber"} title="This hike can't open here" className="my-6">
-          <p>{snap.error}</p>
-          <p className="mt-2">
-            Download your trip on the <a className="font-semibold underline" href={`/trips/${tripId}/prepare`}>preparation page</a> while you have
-            signal. In an emergency call 911.
-          </p>
-        </Alert>
+        <CannotOpen snap={snap} engine={engine} tripId={tripId} />
       ) : snap.phase === "ready" ? (
         <HikePrestart snap={snap} engine={engine} prepareHref={`/trips/${tripId}/prepare`} />
       ) : snap.phase === "finished" ? (
         <Finished snap={snap} engine={engine} tripId={tripId} />
       ) : (
         <div className="space-y-4">
-          <DeviationPrompt snap={snap} engine={engine} helpHref={helpHref} onShowRoute={showRoute} />
+          {/* Sticks to the top of the viewport so the off-route prompt is seen wherever the hiker has scrolled. */}
+          <div className="sticky top-0 z-40 pt-[max(0.5rem,env(safe-area-inset-top))] empty:hidden">
+            <DeviationPrompt snap={snap} engine={engine} helpHref={helpHref} onShowRoute={showRoute} />
+          </div>
           <ReminderCard snap={snap} engine={engine} />
           <GapWarning snap={snap} />
           {snap.startError ? (
@@ -110,6 +108,68 @@ export function HikeApp({ tripId, demoMode }: { tripId: string; demoMode: boolea
       )}
       {snap.phase === "ready" ? <div className="mt-6"><GpsSimulatorPanel snap={snap} engine={engine} /></div> : null}
     </div>
+  );
+}
+
+/** Why the hike screen can't open — the real reason (offline, signed out, not booked, server problem…), never a guess. */
+function CannotOpen({ snap, engine, tripId }: { snap: HikeSnapshot; engine: HikeEngine; tripId: string }) {
+  const kind = snap.errorKind;
+  const signIn = `/login?next=${encodeURIComponent(`/trips/${tripId}/hike`)}`;
+  const prepare = (
+    <>
+      Download your trip on the <a className="font-semibold underline" href={`/trips/${tripId}/prepare`}>preparation page</a> while you have signal.
+    </>
+  );
+  if (kind === "signed_out" || kind === "auth") {
+    return (
+      <Alert tone="amber" title={kind === "signed_out" ? "Sign in again to use this trip offline" : "This hike can't open here"} className="my-6">
+        {kind === "signed_out" ? (
+          <p>
+            Trip data downloaded on this browser belongs to an account that isn&apos;t signed in here, so it has been removed from this device for
+            privacy.
+          </p>
+        ) : (
+          <p>{snap.error}</p>
+        )}
+        <p className="mt-2">
+          <a className="font-semibold underline" href={signIn} data-testid="hike-sign-in">
+            Sign in
+          </a>
+          , then download the trip again while you have signal. In an emergency call 911.
+        </p>
+      </Alert>
+    );
+  }
+  return (
+    <Alert tone={snap.phase === "error" ? "red" : "amber"} title="This hike can't open here" className="my-6">
+      <p data-testid="hike-open-error">{snap.error}</p>
+      <div className="mt-2">
+        {kind === "not_bookable" ? (
+          <p>
+            Book the trip first on <a className="font-semibold underline" href={`/trips/${tripId}`}>your trip page</a>; then you can download it and
+            start the hike.
+          </p>
+        ) : kind === "not_found" ? (
+          <p>
+            See{" "}
+            <Link className="font-semibold underline" href="/trips">
+              My trips
+            </Link>
+            .
+          </p>
+        ) : kind === "server" || kind === "slow" ? (
+          <>
+            <Button variant="secondary" onClick={() => engine.retry()} data-testid="hike-retry">
+              <RefreshCw aria-hidden className="size-4" /> Try again
+            </Button>
+            <p className="mt-2">{prepare}</p>
+          </>
+        ) : (
+          <p>{prepare}</p>
+        )}
+        <p className="mt-2">In an emergency call 911.</p>
+      </div>
+    </Alert>
   );
 }
 
@@ -172,7 +232,7 @@ function Stats({ snap }: { snap: HikeSnapshot }) {
       <StatBox
         label="From route"
         value={p.distanceFromRouteM === null ? "—" : `${Math.round(p.distanceFromRouteM)} m`}
-        hint={snap.deviation.status === "off_route" ? "Possibly off route" : "Near the route"}
+        hint={p.distanceFromRouteM === null ? "No location yet" : snap.deviation.status === "off_route" ? "Possibly off route" : "Near the route"}
       />
       <StatBox label="Started" value={snap.startedAt ? new Date(snap.startedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }) : "—"} />
     </dl>

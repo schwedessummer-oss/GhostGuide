@@ -88,8 +88,11 @@ export async function downloadTrip(tripId: string, onProgress: (p: DownloadProgr
     try {
       // Start from a clean cache so removed narration or old app files do not linger.
       await deleteTripCache(tripId).catch(() => undefined);
-      const reply = await cacheTripUrls(tripId, [...pages, ...others], (p: CacheProgress) =>
-        onProgress({ phase: "caching", done: p.done, total: p.total, message: `Saving files for offline use (${p.done} of ${p.total})…` }),
+      const reply = await cacheTripUrls(
+        tripId,
+        [...pages, ...others],
+        (p: CacheProgress) => onProgress({ phase: "caching", done: p.done, total: p.total, message: `Saving files for offline use (${p.done} of ${p.total})…` }),
+        bundle.ownerHint,
       );
       assetUrls = reply.assets ?? [];
     } catch (err) {

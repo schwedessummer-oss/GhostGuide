@@ -43,9 +43,10 @@ export function SuggestionCard({
   highlighted: boolean;
   saveError?: string | null;
 }) {
-  const { trail, result, itinerary, rank } = suggestion;
+  const { trail, result, itinerary, rank, partialClosures } = suggestion;
   const headingId = `trail-${trail.id}-heading`;
   const start = itinerary.startTime;
+  const partial = partialClosures.length > 0;
   return (
     <article
       id={`trail-${trail.id}`}
@@ -168,7 +169,7 @@ export function SuggestionCard({
           <section aria-labelledby={`${headingId}-itinerary`} className="rounded-xl bg-forest-50 p-4">
             <h3 id={`${headingId}-itinerary`} className="mb-3 flex flex-wrap items-center gap-x-2 gap-y-0.5 font-bold">
               <Footprints aria-hidden className="size-5 text-forest-700" /> Suggested itinerary
-              <span className="text-sm font-normal text-muted">(all times est.)</span>
+              <span className="text-sm font-normal text-muted">{partial ? "(all times est. for the full route)" : "(all times est.)"}</span>
             </h3>
             <ol className="relative space-y-3 border-l-2 border-forest-200 pl-5">
               <li>
@@ -188,19 +189,39 @@ export function SuggestionCard({
                     </p>
                   </li>
                 ))}
+              {partial ? (
+                <li data-partial-closure="">
+                  <span aria-hidden className="absolute -left-[7px] mt-1.5 size-3 rounded-full bg-amber-ink" />
+                  <p className="font-semibold text-amber-ink">
+                    <TriangleAlert aria-hidden className="mr-1 inline size-4" />
+                    Partial closure on your date
+                  </p>
+                  {partialClosures.map((reason) => (
+                    <p key={reason} className="mt-0.5 text-[0.95rem] text-amber-ink">
+                      {reason}
+                    </p>
+                  ))}
+                  <p className="mt-0.5 text-[0.95rem] text-amber-ink">
+                    Follow the closure, even if that means turning around earlier than the times shown here.
+                  </p>
+                </li>
+              ) : null}
               {itinerary.turnaroundBy ? (
                 <li>
                   <span aria-hidden className="absolute -left-[7px] mt-1.5 size-3 rounded-full bg-amber-ink" />
                   <p className="font-semibold text-amber-ink">
                     <RotateCcw aria-hidden className="mr-1 inline size-4" />
-                    Turn around by {itinerary.turnaroundBy}, even if you haven&apos;t reached the far end
+                    {partial
+                      ? `Turn around by ${itinerary.turnaroundBy} at the latest, or earlier where the closure requires it`
+                      : `Turn around by ${itinerary.turnaroundBy}, even if you haven't reached the far end`}
                   </p>
                 </li>
               ) : null}
               <li>
                 <span aria-hidden className="absolute -left-[7px] mt-1.5 size-3 rounded-full bg-forest-800" />
                 <p className="font-semibold">
-                  <Flag aria-hidden className="mr-1 inline size-4" />≈ {itinerary.estimatedFinishTime} · Finish (about {formatDuration(itinerary.estimatedDurationMin)})
+                  <Flag aria-hidden className="mr-1 inline size-4" />≈ {itinerary.estimatedFinishTime} · Finish (about {formatDuration(itinerary.estimatedDurationMin)}
+                  {partial ? " for the full route" : ""})
                 </p>
               </li>
             </ol>
@@ -251,15 +272,16 @@ export function SuggestionCard({
             <input type="hidden" name="q" value={query} />
             <input type="hidden" name="trailId" value={trail.id} />
             {saveError ? (
-              <p role="alert" className="rounded-xl bg-red-bg p-3 text-sm font-semibold text-red-ink">
+              <p id={`${headingId}-save-error`} role="alert" className="rounded-xl bg-red-bg p-3 text-sm font-semibold text-red-ink">
                 {saveError}
               </p>
             ) : null}
-            <SaveTripButton signedIn={signedIn} trailName={trail.name} />
+            {/* After "Sign in to save" or a failed save, focus returns to this button (see ReturnToCard). */}
+            <SaveTripButton signedIn={signedIn} trailName={trail.name} describedBy={saveError ? `${headingId}-save-error` : undefined} />
             <p className="text-sm text-muted">
               {signedIn
                 ? "Saves this plan to My trips. You can book it from there"
-                : "You'll come straight back to these results after signing in"}
+                : "You'll come straight back to this trail in your results after signing in"}
               {` · from ${formatMoney(trail.basePriceCents, trail.currency)} per person.`}
             </p>
           </form>

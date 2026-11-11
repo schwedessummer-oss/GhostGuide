@@ -7,8 +7,9 @@ import { checkRateLimit } from "@/server/rate-limit";
 import { isEnabled } from "@/server/flags";
 import { env } from "@/config/env";
 import { getOwnedTrip } from "@/server/trips/queries";
+import { getRegionById } from "@/server/catalog/trails";
 import { classifyLocation, type LocationFreshness } from "@/domain/staleness";
-import { describeCheckinForShare, isOpen } from "@/domain/checkin";
+import { describeCheckinForShare, formatCheckinTime, isOpen, shareNeedsNoConfirmationNote } from "@/domain/checkin";
 import { firstNameOf } from "@/domain/notification-messages";
 import type { CheckinStatus } from "@/domain/types";
 import { getSafetySettings } from "@/server/checkins/settings";
@@ -20,12 +21,19 @@ import { getSafetySettings } from "@/server/checkins/settings";
  * trip_shares). Public resolution is a trusted lookup by token hash that
  * returns a deliberately small, neutral view (no contact details; last
  * location only if the owner opted in for that link).
+ *
+ * Location ends with the hike: once the trip is completed, the check-in is
+ * finished, or the latest hike session is no longer open, a link never shows
+ * a position again (not even one recorded before the finish) — it only says
+ * the hiker finished. New links can't be created for a finished trip.
  */
 export const SHARE_DURATIONS_HOURS = [6, 24, 72] as const;
 export const MAX_ACTIVE_SHARES_PER_TRIP = 5;
 const SHARE_TOKEN = /^[A-Za-z0-9_-]{20,64}$/;
 
-export type ShareResult = { ok: true; token: string; url: string; expiresAt: Date; shareId: string } | { ok: false; error: string; notFound?: boolean };
+export type ShareResult =
+  | { ok: true; token: string; url: string; expiresAt: Date; /** "Sat, Nov 14, 3:30 PM PST" in the trail's time zone */ expiresLabel: string; shareId: string }
+  | { ok: false; error: string; notFound?: boolean };
 
 export interface ShareView {
   id: string;
@@ -50,12 +58,18 @@ export async function createShare(user: SessionUser, tripId: string, hours: numb
   const parsed = createSchema.safeParse({ hours, includeLastLocation });
   if (!parsed.success) return { ok: false, error: parsed.error.issues[0]?.message ?? "Choose how long the link should work." };
   if (trip.status === "cancelled" || trip.status === "saved") return { ok: false, error: "You can share booked or active trips only." };
+  if (trip.status === "completed") return { ok: false, error: "This trip is finished, so there's nothing left to share." };
   const limit = await checkRateLimit(`share:create:user:${user.id}`, 10, 3600);
   if (!limit.allowed) return { ok: false, error: "You've created a lot of links recently. Please try again later." };
 
   const token = randomToken(24);
   const expiresAt = new Date(now.getTime() + parsed.data.hours * 3_600_000);
+  const region = await getRegionById(trip.regionId);
+  const expiresLabel = formatCheckinTime(expiresAt, region?.timezone ?? "America/Los_Angeles");
   return withUser(user, async (tx) => {
+    const [checkin] = await tx<{ status: CheckinStatus }[]>`
+      select status from public.trip_checkins where trip_id = ${trip.id} and user_id = ${user.id}`;
+    if (checkin?.status === "completed") return { ok: false as const, error: "This trip is finished, so there's nothing left to share." };
     const [{ n }] = await tx<{ n: number }[]>`
       select count(*)::int as n from public.trip_shares
       where trip_id = ${trip.id} and created_by = ${user.id} and revoked_at is null and expires_at > ${now}::timestamptz`;
@@ -66,7 +80,7 @@ export async function createShare(user: SessionUser, tripId: string, hours: numb
       insert into public.trip_shares (trip_id, created_by, token_hash, include_last_location, expires_at)
       values (${trip.id}, ${user.id}, ${sha256(token)}, ${parsed.data.includeLastLocation}, ${expiresAt}::timestamptz)
       returning id`;
-    return { ok: true as const, token, url: shareUrl(token), expiresAt, shareId: row.id };
+    return { ok: true as const, token, url: shareUrl(token), expiresAt, expiresLabel, shareId: row.id };
   });
 }
 
@@ -111,6 +125,8 @@ export interface SharedTripView {
   location: { lat: number; lng: number; accuracyM: number | null; recordedAt: Date; freshness: LocationFreshness; label: string } | null;
   /** why no location is shown (when included but unavailable) */
   locationNote: string | null;
+  /** show the "“No confirmation” only means…" caveat (only for no-confirmation statuses) */
+  showNoConfirmationNote: boolean;
   expiresAt: Date;
 }
 
@@ -156,9 +172,13 @@ export async function resolveShare(token: string, now = new Date()): Promise<Sha
     if (s.includeLastLocation) {
       const [session] = await tx<{ status: string }[]>`
         select status from public.hike_sessions where trip_id = ${s.tripId} order by started_at desc limit 1`;
-      const hikeOngoing = session?.status === "active" || session?.status === "paused" || (checkin ? isOpen(checkin.status) : false);
+      // A finished trip or check-in ends location sharing even if a session
+      // was left open (e.g. finished from the check-in page on another device).
+      const finished = s.tripStatus === "completed" || checkin?.status === "completed";
+      const sessionOpen = session?.status === "active" || session?.status === "paused";
+      const hikeOngoing = !finished && (sessionOpen || (checkin ? isOpen(checkin.status) : false));
       if (!hikeOngoing) {
-        locationNote = session ? "The hike has ended, so location is no longer shown." : "No location has been reported yet.";
+        locationNote = session || finished ? "The hike has ended, so location is no longer shown." : "No location has been reported yet.";
       } else {
         const [loc] = await tx<{ lat: number; lng: number; accuracyM: number | null; recordedAt: Date }[]>`
           select hll.lat, hll.lng, hll.accuracy_m, hll.recorded_at
@@ -184,10 +204,11 @@ export async function resolveShare(token: string, now = new Date()): Promise<Sha
       plannedDate: s.plannedDate,
       checkinStatus: checkin?.status ?? null,
       expectedReturnAt: checkin && checkin.status !== "completed" ? checkin.expectedReturnAt : null,
-      statusText: describeCheckinForShare(checkin, s.timezone),
+      statusText: describeCheckinForShare(checkin, s.timezone, now),
       locationIncluded: s.includeLastLocation,
       location,
       locationNote,
+      showNoConfirmationNote: shareNeedsNoConfirmationNote(checkin),
       expiresAt: s.expiresAt,
     };
   });

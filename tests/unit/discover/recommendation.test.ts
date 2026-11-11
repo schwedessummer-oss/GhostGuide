@@ -178,7 +178,88 @@ describe("recommendTrails — no match and relax suggestions", () => {
   it("suggests an earlier start when the latest-finish estimate is the blocker", () => {
     const r = recommendTrails(prefs({ startTime: "15:00" }), [candidate({ name: "Late" })], ctx);
     expect(r.noMatch).toBe(true);
-    expect(r.relaxSuggestions.join(" ")).toMatch(/Start earlier, by 13:55/);
+    // the month is named (not "this month"): the planned date may be months away
+    expect(r.relaxSuggestions.join(" ")).toMatch(/Start earlier, by 13:55 at the latest, to finish Late before the latest-finish estimate for November \(15:45\)/);
+  });
+
+  // Mirrors the seeded catalog for a new, low-fitness hiker with a dog and two access needs.
+  const beginnerCatalog = () => [
+    candidate({ id: ID(11), name: "Lantern", difficulty: "easy", estimatedDurationMin: 49, accessibilityFeatures: ["step_free_start", "no_exposure"], dogsAllowed: true }),
+    candidate({ id: ID(12), name: "Meadow", difficulty: "easy", estimatedDurationMin: 71, accessibilityFeatures: ["benches"], dogsAllowed: true }),
+    candidate({ id: ID(13), name: "Whisper", difficulty: "moderate", estimatedDurationMin: 97, accessibilityFeatures: ["shade"], dogsAllowed: false }),
+    candidate({ id: ID(14), name: "Echo", difficulty: "hard", estimatedDurationMin: 269, dogsAllowed: false }, { permits: [{ name: "Echo permit", leadTimeDays: 7 }] }),
+    candidate({ id: ID(15), name: "Summit", difficulty: "strenuous", estimatedDurationMin: 304, dogsAllowed: false, routeType: "out_and_back" }),
+  ];
+  const beginner = prefs({
+    experience: "new",
+    fitness: "low",
+    pace: "leisurely",
+    availableHours: 1,
+    startTime: "08:30",
+    bringingDog: true,
+    accessibilityNeeds: ["step_free", "avoid_exposure"],
+  });
+
+  it("only names trails the suggested change alone would include, never ones excluded for experience or accessibility", () => {
+    const r = recommendTrails(beginner, beginnerCatalog(), ctx);
+    expect(r.noMatch).toBe(true);
+    const text = r.relaxSuggestions.join("\n");
+    expect(text).toMatch(/Allow at least 1\.5 h to include Lantern\./);
+    // Summit/Echo are excluded by the experience/fitness rule; Whisper and Meadow by accessibility.
+    for (const name of ["Summit", "Echo", "Whisper", "Meadow"]) expect(text).not.toContain(name);
+    expect(text).not.toMatch(/Plan without a dog|Start earlier|permit lead time/);
+    // explained without naming a trail
+    expect(text).toMatch(/4 trails don't list every accessibility feature you need/);
+    expect(text).toMatch(/2 trails are rated above what we suggest for your experience and fitness, so we won't suggest them/);
+  });
+
+  it("every named suggestion is true on its own: applying just that change includes the trail", () => {
+    const cands = [
+      candidate({ id: ID(21), name: "Timely", estimatedDurationMin: 200 }), // time only
+      candidate({ id: ID(22), name: "Doggo", dogsAllowed: false }), // dogs only
+      candidate({ id: ID(23), name: "Climb", elevationGainM: 900 }), // elevation only
+      candidate({ id: ID(24), name: "DogAndTime", dogsAllowed: false, estimatedDurationMin: 200 }), // dogs + time
+      candidate({ id: ID(25), name: "Hard", difficulty: "strenuous", dogsAllowed: false }), // experience + dogs
+    ];
+    const p = prefs({ availableHours: 2.5, maxElevationGainM: 500, bringingDog: true });
+    const r = recommendTrails(p, cands, ctx);
+    const text = r.relaxSuggestions.join("\n");
+    expect(text).toMatch(/Allow at least 3\.5 h to include Timely\./);
+    expect(text).toMatch(/Plan without a dog to include Doggo \(/);
+    expect(text).toMatch(/Raise your maximum elevation gain to 2,953 ft to include Climb\./);
+    // the dog suggestion does not promise trails that stay excluded for time or experience
+    const dogLine = r.relaxSuggestions.find((x) => x.startsWith("Plan without a dog"))!;
+    expect(dogLine).not.toMatch(/DogAndTime|Hard/);
+    // ...but the combination that would really include DogAndTime is offered as one suggestion
+    expect(text).toMatch(/DogAndTime would fit if you allow at least 3\.5 h and plan without a dog\./);
+    expect(text).not.toMatch(/\bHard\b/);
+
+    const ranks = (q: typeof p) => recommendTrails(q, cands, ctx).ranked.map((x) => x.trailId);
+    expect(ranks({ ...p, availableHours: 3.5 })).toContain(ID(21));
+    expect(ranks({ ...p, bringingDog: false })).toContain(ID(22));
+    expect(ranks({ ...p, maxElevationGainM: 900 })).toContain(ID(23));
+    expect(ranks({ ...p, availableHours: 3.5 })).not.toContain(ID(24));
+    expect(ranks({ ...p, bringingDog: false })).not.toContain(ID(24));
+    expect(ranks({ ...p, availableHours: 3.5, bringingDog: false })).toContain(ID(24));
+  });
+
+  it("combines more time with an earlier start when both block a trail", () => {
+    const r = recommendTrails(prefs({ availableHours: 1, startTime: "15:00" }), [candidate({ name: "Lantern" })], ctx);
+    expect(r.relaxSuggestions).toContain("Lantern would fit if you allow at least 2 h and start by 13:55 at the latest.");
+    expect(r.relaxSuggestions.join(" ")).not.toMatch(/^Allow at least|Start earlier/m);
+    expect(recommendTrails(prefs({ availableHours: 2, startTime: "13:55" }), [candidate({ name: "Lantern" })], ctx).ranked).toHaveLength(1);
+  });
+
+  it("says so when no simple change would add a trail", () => {
+    const r = recommendTrails(prefs({ experience: "new", availableHours: 1 }), [candidate({ name: "Steep", difficulty: "hard" })], ctx);
+    expect(r.noMatch).toBe(true);
+    expect(r.relaxSuggestions.join(" ")).not.toContain("Steep");
+    expect(r.relaxSuggestions.join(" ")).toMatch(/No simple change to your answers would add a trail/);
+  });
+
+  it("never suggests more hours than the questionnaire allows", () => {
+    const r = recommendTrails(prefs({ availableHours: 6 }), [candidate({ name: "Epic", estimatedDurationMin: 900 })], ctx);
+    expect(r.relaxSuggestions.join(" ")).not.toMatch(/Allow at least/);
   });
 });
 

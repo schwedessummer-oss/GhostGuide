@@ -11,7 +11,7 @@ import { AWAITING_STATUSES, contactNotifiedTransition, isOverdueState } from "@/
 import type { CheckinStatus } from "@/domain/types";
 import { addressOn, type Address } from "./addresses";
 import { NOTIFICATION_TEMPLATES } from "./create";
-import { applyTransition, lockCheckinById, queueContactFollowUps } from "@/server/checkins/core";
+import { applyTransition, lockCheckinById, queueContactFollowUps, recordCheckinEvent } from "@/server/checkins/core";
 
 /**
  * `notifications.send` job: deliver one notification.
@@ -82,15 +82,22 @@ function obsoleteReason(n: NotificationRow): string | null {
   return null;
 }
 
-async function resolveAddress(tx: Tx, n: NotificationRow): Promise<Address | { reason: string }> {
+type Unresolved = { reason: string; code?: "contact_removed" | "consent_withdrawn" | "no_valid_phone_or_email" };
+
+async function resolveAddress(tx: Tx, n: NotificationRow): Promise<Address | Unresolved> {
   if (n.channel !== "sms" && n.channel !== "email") return { reason: `Channel ${n.channel} is not supported.` };
   if (!n.recipientRef || !n.userId) return { reason: "Not sent: no recipient reference." };
   if (n.recipientKind === "emergency_contact") {
     const [c] = await tx<{ phone: string | null; email: string | null; consentConfirmedAt: Date | null }[]>`
       select phone, email, consent_confirmed_at from public.emergency_contacts where id = ${n.recipientRef} and user_id = ${n.userId}`;
-    if (!c) return { reason: "Not sent: the contact was removed." };
-    if (!c.consentConfirmedAt) return { reason: "Not sent: the contact has no consent on file." };
-    return addressOn(n.channel, c) ?? { reason: `Not sent: the contact has no valid ${n.channel === "sms" ? "phone number" : "email address"}.` };
+    if (!c) return { reason: "Not sent: the contact was removed.", code: "contact_removed" };
+    if (!c.consentConfirmedAt) return { reason: "Not sent: the contact has no consent on file.", code: "consent_withdrawn" };
+    return (
+      addressOn(n.channel, c) ?? {
+        reason: `Not sent: the contact has no valid ${n.channel === "sms" ? "phone number" : "email address"}.`,
+        code: "no_valid_phone_or_email",
+      }
+    );
   }
   if (n.recipientKind === "user") {
     const [p] = await tx<{ phone: string | null; email: string | null }[]>`
@@ -121,6 +128,20 @@ async function prepare(notificationId: string): Promise<Prepared> {
     const address = await resolveAddress(tx, n);
     if ("reason" in address) {
       await suppress(tx, n.id, address.reason);
+      // An overdue notice that can no longer reach the contact: record it on
+      // the check-in (once per version) so the hiker's activity says so.
+      if (n.template === NOTIFICATION_TEMPLATES.overdueContact && n.checkinId && address.code) {
+        const [seen] = await tx`
+          select 1 from public.checkin_events
+          where checkin_id = ${n.checkinId} and kind = 'contact_not_notified' and details ->> 'version' = ${String(n.checkinVersion)}`;
+        if (!seen) {
+          await recordCheckinEvent(tx, n.checkinId, "contact_not_notified", { actor: "system", actorId: null }, {
+            version: n.checkinVersion,
+            reason: address.code,
+            notificationId: n.id,
+          });
+        }
+      }
       return { skip: "no deliverable address" };
     }
     await tx`update public.notifications set attempts = attempts + 1, recipient_masked = ${address.masked} where id = ${n.id}`;

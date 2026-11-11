@@ -252,7 +252,7 @@ describe("check-in defaults & time helpers", () => {
       const text = JSON.stringify(describeCheckinForOwner(state({ status: s }), TZ));
       expect(text).not.toMatch(/emergency|danger|rescue|SOS/i);
     }
-    expect(describeCheckinForShare(state({ status: "confirmed_ok", lastOkAt: new Date("2026-11-14T18:42:00Z") }), TZ)).toBe(
+    expect(describeCheckinForShare(state({ status: "confirmed_ok", lastOkAt: new Date("2026-11-14T18:42:00Z") }), TZ, now)).toBe(
       "Confirmed okay at 10:42 AM PST",
     );
     expect(describeCheckinForShare(state({ status: "active" }), TZ)).toBe("No confirmation received yet");

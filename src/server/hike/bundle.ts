@@ -2,6 +2,8 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { withSystem, withUser } from "@/server/db";
 import type { SessionUser } from "@/server/auth";
+import { ownerHint } from "@/server/auth/owner-hint";
+import { env, integrationStatus } from "@/config/env";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { storage } from "@/integrations/storage";
 import { log } from "@/server/log";
@@ -9,6 +11,7 @@ import type { ManifestItem } from "@/domain/offline-manifest";
 import type { CheckinStatus, RouteType } from "@/domain/types";
 import { BUNDLE_SCHEMA_VERSION, type BundleNarration, type BundlePoi, type TripBundle } from "@/lib/offline/wire";
 import { conflict, notFound, ok, type HikeResult } from "./result";
+import { bookedDateFor } from "./sessions";
 
 /** Signed narration URLs stay valid long enough to download days before the hike. */
 export const AUDIO_URL_TTL_SEC = 14 * 86_400;
@@ -112,7 +115,15 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
       select id, status, started_at, finished_at from public.hike_sessions
       where trip_id = ${trip.id} and user_id = ${user.id}
       order by (status in ('active', 'paused')) desc, started_at desc limit 1`;
-    return { checkin: checkin ?? null, session: session ?? null };
+    // Stops already narrated in that session: a device that lost (or never had) its local state must not replay them.
+    const heard = session
+      ? await tx<{ poiId: string }[]>`
+          select distinct payload->>'poiId' as poi_id from public.hike_events
+          where hike_session_id = ${session.id} and user_id = ${user.id}
+            and kind in ('poi_triggered', 'poi_replayed') and payload ? 'poiId'`
+      : [];
+    const when = await bookedDateFor(tx, trip.id);
+    return { checkin: checkin ?? null, session: session ?? null, heardPoiIds: heard.map((h) => h.poiId), bookedDate: when?.bookedDate ?? trip.plannedDate };
   });
 
   const narrations: BundleNarration[] = await Promise.all(
@@ -156,10 +167,13 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
   return ok({
     schemaVersion: BUNDLE_SCHEMA_VERSION,
     generatedAt: now.toISOString(),
+    ownerHint: ownerHint(env().AUTH_SECRET, user.id),
+    notificationsSimulated: integrationStatus().notifications === "simulated",
     trip: {
       id: trip.id,
       status: trip.status,
       plannedDate: trip.plannedDate,
+      bookedDate: personal.bookedDate,
       startTime: trip.startTime,
       partySize: trip.partySize,
       itinerary: trip.itinerary,
@@ -199,6 +213,7 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
           status: personal.session.status,
           startedAt: personal.session.startedAt.toISOString(),
           finishedAt: personal.session.finishedAt?.toISOString() ?? null,
+          heardPoiIds: personal.heardPoiIds,
         }
       : null,
     settings: { staleLocationMinutes: catalog.staleMinutes },
