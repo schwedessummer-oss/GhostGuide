@@ -66,7 +66,7 @@ try {
   await waitForServer(`${baseUrl}/status`);
   const testEnv = { ...process.env, E2E_BASE_URL: baseUrl, E2E_DATABASE_URL: dbUrl, E2E_CRON_SECRET: serverEnv.CRON_SECRET, E2E_HEADED: args.includes("--headed") ? "1" : "" };
   try {
-    execSync("node --test --test-concurrency=1 tests/e2e/specs/", { cwd: root, stdio: "inherit", env: testEnv });
+    execSync("node --test --test-concurrency=1 \"tests/e2e/specs/*.spec.mjs\"", { cwd: root, stdio: "inherit", env: testEnv });
     exitCode = 0;
   } catch {
     exitCode = 1;
