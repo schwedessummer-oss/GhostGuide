@@ -26,7 +26,7 @@ export async function revealAccessCodes(user: SessionUser, bookingId: string): P
   const out: Record<string, string> = {};
   for (const r of rows) {
     const code = deriveAccessCode(env().AUTH_SECRET, r.reservationId);
-    if (r.accessCodeHash && safeEqual(hashAccessCode(r.reservationId, code), r.accessCodeHash)) out[r.fulfillmentId] = code;
+    if (r.accessCodeHash && safeEqual(hashAccessCode(env().AUTH_SECRET, r.reservationId, code), r.accessCodeHash)) out[r.fulfillmentId] = code;
   }
   return out;
 }

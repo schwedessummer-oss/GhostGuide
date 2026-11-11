@@ -5,11 +5,14 @@ import { withSystem } from "@/server/db";
 import { purgeOldRateLimitWindows } from "@/server/rate-limit";
 import { PERMIT_REMIND_JOB, permitRemindRunKey, runPermitReminders } from "@/server/admin/permits";
 
-/** Next daily permit-reminder run: 16:00 UTC (morning in the U.S. Pacific launch region) after `now`. */
+/**
+ * Next daily permit-reminder run: 16:00 UTC (morning in the U.S. Pacific
+ * launch region) on the NEXT UTC day. Always the next day: the dedup key is
+ * per day, so scheduling "later today" would collide with today's run key
+ * and silently end the daily chain.
+ */
 export function nextPermitRemindRun(now: Date): Date {
-  const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 16, 0, 0));
-  if (next <= now) next.setUTCDate(next.getUTCDate() + 1);
-  return next;
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 16, 0, 0));
 }
 
 /** Job handlers for operations: marketing drafts, permit reminders, housekeeping (owned by the admin slice). Handlers must be idempotent. */

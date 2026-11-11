@@ -171,6 +171,30 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
 | `src/domain/pricing.ts` `quotePrice` | foundation | commerce, admin, discover |
 | `src/server/catalog/trails.ts`, `src/server/trips/queries.ts`, `src/lib/time.ts` (zone-aware dates), `src/lib/format.ts` | foundation | all |
 
+## Slice-specific semantics worth knowing
+- **Check-ins**: `contact_notified` means the notice was handed to the provider (set by
+  `notifications.send`), not merely queued; between the overdue job and the send the status is
+  `overdue`. Check-in jobs keep running when the `checkins_enabled` flag is turned off (the flag
+  only blocks new opt-ins). "I'm okay" after the expected return auto-extends the return by 60 min.
+  Booking/trip cancellation calls `cancelCheckinForTrip` in the same transaction.
+- **Notification dedup keys**: notification rows `notify:<checkinId>:v<version>:<step>:<recipient>`;
+  send jobs `notify:<notificationId>`. Rows store masked recipients only; the real address is
+  resolved at send time and consent is re-checked.
+- **Service worker** (`public/sw.js`): caches `gg-static-*` / `gg-shell-*` (versioned by
+  `SW_VERSION`, bump when caching rules change) and one `gg-trip-v1-<tripId>` cache per downloaded
+  trip. Never caches Mapbox or `/api/*` except the explicit trip bundle and narration audio.
+  Not registered under `next dev` unless `NEXT_PUBLIC_ENABLE_SW_IN_DEV=true`.
+- **Hike sessions**: `hike.close_stale_session` (enqueued at session start) marks sessions
+  `abandoned` after prolonged silence; trip stays `active`. Simulated-GPS sessions are marked by a
+  `simulator_on` / `start {simulated:true}` event. `hike_events` payloads may not contain coordinates
+  (CHECK constraint) because operators can read events.
+- **Narration revisions**: editing an approved narration creates a new `in_review` row with
+  `supersedes_id`; approving it retires the original. Customer queries filter `status = 'approved'`.
+- **Permits**: `permits.remind` runs daily (periodic safety net + self-scheduling) and writes
+  in-app notifications; no automated permit purchasing.
+- **Trips JSON**: `trips.recommendation` = `{version, trailId, score, breakdown[], reasons[], warnings[], …}`;
+  `trips.itinerary` = `Itinerary` v1; `ai_provider` = `demo-template` or `anthropic:<model>`.
+
 ## Testing
 - `npm run test:unit` — pure domain logic (`tests/unit/<slice>/…`).
 - `npm run test:integration` — against `ghostguide_test` (recreated + seeded per run).

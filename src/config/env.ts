@@ -60,6 +60,8 @@ const schema = z.object({
   CRON_SECRET: z.string().min(16).default("dev-only-cron-secret"),
   LAUNCH_REGION_SLUG: z.string().default("demo-ghost-ridge"),
   LOCATION_RETENTION_DAYS_DEFAULT: z.coerce.number().int().min(1).max(365).default(30),
+  /** Multiplies every rate limit. Automated tests only; must be 1 in live mode. */
+  RATE_LIMIT_SCALE: z.coerce.number().int().min(1).max(1000).default(1),
 });
 
 export type ServerEnv = z.infer<typeof schema>;
@@ -78,6 +80,7 @@ export function env(): ServerEnv {
   if (value.NODE_ENV === "production" && value.APP_MODE === "live") {
     if (value.AUTH_SECRET.startsWith("dev-only")) throw new Error("AUTH_SECRET must be set in live mode");
     if (value.CRON_SECRET.startsWith("dev-only")) throw new Error("CRON_SECRET must be set in live mode");
+    if (value.RATE_LIMIT_SCALE !== 1) throw new Error("RATE_LIMIT_SCALE must be 1 in live mode");
   }
   cached = value;
   return value;

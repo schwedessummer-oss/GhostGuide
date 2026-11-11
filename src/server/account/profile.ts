@@ -26,7 +26,7 @@ export async function getProfile(user: SessionUser): Promise<ProfileView> {
   const [p] = await withUser(
     user,
     (tx) => tx<Omit<ProfileView, "email">[]>`
-      select id, full_name, phone, units, location_retention_days, share_location_with_contacts
+      select id, full_name, public.profile_phone(id) as phone, units, location_retention_days, share_location_with_contacts
       from public.profiles where id = ${user.id}`,
   );
   return {

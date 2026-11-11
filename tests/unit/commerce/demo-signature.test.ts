@@ -54,12 +54,13 @@ describe("locker access codes", () => {
     expect(deriveAccessCode("another-secret-0123456789abcdef0123456789", "11111111-1111-1111-1111-111111111111")).not.toBe(a);
   });
 
-  it("store only a hash and a two-digit hint", () => {
+  it("store only a keyed hash (a DB leak alone cannot brute-force codes)", () => {
     const id = "33333333-3333-3333-3333-333333333333";
     const code = deriveAccessCode(SECRET, id);
-    const hash = hashAccessCode(id, code);
+    const hash = hashAccessCode(SECRET, id, code);
     expect(hash).toMatch(/^[0-9a-f]{64}$/);
     expect(hash).not.toContain(code);
+    expect(hashAccessCode("another-secret-0123456789abcdef0123", id, code)).not.toBe(hash);
     expect(accessCodeHint(code)).toBe(code.slice(-2));
   });
 });

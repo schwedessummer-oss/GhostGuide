@@ -159,11 +159,13 @@ async function describe(tx: Tx, rows: { id: string; lockerId: string | null; lab
 
 export async function issueCode(tx: Tx, reservation: Pick<GearReservationResult, "primaryReservationId" | "reservationIds">, expiresAt: Date) {
   const code = deriveAccessCode(env().AUTH_SECRET, reservation.primaryReservationId);
-  const hash = hashAccessCode(reservation.primaryReservationId, code);
+  const hash = hashAccessCode(env().AUTH_SECRET, reservation.primaryReservationId, code);
+  // The hint is returned to the owner-facing fulfillment details only; it is
+  // not stored in gear_reservations (no clear-text code material in the DB).
   const hint = accessCodeHint(code);
   await tx`
     update public.gear_reservations
-    set access_code_hash = ${hash}, access_code_hint = ${hint}, access_code_expires_at = ${expiresAt}::timestamptz
+    set access_code_hash = ${hash}, access_code_hint = null, access_code_expires_at = ${expiresAt}::timestamptz
     where id = any(${reservation.reservationIds}::uuid[])`;
   return { hint, expiresAt };
 }

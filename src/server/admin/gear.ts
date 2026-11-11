@@ -42,7 +42,7 @@ export interface ReservationRow {
   fulfillmentId: string;
   bookingId: string;
   bookingStatus: string;
-  accessCodeHint: string | null;
+  accessCodeExpiresAt: Date | null;
   pickedUpAt: Date | null;
   returnedAt: Date | null;
 }
@@ -67,7 +67,7 @@ export async function getGearOverview(user: SessionUser, filters: { itemStatus?:
         order by i.kind, i.label`,
       tx<ReservationRow[]>`
         select r.id, to_char(r.reserved_for, 'YYYY-MM-DD') as reserved_for, r.status, i.label as item_label, i.id as item_id,
-               l.name as locker_name, r.fulfillment_id, f.booking_id, b.status as booking_status, r.access_code_hint, r.picked_up_at, r.returned_at
+               l.name as locker_name, r.fulfillment_id, f.booking_id, b.status as booking_status, r.access_code_expires_at, r.picked_up_at, r.returned_at
         from public.gear_reservations r
         join public.gear_items i on i.id = r.gear_item_id
         left join public.gear_lockers l on l.id = r.locker_id

@@ -170,7 +170,7 @@ export async function seedCommerce(sql: postgres.Sql) {
   const code = deriveAccessCode(secret, primary);
   const codeExpires = zonedTimeToUtc(bookedDate, "23:59", tz);
   await sql`
-    update public.gear_reservations set access_code_hash = ${hashAccessCode(primary, code)}, access_code_hint = ${accessCodeHint(code)},
+    update public.gear_reservations set access_code_hash = ${hashAccessCode(secret, primary, code)}, access_code_hint = null,
       access_code_expires_at = ${codeExpires}::timestamptz
     where id = any(${reservationIds}::uuid[])`;
   const [locker] = await sql<{ name: string; locationDescription: string }[]>`

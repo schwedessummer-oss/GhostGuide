@@ -44,7 +44,7 @@ export async function getCustomerDetail(user: SessionUser, customerId: string): 
   if (!isUuid(customerId)) return null;
   return staffTx(user, async (tx) => {
     const [profile] = await tx<(Omit<CustomerDetail["profile"], "phoneOnFile"> & { phoneOnFile: boolean })[]>`
-      select id, email, full_name, (phone is not null and phone <> '') as phone_on_file, units, marketing_opt_in, created_at
+      select id, email, full_name, coalesce(public.profile_has_phone(id), false) as phone_on_file, units, marketing_opt_in, created_at
       from public.profiles where id = ${customerId}`;
     if (!profile) return null;
     const [trips, bookings, tickets, feedback, activeHikes] = await Promise.all([
@@ -85,7 +85,7 @@ export async function revealCustomerSensitive(user: SessionUser, customerId: str
   if (why.length < 3) return fail("Give a short reason for viewing restricted details (it is recorded in the audit log).");
   return guarded(() =>
     staffTx(user, async (tx) => {
-      const [profile] = await tx<{ phone: string | null }[]>`select phone from public.profiles where id = ${customerId}`;
+      const [profile] = await tx<{ phone: string | null }[]>`select public.profile_phone(id) as phone from public.profiles where id = ${customerId}`;
       if (!profile) return fail("Customer not found.");
       const contacts = await tx<CustomerSensitive["contacts"]>`
         select name, phone, email, relationship, consent_confirmed_at from public.emergency_contacts where user_id = ${customerId} order by created_at`;

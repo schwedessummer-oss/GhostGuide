@@ -78,7 +78,7 @@ export default async function GearPage({ searchParams }: PageProps<"/admin/gear"
                 </Link>
               ),
             },
-            { header: "Code hint", cell: (r) => (r.accessCodeHint ? `••••${r.accessCodeHint}` : "—") },
+            { header: "Access code", cell: (r) => (r.accessCodeExpiresAt ? <>Issued, valid until <When at={r.accessCodeExpiresAt} /></> : "Not issued") },
             {
               header: "Actions",
               hideLabelOnMobile: true,

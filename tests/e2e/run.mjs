@@ -34,6 +34,8 @@ const serverEnv = {
   AUTH_SECRET: "e2e-secret-0123456789abcdef0123456789abcdef",
   CRON_SECRET: "e2e-cron-secret-0123456789",
   NEXT_PUBLIC_MAPBOX_TOKEN: "",
+  // The suite signs in many times from one IP; production limits stay at x1.
+  RATE_LIMIT_SCALE: "50",
 };
 
 function run(cmd, env = process.env) {

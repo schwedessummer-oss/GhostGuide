@@ -1,5 +1,6 @@
 import "server-only";
 import { withSystem } from "@/server/db";
+import { env } from "@/config/env";
 
 export interface RateLimitResult {
   allowed: boolean;
@@ -12,7 +13,8 @@ export interface RateLimitResult {
  * serverless instances. `key` should include the scope and the subject,
  * e.g. `ai:explain:user:<id>` or `notify:checkin:<checkinId>`.
  */
-export async function checkRateLimit(key: string, limit: number, windowSec: number): Promise<RateLimitResult> {
+export async function checkRateLimit(key: string, baseLimit: number, windowSec: number): Promise<RateLimitResult> {
+  const limit = baseLimit * env().RATE_LIMIT_SCALE;
   const windowMs = windowSec * 1000;
   const start = new Date(Math.floor(Date.now() / windowMs) * windowMs);
   const [row] = await withSystem(

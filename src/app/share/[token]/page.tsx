@@ -1,3 +1,4 @@
+import { clientIpFrom } from "@/server/request";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
 
 async function clientKey(): Promise<string> {
   const h = await headers();
-  return h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip") || "unknown";
+  return clientIpFrom(h);
 }
 
 /** Public trip-share page (no sign-in). Unknown, expired and revoked links all show the same "not available" page. */

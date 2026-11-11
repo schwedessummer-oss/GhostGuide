@@ -41,7 +41,8 @@ describe("partner fulfillment", () => {
     // only a hash + hint are stored; the code appears nowhere in the row
     const raw = await sql()`select row_to_json(gr)::text as j from public.gear_reservations gr where fulfillment_id = ${f.id}`;
     expect(raw.every((r) => !String(r.j).includes(`"${code}"`))).toBe(true);
-    expect(reservations[0].accessCodeHint).toBe(code.slice(-2));
+    // no clear-text code material is stored in gear_reservations
+    expect(reservations[0].accessCodeHint).toBeNull();
     // the owner sees the code; nobody else does
     expect(await revealAccessCodes(user, bookingId)).toEqual({ [f.id]: code });
     const other = await createCustomer("snoop");

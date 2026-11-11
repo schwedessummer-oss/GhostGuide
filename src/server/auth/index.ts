@@ -7,6 +7,7 @@ import { withSystem } from "@/server/db";
 import { can, type Permission, type StaffRole } from "./rbac";
 import { signSession, verifySession } from "./tokens";
 import { hashPassword, verifyPassword } from "./password";
+import { OWNER_HINT_COOKIE, OWNER_HINT_MAX_AGE_SEC, ownerHint } from "./owner-hint";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export { can } from "./rbac";
@@ -78,7 +79,20 @@ export function jsonError(status: number, message: string) {
 
 export type AuthResult = { ok: true } | { ok: false; error: string };
 
+/** Tag this device with the signed-in user's (non-secret) owner hint; see owner-hint.ts. */
+export async function setOwnerHintCookie(userId: string) {
+  const e = env();
+  (await cookies()).set(OWNER_HINT_COOKIE, ownerHint(e.AUTH_SECRET, userId), {
+    httpOnly: false,
+    sameSite: "lax",
+    secure: e.NODE_ENV === "production",
+    path: "/",
+    maxAge: OWNER_HINT_MAX_AGE_SEC,
+  });
+}
+
 async function setDemoSession(id: string, email: string) {
+  await setOwnerHintCookie(id);
   const e = env();
   const token = signSession(e.AUTH_SECRET, { sub: id, email, exp: Math.floor(Date.now() / 1000) + SESSION_TTL_SEC });
   (await cookies()).set(DEMO_SESSION_COOKIE, token, {
@@ -104,8 +118,9 @@ export async function signInWithPassword(email: string, password: string): Promi
     return { ok: true };
   }
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.signInWithPassword({ email: normalized, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email: normalized, password });
   if (error) return { ok: false, error: "Email or password is incorrect." };
+  if (data.user?.id) await setOwnerHintCookie(data.user.id);
   return { ok: true };
 }
 
@@ -129,16 +144,18 @@ export async function signUpWithPassword(email: string, password: string, fullNa
     return { ok: true };
   }
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: normalized,
     password,
     options: { data: { full_name: fullName }, emailRedirectTo: `${env().NEXT_PUBLIC_APP_URL}/trips` },
   });
   if (error) return { ok: false, error: error.message };
+  if (data.session && data.user?.id) await setOwnerHintCookie(data.user.id);
   return { ok: true };
 }
 
 export async function signOut() {
+  (await cookies()).delete(OWNER_HINT_COOKIE);
   if (env().AUTH_PROVIDER === "demo") {
     (await cookies()).delete(DEMO_SESSION_COOKIE);
     return;
