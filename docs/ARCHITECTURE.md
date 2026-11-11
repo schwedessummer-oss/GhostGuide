@@ -194,6 +194,28 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
   in-app notifications; no automated permit purchasing.
 - **Trips JSON**: `trips.recommendation` = `{version, trailId, score, breakdown[], reasons[], warnings[], …}`;
   `trips.itinerary` = `Itinerary` v1; `ai_provider` = `demo-template` or `anthropic:<model>`.
+- **Trip re-plan on confirmation**: when a booking is confirmed with a different date, start time or
+  party size than the saved trip, commerce updates `trips.planned_date/start_time/party_size` and rebuilds
+  `trips.itinerary` (with partial-closure notes) in the payment transaction (`src/server/commerce/trip-plan.ts`).
+  Checkout refuses days overlapping a full closure (active or scheduled) and warns on partial closures.
+- **Demo payments** are delivered in-process only (no HTTP self-call from request headers);
+  `/api/webhooks/demo-payments` remains for external probes/tests.
+- **Hike start window**: `POST /api/hike/start` only starts on the booked date (region time zone,
+  continuing past midnight allowed); `demoStartAnyway: true` is honoured only when `APP_MODE=demo`.
+  Days with a full closure can never be started.
+- **Offline data ownership**: bundles (`schemaVersion 2`) and hike state carry an `ownerHint`
+  (`src/server/auth/owner-hint.ts`); offline pages refuse and purge data whose hint differs from the
+  `gg_owner` cookie. Sign-out wipes `gg-*` caches, IndexedDB `ghostguide` and `gg*` localStorage, and
+  the service worker handles `CLEAR_ALL`. The SW never falls back to a cached trip page on 404.
+- **Overdue safety net**: `checkins.scan_overdue` pulls forward an overdue job still queued for later
+  than the due time and caps retry delay for undelivered overdue notices (~1 min while overdue).
+- **Finish trip** from the check-in page also finishes the hike session and completes the trip
+  (`finishHike`), then the check-in.
+- **Share links** show no location once the trip or check-in is finished; finished trips cannot get new links.
+- **Location deletion / retention** also redacts coordinates and map links stored in notification bodies.
+- **Job-runner heartbeat**: every runner invocation writes `app_settings.job_runner_heartbeat`;
+  `getRunnerHealth()` (`src/server/jobs/health.ts`) reports staleness (> 5 min) to `/status`, admin and
+  check-in screens.
 
 ## Testing
 - `npm run test:unit` — pure domain logic (`tests/unit/<slice>/…`).
