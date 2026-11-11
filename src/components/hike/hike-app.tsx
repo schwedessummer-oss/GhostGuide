@@ -9,7 +9,9 @@ import { Alert, Badge, Button, ButtonLink, Card, SimulatedBadge } from "@/compon
 import { RouteView } from "@/components/map/route-view";
 import { HikeEngine, type HikeSnapshot } from "./engine/hike-engine";
 import { HikeStatus } from "./hike-status";
-import { DeviationPrompt, GapWarning, ReminderCard } from "./hike-alerts";
+import { DeviationPrompt, GapWarning, ReminderCard, SyncIssues } from "./hike-alerts";
+import { ClosureNotice } from "./closure-notice";
+import { HikeCheckinCard } from "./hike-checkin";
 import { NarrationPanel } from "./narration-panel";
 import { HikeControls } from "./hike-controls";
 import { HikeSettingsPanel } from "./hike-settings";
@@ -47,8 +49,10 @@ export function HikeApp({ tripId, demoMode }: { tripId: string; demoMode: boolea
   const helpHref = `/trips/${tripId}/help`;
   const hc = snap.settings.highContrast;
   const showRoute = () => {
-    mapRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-    mapRef.current?.focus();
+    // Respect "reduce motion": an explicit smooth scroll ignores the CSS scroll-behavior override.
+    const reduce = typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    mapRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
+    mapRef.current?.focus({ preventScroll: true });
   };
 
   return (
@@ -74,6 +78,9 @@ export function HikeApp({ tripId, demoMode }: { tripId: string; demoMode: boolea
           <div className="sticky top-0 z-40 pt-[max(0.5rem,env(safe-area-inset-top))] empty:hidden">
             <DeviationPrompt snap={snap} engine={engine} helpHref={helpHref} onShowRoute={showRoute} />
           </div>
+          {snap.bundle ? (
+            <ClosureNotice closures={snap.closures.list} blocking={snap.closures.closedToday} timeZone={snap.bundle.region.timezone} context="active" />
+          ) : null}
           <ReminderCard snap={snap} engine={engine} />
           <GapWarning snap={snap} />
           {snap.startError ? (
@@ -87,6 +94,8 @@ export function HikeApp({ tripId, demoMode }: { tripId: string; demoMode: boolea
             </Alert>
           ) : null}
           <HikeStatus snap={snap} onSyncNow={() => engine.syncNow()} />
+          <SyncIssues snap={snap} />
+          <HikeCheckinCard snap={snap} engine={engine} />
           {snap.gps.message && snap.gps.state !== "tracking" && snap.gps.source === "device" ? (
             <Alert tone={snap.gps.state === "denied" ? "red" : "amber"}>{snap.gps.message}</Alert>
           ) : null}
@@ -260,6 +269,7 @@ function Finished({ snap, engine, tripId }: { snap: HikeSnapshot; engine: HikeEn
         <StatBox label="Time hiking" value={formatElapsed(snap.activeElapsedMs)} />
         <StatBox label="Stories heard" value={`${snap.pois.filter((p) => p.heard).length} of ${snap.pois.length}`} />
       </dl>
+      <SyncIssues snap={snap} className="mt-4" />
       {snap.finishSynced ? (
         <div className="mt-4 space-y-3" role="status">
           <p>Your finish reached Ghost Guide. Any check-in reminders for this trip have stopped.</p>
@@ -269,8 +279,12 @@ function Finished({ snap, engine, tripId }: { snap: HikeSnapshot; engine: HikeEn
         </div>
       ) : (
         <Alert tone="amber" live="polite" className="mt-4" title="Finish saved on this device">
-          It will be sent automatically when you&apos;re back online ({snap.sync.queued} {snap.sync.queued === 1 ? "item" : "items"} waiting). Until
-          then our servers still consider you on the trail — if you set up a check-in, let your contact know you&apos;re back.
+          <p data-testid="hike-finish-pending">
+            It is sent the next time this browser opens any Ghost Guide page with a connection ({snap.sync.queued}{" "}
+            {snap.sync.queued === 1 ? "item" : "items"} waiting). Some browsers can also send it in the background once you&apos;re back online, but
+            that isn&apos;t guaranteed — opening Ghost Guide when you have signal is the sure way. Don&apos;t sign out before it&apos;s sent. Until then
+            our servers still consider you on the trail — if you set up a check-in, let your contact know you&apos;re back.
+          </p>
           {snap.sync.online ? (
             <button type="button" className="mt-2 block min-h-11 font-semibold underline" onClick={() => engine.syncNow()}>
               Try sending now

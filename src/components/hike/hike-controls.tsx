@@ -50,14 +50,16 @@ export function HikeControls({ snap, engine, helpHref }: { snap: HikeSnapshot; e
           </Button>
         </div>
         {ok ? (
-          <p className="mt-2 flex items-start gap-1.5 text-sm" role="status" data-testid="hike-ok-status">
+          <p className="mt-2 flex items-start gap-1.5 text-sm" role="status" data-testid="hike-ok-status" data-sent={ok.sent ? "true" : "false"}>
             <HeartPulse aria-hidden className="mt-0.5 size-4 shrink-0 text-forest-700" />
             <span>
-              {ok.sent
-                ? `"I'm okay" from ${formatClockShort(ok.at)} was sent.`
-                : snap.sync.online
-                  ? `"I'm okay" from ${formatClockShort(ok.at)} is being sent…`
-                  : `"I'm okay" from ${formatClockShort(ok.at)} is saved and will be sent when you're back online.`}{" "}
+              {ok.failed
+                ? `"I'm okay" from ${formatClockShort(ok.at)} could not be accepted by Ghost Guide. Tap "I'm okay" again.`
+                : ok.sent
+                  ? `"I'm okay" from ${formatClockShort(ok.at)} reached Ghost Guide.`
+                  : snap.sync.online
+                    ? `"I'm okay" from ${formatClockShort(ok.at)} is being sent…`
+                    : `"I'm okay" from ${formatClockShort(ok.at)} is saved on this device and will be sent when you're back online.`}{" "}
               <span className="text-muted">Only matters if you set up a check-in.</span>
             </span>
           </p>

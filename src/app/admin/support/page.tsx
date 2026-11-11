@@ -7,7 +7,7 @@ import { ActionForm } from "@/components/admin/action-form";
 import { SelectField } from "@/components/admin/fields";
 import { requirePermission } from "@/server/auth";
 import { can } from "@/server/auth/rbac";
-import { listAssignableStaff, listTickets, TICKET_PRIORITIES, TICKET_STATUSES } from "@/server/admin/support";
+import { listAssignableStaff, listTickets, TICKET_PRIORITIES, TICKET_PRIORITY_FILTERS, TICKET_STATUS_FILTERS, TICKET_STATUSES } from "@/server/admin/support";
 import { parsePage, sp } from "@/server/admin/common";
 import { updateTicketAction } from "./actions";
 
@@ -26,8 +26,8 @@ export default async function SupportPage({ searchParams }: PageProps<"/admin/su
     <>
       <AdminHeader title="Support tickets" description="Open tickets first, by priority. Ticket text is customer-written and shown as plain text." />
       <FilterBar action="/admin/support" resetHref="/admin/support">
-        <SelectField id="st-status" name="status" label="Status" options={TICKET_STATUSES} placeholder="Any status" defaultValue={filters.status ?? ""} />
-        <SelectField id="st-priority" name="priority" label="Priority" options={TICKET_PRIORITIES} placeholder="Any priority" defaultValue={filters.priority ?? ""} />
+        <SelectField id="st-status" name="status" label="Status" options={TICKET_STATUS_FILTERS} placeholder="Any status" defaultValue={filters.status ?? ""} />
+        <SelectField id="st-priority" name="priority" label="Priority" options={TICKET_PRIORITY_FILTERS} placeholder="Any priority" defaultValue={filters.priority ?? ""} />
         <SelectField
           id="st-assigned"
           name="assigned"

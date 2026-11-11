@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Alert, Card } from "@/components/ui";
 import { Section, StatusBadge, When } from "@/components/admin/admin-ui";
@@ -6,8 +7,9 @@ import { ActionForm } from "@/components/admin/action-form";
 import { CheckField, SelectField, TextAreaField, TextField } from "@/components/admin/fields";
 import { requirePermission } from "@/server/auth";
 import { getAdminTrail, getTrailFactsView } from "@/server/admin/trails";
-import { CLOSURE_SEVERITIES, listClosures, type ClosureRow } from "@/server/admin/closures";
+import { CLOSURE_SEVERITIES, listClosureImpacts, listClosures, type ClosureImpact, type ClosureRow } from "@/server/admin/closures";
 import { utcToLocalInput } from "@/server/admin/common";
+import { formatDate } from "@/lib/format";
 import { createClosureAction, deleteClosureAction, endClosureAction, updateClosureAction } from "../../actions";
 
 export const metadata: Metadata = { title: "Trail closures" };
@@ -26,18 +28,45 @@ function ClosureFields({ idPrefix, tz, sources, c }: { idPrefix: string; tz: str
   );
 }
 
+function ClosureImpactNote({ impact }: { impact: ClosureImpact | undefined }) {
+  if (!impact?.count) return <p className="mt-2 text-sm text-muted">No upcoming paid bookings fall on days this closure covers.</p>;
+  const title = `${impact.count} upcoming paid ${impact.count === 1 ? "booking" : "bookings"} (${impact.hikers} ${impact.hikers === 1 ? "hiker" : "hikers"}) on closed days`;
+  return (
+    <div className="mt-3">
+      <Alert tone="amber" title={title}>
+        <p>They are not cancelled automatically. {impact.bookings ? "Open each booking to contact the customer, cancel or refund it." : "Ask an operator or admin to review them in Bookings."}</p>
+      </Alert>
+      {impact.bookings ? (
+        <ul className="mt-2 divide-y divide-sand-200 rounded-xl border border-sand-200" aria-label="Bookings affected by this closure">
+          {impact.bookings.map((b) => (
+            <li key={b.id} className="flex flex-col gap-1 px-3 py-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-sm">
+                <span className="font-semibold">{formatDate(b.hikeDate, { weekday: "short", month: "short", day: "numeric", year: "numeric" })}</span> · {b.partySize}{" "}
+                {b.partySize === 1 ? "hiker" : "hikers"} · {b.customerEmail ?? "Customer"} · <StatusBadge status={b.status} />
+              </span>
+              <Link href={`/admin/bookings/${b.id}`} className="inline-flex min-h-11 items-center text-sm font-semibold text-forest-800 underline underline-offset-2">
+                Open booking
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </div>
+  );
+}
+
 export default async function TrailClosuresPage({ params }: PageProps<"/admin/trails/[id]/closures">) {
   const { id } = await params;
   const user = await requirePermission("closures.manage", `/admin/trails/${id}/closures`);
   const trail = await getAdminTrail(user, id);
   if (!trail) notFound();
-  const [closures, facts] = await Promise.all([listClosures(user, trail.id), getTrailFactsView(user, trail.id)]);
+  const [closures, facts, impacts] = await Promise.all([listClosures(user, trail.id), getTrailFactsView(user, trail.id), listClosureImpacts(user, trail.id)]);
   const sources = facts.allSources.map((s) => ({ value: s.id, label: s.label }));
   const tz = trail.regionTimezone;
 
   return (
     <>
-      <Section id="new" title="Add a closure or notice" description="Takes effect immediately for recommendations, trail pages and new bookings. Existing bookings are not cancelled automatically — review them in Bookings.">
+      <Section id="new" title="Add a closure or notice" description="Takes effect immediately for recommendations, trail pages and new bookings. Existing bookings are not cancelled automatically — each full closure lists the paid bookings on its days.">
         <Card>
           <ActionForm action={createClosureAction.bind(null, trail.id)} submitLabel="Save closure">
             <ClosureFields idPrefix="cl-new" tz={tz} sources={sources} />
@@ -60,6 +89,7 @@ export default async function TrailClosuresPage({ params }: PageProps<"/admin/tr
                   <p className="mt-1 text-sm text-muted">
                     From <When at={c.startsAt} tz={tz} /> until {c.endsAt ? <When at={c.endsAt} tz={tz} /> : "further notice"}
                   </p>
+                  {c.severity === "closed" && c.state !== "ended" ? <ClosureImpactNote impact={impacts[c.id]} /> : null}
                   {c.state !== "ended" ? (
                     <div className="mt-3 flex flex-col gap-3">
                       <ActionForm action={endClosureAction.bind(null, trail.id, c.id)} submitLabel="End now" variant="secondary" compact />

@@ -1,6 +1,6 @@
 /**
  * Page-side messaging with the service worker (public/sw.js).
- * Messages: CACHE_TRIP {tripId, urls, ownerHint}, VERIFY_TRIP {tripId, urls}, DELETE_TRIP {tripId},
+ * Messages: CACHE_TRIP {tripId, urls: (url | {url, as})[], ownerHint}, VERIFY_TRIP {tripId, urls}, DELETE_TRIP {tripId},
  * CLEAR_ALL (sign-out: every trip cache).
  * Replies arrive on a MessageChannel port.
  */
@@ -9,7 +9,12 @@ export interface CacheResult {
   ok: boolean;
   status: number;
   error?: string;
+  /** the stable key it was stored under, when one was requested */
+  as?: string;
 }
+
+/** A URL to store, or a URL to fetch and store under a stable same-origin key (narration audio). */
+export type CacheRequest = string | { url: string; as: string };
 
 export interface CacheTripReply {
   type: "CACHE_TRIP_RESULT";
@@ -70,7 +75,7 @@ export async function postToServiceWorker<T>(
   });
 }
 
-export const cacheTripUrls = (tripId: string, urls: string[], onProgress?: (p: CacheProgress) => void, ownerHint?: string) =>
+export const cacheTripUrls = (tripId: string, urls: CacheRequest[], onProgress?: (p: CacheProgress) => void, ownerHint?: string) =>
   postToServiceWorker<CacheTripReply>({ type: "CACHE_TRIP", tripId, urls, ownerHint }, { onProgress, timeoutMs: 300_000 });
 
 export const verifyTripUrls = (tripId: string, urls: string[]) => postToServiceWorker<VerifyTripReply>({ type: "VERIFY_TRIP", tripId, urls });

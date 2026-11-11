@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui";
-import { BOOKING_STATUS_COPY, TRIP_STATUS_COPY } from "@/domain/booking";
+import { bookingStatusCopy, TRIP_STATUS_COPY } from "@/domain/booking";
 import type { BookingStatus, TripStatus } from "@/domain/types";
 
-/** Booking status as text + tone (never color alone). */
-export function BookingStatusBadge({ status }: { status: BookingStatus }) {
-  const c = BOOKING_STATUS_COPY[status];
+/**
+ * Booking status as text + tone (never color alone). Pass `paidAt` so an ended
+ * checkout that still received a (refunded) payment is not labelled as unpaid.
+ */
+export function BookingStatusBadge({ status, paidAt }: { status: BookingStatus; paidAt?: Date | string | null }) {
+  const c = bookingStatusCopy(status, { paidAt });
   return (
     <Badge tone={c.tone}>
       <span className="sr-only">Booking status: </span>

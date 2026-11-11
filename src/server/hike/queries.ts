@@ -4,7 +4,10 @@ import type { SessionUser } from "@/server/auth";
 import { getOwnedTrip, type TripRow } from "@/server/trips/queries";
 import { activeElapsedMs, pausesFromEvents } from "@/domain/progress";
 import type { FulfillmentStatus } from "@/domain/types";
-import { SESSION_COLUMNS, type SessionRow } from "./sessions";
+import { closureVerdict } from "@/domain/booking";
+import type { BundleClosure, BundleLogistics } from "@/lib/offline/wire";
+import { SESSION_COLUMNS, bookedDateFor, tripClosures, type SessionRow } from "./sessions";
+import { getTripLogistics } from "./logistics";
 
 /**
  * Read models for the hike slice's pages and the HikeActionsCard. All run
@@ -23,13 +26,15 @@ export interface HikeOverview {
   latestSession: SessionRow | null;
   lastDownload: DownloadRecord | null;
   feedback: { rating: number; comments: string | null; issues: string[]; createdAt: Date } | null;
+  /** the booked hike date (region-local YYYY-MM-DD; live booking's date, else the planned date) and the region's time zone */
+  booked: { bookedDate: string | null; timezone: string } | null;
 }
 
 export async function getHikeOverview(user: SessionUser, tripId: string): Promise<HikeOverview | null> {
   const trip = await getOwnedTrip(user, tripId);
   if (!trip) return null;
   return withUser(user, async (tx) => {
-    const [sessions, downloads, feedback] = await Promise.all([
+    const [sessions, downloads, feedback, booked] = await Promise.all([
       tx<SessionRow[]>`
         select ${SESSION_COLUMNS(tx)} from public.hike_sessions where trip_id = ${trip.id} and user_id = ${user.id}
         order by (status in ('active', 'paused')) desc, started_at desc limit 1`,
@@ -38,6 +43,7 @@ export async function getHikeOverview(user: SessionUser, tripId: string): Promis
         where trip_id = ${trip.id} and user_id = ${user.id} order by created_at desc limit 1`,
       tx<{ rating: number; comments: string | null; issues: string[]; createdAt: Date }[]>`
         select rating, comments, issues, created_at from public.trip_feedback where trip_id = ${trip.id} and user_id = ${user.id}`,
+      bookedDateFor(tx, trip.id),
     ]);
     const latest = sessions[0] ?? null;
     return {
@@ -46,6 +52,7 @@ export async function getHikeOverview(user: SessionUser, tripId: string): Promis
       openSession: latest && (latest.status === "active" || latest.status === "paused") ? latest : null,
       lastDownload: downloads[0] ?? null,
       feedback: feedback[0] ?? null,
+      booked,
     };
   });
 }
@@ -73,14 +80,26 @@ export interface AddonReadiness {
 export interface PrepareView extends HikeOverview {
   permits: PermitView[];
   addons: AddonReadiness[];
+  /** the booked hike date (region-local) and the region's time zone */
+  bookedDate: string | null;
+  timezone: string;
+  /** closures active now or scheduled for the booked date (full closures first) */
+  closures: BundleClosure[];
+  /** a full closure on the booked date: the hike can't be started that day */
+  closedOnBookedDate: BundleClosure | null;
+  /** add-on details (locker, pickup, meals) and permits, as saved in the offline download */
+  logistics: BundleLogistics;
 }
 
 export async function getPrepareView(user: SessionUser, tripId: string): Promise<PrepareView | null> {
   const overview = await getHikeOverview(user, tripId);
   if (!overview) return null;
   const { trip } = overview;
+  const logistics = await getTripLogistics(user, trip);
   return withUser(user, async (tx) => {
-    const [permits, addons] = await Promise.all([
+    const when = await bookedDateFor(tx, trip.id);
+    const timezone = when?.timezone ?? "UTC";
+    const [permits, addons, closureRows] = await Promise.all([
       tx<PermitView[]>`
         select pr.id as requirement_id, pr.name, pr.authority, pr.official_url, pr.requirement_summary, pr.how_to_obtain, pr.lead_time_days,
                coalesce(tp.status, 'not_started') as status, tp.confirmation_ref
@@ -97,8 +116,24 @@ export async function getPrepareView(user: SessionUser, tripId: string): Promise
         where b.trip_id = ${trip.id} and b.user_id = ${user.id}
           and b.status in ('confirmed', 'cancellation_requested', 'needs_attention')
         order by a.name`,
+      tripClosures(tx, trip.trailId, when),
     ]);
-    return { ...overview, permits, addons };
+    const closures: BundleClosure[] = closureRows.map((c) => ({
+      severity: c.severity,
+      reason: c.reason,
+      startsAt: c.startsAt.toISOString(),
+      endsAt: c.endsAt?.toISOString() ?? null,
+    }));
+    const bookedDate = when?.bookedDate ?? null;
+    const closed = bookedDate
+      ? closureVerdict(
+          closureRows.map((c) => ({ severity: c.severity as "closed" | "partial" | "advisory", reason: c.reason, startsAt: c.startsAt, endsAt: c.endsAt })),
+          bookedDate,
+          timezone,
+        ).closed
+      : null;
+    const closedOnBookedDate = closed ? (closures.find((c) => c.severity === "closed" && c.reason === closed.reason) ?? null) : null;
+    return { ...overview, permits, addons, bookedDate, timezone, closures, closedOnBookedDate, logistics };
   });
 }
 

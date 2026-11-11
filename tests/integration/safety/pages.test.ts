@@ -106,8 +106,12 @@ describe("check-in page and cards", () => {
     const contact = await consentedContact(user, { email: "" });
     const now = new Date();
     const c = await optIn(user, trip.id, contact, { now, minutesAhead: 20, graceMinutes: 15, reminders: [] });
-    await addLastLocation(user, trip.id, { lat: 47.5, lng: -121.7, accuracyM: 8, recordedAt: addMin(now, 10) });
-    await runCheckinJobs(c.id, addMin(now, 40));
+    await addLastLocation(user, trip.id, { lat: 47.5, lng: -121.7, accuracyM: 8, recordedAt: addMin(now, -10) });
+    // the deadline passed in real time (the web "I'm okay" below is judged against the server clock)
+    await sql()`update public.trip_checkins set expected_return_at = now() - interval '40 minutes' where id = ${c.id}`;
+    const { processOverdueJob } = await import("@/server/checkins/jobs");
+    expect(await processOverdueJob({ checkinId: c.id, version: c.version }, new Date())).toMatchObject({ outcome: "done" });
+    await runCheckinJobs(c.id, new Date(), { kinds: ["notifications.send"] });
     signIn(user);
     const { default: Page } = await import("@/app/trips/[id]/checkin/page");
     const html = await render(await Page({ params: params({ id: trip.id }), searchParams: params({}) } as never));

@@ -12,6 +12,9 @@ import type { Result } from "./profile";
  * (consent_confirmed_at + the exact statement shown) can be chosen for
  * check-ins, and the send job re-checks consent before every message.
  * Changing a contact's phone or email requires attesting consent again.
+ * Contacts can withdraw consent themselves with the opt-out link in every
+ * notice (see contact-optout.ts): consent is cleared and
+ * `contactOptedOutAt` records when, so the hiker is told.
  */
 export const CONSENT_STATEMENT =
   "I confirm this person has agreed to receive Ghost Guide check-in notices about my trips by text message and/or email, and that I may give Ghost Guide their contact details for this purpose.";
@@ -26,6 +29,8 @@ export interface ContactView {
   relationship: string | null;
   consentConfirmedAt: Date | null;
   consentStatement: string | null;
+  /** when the contact opted out themselves (link in a notice); null if never */
+  contactOptedOutAt: Date | null;
   hasConsent: boolean;
   phoneMasked: string | null;
   emailMasked: string | null;
@@ -90,7 +95,7 @@ export async function listContacts(user: SessionUser): Promise<ContactView[]> {
   const rows = await withUser(
     user,
     (tx) => tx<(Omit<ContactView, "hasConsent" | "phoneMasked" | "emailMasked">)[]>`
-      select ec.id, ec.name, ec.phone, ec.email, ec.relationship, ec.consent_confirmed_at, ec.consent_statement,
+      select ec.id, ec.name, ec.phone, ec.email, ec.relationship, ec.consent_confirmed_at, ec.consent_statement, ec.contact_opted_out_at,
              exists (select 1 from public.trip_checkins c where c.emergency_contact_id = ec.id
                      and c.status = any(${OPEN_STATUSES as string[]}::checkin_status[])) as used_by_open_checkin
       from public.emergency_contacts ec

@@ -20,7 +20,15 @@
  *    approve, mark published;
  *  - staff role grant + revoke (takes effect on the next request), the last admin role
  *    cannot be removed (even from a stale page), and the audit log records all of it;
- *  - admin action confirmations stay announced (aria-live) after the page re-renders.
+ *  - admin action confirmations stay announced (aria-live) after the page re-renders;
+ *  - a full closure lists the paid bookings on its days (or says there are none);
+ *  - availability: saving a day with an empty capacity override keeps the trail default
+ *    (it used to store capacity 0 and close the day);
+ *  - add-ons: an admin creates an (inactive) add-on and edits its daily capacity; audited;
+ *  - overview shows the background job runner's health; safety monitor times carry a zone
+ *    label and the staff follow-up form says it never contacts emergency services;
+ *  - form errors use plain language (no internal field keys); the audit filter lists the
+ *    exact action codes.
  *
  * Independence: the spec signs up its own customer (unique email per run), mutates only
  * trails no other spec mutates (Hollow Pine Ridge, Miner's Meadow Loop), scopes its pricing
@@ -320,7 +328,6 @@ async function seededGeometry(browser) {
 // ---------------------------------------------------------------------------
 let browser;
 let admin; // desktop admin page
-let adminErrors;
 let customerCtx;
 let customer;
 let customerEmail;
@@ -330,7 +337,6 @@ const today = regionToday();
 before(async () => {
   browser = await newBrowser();
   ({ page: admin } = await staffPage(browser, ADMIN));
-  adminErrors = watchErrors(admin);
   customerCtx = await newCtx(browser, { width: 390, height: 844 });
   customer = await customerCtx.newPage();
   customerEmail = await signUp(customer, "cust");
@@ -637,6 +643,10 @@ test("a closure created in admin shows on the public trail page and excludes the
     ]);
     await submitAndExpect(admin.locator("#new"), "Save closure", /Closure saved\. The trail is unavailable for recommendations and new bookings/);
     await assertText(closureCard(), /active/i);
+    // A full closure lists the paid bookings on its days (each links to its booking page).
+    await assertText(closureCard(), /No upcoming paid bookings fall on days this closure covers|upcoming paid bookings? \(\d+ hikers?\) on closed days/);
+    const links = closureCard().getByRole("link", { name: "Open booking" });
+    for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))) assert.match(href, /^\/admin\/bookings\/[0-9a-f-]{36}$/);
   });
 
   await t.test("public trail page shows the closure and its reason", async () => {
@@ -763,6 +773,10 @@ test("pricing rule edit changes the live preview and the customer's checkout quo
     await admin.locator("#rule-new-kind").selectOption("flat_fee");
     await admin.locator("#rule-new-value").fill("700");
     await admin.locator("#rule-new-scope").selectOption("trail");
+    // No trail chosen yet: the server explains in plain language (no internal field keys).
+    await submitAndExpect(admin.locator("#rules"), "Create rule", /Choose the trail this rule applies to/);
+    const errorText = (await admin.getByRole("status").filter({ hasText: /Choose the trail/ }).first().innerText()).trim();
+    assert.doesNotMatch(errorText, /trailId|[a-z][A-Z]\w*:/, `form error shows an internal field key: ${errorText}`);
     await admin.locator("#rule-new-trail").selectOption({ label: PRICE_TRAIL.name });
     await submitAndExpect(admin.locator("#rules"), "Create rule", /Pricing rule created/);
     await ruleDetails().waitFor({ timeout: UI });
@@ -1075,4 +1089,117 @@ test("admin action confirmations stay announced after the page re-renders (closu
   // Correct behavior: the success message is still announced in an aria-live region even
   // though the End-now form is no longer rendered for an ended closure.
   await expectStatus(admin, /Closure ended/, 5_000);
+});
+
+// ---------------------------------------------------------------------------
+// 12. Availability: an empty capacity override means "trail default", never 0
+// ---------------------------------------------------------------------------
+test("availability: saving a day with an empty capacity override keeps the trail default", { timeout: 120_000 }, async () => {
+  const trailId = await adminTrailId(admin, PRICE_TRAIL.name);
+  const day = addDays(today, 27);
+  const note = `QA note ${run} (capacity probe)`;
+  const url = `/admin/availability?trail=${trailId}`;
+  const dayForm = (p) => p.locator("details").filter({ has: p.locator(`#av-${day}-cap`) });
+  const openDay = async (p) => {
+    const d = dayForm(p);
+    await d.waitFor({ timeout: UI });
+    if (!(await d.evaluate((el) => el.open))) await d.locator("summary").click();
+    return d;
+  };
+  cleanups.push([
+    "clear QA availability note",
+    async (p) => {
+      await gotoOk(p, url);
+      const d = await openDay(p);
+      await d.locator(`#av-${day}-cap`).fill("");
+      await d.locator(`#av-${day}-note`).fill("");
+      if (await d.locator(`#av-${day}-blk`).isChecked()) await d.locator(`#av-${day}-blk`).uncheck();
+      await submit(d, "Save day");
+    },
+  ]);
+  await gotoOk(admin, url);
+  const caption = await admin.locator("main table caption").first().textContent();
+  const defaultCap = Number(/default capacity (\d+) hikers\/day/.exec(caption ?? "")?.[1]);
+  assert.ok(defaultCap > 0, `default capacity not found in caption: ${caption}`);
+
+  const d = await openDay(admin);
+  await d.locator(`#av-${day}-cap`).fill("");
+  await d.locator(`#av-${day}-note`).fill(note);
+  await submitAndExpect(d, "Save day", new RegExp(`${day} saved \\(capacity ${defaultCap}\\)`));
+  await gotoOk(admin, url);
+  const row = admin.locator("main table tbody tr").filter({ has: admin.locator(`#av-${day}-cap`) });
+  await assertText(row, new RegExp(`Note: ${esc(note)}`));
+  assert.equal(await admin.locator(`#av-${day}-cap`).inputValue(), "", "no override was stored");
+  assert.doesNotMatch(await row.innerText(), /\(override\)|Full|Blocked/, "the day keeps the default capacity and stays bookable");
+});
+
+// ---------------------------------------------------------------------------
+// 13. Add-on configuration (admin only; audited)
+// ---------------------------------------------------------------------------
+test("add-ons: admin creates an inactive add-on and edits its daily capacity; both are audit-logged", { timeout: 120_000 }, async () => {
+  const code = `qa-pack-${run}`;
+  const name = `QA snack pack ${run}`;
+  await gotoOk(admin, "/admin/pricing");
+  const create = admin.locator("form").filter({ has: admin.locator("#ad-new-code") });
+  await create.locator("#ad-new-code").fill(code);
+  await create.locator("#ad-new-kind").selectOption("meal_pack");
+  await create.locator("#ad-new-name").fill(name);
+  await create.locator("#ad-new-price").fill("4.50");
+  await create.locator("#ad-new-unit").selectOption("per_booking");
+  await create.locator("#ad-new-cap").fill("");
+  // inactive: never offered to customers (other specs share this database)
+  await create.locator("#ad-new-active").uncheck();
+  await submitAndExpect(create, "Create add-on", new RegExp(`Add-on “${esc(name)}” created`));
+
+  await gotoOk(admin, "/admin/pricing");
+  const item = admin.locator("#addons details").filter({ has: admin.locator("summary", { hasText: `code ${code}` }) });
+  await item.waitFor({ timeout: UI });
+  await assertText(item.locator("summary"), /Inactive[\s\S]*\$4\.50 per booking · no daily limit · all regions/);
+  await item.locator("summary").click();
+  const cap = item.getByLabel("Daily capacity (units per day)");
+  await cap.fill("12");
+  await submitAndExpect(item, "Save add-on", new RegExp(`${esc(name)} saved`));
+  await gotoOk(admin, "/admin/pricing");
+  await assertText(admin.locator("#addons details summary").filter({ hasText: `code ${code}` }), /12\/day/);
+
+  const rows = await auditRows(admin, { action: "pricing.addon_" });
+  const created = rows.find((r) => r.action === "pricing.addon_created" && r.metadata?.code === code);
+  assert.ok(created, `pricing.addon_created missing:\n${fmtRows(rows)}`);
+  assert.equal(created.metadata.active, false);
+  const updated = rows.find((r) => r.action === "pricing.addon_updated" && r.entityId === created.entityId);
+  assert.ok(updated, `pricing.addon_updated missing:\n${fmtRows(rows)}`);
+  assert.equal(updated.metadata.before.dailyCapacity, null);
+  assert.equal(updated.metadata.after.dailyCapacity, 12);
+});
+
+// ---------------------------------------------------------------------------
+// 14. Overview job-runner health, safety monitor wording, audit filter labels
+// ---------------------------------------------------------------------------
+test("overview shows job-runner health; safety monitor times carry a zone and follow-ups never contact emergency services; audit filter shows exact codes", { timeout: 120_000 }, async () => {
+  await gotoOk(admin, "/admin");
+  const runnerRow = admin.locator("main li").filter({ hasText: "Background job runner" });
+  await assertText(runnerRow, /On schedule|Delayed/);
+  if ((await runnerRow.innerText()).includes("Delayed")) {
+    await assertText(admin.locator("#alerts"), /Background jobs have not run (for \d+ min|yet in this deployment) — check-in reminders and overdue notices are delayed/);
+  }
+  assert.doesNotMatch(await admin.locator("#alerts").innerText(), /\(s\)/, "alert titles are pluralized properly");
+
+  await gotoOk(admin, "/admin/safety");
+  await assertText(admin.locator("main header"), /Times are shown in the trail's local time zone/);
+  for (const t of await admin.locator("main time").allInnerTexts()) {
+    assert.match(t.split("\n")[0], /\b(PST|PDT|UTC|GMT[+-]?\d*)\b/, `time without a zone label: ${t}`);
+  }
+  const followUps = admin.locator("details").filter({ has: admin.locator("summary", { hasText: "Record a staff follow-up" }) });
+  if (await followUps.count()) {
+    const f = followUps.first();
+    await f.locator("summary").click();
+    await assertText(f, /never contacts emergency services or search and rescue/);
+    await f.getByRole("radio", { name: /hiker is confirmed safe/ }).waitFor({ timeout: UI });
+    assert.equal(await f.getByLabel(/^Note/).getAttribute("required"), "");
+  }
+
+  await gotoOk(admin, "/admin/audit");
+  const options = await admin.locator("#au-action option").evaluateAll((os) => os.filter((o) => o.value).map((o) => [o.value, o.textContent.trim()]));
+  assert.ok(options.length > 0, "the audit action filter lists actions");
+  for (const [value, label] of options) assert.equal(label, value, "audit filter options show the exact action code");
 });

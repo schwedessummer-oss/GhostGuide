@@ -7,11 +7,12 @@ import { env, integrationStatus } from "@/config/env";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { storage } from "@/integrations/storage";
 import { log } from "@/server/log";
-import type { ManifestItem } from "@/domain/offline-manifest";
+import { audioCacheKey, type ManifestItem } from "@/domain/offline-manifest";
 import type { CheckinStatus, RouteType } from "@/domain/types";
 import { BUNDLE_SCHEMA_VERSION, type BundleNarration, type BundlePoi, type TripBundle } from "@/lib/offline/wire";
 import { conflict, notFound, ok, type HikeResult } from "./result";
-import { bookedDateFor } from "./sessions";
+import { bookedDateFor, tripClosures } from "./sessions";
+import { getTripLogistics } from "./logistics";
 
 /** Signed narration URLs stay valid long enough to download days before the hike. */
 export const AUDIO_URL_TTL_SEC = 14 * 86_400;
@@ -85,6 +86,8 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
              estimated_duration_min, trailhead_name, trailhead_lat, trailhead_lng, parking_info, permit_required, geometry
       from public.trails where id = ${trip.trailId}`;
     if (!trail) return null;
+    // Closures active now or scheduled for the booked day (shown; a full closure blocks the start).
+    const when = await bookedDateFor(tx, trip.id);
     const [region, pois, narrations, provenance, closures, setting] = await Promise.all([
       tx<TripBundle["region"][]>`
         select name, timezone, is_demo, emergency_number, emergency_guidance from public.regions where id = ${trip.regionId}`,
@@ -97,10 +100,7 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
         order by n.created_at`,
       tx<{ field: string; kind: string; note: string | null }[]>`
         select field, kind, note from public.trail_field_provenance where trail_id = ${trail.id} order by field`,
-      tx<{ severity: string; reason: string; endsAt: Date | null }[]>`
-        select severity, reason, ends_at from public.trail_closures
-        where trail_id = ${trail.id} and starts_at <= now() and (ends_at is null or ends_at > now())
-        order by starts_at desc`,
+      tripClosures(tx, trail.id, when),
       tx<{ value: unknown }[]>`select value from public.app_settings where key = 'stale_location_minutes'`,
     ]);
     return { trail, region: region[0], pois, narrations, provenance, closures, staleMinutes: Number(setting[0]?.value) || DEFAULT_STALE_MINUTES };
@@ -108,6 +108,7 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
   if (!catalog || !catalog.region) return notFound("Trip not found");
   if (!catalog.trail.geometry) return conflict("This trail's route is not available for offline use yet.");
 
+  const logistics = await getTripLogistics(user, trip);
   const personal = await withUser(user, async (tx) => {
     const [checkin] = await tx<{ status: CheckinStatus; expectedReturnAt: Date; graceMinutes: number }[]>`
       select status, expected_return_at, grace_minutes from public.trip_checkins where trip_id = ${trip.id} and user_id = ${user.id}`;
@@ -161,7 +162,16 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
     { key: "data:geometry", kind: "data", url: bundleUrl, sha256: geometryChecksum, label: "Route geometry" },
     ...narrations
       .filter((n) => n.audioUrl)
-      .map((n): ManifestItem => ({ key: `audio:${n.id}`, kind: "audio", url: n.audioUrl!, label: `Narration audio: ${n.title}` })),
+      .map(
+        (n): ManifestItem => ({
+          key: `audio:${n.id}`,
+          kind: "audio",
+          url: n.audioUrl!,
+          // stored on the device under a stable key: re-signed URLs in a refreshed bundle still find it
+          cacheAs: audioCacheKey(n.id, n.version),
+          label: `Narration audio: ${n.title}`,
+        }),
+      ),
   ];
   const { trail } = catalog;
   return ok({
@@ -196,7 +206,12 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
       permitRequired: trail.permitRequired,
       provenance: catalog.provenance,
       provenanceSummary: summarizeProvenance(trail.isDemo, catalog.provenance),
-      closures: catalog.closures.map((c) => ({ severity: c.severity, reason: c.reason, endsAt: c.endsAt?.toISOString() ?? null })),
+      closures: catalog.closures.map((c) => ({
+        severity: c.severity,
+        reason: c.reason,
+        startsAt: c.startsAt.toISOString(),
+        endsAt: c.endsAt?.toISOString() ?? null,
+      })),
     },
     geometryJson,
     geometryChecksum,
@@ -217,6 +232,7 @@ export async function getTripBundle(user: SessionUser, tripId: string, now = new
         }
       : null,
     settings: { staleLocationMinutes: catalog.staleMinutes },
+    logistics,
     manifest: { version: MANIFEST_VERSION, generatedAt: now.toISOString(), items },
   });
 }

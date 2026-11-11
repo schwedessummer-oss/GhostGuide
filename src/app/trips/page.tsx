@@ -38,7 +38,7 @@ function TripCard({ trip, summary }: { trip: TripRow; summary?: Summary }) {
           </h3>
           <div className="flex flex-wrap gap-1.5">
             <TripStatusBadge status={trip.status} />
-            {summary ? <BookingStatusBadge status={summary.status} /> : null}
+            {summary ? <BookingStatusBadge status={summary.status} paidAt={summary.paidAt} /> : null}
           </div>
         </div>
         {trip.trailIsDemo ? (

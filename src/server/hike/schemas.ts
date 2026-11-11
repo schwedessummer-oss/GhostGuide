@@ -11,7 +11,12 @@ const isoDate = z.iso.datetime({ offset: true });
 
 export const MAX_SYNC_POINTS = 500;
 export const MAX_SYNC_EVENTS = 200;
-/** Points/events stamped further than this in the future are rejected. */
+/**
+ * Points/events stamped further than this in the future (AFTER correcting the
+ * device clock skew estimated from the request's `sentAt`) are rejected —
+ * except safety events (I'm okay, extend, finish), which are accepted with
+ * the time clamped to now.
+ */
 export const FUTURE_TOLERANCE_MS = 2 * 60_000;
 
 export const syncPointSchema = z.object({
@@ -35,21 +40,29 @@ export const eventPayloadSchema = z
     progressM: z.number().min(0).max(1_000_000).optional(),
     movingTimeSec: z.number().int().min(0).max(14 * 86_400).optional(),
     simulated: z.boolean().optional(),
+    newExpectedReturnAt: isoDate.optional(),
   })
   .strict();
 
-export const syncEventSchema = z.object({
-  id: clientId,
-  kind: z.enum(HIKE_EVENT_KINDS),
-  occurredAt: isoDate,
-  payload: eventPayloadSchema.default({}),
-});
+export const syncEventSchema = z
+  .object({
+    id: clientId,
+    kind: z.enum(HIKE_EVENT_KINDS),
+    occurredAt: isoDate,
+    payload: eventPayloadSchema.default({}),
+  })
+  .refine((e) => e.kind !== "checkin_extend" || !!e.payload.newExpectedReturnAt, {
+    message: "checkin_extend needs payload.newExpectedReturnAt",
+    path: ["payload", "newExpectedReturnAt"],
+  });
 
 export const syncRequestSchema = z.object({
   sessionId: z.uuid(),
   points: z.array(syncPointSchema).max(MAX_SYNC_POINTS).default([]),
   events: z.array(syncEventSchema).max(MAX_SYNC_EVENTS).default([]),
   progressM: z.number().min(0).max(1_000_000).optional(),
+  /** device clock at send time, for clock-skew correction */
+  sentAt: isoDate.optional(),
 });
 export type SyncInput = z.infer<typeof syncRequestSchema>;
 
@@ -59,6 +72,7 @@ export const startRequestSchema = z.object({
   startedAt: isoDate.optional(),
   /** honoured only when APP_MODE=demo: "Start anyway (demo)" on a day other than the booked date */
   demoStartAnyway: z.boolean().optional(),
+  sentAt: isoDate.optional(),
 });
 export type StartInput = z.infer<typeof startRequestSchema>;
 
@@ -67,6 +81,7 @@ export const finishRequestSchema = z.object({
   sessionId: z.uuid().optional(),
   finishedAt: isoDate.optional(),
   distanceCompletedM: z.number().min(0).max(1_000_000).optional(),
+  sentAt: isoDate.optional(),
 });
 export type FinishInput = z.infer<typeof finishRequestSchema>;
 

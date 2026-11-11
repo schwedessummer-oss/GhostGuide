@@ -2,7 +2,7 @@ import "server-only";
 import { z } from "zod";
 import type { SessionUser } from "@/server/auth";
 import { localDateInZone } from "@/lib/time";
-import { assertCan, auditInStaffTx, fail, guarded, isUuid, isoDate, ok, optionalText, staffTx, zodFail, type ActionResult } from "./common";
+import { assertCan, auditInStaffTx, blankAsNull, fail, guarded, isUuid, isoDate, ok, optionalText, staffTx, zodFail, type ActionResult } from "./common";
 
 /**
  * Trail-day inventory. Booked = confirmed / cancellation_requested /
@@ -48,9 +48,18 @@ export async function getAvailability(user: SessionUser, trailId: string, days =
   });
 }
 
+/**
+ * "Capacity override" field: empty (or blank) = no override → NULL, so the
+ * trail default applies. The empty check must come before number coercion:
+ * Number("") is 0, which would silently close the day.
+ */
+export const capacityOverrideSchema = blankAsNull(
+  z.coerce.number("Enter a whole number of hikers.").int("Enter a whole number of hikers.").min(0, "Capacity cannot be negative.").max(1000, "Capacity can be at most 1000."),
+);
+
 const daySchema = z.object({
   day: isoDate,
-  capacity: z.union([z.coerce.number().int().min(0, "Capacity cannot be negative").max(1000), z.literal("")]).transform((v) => (v === "" ? null : v)),
+  capacity: capacityOverrideSchema,
   blocked: z.boolean(),
   note: optionalText(300),
 });

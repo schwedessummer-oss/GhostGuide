@@ -115,3 +115,34 @@ export function GapWarning({ snap }: { snap: HikeSnapshot }) {
     </p>
   );
 }
+
+/**
+ * Sync problems the hiker must know about: hike updates the server refused
+ * (removed from this device, never silently) and a phone clock that is off.
+ */
+export function SyncIssues({ snap, className }: { snap: HikeSnapshot; className?: string }) {
+  const { dropped, droppedAt, reason, clockSkewMs } = snap.syncIssues;
+  const skewMin = Math.round(Math.abs(clockSkewMs) / 60_000);
+  if (!dropped && skewMin < 2) return null;
+  return (
+    <div className={`space-y-2 ${className ?? ""}`} data-testid="hike-sync-issues">
+      {dropped ? (
+        <p role="status" className="rounded-xl border border-[#f1d9b0] bg-amber-bg p-3 text-sm text-amber-ink" data-testid="hike-dropped">
+          <strong>
+            {dropped} hike {dropped === 1 ? "update" : "updates"} could not be accepted by Ghost Guide and {dropped === 1 ? "was" : "were"} removed from
+            this device
+          </strong>
+          {reason ? ` — ${reason}` : ""}
+          {droppedAt ? ` (last at ${new Date(droppedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })})` : ""}. Your location
+          history may have gaps. &quot;I&apos;m okay&quot;, extensions and finish are never discarded because of the clock.
+        </p>
+      ) : null}
+      {skewMin >= 2 ? (
+        <p role="status" className="rounded-xl border border-sand-200 bg-sand-100 p-3 text-sm" data-testid="hike-clock-skew">
+          This phone&apos;s clock is about {skewMin} min {clockSkewMs > 0 ? "ahead" : "behind"}. Ghost Guide corrects the times it receives, but
+          setting the phone to automatic date and time helps.
+        </p>
+      ) : null}
+    </div>
+  );
+}

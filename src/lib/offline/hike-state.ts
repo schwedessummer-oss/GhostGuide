@@ -18,6 +18,7 @@ import { INITIAL_PROGRESS, type PauseInterval, type ProgressState } from "@/doma
 import { INITIAL_REMINDER_STATE, defaultReminderSettings, type ReminderState } from "@/domain/reminders";
 import type { Itinerary } from "@/domain/types";
 import { idbDelete, idbGet, idbGetAll, idbPut } from "./idb";
+import type { SyncResponse } from "./wire";
 
 export interface HikeSettings {
   /** narration trigger distance multiplier (0.5×–2×) */
@@ -41,6 +42,17 @@ export interface SimulatorPersisted {
 export interface OkTap {
   id: string;
   at: number;
+}
+
+/** "Extend my trip" recorded on this device (queued as a checkin_extend event). */
+export interface ExtensionRequest {
+  /** outbox event id */
+  id: string;
+  /** when it was made (device clock) */
+  at: number;
+  newExpectedReturnAt: number;
+  /** what the check-in service did with it, once synced */
+  result: { applied: boolean; reason?: string } | null;
 }
 
 export type HikeStatus = "not_started" | "active" | "paused" | "finished";
@@ -77,8 +89,48 @@ export interface PersistedHikeState {
   lastSyncAt: number | null;
   limitationsAckAt: number | null;
   okTaps: OkTap[];
+  /** "Extend my trip" requests made on this device (newest last) */
+  extensions?: ExtensionRequest[];
+  /** items the server refused for good and that were removed from the queue (shown to the hiker) */
+  droppedCount?: number;
+  droppedAt?: number | null;
+  droppedReason?: string | null;
+  /** ids of "I'm okay" / extend events that were refused and removed (so they are never shown as sent) */
+  failedSafetyIds?: string[];
+  /** device clock − server clock reported by the last sync (ms; 0 = fine) */
+  clockSkewMs?: number;
   simulator: SimulatorPersisted;
   updatedAt: number;
+}
+
+/** Merge a sync response into the state: extension outcomes and the measured clock skew. */
+export function applySyncResponse(s: PersistedHikeState, res: Pick<SyncResponse, "checkin" | "clockSkewMs">): PersistedHikeState {
+  let next = s;
+  if (typeof res.clockSkewMs === "number" && res.clockSkewMs !== (s.clockSkewMs ?? 0)) next = { ...next, clockSkewMs: res.clockSkewMs };
+  const results = (res.checkin ?? []).filter((r) => r.kind === "checkin_extend");
+  if (results.length && next.extensions?.length) {
+    next = {
+      ...next,
+      extensions: next.extensions.map((x) => {
+        const r = results.find((y) => y.eventId === x.id);
+        return r ? { ...x, result: { applied: r.applied, ...(r.reason ? { reason: r.reason } : {}) } } : x;
+      }),
+    };
+  }
+  return next;
+}
+
+/** Record items the server refused (removed from the queue) so the hike screen can say so. */
+export function recordDropped(s: PersistedHikeState, info: { count: number; reason: string; ids?: string[] }, now = Date.now()): PersistedHikeState {
+  const mine = new Set([...s.okTaps.map((t) => t.id), ...(s.extensions ?? []).map((x) => x.id)]);
+  const failed = (info.ids ?? []).filter((id) => mine.has(id));
+  return {
+    ...s,
+    droppedCount: (s.droppedCount ?? 0) + info.count,
+    droppedAt: now,
+    droppedReason: info.reason,
+    ...(failed.length ? { failedSafetyIds: [...(s.failedSafetyIds ?? []), ...failed].slice(-20) } : {}),
+  };
 }
 
 export function defaultSettings(itinerary?: Partial<Itinerary> | null): HikeSettings {

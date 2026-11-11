@@ -24,15 +24,28 @@ import {
 import { DEFAULT_GEOFENCE_SETTINGS, geofenceStep, mergeHeardPois, recordManualPlay, type GeofencePoi } from "@/domain/geofence";
 import { DEFAULT_DEVIATION_SETTINGS, deviationStep, dismissDeviation, type DeviationState } from "@/domain/deviation";
 import { clearReminders, dueReminders, nextReminderInMs, reminderMessage, type ReminderKind } from "@/domain/reminders";
-import { shouldSamplePoint } from "@/domain/outbox";
+import { isSafetyEventKind, shouldSamplePoint } from "@/domain/outbox";
 import { DEFAULT_SIMULATOR_CONFIG, createSimulatorState, simulatorStep, type SimulatorConfig } from "@/domain/gps-simulator";
+import { closureVerdict } from "@/domain/booking";
+import { isOpen } from "@/domain/checkin";
+import type { CheckinStatus } from "@/domain/types";
+import { localDateInZone } from "@/lib/time";
 import { BundleFetchError, fetchBundleDetailed, getStoredBundle, putStoredBundle, type FetchedBundle } from "@/lib/offline/bundle-store";
-import { beginSaveHikeState, initialHikeState, loadHikeState, type HikeSettings, type PersistedHikeState } from "@/lib/offline/hike-state";
+import { refreshDownloadedTrip } from "@/lib/offline/download-manager";
+import {
+  applySyncResponse,
+  beginSaveHikeState,
+  initialHikeState,
+  loadHikeState,
+  recordDropped,
+  type HikeSettings,
+  type PersistedHikeState,
+} from "@/lib/offline/hike-state";
 import { SIGN_IN_AGAIN, currentOwnerHint, enforceDeviceOwner, purgeTripFromDevice } from "@/lib/offline/owner";
 import { hikeStartWindow, startAllowed, type StartWindow } from "@/lib/offline/start-window";
-import { enqueueEvent, enqueuePoint, OutboxSyncer, type SyncSnapshot } from "@/lib/offline/outbox";
+import { enqueueEvent, enqueuePoint, OutboxSyncer, queuedSafetyEventIds, type SyncSnapshot } from "@/lib/offline/outbox";
 import { uuid } from "@/lib/offline/hash";
-import type { BundleNarration, BundlePoi, HikeEventData, HikeEventKind, TripBundle } from "@/lib/offline/wire";
+import type { BundleClosure, BundleNarration, BundlePoi, HikeEventData, HikeEventKind, SyncResponse, TripBundle } from "@/lib/offline/wire";
 import { NarrationPlayer, vibrate, type PlaybackMode } from "./audio";
 import { WakeLockController, type WakeLockStatus } from "./wake-lock";
 
@@ -66,6 +79,38 @@ export interface NarrationNow {
   playing: boolean;
   source: "gps" | "manual";
   at: number;
+}
+
+/** The trip's check-in as known on this device (bundle + extensions made here). */
+export interface CheckinView {
+  status: CheckinStatus;
+  /** open (not finished or cancelled) when the trip data was loaded */
+  open: boolean;
+  /** effective expected return: the latest extension made here unless it was refused, else the server's */
+  expectedReturnAt: number;
+  /** the expected return Ghost Guide had when this trip data was loaded */
+  serverExpectedReturnAt: number;
+  graceMinutes: number;
+  /** when the contact is notified if we haven't heard from the hiker */
+  notifyAfter: number;
+  /** the latest "Extend my trip" made on this device */
+  extension: {
+    id: string;
+    at: number;
+    newExpectedReturnAt: number;
+    /** queued: on this device; sent: reached the server (outcome unknown); applied / not_applied: the check-in's answer */
+    state: "queued" | "sent" | "applied" | "not_applied";
+    reason: string | null;
+  } | null;
+}
+
+export interface ClosureView {
+  /** closures in the downloaded trip data (active now or scheduled for the booked date) */
+  list: BundleClosure[];
+  /** a full closure on today's date (region time zone): the hike can't be started */
+  closedToday: BundleClosure | null;
+  /** a full closure on the booked date */
+  closedOnBookedDate: BundleClosure | null;
 }
 
 export interface HikeSnapshot {
@@ -107,7 +152,12 @@ export interface HikeSnapshot {
   lastSavedAt: number | null;
   wakeLock: WakeLockStatus;
   audioUnlocked: boolean;
-  okTap: { at: number; sent: boolean } | null;
+  /** latest "I'm okay": sent = no longer queued on this device (the server accepted it); failed = refused and removed */
+  okTap: { at: number; sent: boolean; failed: boolean } | null;
+  checkin: CheckinView | null;
+  closures: ClosureView;
+  /** sync problems to tell the hiker about */
+  syncIssues: { dropped: number; droppedAt: number | null; reason: string | null; clockSkewMs: number };
   simulator: { enabled: boolean; config: SimulatorConfig };
   limitationsAcknowledged: boolean;
   startError: string | null;
@@ -119,6 +169,11 @@ export interface HikeSnapshot {
 }
 
 const EMPTY_SYNC: SyncSnapshot = { online: true, status: "idle", queued: 0, lastSyncAt: null, nextAttemptAt: null, message: null, dropped: 0 };
+const NO_CLOSURES: ClosureView = { list: [], closedToday: null, closedOnBookedDate: null };
+/** An extension may move the expected return at most this far ahead (the check-in service enforces it too). */
+export const MAX_EXTEND_AHEAD_MS = 24 * 3600_000;
+/** ...and must be at least this far after the moment it is made. */
+export const MIN_EXTEND_LEAD_MS = 5 * 60_000;
 /** Routine fixes are saved at most this often; state transitions (stops heard, prompts, controls) are saved at once. */
 const SAVE_EVERY_MS = 5_000;
 const ONLINE_BUNDLE_TIMEOUT_MS = 6_000;
@@ -170,6 +225,9 @@ export class HikeEngine {
   private announcement = "";
   private gapWarning: string | null = null;
   private hiddenAt: number | null = null;
+  /** ids of "I'm okay" / extend / finish events still queued on this device */
+  private pendingSafety = new Set<string>();
+  private lastQueued = -1;
   private listeners = new Set<() => void>();
   private snap: HikeSnapshot;
 
@@ -213,6 +271,7 @@ export class HikeEngine {
     const narrations = this.bundle?.narrations ?? [];
     const sync = this.syncer?.getSnapshot() ?? EMPTY_SYNC;
     const lastOk = s?.okTaps[s.okTaps.length - 1] ?? null;
+    const failed = new Set(s?.failedSafetyIds ?? []);
     return {
       phase: this.phase,
       error: this.error,
@@ -257,7 +316,10 @@ export class HikeEngine {
       lastSavedAt: this.lastSavedFixAt,
       wakeLock: this.wake?.status ?? "off",
       audioUnlocked: this.player.unlocked,
-      okTap: lastOk ? { at: lastOk.at, sent: sync.lastSyncAt !== null && sync.lastSyncAt > lastOk.at && sync.queued === 0 } : null,
+      okTap: lastOk ? { at: lastOk.at, sent: !this.pendingSafety.has(lastOk.id) && !failed.has(lastOk.id), failed: failed.has(lastOk.id) } : null,
+      checkin: this.checkinView(),
+      closures: this.closureView(now),
+      syncIssues: { dropped: s?.droppedCount ?? 0, droppedAt: s?.droppedAt ?? null, reason: s?.droppedReason ?? null, clockSkewMs: s?.clockSkewMs ?? 0 },
       simulator: { enabled: !!s?.simulator.enabled, config: s?.simulator.config ?? DEFAULT_SIMULATOR_CONFIG },
       limitationsAcknowledged: !!s?.limitationsAckAt,
       startError: s?.startError ?? null,
@@ -266,6 +328,60 @@ export class HikeEngine {
       gapWarning: this.gapWarning,
       startWindow: this.startWindowAt(now),
     };
+  }
+
+  private checkinView(): CheckinView | null {
+    const c = this.bundle?.checkin;
+    if (!c) return null;
+    const s = this.s;
+    const serverAt = Date.parse(c.expectedReturnAt);
+    const failed = new Set(s?.failedSafetyIds ?? []);
+    const stateOf = (x: NonNullable<PersistedHikeState["extensions"]>[number]): NonNullable<CheckinView["extension"]>["state"] =>
+      this.pendingSafety.has(x.id) ? "queued" : failed.has(x.id) ? "not_applied" : x.result === null ? "sent" : x.result.applied ? "applied" : "not_applied";
+    const all = s?.extensions ?? [];
+    const latest = all[all.length - 1] ?? null;
+    const extension: CheckinView["extension"] = latest
+      ? {
+          id: latest.id,
+          at: latest.at,
+          newExpectedReturnAt: latest.newExpectedReturnAt,
+          state: stateOf(latest),
+          reason: latest.result?.reason ?? (failed.has(latest.id) ? "not accepted by the server" : null),
+        }
+      : null;
+    // The newest extension made after this trip data was loaded (and not refused) is the newest schedule we know of.
+    const generatedAt = Date.parse(this.bundle?.generatedAt ?? "") || 0;
+    const current = [...all].reverse().find((x) => x.at >= generatedAt && stateOf(x) !== "not_applied");
+    const effective = current ? current.newExpectedReturnAt : serverAt;
+    return {
+      status: c.status,
+      open: isOpen(c.status),
+      expectedReturnAt: effective,
+      serverExpectedReturnAt: serverAt,
+      graceMinutes: c.graceMinutes,
+      notifyAfter: effective + c.graceMinutes * 60_000,
+      extension,
+    };
+  }
+
+  private closureView(now: number): ClosureView {
+    const b = this.bundle;
+    if (!b?.trail.closures?.length) return NO_CLOSURES;
+    // Closures downloaded before `startsAt` existed were active at download time.
+    const dayClosures = b.trail.closures.map((c) => ({
+      severity: c.severity as "closed" | "partial" | "advisory",
+      reason: c.reason,
+      startsAt: new Date(c.startsAt ?? 0),
+      endsAt: c.endsAt ? new Date(c.endsAt) : null,
+    }));
+    const tz = b.region.timezone;
+    const today = localDateInZone(new Date(now), tz);
+    const booked = b.trip.bookedDate ?? b.trip.plannedDate;
+    const ofDay = (day: string) => {
+      const closed = closureVerdict(dayClosures, day, tz).closed;
+      return closed ? (b.trail.closures.find((c) => c.reason === closed.reason && c.severity === closed.severity) ?? null) : null;
+    };
+    return { list: b.trail.closures, closedToday: ofDay(today), closedOnBookedDate: booked ? ofDay(booked) : null };
   }
 
   private startWindowAt(now: number): StartWindow | null {
@@ -313,13 +429,23 @@ export class HikeEngine {
 
       this.bundleSource = localOk ? stored!.source : fresh?.source === "cache" ? "download" : fresh ? "online" : null;
       this.downloadComplete = localOk ? (stored!.verification?.complete ?? null) : null;
+      let reverify = false;
       if (fresh && confirmed) {
-        // Keep the offline copy current (pages/audio caches are unaffected).
-        await putStoredBundle(
+        // Keep the offline copy current. Narration audio is stored under stable keys (narration id +
+        // version), so audio downloaded earlier stays usable; the download is re-verified against the
+        // new data (and anything missing is fetched while online) below.
+        const saved = await putStoredBundle(
           localOk
             ? { ...stored!, bundle: fresh.bundle }
             : { tripId: this.tripId, bundle: fresh.bundle, storedAt: Date.now(), source: "online", assetUrls: [], verification: null },
-        ).catch(() => undefined);
+        ).then(
+          () => true,
+          () => false,
+        );
+        if (saved && localOk && stored!.source === "download") {
+          reverify = true;
+          this.downloadComplete = null; // re-checking
+        }
       }
       if (gen !== this.generation) return;
       if (!bundle) {
@@ -341,6 +467,19 @@ export class HikeEngine {
         return;
       }
       this.applyBundle(bundle);
+      if (reverify) {
+        void refreshDownloadedTrip(this.tripId)
+          .then((v) => {
+            if (gen !== this.generation) return;
+            this.downloadComplete = v?.complete ?? false;
+            this.emit();
+          })
+          .catch(() => {
+            if (gen === this.generation) this.downloadComplete = false;
+            this.emit();
+          });
+      }
+      this.pendingSafety = await queuedSafetyEventIds(this.tripId).catch(() => new Set<string>());
       let s = await loadHikeState(this.tripId).catch(() => null);
       if (s && !confirmed && s.ownerHint !== bundle.ownerHint) s = null; // never resume someone else's hike
       s = { ...(s ?? initialHikeState(this.tripId, bundle.trip.itinerary)), ownerHint: bundle.ownerHint };
@@ -350,7 +489,14 @@ export class HikeEngine {
       this.lastSavedFixAt = s.lastFix?.timestamp ?? null;
       this.wake = new WakeLockController(() => this.emit());
       this.syncer = new OutboxSyncer(this.tripId, this.syncHost(), s.lastSyncAt);
-      this.syncer.subscribe(() => this.emit());
+      this.syncer.subscribe((snap) => {
+        // The queue changed (sent here, by another tab or by the service worker): re-read what is still pending.
+        if (snap.queued !== this.lastQueued) {
+          this.lastQueued = snap.queued;
+          void this.refreshPendingSafety();
+        }
+        this.emit();
+      });
       this.syncer.start();
       this.tickTimer = setInterval(() => this.tick(), 1000);
       document.addEventListener("visibilitychange", this.onVisibility);
@@ -475,7 +621,24 @@ export class HikeEngine {
       onSynced: (at: number) => {
         this.mutate((s) => ({ ...s, lastSyncAt: at }));
       },
+      onSyncResponse: (res: SyncResponse) => {
+        for (const id of [...res.acceptedEventIds, ...res.rejected.map((r) => r.id)]) this.pendingSafety.delete(id);
+        this.mutate((s) => applySyncResponse(s, res), true);
+      },
+      onDropped: (info: { count: number; safety: number; reason: string; ids: string[] }) => {
+        for (const id of info.ids) this.pendingSafety.delete(id);
+        this.mutate((s) => recordDropped(s, info), true);
+      },
     };
+  }
+
+  private async refreshPendingSafety() {
+    try {
+      this.pendingSafety = await queuedSafetyEventIds(this.tripId);
+      this.emit();
+    } catch {
+      /* storage unavailable: keep what we have */
+    }
   }
 
   private mutate(fn: (s: PersistedHikeState) => PersistedHikeState, saveNow = false) {
@@ -536,6 +699,7 @@ export class HikeEngine {
       void this.save(true);
       return;
     }
+    void this.refreshPendingSafety();
     const gapSince = Math.max(this.hiddenAt ?? 0, this.s?.lastFix?.timestamp ?? 0);
     if ((this.s?.status === "active" || this.s?.status === "paused") && this.hiddenAt && Date.now() - gapSince > 60_000) {
       this.gapWarning =
@@ -555,6 +719,7 @@ export class HikeEngine {
   private async queueEvent(kind: HikeEventKind, payload: HikeEventData = {}, at = new Date()): Promise<string | null> {
     try {
       const id = await enqueueEvent(this.tripId, kind, payload, at);
+      if (isSafetyEventKind(kind)) this.pendingSafety.add(id);
       void this.syncer?.notifyEnqueued();
       return id;
     } catch {
@@ -812,6 +977,8 @@ export class HikeEngine {
   start(opts: { demoStartAnyway?: boolean } = {}) {
     if (!this.s || this.s.status !== "not_started" || !this.s.limitationsAckAt) return;
     const now = Date.now();
+    // A trail fully closed today can never be started — not even in a demo.
+    if (this.closureView(now).closedToday) return;
     const w = this.startWindowAt(now);
     const offDate = !!w && !startAllowed(w);
     const anyway = !!opts.demoStartAnyway && this.demoMode;
@@ -898,6 +1065,28 @@ export class HikeEngine {
     });
     this.announcement = "\"I'm okay\" saved.";
     this.emit();
+  }
+
+  /**
+   * "Extend my trip": queue a checkin_extend event with the new expected return
+   * (works offline; it takes effect only once it reaches Ghost Guide). Returns
+   * an error message, or null when queued.
+   */
+  async extendCheckin(newExpectedReturnAt: number): Promise<string | null> {
+    const c = this.checkinView();
+    if (!this.s || !c || !c.open) return "There is no active check-in for this trip.";
+    if (this.s.status !== "active" && this.s.status !== "paused") return "Start the hike first.";
+    const now = Date.now();
+    if (!Number.isFinite(newExpectedReturnAt) || newExpectedReturnAt < now + MIN_EXTEND_LEAD_MS) return "Choose a time at least 5 minutes from now.";
+    if (newExpectedReturnAt > now + MAX_EXTEND_AHEAD_MS) return "Choose a time within the next 24 hours.";
+    const id = await this.queueEvent("checkin_extend", { newExpectedReturnAt: new Date(newExpectedReturnAt).toISOString() }, new Date(now));
+    if (!id) return "Couldn't save this on the device. Try again.";
+    this.mutate((s) => ({ ...s, extensions: [...(s.extensions ?? []).slice(-9), { id, at: now, newExpectedReturnAt, result: null }] }), true);
+    this.announcement = this.syncer?.getSnapshot().online
+      ? "Extension saved. Sending it to Ghost Guide."
+      : "Extension saved on this device. It will be sent when you're back online.";
+    this.emit();
+    return null;
   }
 
   dismissDeviation(reason: "fine" | "intentional") {

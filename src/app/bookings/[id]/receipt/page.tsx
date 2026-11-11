@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Compass } from "lucide-react";
-import { Container, SimulatedBadge } from "@/components/ui";
+import { Alert, Container, SimulatedBadge } from "@/components/ui";
 import { PrintButton } from "@/components/commerce/print-button";
 import { PriceBreakdown } from "@/components/commerce/price-breakdown";
 import { BookingStatusBadge, DemoTrailBadge } from "@/components/commerce/status-badges";
@@ -31,6 +31,9 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
   const paid = r.payments.filter((p) => p.status !== "failed").reduce((s, p) => s + p.amountCents, 0);
   const refunded = r.refunds.filter((x) => x.status === "succeeded").reduce((s, x) => s + x.amountCents, 0);
   const zoneLabel = tz.replace(/_/g, " ");
+  // A payment that arrived after the checkout had ended never became a booking
+  // (no receipt number): show it as a payment record, not as a booking receipt.
+  const notBooked = !b.receiptNumber && (b.status === "expired" || b.status === "payment_failed");
   // dateStyle/timeStyle cannot be combined with timeZoneName, so spell the fields out.
   const withZone: Intl.DateTimeFormatOptions = { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short" };
 
@@ -51,14 +54,14 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
               <Compass aria-hidden className="size-5" /> Ghost Guide
             </p>
             <h1 id="receipt-title" className="mt-2 text-2xl font-bold">
-              Receipt
+              {notBooked ? "Payment record" : "Receipt"}
             </h1>
-            <p className="font-mono text-lg">{b.receiptNumber}</p>
+            {b.receiptNumber ? <p className="font-mono text-lg">{b.receiptNumber}</p> : null}
           </div>
           <div className="text-right text-sm">
             <p>Paid {b.paidAt ? formatInZone(b.paidAt, tz, withZone) : "—"}</p>
             <p className="mt-1">
-              <BookingStatusBadge status={b.status} />
+              <BookingStatusBadge status={b.status} paidAt={b.paidAt} />
             </p>
           </div>
         </header>
@@ -68,6 +71,13 @@ export default async function ReceiptPage({ params }: PageProps<"/bookings/[id]/
             {simulated ? <SimulatedBadge label="Simulated payment — no money was charged" /> : null}
             {b.trailIsDemo ? <DemoTrailBadge /> : null}
           </div>
+        ) : null}
+
+        {notBooked ? (
+          <Alert tone="amber" className="mt-6">
+            This payment arrived after the checkout had already ended, so no booking was made for it. It is refunded to you automatically and in
+            full; the refund status is shown below.
+          </Alert>
         ) : null}
 
         <section className="mt-6 grid gap-4 sm:grid-cols-2" aria-label="Booking details">

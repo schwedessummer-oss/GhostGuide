@@ -183,6 +183,7 @@ function recordSyncedEvents(page, sink) {
     try {
       const body = JSON.parse(req.postData() ?? "{}");
       if (body.sessionId) sink.sessionIds.add(body.sessionId);
+      sink.sentAt.push(body.sentAt);
       for (const e of body.events ?? []) sink.events.set(e.id, e);
       for (const p of body.points ?? []) sink.points.set(p.id, p);
     } catch {
@@ -202,7 +203,7 @@ let pageErrors;
 let tripId;
 let savedTripId;
 let hikeDate;
-const synced = { events: new Map(), points: new Map(), sessionIds: new Set() };
+const synced = { events: new Map(), points: new Map(), sessionIds: new Set(), sentAt: [] };
 
 before(async () => {
   browser = await newBrowser();
@@ -448,9 +449,21 @@ test("hike journey: prepare → download → simulated hike → offline → help
     }
     assert.ok(!cached.some((c) => /mapbox/i.test(c)), "no Mapbox resources cached");
 
+    // Narration audio is stored under stable keys (narration id + version), not the signed URL.
+    const bundle = await (await ctx.request.get(`/api/trips/${tripId}/bundle`)).json();
+    for (const item of bundle.manifest.items.filter((i) => i.kind === "audio")) {
+      assert.match(item.cacheAs, /^\/__gg\/audio\/[0-9a-f-]{36}\/v\d+$/);
+      assert.ok(cached.some((c) => c.startsWith(item.cacheAs + "@")), `audio stored under its stable key ${item.cacheAs}`);
+    }
+    // The download carries the booking details and permit status for offline use.
+    assert.ok(bundle.logistics && Array.isArray(bundle.logistics.addons) && Array.isArray(bundle.logistics.permits), "bundle has booking logistics");
+
     // The trip dashboard reflects the verified download.
     await page.goto(`/trips/${tripId}`);
     await assertText(page.locator("main"), /Last download .+ — verified complete/);
+    // Booked weeks ahead: the dashboard shows the booked date instead of offering "Start hike".
+    await assertText(page.getByTestId("hike-actions-booked-date"), /Hike booked for \w{3}, \w{3} \d{1,2}, \d{4}/);
+    assert.equal(await page.getByTestId("hike-actions-start").count(), 0, "no 'Start hike' for a hike weeks away");
   });
 
   await t.test("hike screen: limitations must be acknowledged; start with the demo GPS simulator (labeled as simulated)", async () => {
@@ -466,6 +479,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
     const booked = page.getByTestId("hike-booked-date");
     assert.match(await booked.innerText(), /^\w+day, \w+ \d{1,2}, \d{4}$/, "booked date shown in words");
     await assertText(page.getByTestId("hike-date-notice"), /You can start on \w{3}, \w{3} \d{1,2}\./);
+    // Booking details (add-ons, permit status) are on the pre-start screen, from the download.
+    await assertText(page.getByTestId("trip-logistics"), /Gear, shuttle & meals[\s\S]*Permits/);
     await page.getByTestId("limitations-ack").check();
     assert.ok(await start.isDisabled(), "Start stays disabled before the booked date");
     // Demo mode only: an explicit, labelled start-anyway.
@@ -488,6 +503,10 @@ test("hike journey: prepare → download → simulated hike → offline → help
     assert.ok([...synced.events.values()].some((e) => e.kind === "simulator_on"), "simulator_on event synced");
     assert.ok(synced.sessionIds.size === 1, "one server session");
     assert.match([...synced.sessionIds][0], UUID_RE);
+    // Every sync carries the device's clock so the server can correct a wrong phone clock.
+    assert.ok(synced.sentAt.length > 0 && synced.sentAt.every((t) => typeof t === "string" && !Number.isNaN(Date.parse(t))), "sync requests carry sentAt");
+    // No check-in was set up, so the check-in / extend card is not shown.
+    assert.equal(await page.getByTestId("hike-checkin").count(), 0, "no check-in card without a check-in");
   });
 
   await t.test("progress increases and the first story stop triggers by location with its transcript", async () => {
@@ -536,6 +555,19 @@ test("hike journey: prepare → download → simulated hike → offline → help
     assert.match(text, /GPS can be wrong/);
     assert.match(text, /If you are lost, stay where you are/);
     assert.equal(await prompt.getByRole("link", { name: "Open Help" }).getAttribute("href"), `/trips/${tripId}/help`);
+    // "Show route" respects reduced motion: the jump to the map is instant, not an animated scroll.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    try {
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await prompt.getByRole("button", { name: "Show route" }).click();
+      const y1 = await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => r(window.scrollY))));
+      await sleep(800);
+      const y2 = await page.evaluate(() => window.scrollY);
+      // (small layout shifts from the live screen are tolerated; an animated scroll moves hundreds of px)
+      assert.ok(y1 > 0 && Math.abs(y2 - y1) <= 40, `reduced motion: no animated scroll (scrollY ${y1} right after, ${y2} later)`);
+    } finally {
+      await page.emulateMedia({ reducedMotion: null });
+    }
     await page.getByTestId("deviation-fine").click();
     await prompt.waitFor({ state: "detached", timeout: UI });
     await waitUntil(() => [...synced.events.values()].some((e) => e.kind === "deviation_prompt"), "deviation prompt event synced", NAV);
@@ -557,7 +589,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
 
     await page.getByTestId("hike-ok").click();
     const ok = page.getByTestId("hike-ok-status");
-    await assertText(ok, /"I'm okay" from .+ is saved and will be sent when you're back online/);
+    await assertText(ok, /"I'm okay" from .+ is saved on this device and will be sent when you're back online/);
+    assert.equal(await ok.getAttribute("data-sent"), "false");
 
     const q1 = await waitUntil(async () => (await queuedCount(page)) || false, "items queue while offline", UI);
     await waitUntil(async () => (await queuedCount(page)) > q1, "queued count keeps growing while walking offline", SIM);
@@ -570,7 +603,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
     await assertText(page.getByTestId("hike-connection"), /Online/);
     await waitUntil(async () => (await queuedCount(page)) === 0, "queue flushes after reconnecting", NAV);
     await waitUntil(async () => /just now/.test(await page.getByTestId("hike-last-sync").innerText()), "last sync is 'just now'", NAV);
-    await assertText(page.getByTestId("hike-ok-status"), /"I'm okay" from .+ was sent/, NAV);
+    // "Sent" only once the server acknowledged the tap (not merely because a sync happened).
+    await assertText(page.getByTestId("hike-ok-status"), /"I'm okay" from .+ reached Ghost Guide/, NAV);
     assert.ok(synced.events.size > eventsBefore, "queued events were uploaded");
     assert.ok([...synced.events.values()].some((e) => e.kind === "checkin_ok"), "the I'm okay tap reached the server");
   });
@@ -648,6 +682,8 @@ test("hike journey: prepare → download → simulated hike → offline → help
     assert.match(text, /cannot see your location in real time/);
     assert.match(text, /cannot contact 911, Search and Rescue or anyone else for you/);
     assert.doesNotMatch(text, /help is on the way|we will (alert|notify) (rescue|911|search)/i, "no rescue over-claims");
+    // Booking details (add-ons, permit status) are available offline on the help screen.
+    await assertText(page.getByTestId("trip-logistics"), /Gear, shuttle & meals[\s\S]*No add-ons on this booking[\s\S]*Permits/);
 
     // A full reload of help while offline still works.
     await page.reload({ timeout: NAV });
@@ -677,7 +713,7 @@ test("hike journey: prepare → download → simulated hike → offline → help
     await page.getByTestId("hike-ok").click();
     await assertText(page.getByTestId("hike-ok-status"), /will be sent when you're back online/);
     await ctx.setOffline(false);
-    await assertText(page.getByTestId("hike-ok-status"), /was sent/, NAV);
+    await assertText(page.getByTestId("hike-ok-status"), /reached Ghost Guide/, NAV);
     await waitUntil(async () => (await queuedCount(page)) === 0, "queue flushes again", NAV);
   });
 

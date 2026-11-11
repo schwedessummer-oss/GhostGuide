@@ -3,7 +3,9 @@ import {
   BOOKING_TRANSITIONS,
   DEFAULT_CANCELLATION_POLICY,
   InvalidTransitionError,
+  BOOKING_STATUS_COPY,
   assertTransition,
+  bookingStatusCopy,
   canTransition,
   computeCancellationRefund,
   describeCancellationPolicy,
@@ -184,5 +186,27 @@ describe("customer-facing copy", () => {
     );
     expect(nextActionForTrip({ tripId: "t", tripStatus: "booked", bookingStatus: "confirmed", awaitingShuttleFulfillmentId: "f" })?.href).toBe("/trips/t/shuttle/f");
     expect(nextActionForTrip({ tripId: "t", tripStatus: "cancelled" })).toBeNull();
+  });
+});
+
+describe("booking status copy for an ended checkout (COMMERCE-1)", () => {
+  it("never says 'not charged' when a payment still arrived after the checkout ended", () => {
+    for (const status of ["expired", "payment_failed"] as BookingStatus[]) {
+      expect(bookingStatusCopy(status)).toEqual(BOOKING_STATUS_COPY[status]);
+      expect(bookingStatusCopy(status).description).toMatch(/not charged/);
+      const late = bookingStatusCopy(status, { paidAt: new Date() });
+      expect(late.label).toMatch(/automatic refund/i);
+      expect(late.description).not.toMatch(/not charged/);
+      expect(late.description).toMatch(/refunded to you automatically and in full/);
+      expect(late.tone).toBe("amber");
+      expect(bookingStatusCopy(status, { paidAt: "2026-11-11T10:00:00Z" }).label).toBe(late.label);
+    }
+  });
+
+  it("leaves every other status unchanged, paid or not", () => {
+    for (const status of Object.keys(BOOKING_STATUS_COPY) as BookingStatus[]) {
+      if (status === "expired" || status === "payment_failed") continue;
+      expect(bookingStatusCopy(status, { paidAt: new Date() })).toEqual(BOOKING_STATUS_COPY[status]);
+    }
   });
 });

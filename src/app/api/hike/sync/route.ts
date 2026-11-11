@@ -8,7 +8,10 @@ import { toResponse } from "@/server/hike/result";
 /**
  * Upload queued location points (≤ 500) and events (≤ 200) for an owned
  * hike session. Idempotent per client id; 404 for sessions that are not
- * yours; points stamped > 2 min in the future are rejected; rate limited.
+ * yours; device timestamps are corrected by the clock skew estimated from
+ * the batch's `sentAt`, after which points/ordinary events still > 2 min in
+ * the future are rejected (safety events never are); "I'm okay" and
+ * "Extend my trip" are forwarded to the check-in service; rate limited.
  */
 export async function POST(request: Request) {
   const user = await getApiUser();

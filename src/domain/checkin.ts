@@ -19,12 +19,24 @@
  * Rules:
  *   setup            -> scheduled (or active if a hike session is already open); version++
  *   hike start       scheduled -> active
- *   "I'm okay" before the expected return -> confirmed_ok (records last_ok_at)
- *   "I'm okay" AFTER the expected return, or while overdue/contact_notified
- *                    -> counts as confirmation: AUTO-EXTEND the expected return
- *                       to now + 60 min (OK_AUTO_EXTEND_MIN), version++, reschedule,
- *                       follow-up to the contact if they were already notified
+ *   "I'm okay"       is applied as if it had arrived when it was TAPPED (taps
+ *                    recorded offline reach us later), so the outcome never
+ *                    depends on whether a sync beat the overdue job:
+ *                    - tapped before the expected return -> confirmed_ok (records
+ *                      last_ok_at; deadline unchanged). If the check-in is already
+ *                      overdue/contact_notified it STAYS overdue: an old tap only
+ *                      records last_ok_at (event ok_recorded_late) — it says
+ *                      nothing about the hiker since the deadline.
+ *                    - tapped after the expected return -> counts as confirmation:
+ *                      AUTO-EXTEND the expected return to tap + 60 min
+ *                      (OK_AUTO_EXTEND_MIN), version++, reschedule, follow-up to
+ *                      an already-notified contact stating the tap time — unless
+ *                      that extended deadline plus grace has also passed by the
+ *                      time it arrives (then only last_ok_at is recorded).
  *   extend           -> new expected return, version++, back to active/confirmed_ok
+ *                    (device extensions: deviceExtendTransition, same "as of when
+ *                    it was made" rule; a stale one never overrides newer changes)
+ *   staff resolution -> completed (staff recorded that the hiker is safe)
  *   finish           -> completed (terminal), cancel every queued job
  *   overdue job      at expected_return + grace if still awaiting -> overdue
  *   notice delivered -> contact_notified
@@ -87,8 +99,12 @@ export type CheckinEffect =
   | { type: "cancel_jobs" }
   /** mark queued (undelivered) reminder/overdue notices as suppressed */
   | { type: "suppress_pending_notices" }
-  /** tell contacts who already received an overdue notice what happened */
-  | { type: "follow_up_contact"; kind: FollowUpKind };
+  /**
+   * tell contacts who already received an overdue notice what happened.
+   * `at`: when the hiker acted (tap / extension made on the device), when it
+   * differs from processing time; `by: "staff"`: Ghost Guide staff closed it.
+   */
+  | { type: "follow_up_contact"; kind: FollowUpKind; at?: Date; by?: "staff" };
 
 export interface TransitionResult {
   state: CheckinState;
@@ -208,27 +224,42 @@ export function hikeStartedTransition(prev: CheckinState): TransitionResult {
 
 /**
  * "I'm okay". `tappedAt` is when the user tapped (may be in the past for
- * taps recorded offline); `now` is when the server processes it.
+ * taps recorded offline; a future time from a fast device clock counts as
+ * `now`); `now` is when the server processes it. The tap is applied as if it
+ * had arrived when it was tapped (see the rules at the top of this file).
  */
 export function confirmOkTransition(prev: CheckinState, ctx: { tappedAt: Date; now: Date }): TransitionResult {
   if (isTerminal(prev.status)) return unchanged(prev, "ok_ignored", `check-in is ${prev.status}`);
-  const lastOkAt = maxDate(prev.lastOkAt, ctx.tappedAt);
-  const afterDue = isOverdueState(prev.status) || ctx.tappedAt.getTime() >= prev.expectedReturnAt.getTime();
-  if (!afterDue) {
-    return { state: { ...prev, status: "confirmed_ok", lastOkAt }, changed: true, event: "ok_confirmed", effects: [] };
+  const tapped = ctx.tappedAt.getTime() > ctx.now.getTime() ? ctx.now : ctx.tappedAt;
+  const lastOkAt = maxDate(prev.lastOkAt, tapped);
+  const overdue = isOverdueState(prev.status);
+  const recordOnly = (note: string): TransitionResult =>
+    prev.lastOkAt && lastOkAt.getTime() === prev.lastOkAt.getTime()
+      ? unchanged(prev, "ok_recorded_late", note)
+      : { state: { ...prev, lastOkAt }, changed: true, event: "ok_recorded_late", effects: [], note };
+
+  if (tapped.getTime() < prev.expectedReturnAt.getTime()) {
+    if (!overdue) return { state: { ...prev, status: "confirmed_ok", lastOkAt }, changed: true, event: "ok_confirmed", effects: [] };
+    // Tapped (offline) before the deadline, received after the check-in went
+    // overdue: it only tells us when the hiker was last okay, nothing about
+    // them since. The overdue state and any notice stand.
+    return recordOnly("tapped before the expected return; it reached us after the check-in became overdue");
   }
-  // Counts as confirmation: auto-extend the expected return so a later
-  // silence is still caught, and tell an already-notified contact.
-  const base = ctx.now.getTime() > ctx.tappedAt.getTime() ? ctx.now : ctx.tappedAt;
+  // After the expected return: counts as confirmation, extended from the tap.
+  const expectedReturnAt = addMin(tapped, OK_AUTO_EXTEND_MIN);
+  if (overdueDueAt({ expectedReturnAt, graceMinutes: prev.graceMinutes }).getTime() <= ctx.now.getTime()) {
+    // Even the extended deadline (plus grace) has passed without word since.
+    return recordOnly("tapped after the expected return, but it reached us after the extended deadline had also passed");
+  }
   const effects: CheckinEffect[] = [{ type: "reschedule" }];
-  if (isOverdueState(prev.status)) effects.push({ type: "suppress_pending_notices" });
-  if (prev.status === "contact_notified") effects.push({ type: "follow_up_contact", kind: "ok" });
+  if (overdue) effects.push({ type: "suppress_pending_notices" });
+  if (prev.status === "contact_notified") effects.push({ type: "follow_up_contact", kind: "ok", at: tapped });
   return {
-    state: { ...prev, status: "confirmed_ok", lastOkAt, version: prev.version + 1, expectedReturnAt: addMin(base, OK_AUTO_EXTEND_MIN) },
+    state: { ...prev, status: "confirmed_ok", lastOkAt, version: prev.version + 1, expectedReturnAt },
     changed: true,
     event: "ok_confirmed_auto_extended",
     effects,
-    note: `expected return auto-extended to now + ${OK_AUTO_EXTEND_MIN} min`,
+    note: `expected return auto-extended to the tap + ${OK_AUTO_EXTEND_MIN} min`,
   };
 }
 
@@ -246,6 +277,82 @@ export function extendTransition(prev: CheckinState, ctx: { newExpectedReturnAt:
     event: "extended",
     effects,
   };
+}
+
+/** Device clocks may run a little fast; an extension may end at most this much beyond now + 24 h. */
+export const DEVICE_CLOCK_SKEW_MIN = 15;
+
+export interface DeviceExtendContext {
+  /** when the extension was made on the device (a future time counts as `now`) */
+  occurredAt: Date;
+  newExpectedReturnAt: Date;
+  now: Date;
+  /** latest time the user changed the schedule otherwise (setup/update/extension), if any */
+  lastScheduleChangeAt: Date | null;
+}
+
+/**
+ * "Extend my trip" recorded on the device (possibly offline) and synced
+ * later. Applied as if it had arrived when it was made:
+ *  - rejected when the new time is not after the moment it was made or more
+ *    than 24 h after it, or the check-in has ended;
+ *  - STALE (a newer schedule change was already applied) -> ignored; stale
+ *    relative to a later "I'm okay" -> applied only if it moves the expected
+ *    return later (never backwards);
+ *  - an overdue check-in is resolved only while the new time plus grace has
+ *    not passed yet (otherwise the hiker has been silent past it too).
+ */
+export function deviceExtendTransition(prev: CheckinState, ctx: DeviceExtendContext): { ok: true; result: TransitionResult } | { ok: false; reason: string } {
+  const t = ctx.occurredAt instanceof Date ? ctx.occurredAt.getTime() : Number.NaN;
+  const n = ctx.newExpectedReturnAt instanceof Date ? ctx.newExpectedReturnAt.getTime() : Number.NaN;
+  if (!Number.isFinite(t) || !Number.isFinite(n)) return { ok: false, reason: "invalid time" };
+  const madeAt = new Date(Math.min(t, ctx.now.getTime()));
+  if (isTerminal(prev.status)) return { ok: false, reason: `check-in is ${prev.status}` };
+  if (n <= t) return { ok: false, reason: "the new return time is not after the time the extension was made" };
+  // 24 h from when it was made — and a fast device clock can't push it further than that from now.
+  if (n > t + MAX_EXTEND_AHEAD_MIN * 60_000 || n > ctx.now.getTime() + (MAX_EXTEND_AHEAD_MIN + DEVICE_CLOCK_SKEW_MIN) * 60_000) {
+    return { ok: false, reason: "more than 24 hours after the time the extension was made" };
+  }
+  if (ctx.lastScheduleChangeAt && ctx.lastScheduleChangeAt.getTime() > madeAt.getTime()) {
+    return { ok: false, reason: "stale: a newer change to the check-in was already applied" };
+  }
+  if (prev.lastOkAt && prev.lastOkAt.getTime() > madeAt.getTime() && n <= prev.expectedReturnAt.getTime()) {
+    return { ok: false, reason: "stale: it would move the expected return earlier than a later confirmation left it" };
+  }
+  const overdue = isOverdueState(prev.status);
+  if (overdue && overdueDueAt({ expectedReturnAt: ctx.newExpectedReturnAt, graceMinutes: prev.graceMinutes }).getTime() <= ctx.now.getTime()) {
+    return { ok: false, reason: "the new return time plus the grace period has also passed" };
+  }
+  const status: CheckinStatus = prev.status === "scheduled" ? "scheduled" : prev.status === "confirmed_ok" ? "confirmed_ok" : "active";
+  const effects: CheckinEffect[] = [{ type: "reschedule" }];
+  if (overdue) effects.push({ type: "suppress_pending_notices" });
+  if (prev.status === "contact_notified") effects.push({ type: "follow_up_contact", kind: "extended", at: madeAt });
+  return {
+    ok: true,
+    result: { state: { ...prev, status, version: prev.version + 1, expectedReturnAt: ctx.newExpectedReturnAt }, changed: true, event: "extended", effects },
+  };
+}
+
+/** Statuses from which staff may record that the hiker is safe. */
+export const STAFF_RESOLVABLE_STATUSES: readonly CheckinStatus[] = ["overdue", "contact_notified", "active", "confirmed_ok"];
+
+/**
+ * Ghost Guide staff recorded that the hiker is safe (e.g. after calling
+ * them): the check-in is completed, queued jobs are cancelled, undelivered
+ * notices suppressed, and an already-notified contact gets a follow-up.
+ */
+export function staffResolveTransition(prev: CheckinState, now: Date): TransitionResult | { error: string } {
+  if (!STAFF_RESOLVABLE_STATUSES.includes(prev.status)) {
+    return {
+      error:
+        prev.status === "scheduled"
+          ? "This check-in hasn't started yet; there is nothing to resolve."
+          : `This check-in is already ${prev.status === "completed" ? "finished" : "cancelled"}.`,
+    };
+  }
+  const effects: CheckinEffect[] = [{ type: "cancel_jobs" }, { type: "suppress_pending_notices" }];
+  if (prev.contactNotifiedAt) effects.push({ type: "follow_up_contact", kind: "finished", by: "staff" });
+  return { state: { ...prev, status: "completed", completedAt: now }, changed: true, event: "staff_resolved", effects };
 }
 
 export function finishTransition(prev: CheckinState, now: Date): TransitionResult {
@@ -419,6 +526,8 @@ export interface OwnerCopyOptions {
   simulated?: boolean;
   /** Reference time for "today" (clock-only times); default now. */
   now?: Date;
+  /** A completed check-in was closed by Ghost Guide staff (staff_resolved), not by the hiker. */
+  closedByStaff?: boolean;
 }
 
 /**
@@ -489,6 +598,13 @@ export function describeCheckinForOwner(
       };
     }
     case "completed":
+      if (opts.closedByStaff) {
+        return {
+          title: "Check-in closed by Ghost Guide staff",
+          detail: `Our team recorded that you're safe${c.completedAt ? ` at ${formatWhen(c.completedAt, timeZone, now)}` : ""}. No more check-in notices will be sent for this trip.`,
+          tone: "neutral",
+        };
+      }
       return {
         title: "Trip finished",
         detail: `${c.completedAt ? `You finished at ${formatWhen(c.completedAt, timeZone, now)}. ` : ""}No more check-in notices will be sent for this trip.`,

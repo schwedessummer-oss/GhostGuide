@@ -15,6 +15,10 @@
  *    detected" / "in danger"), visible in the trip's notice history and to
  *    safety@ in /admin/notifications and /admin/safety; "Finish trip" ends it
  *    and later job runs only add the allowed "finished" follow-up
+ *  - contact-side consent: every notice to a contact carries a one-click
+ *    opt-out link (/contact/opt-out/<token>) that works without sign-in,
+ *    never shows a location, only acts on the button, and the hiker then
+ *    sees "opted out" (the token is masked in the hiker's own history)
  *  - trip share links: neutral public page, no location unless included,
  *    revoke -> unavailable, expired -> unavailable
  *  - isolation: another customer gets 404 for /trips/<id>/checkin
@@ -216,7 +220,8 @@ const timelineCard = (page) => page.locator("section", { has: page.getByRole("he
 
 /** Start a hike through the hike API (as the signed-in owner) and upload one location fix. */
 async function startHikeWithFix(page, tripId, { minutesAgo, lat = 47.50521, lng = -121.70213, accuracyM = 12.4 }) {
-  const start = await page.request.post("/api/hike/start", { data: { tripId } });
+  // The trip is booked on a random future date; hike start only honours other days in demo mode with this flag.
+  const start = await page.request.post("/api/hike/start", { data: { tripId, demoStartAnyway: true } });
   assert.equal(start.status(), 200, `hike start: ${await start.text()}`);
   const sessionId = (await start.json()).session.id;
   const recordedAt = new Date(Date.now() - minutesAgo * 60_000);
@@ -755,6 +760,8 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     assert.match(body, /\[STALE — 4\d min old\]/, "a 40-minute-old fix is labeled STALE");
     assert.match(body, /Ghost Guide has NOT contacted emergency services\./);
     assert.match(body, /contact local emergency services \(911\)/);
+    // contact-side consent: a one-click opt-out link, unique to this notice
+    assert.match(body, /no longer want these notices, stop them here \(no sign-in needed\): https?:\/\/\S+\/contact\/opt-out\/[A-Za-z0-9_-]{16,64}$/m);
     for (const re of BANNED) assert.doesNotMatch(body, re);
   });
 
@@ -769,6 +776,11 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     assert.match(contactEntries[0], /Simulated — not delivered/);
     assert.match(contactEntries[0], /Ghost Guide has NOT contacted emergency services/);
     assert.match(contactEntries[0], /STALE/);
+    // the opt-out token is for the contact only: masked in the hiker's history
+    assert.match(contactEntries[0], /\/contact\/opt-out\/…/);
+    const [contactNotice] = notices(tripId).filter((n) => n.template === "checkin_overdue_contact");
+    const token = /\/contact\/opt-out\/([A-Za-z0-9_-]+)/.exec(noticeBody(contactNotice.id))[1];
+    assert.ok(!(await page.locator("main").innerText()).includes(token), "the opt-out token is not shown to the hiker");
     assert.ok(!(await page.locator("main").innerText()).includes(caseyEmail), "the full contact address is not shown in the history");
     // Quick actions remain available while overdue; opting out is not offered.
     assert.ok(await page.getByRole("button", { name: "I'm okay" }).isVisible());
@@ -882,6 +894,43 @@ test("check-in lifecycle: setup, I'm okay, extend, overdue → one simulated not
     assert.match(body, /Ghost Guide has NOT contacted emergency services/, "the rest of the notice is kept");
     await page.goto(`/trips/${tripId}/checkin`);
     assert.doesNotMatch(await historyCard(page).innerText(), COORDS);
+  });
+
+  await t.test("the contact's opt-out link works without sign-in, shows no location, and the hiker sees that the contact opted out", async () => {
+    const [contactNotice] = notices(tripId).filter((n) => n.template === "checkin_overdue_contact");
+    const link = /https?:\/\/\S+\/contact\/opt-out\/([A-Za-z0-9_-]{16,64})/.exec(noticeBody(contactNotice.id));
+    assert.ok(link, "the stored notice has an opt-out link");
+    const token = link[1];
+    const anonCtx = await newCtx(browser, MOBILE);
+    contexts.push(anonCtx);
+    const anon = await anonCtx.newPage();
+    watchErrors(anon, consoleErrors);
+    const res = await anon.goto(`/contact/opt-out/${token}`);
+    assert.equal(res.status(), 200);
+    const main = anon.locator("main");
+    await assertText(main, /Stop check-in notices/);
+    await assertText(main, /Robin/);
+    const text = await main.innerText();
+    assert.doesNotMatch(text, COORDS, "no location on the opt-out page");
+    assert.ok(!text.includes(TRAIL_NAME), "no trip details on the opt-out page");
+    assert.equal(await anon.locator('meta[name="robots"]').getAttribute("content"), "noindex, nofollow");
+    // opening the link alone changes nothing
+    assert.notEqual(sql(`select coalesce(consent_confirmed_at::text, '') from public.emergency_contacts where id = '${caseyId}'`)[0][0], "");
+    await anon.getByRole("button", { name: "Stop sending me notices" }).click();
+    await assertText(main, /Done — you won't get any more notices/);
+    const [[consentAt, optedOutAt]] = sql(
+      `select coalesce(consent_confirmed_at::text, ''), coalesce(contact_opted_out_at::text, '') from public.emergency_contacts where id = '${caseyId}'`,
+    );
+    assert.equal(consentAt, "", "consent withdrawn immediately");
+    assert.notEqual(optedOutAt, "", "the contact's opt-out is recorded");
+    // the hiker is told
+    await page.goto("/account/emergency-contacts");
+    const casey = page.locator("li", { has: page.getByText("Casey Consent", { exact: true }) });
+    await assertText(casey, /Opted out/);
+    await assertText(casey, /Your contact opted out\./);
+    // an unknown token shows the same neutral "not valid" page
+    await anon.goto(`/contact/opt-out/${"A".repeat(20)}`);
+    await assertText(anon.locator("main"), /This link isn't valid or has expired/);
   });
 
   await t.test("another customer cannot open this trip's check-ins (404)", async () => {

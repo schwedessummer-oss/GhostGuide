@@ -3,6 +3,7 @@ import { Compass, Menu } from "lucide-react";
 import { getCurrentUser } from "@/server/auth";
 import { can } from "@/server/auth/rbac";
 import { env } from "@/config/env";
+import { SignOutButton } from "@/components/hike/sign-out-guard";
 
 const customerLinks = [
   { href: "/trails", label: "Trails" },
@@ -44,9 +45,7 @@ export async function SiteHeader() {
             ))}
             <li>
               {user ? (
-                <form action="/auth/logout" method="post">
-                  <button className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-muted hover:bg-forest-50">Sign out</button>
-                </form>
+                <SignOutButton className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-muted hover:bg-forest-50">Sign out</SignOutButton>
               ) : (
                 <Link href="/login" className="ml-2 inline-flex min-h-11 items-center rounded-xl bg-forest-700 px-4 font-semibold text-white hover:bg-forest-800">
                   Sign in
@@ -71,9 +70,7 @@ export async function SiteHeader() {
               ))}
               <li>
                 {user ? (
-                  <form action="/auth/logout" method="post">
-                    <button className="flex min-h-11 w-full items-center rounded-lg px-3 text-left font-medium hover:bg-forest-50">Sign out</button>
-                  </form>
+                  <SignOutButton className="flex min-h-11 w-full items-center rounded-lg px-3 text-left font-medium hover:bg-forest-50">Sign out</SignOutButton>
                 ) : (
                   <Link href="/login" className="flex min-h-11 items-center rounded-lg px-3 font-semibold text-forest-800 hover:bg-forest-50">
                     Sign in

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChevronLeft, ExternalLink, Footprints, Package, ScrollText } from "lucide-react";
 import { Alert, Badge, ButtonLink, Card, Container, PageHeader, SimulatedBadge } from "@/components/ui";
+import { ClosureNotice } from "@/components/hike/closure-notice";
+import { AddonDetailsList } from "@/components/hike/trip-logistics";
 import { CheckinSetupCard } from "@/components/checkin/checkin-setup-card";
 import { PrepareChecklist } from "@/components/hike/prepare-checklist";
 import { PermissionCheck } from "@/components/hike/permission-check";
@@ -11,7 +13,7 @@ import { PermitStatusForm } from "@/components/hike/permit-status-form";
 import { LimitationsCallout, LimitationsList } from "@/components/hike/limitations";
 import { getCurrentUser, requireUser } from "@/server/auth";
 import { getOwnedTrip } from "@/server/trips/queries";
-import { getPrepareView, type AddonReadiness } from "@/server/hike/queries";
+import { getPrepareView } from "@/server/hike/queries";
 import { formatDate, titleCase } from "@/lib/format";
 import { updatePermitAction } from "./actions";
 
@@ -22,25 +24,6 @@ export async function generateMetadata({ params }: PageProps<"/trips/[id]/prepar
   const user = await getCurrentUser();
   const trip = user ? await getOwnedTrip(user, id) : null;
   return { title: trip ? `Get ready — ${trip.trailName}` : "Get ready" };
-}
-
-function readiness(a: AddonReadiness): { label: string; tone: "forest" | "amber" | "red" | "blue" | "neutral" } {
-  switch (a.status) {
-    case "confirmed":
-    case "completed":
-      return { label: "Ready", tone: "forest" };
-    case "awaiting_customer":
-      return { label: "Needs your confirmation", tone: "amber" };
-    case "pending":
-    case "requested":
-      return { label: "Being arranged", tone: "blue" };
-    case "failed":
-      return { label: "Delayed — retrying", tone: "amber" };
-    case "needs_attention":
-      return { label: "Problem — our team is on it", tone: "red" };
-    case "cancelled":
-      return { label: "Cancelled", tone: "neutral" };
-  }
 }
 
 export default async function PreparePage({ params }: PageProps<"/trips/[id]/prepare">) {
@@ -63,7 +46,7 @@ export default async function PreparePage({ params }: PageProps<"/trips/[id]/pre
         title={`Get ready for ${trip.trailName}`}
         description={
           <span>
-            {trip.plannedDate ? formatDate(trip.plannedDate, { weekday: "long", month: "long", day: "numeric" }) : "Date not set"}
+            {(view.bookedDate ?? trip.plannedDate) ? formatDate((view.bookedDate ?? trip.plannedDate)!, { weekday: "long", month: "long", day: "numeric" }) : "Date not set"}
             {trip.startTime ? ` · start ${trip.startTime}` : ""} · {trip.partySize} {trip.partySize === 1 ? "hiker" : "hikers"}
           </span>
         }
@@ -85,6 +68,9 @@ export default async function PreparePage({ params }: PageProps<"/trips/[id]/pre
             <Alert tone="forest" title="This hike is finished">
               <Link href={`/trips/${trip.id}/complete`} className="font-semibold underline">See your summary</Link>
             </Alert>
+          ) : null}
+          {trip.status !== "completed" ? (
+            <ClosureNotice closures={view.closures} blocking={view.closedOnBookedDate} timeZone={view.timezone} context="booked" />
           ) : null}
           <LimitationsCallout />
 
@@ -167,24 +153,12 @@ export default async function PreparePage({ params }: PageProps<"/trips/[id]/pre
                 <h2 id="addon-heading" className="flex items-center gap-2 text-lg font-bold">
                   <Package aria-hidden className="size-5" /> Gear, shuttle &amp; meals
                 </h2>
-                {view.addons.length === 0 ? (
-                  <p className="mt-2 text-muted">No add-ons on this booking.</p>
-                ) : (
-                  <ul className="mt-3 space-y-2">
-                    {view.addons.map((a) => {
-                      const r = readiness(a);
-                      return (
-                        <li key={a.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-sand-200 p-3">
-                          <span className="font-semibold">{a.name}</span>
-                          <span className="flex flex-wrap items-center gap-1.5">
-                            <Badge tone={r.tone}>{r.label}</Badge>
-                            {a.simulated ? <SimulatedBadge label="Simulated partner" /> : null}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
+                <AddonDetailsList addons={view.logistics.addons} timeZone={view.timezone} />
+                {view.logistics.addons.length ? (
+                  <p className="mt-2 text-sm text-muted">
+                    These details (and your permit status) are saved with your offline download — the Help screen shows them without signal.
+                  </p>
+                ) : null}
                 <Link href={`/trips/${trip.id}`} className="mt-2 inline-flex min-h-11 items-center font-semibold text-forest-800 underline">
                   Details and actions on your trip page
                 </Link>

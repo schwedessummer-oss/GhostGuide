@@ -18,7 +18,7 @@ export default async function AuditPage({ searchParams }: PageProps<"/admin/audi
     <>
       <AdminHeader title="Audit log" description="Sensitive staff and system actions. Metadata is redacted: no contact details, coordinates or message bodies are stored here." />
       <FilterBar action="/admin/audit" resetHref="/admin/audit">
-        <SelectField id="au-action" name="action" label="Action" options={data.actions} placeholder="Any action" defaultValue={filters.action ?? ""} />
+        <SelectField id="au-action" name="action" label="Action" options={data.actions.map((a) => ({ value: a, label: a }))} placeholder="Any action" defaultValue={filters.action ?? ""} />
         <TextField id="au-type" name="entityType" label="Entity type" placeholder="e.g. trail" defaultValue={filters.entityType ?? ""} />
         <TextField id="au-id" name="entityId" label="Entity id" defaultValue={filters.entityId ?? ""} />
         <TextField id="au-actor" name="actor" label="Actor email" defaultValue={filters.actor ?? ""} />

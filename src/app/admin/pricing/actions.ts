@@ -1,7 +1,7 @@
 "use server";
 
 import type { FormState } from "@/server/admin/common";
-import { deletePricingRule, savePricingRule, updateAddonPricing, updateTrailBasePrice } from "@/server/admin/pricing";
+import { createAddon, deletePricingRule, savePricingRule, updateAddon, updateTrailBasePrice } from "@/server/admin/pricing";
 import { checked, runAction, str } from "../_lib/action";
 
 const P = "/admin/pricing";
@@ -37,6 +37,24 @@ export async function trailPriceAction(trailId: string, _prev: FormState, fd: Fo
   return runAction("pricing.manage", P, (user) => updateTrailBasePrice(user, trailId, str(fd, "price")));
 }
 
-export async function addonPriceAction(addonId: string, _prev: FormState, fd: FormData): Promise<FormState> {
-  return runAction("pricing.manage", P, (user) => updateAddonPricing(user, addonId, { dollars: str(fd, "price"), active: checked(fd, "active") }));
+function addonInput(fd: FormData) {
+  return {
+    name: str(fd, "name"),
+    description: str(fd, "description"),
+    price: str(fd, "price"),
+    pricingUnit: str(fd, "pricingUnit") as never,
+    dailyCapacity: str(fd, "dailyCapacity"),
+    requiresCustomerConfirmation: checked(fd, "requiresCustomerConfirmation"),
+    regionId: str(fd, "regionId"),
+    active: checked(fd, "active"),
+  };
+}
+
+/** Edit an add-on (name, description, price, unit, daily capacity, confirmation, region, active). Admin only. */
+export async function saveAddonAction(addonId: string, _prev: FormState, fd: FormData): Promise<FormState> {
+  return runAction("pricing.manage", P, (user) => updateAddon(user, addonId, addonInput(fd)));
+}
+
+export async function createAddonAction(_prev: FormState, fd: FormData): Promise<FormState> {
+  return runAction("pricing.manage", P, (user) => createAddon(user, { ...addonInput(fd), code: str(fd, "code"), kind: str(fd, "kind") as never }));
 }

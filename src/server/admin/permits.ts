@@ -10,6 +10,7 @@ import {
   assertCan,
   auditInStaffTx,
   auditInSystemTx,
+  blankAsNull,
   fail,
   guarded,
   hasRole,
@@ -67,7 +68,7 @@ const requirementSchema = z.object({
   officialUrl: httpsUrl,
   requirementSummary: requiredText(5, 2000, "Requirement summary"),
   howToObtain: z.string().trim().max(4000).default(""),
-  leadTimeDays: z.union([z.coerce.number().int().min(0).max(365), z.literal("")]).transform((v) => (v === "" ? null : v)),
+  leadTimeDays: blankAsNull(z.coerce.number("Enter the lead time in whole days.").int("Enter the lead time in whole days.").min(0, "Lead time cannot be negative.").max(365, "Lead time can be at most 365 days.")),
   sourceId: z.union([z.uuid(), z.literal("")]).transform((v) => (v === "" ? null : v)),
   verifiedAt: z.union([isoDate, z.literal("")]).transform((v) => (v === "" ? null : v)),
 });

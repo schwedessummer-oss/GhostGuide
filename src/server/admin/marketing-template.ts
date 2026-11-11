@@ -46,7 +46,14 @@ export interface MarketingSourceRef {
   label: string;
   url: string | null;
   retrievedAt: string | null;
+  /** when staff last checked the facts from this source (see `verifiedKind`) */
   verifiedAt: string | null;
+  /**
+   * true only when every fact from this source has provenance kind
+   * 'verified'; otherwise the check is described as "reviewed". Drafts
+   * saved before this field existed are treated as "reviewed".
+   */
+  verifiedKind?: boolean;
 }
 
 export interface MarketingDraftContent {
@@ -81,8 +88,18 @@ const KIND_NOTE: Record<FactKind, string> = {
   demo: "demonstration data",
 };
 
+/**
+ * The word for "a person checked this". Only provenance kind 'verified'
+ * may be called verified; estimates, operator notes and demo data were
+ * merely reviewed.
+ */
+export function checkedWord(kind: FactKind): "verified" | "reviewed" {
+  return kind === "verified" ? "verified" : "reviewed";
+}
+
 function factLine(f: MarketingFact): string {
-  const when = f.verifiedAt ? `verified ${day(f.verifiedAt)}` : "not yet verified";
+  const word = checkedWord(f.kind);
+  const when = f.verifiedAt ? `${word} ${day(f.verifiedAt)}` : `not yet ${word}`;
   const retrieved = f.retrievedAt ? `, source retrieved ${day(f.retrievedAt)}` : "";
   return `- ${f.label}: ${f.value} (${KIND_NOTE[f.kind]}; ${f.sourceLabel}; ${when}${retrieved})`;
 }
@@ -106,8 +123,9 @@ export function composeMarketingDraft(input: MarketingTemplateInput): MarketingD
 
   for (const f of facts) {
     const fr = classifyFactFreshness(f.verifiedAt ?? f.retrievedAt, input.now);
-    if (fr.status === "stale") warnings.push(`${f.label} was last verified ${fr.ageDays} days ago (older than ${FACTS_STALE_DAYS} days). Re-verify before publishing.`);
-    if (fr.status === "unverified") warnings.push(`${f.label} has no verification or retrieval date.`);
+    const word = checkedWord(f.kind);
+    if (fr.status === "stale") warnings.push(`${f.label} was last ${word} ${fr.ageDays} days ago (older than ${FACTS_STALE_DAYS} days). Check it again before publishing.`);
+    if (fr.status === "unverified") warnings.push(`${f.label} has no ${word === "verified" ? "verification" : "review"} or retrieval date.`);
     if (f.kind === "estimate") warnings.push(`${f.label} is an estimate; keep the "estimate" wording.`);
   }
   if (input.isDemo) warnings.push("This is a DEMONSTRATION trail (fictional). Do not publish it as a real place.");
@@ -139,7 +157,8 @@ export function composeMarketingDraft(input: MarketingTemplateInput): MarketingD
     const key = `${f.sourceLabel}|${f.sourceUrl ?? ""}`;
     const prev = sourceMap.get(key);
     const verifiedAt = [prev?.verifiedAt, f.verifiedAt].filter(Boolean).sort()[0] ?? null;
-    sourceMap.set(key, { label: f.sourceLabel, url: f.sourceUrl, retrievedAt: prev?.retrievedAt ?? f.retrievedAt, verifiedAt });
+    const verifiedKind = (prev ? prev.verifiedKind === true : true) && f.kind === "verified";
+    sourceMap.set(key, { label: f.sourceLabel, url: f.sourceUrl, retrievedAt: prev?.retrievedAt ?? f.retrievedAt, verifiedAt, verifiedKind });
   }
   if (input.weather) {
     sourceMap.set(`weather|${input.weather.sourceUrl ?? ""}`, {
@@ -147,13 +166,16 @@ export function composeMarketingDraft(input: MarketingTemplateInput): MarketingD
       url: input.weather.sourceUrl,
       retrievedAt: input.weather.fetchedAt,
       verifiedAt: null,
+      verifiedKind: false,
     });
   }
   const sources = [...sourceMap.values()];
   if (sources.length) {
     body.push("", "Sources:");
     for (const s of sources) {
-      const when = [s.retrievedAt ? `retrieved ${day(s.retrievedAt)}` : null, s.verifiedAt ? `verified ${day(s.verifiedAt)}` : null].filter(Boolean).join("; ");
+      const when = [s.retrievedAt ? `retrieved ${day(s.retrievedAt)}` : null, s.verifiedAt ? `${s.verifiedKind ? "verified" : "reviewed"} ${day(s.verifiedAt)}` : null]
+        .filter(Boolean)
+        .join("; ");
       body.push(`- ${s.label}${s.url ? ` (${s.url})` : ""}${when ? `; ${when}` : "; no retrieval date recorded"}`);
     }
   }

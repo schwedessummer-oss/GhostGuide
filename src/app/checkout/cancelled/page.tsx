@@ -4,7 +4,7 @@ import { Alert, ButtonLink, Card, Container } from "@/components/ui";
 import { BookingStatusBadge } from "@/components/commerce/status-badges";
 import { requireUser } from "@/server/auth";
 import { getOwnedBooking } from "@/server/commerce/queries";
-import { holdIsValid } from "@/domain/booking";
+import { bookingStatusCopy, holdIsValid } from "@/domain/booking";
 import { formatInZone } from "@/lib/time";
 
 export const metadata: Metadata = { title: "Checkout status", robots: { index: false } };
@@ -18,6 +18,8 @@ export default async function CheckoutCancelledPage({ searchParams }: PageProps<
   const b = await getOwnedBooking(user, bookingId);
   if (!b) notFound();
   const stillHeld = b.status === "pending_payment" && holdIsValid(b.holdExpiresAt, new Date());
+  // A payment that still arrived after the checkout ended is refunded: never say "not charged" then.
+  const latePaid = !!b.paidAt && (b.status === "expired" || b.status === "payment_failed");
   const tripHref = `/trips/${b.tripId}`;
 
   return (
@@ -28,12 +30,14 @@ export default async function CheckoutCancelledPage({ searchParams }: PageProps<
             {b.status === "confirmed" ? "Your booking is confirmed" : reason === "declined" ? "Payment declined" : "Checkout not completed"}
           </h1>
           <p>
-            Status: <BookingStatusBadge status={b.status} />
+            Status: <BookingStatusBadge status={b.status} paidAt={b.paidAt} />
           </p>
           {b.status === "confirmed" ? (
             <Alert tone="forest" title="Good news — this booking is confirmed">
               The payment went through after all.
             </Alert>
+          ) : latePaid ? (
+            <Alert tone="amber">{bookingStatusCopy(b.status, { paidAt: b.paidAt }).description}</Alert>
           ) : stillHeld ? (
             <Alert tone="amber" title="Your spots are still held">
               You haven&apos;t been charged. We hold your spots until{" "}

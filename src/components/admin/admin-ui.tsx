@@ -3,7 +3,10 @@ import clsx from "clsx";
 import type { ReactNode } from "react";
 import { Lock } from "lucide-react";
 import { Badge, SimulatedBadge } from "@/components/ui";
-import { formatAge, formatDateTime } from "@/lib/format";
+import { formatAge } from "@/lib/format";
+import { formatAdminDateTime } from "./time";
+
+export { formatAdminDateTime };
 
 /*
  * Small presentational helpers for admin pages (server-component safe).
@@ -137,11 +140,11 @@ export function AdminHeader({ title, description, eyebrow, actions }: { title: R
   );
 }
 
-export function When({ at, tz, age }: { at: Date | string | null | undefined; tz?: string; age?: boolean }) {
+export function When({ at, tz, age }: { at: Date | string | null | undefined; tz?: string | null; age?: boolean }) {
   if (!at) return <span className="text-muted">—</span>;
   return (
     <time dateTime={new Date(at).toISOString()} title={new Date(at).toISOString()}>
-      {formatDateTime(at, tz)}
+      {formatAdminDateTime(at, tz)}
       {age ? <span className="block text-xs text-muted">{formatAge(at)}</span> : null}
     </time>
   );

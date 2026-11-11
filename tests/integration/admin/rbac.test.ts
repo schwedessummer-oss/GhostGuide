@@ -2,7 +2,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import { closeDb, sql, withSystem, withUser } from "@/server/db";
 import type { SessionUser } from "@/server/auth";
 import { parsePage } from "@/server/admin/common";
-import { savePricingRule, updateTrailBasePrice, updateAddonPricing, getPricingData, deletePricingRule } from "@/server/admin/pricing";
+import { savePricingRule, updateTrailBasePrice, updateAddon, createAddon, getPricingData, deletePricingRule } from "@/server/admin/pricing";
 import { setFlag, listFlags } from "@/server/admin/feature-flags";
 import { grantStaffRole, listStaff, revokeStaffRole } from "@/server/admin/staff";
 import { getCustomerDetail, revealCustomerSensitive, searchCustomers } from "@/server/admin/customers";
@@ -103,7 +103,9 @@ describe("admin RBAC matrix", () => {
     await expectForbidden(listFlags(editor));
     await expectForbidden(savePricingRule(editor, null, rule));
     await expectForbidden(updateTrailBasePrice(editor, trail.id, "12"));
-    await expectForbidden(updateAddonPricing(editor, ZERO, { dollars: "1", active: true }));
+    const addon = { name: "Snack pack", description: "", price: "1", pricingUnit: "per_person", dailyCapacity: "", requiresCustomerConfirmation: false, regionId: "", active: true } as const;
+    await expectForbidden(updateAddon(editor, ZERO, addon));
+    await expectForbidden(createAddon(editor, { ...addon, code: "snack-pack", kind: "meal_pack" }));
     await expectForbidden(listBookings(editor, {}, page));
     // but they can work on trails and content
     expect((await listAdminTrails(editor)).length).toBeGreaterThan(0);

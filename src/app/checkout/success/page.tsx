@@ -6,7 +6,7 @@ import { AutoRefresh } from "@/components/commerce/auto-refresh";
 import { BookingStatusBadge } from "@/components/commerce/status-badges";
 import { requireUser } from "@/server/auth";
 import { getOwnedBooking } from "@/server/commerce/queries";
-import { BOOKING_STATUS_COPY } from "@/domain/booking";
+import { bookingStatusCopy } from "@/domain/booking";
 import { formatDate, formatMoney } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Booking status", robots: { index: false } };
@@ -23,7 +23,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/
   const user = await requireUser(`/checkout/success?booking=${encodeURIComponent(bookingId)}`);
   const b = await getOwnedBooking(user, bookingId);
   if (!b) notFound();
-  const copy = BOOKING_STATUS_COPY[b.status];
+  const copy = bookingStatusCopy(b.status, { paidAt: b.paidAt });
   const tripHref = `/trips/${b.tripId}`;
 
   return (
@@ -72,7 +72,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/
             <>
               <h1 className="text-3xl font-bold">{copy.label}</h1>
               <p>
-                Status: <BookingStatusBadge status={b.status} />
+                Status: <BookingStatusBadge status={b.status} paidAt={b.paidAt} />
               </p>
               <Alert tone={copy.tone}>{copy.description}</Alert>
               <div className="flex flex-wrap gap-3">

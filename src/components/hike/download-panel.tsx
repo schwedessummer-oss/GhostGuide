@@ -162,7 +162,8 @@ export function DownloadPanel({ tripId, serverLastDownload }: { tripId: string; 
       </div>
       {!online ? <p className="text-sm text-muted">You&apos;re offline. Connect to download.</p> : null}
       <p className="text-xs text-muted">
-        Saves the hike and help screens, your route, story stops, approved narration and emergency info on this device. No map tiles are stored.
+        Saves the hike and help screens, your route, story stops, approved narration, emergency info and your booking details (add-ons, locker
+        access code, pickup times, permit status) on this device. No map tiles are stored.
         Browsers can clear offline data under storage pressure — check again on the morning of your hike.
       </p>
     </div>

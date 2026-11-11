@@ -5,6 +5,7 @@
  */
 import { z } from "zod";
 import { ACCESSIBILITY_FEATURES, TERRAIN_OPTIONS } from "@/domain/types";
+import { notBlank } from "./number-fields";
 
 export const DIFFICULTIES = ["easy", "moderate", "hard", "strenuous"] as const;
 export const ROUTE_TYPES = ["loop", "out_and_back", "point_to_point"] as const;
@@ -46,8 +47,9 @@ export function isFactField(v: unknown): v is FactField {
 /** Validated value(s) for a fact: column → value. */
 export type FactValue = Record<string, string | number | boolean | string[] | null>;
 
-const num = (min: number, max: number) => z.coerce.number().refine(Number.isFinite, "Enter a number").min(min).max(max);
-const int = (min: number, max: number) => z.coerce.number().int("Enter a whole number").min(min).max(max);
+// Blank is "Enter a number", never 0 (Number("") is 0: a blank trailhead would land at 0,0).
+const num = (min: number, max: number) => notBlank(z.coerce.number("Enter a number").refine(Number.isFinite, "Enter a number").min(min).max(max), "Enter a number");
+const int = (min: number, max: number) => notBlank(z.coerce.number("Enter a whole number").int("Enter a whole number").min(min).max(max), "Enter a whole number");
 
 /** Parse raw form input for one fact field into column values. */
 export function parseFactValue(field: FactField, raw: { value?: unknown; values?: unknown; lat?: unknown; lng?: unknown }): { ok: true; value: FactValue } | { ok: false; error: string } {

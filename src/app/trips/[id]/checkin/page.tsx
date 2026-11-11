@@ -13,6 +13,8 @@ import { CheckinOptOutForm, CheckinQuickActions } from "@/components/checkin/qui
 import { CheckinSetupForm } from "@/components/checkin/setup-form";
 import { CheckinTimeline, NotificationHistory } from "@/components/checkin/history";
 import { CHECKIN_EXPLANATION, CHECKIN_LIMITS_NOTE } from "@/components/checkin/copy";
+import { RunnerDelayNotice } from "@/components/checkin/runner-delay";
+import { getRunnerHealth } from "@/server/jobs/health";
 import { isAwaiting, isOpen } from "@/domain/checkin";
 import { formatDate } from "@/lib/format";
 
@@ -38,7 +40,11 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
   // repeats them when neither is on the page.
   const eligible = trip.status === "booked" || trip.status === "active";
   const setupFormShown = c ? isAwaiting(c.status) : eligible && d.checkinsEnabled && d.contacts.some((x) => x.hasConsent);
-  const [events, notifications] = await Promise.all([d.checkin ? listCheckinEvents(user, d.checkin.id) : Promise.resolve([]), listTripNotifications(user, trip.id)]);
+  const [events, notifications, health] = await Promise.all([
+    d.checkin ? listCheckinEvents(user, d.checkin.id) : Promise.resolve([]),
+    listTripNotifications(user, trip.id),
+    getRunnerHealth(),
+  ]);
 
   return (
     <Container className="py-8 sm:py-10">
@@ -56,6 +62,8 @@ export default async function TripCheckinPage({ params }: PageProps<"/trips/[id]
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
+          {/* The setup card shows its own notice; here only for an open check-in. */}
+          {c && isOpen(c.status) ? <RunnerDelayNotice health={health} /> : null}
           {c ? (
             <Card aria-labelledby="checkin-status-heading">
               <h2 id="checkin-status-heading" className="text-xl font-bold">

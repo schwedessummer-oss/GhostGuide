@@ -103,7 +103,19 @@ describe("times carry a date unless they are today", () => {
       location: null,
       locationSharingDisabled: false,
     });
-    expect(msg.body).toContain("Their last “I'm okay” was at Fri, Nov 13, 2:00 PM PST.");
+    expect(msg.body).toContain("Last “I'm okay”: Nov 13, 2:00 PM PST."); // SMS: compact date, no weekday
+    const email = buildOverdueContactMessage({
+      channel: "email",
+      hikerFirstName: "Hana",
+      trailName: "Lantern Creek Loop",
+      expectedReturnAt: at(-120),
+      lastOkAt: yesterday,
+      timeZone: TZ,
+      now,
+      location: null,
+      locationSharingDisabled: false,
+    });
+    expect(email.body).toContain("Their last “I'm okay” was at Fri, Nov 13, 2:00 PM PST.");
   });
 });
 

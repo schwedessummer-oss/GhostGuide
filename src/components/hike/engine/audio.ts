@@ -8,7 +8,31 @@
  * Browsers only allow audio after a user gesture: call unlock() from a tap.
  * Audio may stop when the screen locks; that is a browser limitation.
  */
+import { audioCacheKey } from "@/domain/offline-manifest";
 import type { BundleNarration } from "@/lib/offline/wire";
+
+/**
+ * Where to fetch a narration's recording, in order: the stable on-device key
+ * the download stored it under (answered only by the service worker, from the
+ * trip cache — unaffected by the bundle re-signing audio URLs), then the
+ * signed URL from the bundle.
+ */
+export function audioSources(n: Pick<BundleNarration, "id" | "version" | "audioUrl">, swControlled: boolean): string[] {
+  if (!n.audioUrl) return [];
+  return swControlled ? [audioCacheKey(n.id, n.version), n.audioUrl] : [n.audioUrl];
+}
+
+async function fetchFirstAudio(urls: string[]): Promise<Blob> {
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, { credentials: "same-origin" });
+      if (res.ok) return await res.blob();
+    } catch {
+      /* try the next source */
+    }
+  }
+  throw new Error("audio unavailable");
+}
 
 export type PlaybackMode = "audio" | "device_voice" | "text_only" | "muted";
 
@@ -74,9 +98,8 @@ export class NarrationPlayer {
     }
     if (n.audioUrl) {
       try {
-        const res = await fetch(n.audioUrl, { credentials: "same-origin" });
-        if (!res.ok) throw new Error(`audio ${res.status}`);
-        const blob = await res.blob();
+        const swControlled = typeof navigator !== "undefined" && !!navigator.serviceWorker?.controller;
+        const blob = await fetchFirstAudio(audioSources(n, swControlled));
         if (token !== this.token) return "audio";
         this.objectUrl = URL.createObjectURL(blob);
         if (!this.el) this.el = new Audio();

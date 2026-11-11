@@ -8,7 +8,9 @@
  * (locker code for the owner, shuttle awaiting explicit confirmation) →
  * receipt → cancellation with policy/refund preview → refund after jobs;
  * declined payments; another customer gets 404s; an admin-blocked date is
- * refused at checkout with a clear message.
+ * refused at checkout with a clear message; locker gear held in one
+ * customer's checkout is not offered to another, and a staff-cancelled
+ * pending checkout frees it and says no payment had been completed.
  *
  * Independent of other specs: it signs up its own customers (unique emails
  * per run), uses dates chosen at random from a wide window (so re-runs on a
@@ -775,6 +777,70 @@ test("checkout refuses a date on which the trail has a scheduled closure", { tim
     await card.getByLabel("Delete this closure record entirely.").check();
     await card.getByRole("button", { name: "Delete (entered by mistake)" }).click();
     await admin.locator("li").filter({ hasText: reason }).waitFor({ state: "detached", timeout: NAV });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 5b. Locker gear held in a checkout is not sold twice; staff cancel of a
+//     pending checkout frees it and reports honestly that nothing was paid
+// ---------------------------------------------------------------------------
+
+test("locker gear held in another customer's checkout is not sold again; a staff-cancelled checkout frees it", { timeout: 300_000 }, async () => {
+  const day = nextDow(addDays(today, 7 * randInt(6, 45)), 3); // a Wednesday
+  const ctxB = await newCustomerContext(browser);
+  const buyerB = await ctxB.newPage();
+  try {
+    await signUp(buyerB, "gearB");
+    const tripB = await createSavedTrip(buyerB, { date: day, party: 2 });
+    const tripA = await createSavedTrip(owner, { date: day, party: 4 });
+
+    /** Kits left for the gear add-on on `day`, as customer B's checkout page states it (asked for 12 hikers, so the count is always shown). */
+    const kitsLeft = async () => {
+      await buyerB.goto(`/trips/${tripB}/checkout?${new URLSearchParams({ date: day, party: "12", addons: "gear-poles-pack" })}`, { timeout: NAV });
+      const desc = buyerB.locator("#addon-gear-poles-pack-desc");
+      await desc.waitFor({ timeout: UI });
+      const text = await desc.innerText();
+      const m = text.match(/\((\d+) kits? left\)/);
+      assert.ok(m, `kits-left note expected for 12 hikers: ${text}`);
+      return Number(m[1]);
+    };
+    const before = await kitsLeft();
+    assert.ok(before >= 4, `this flow needs at least 4 free kits on ${day} (found ${before})`);
+
+    // Customer A holds a checkout for 4 hikers with the gear kit (not paid yet).
+    await owner.goto(`/trips/${tripA}/checkout`);
+    await setCheckoutChoices(owner, { date: day, party: 4 });
+    await toggleAddon(owner, "Trailhead gear locker kit", "gear-poles-pack");
+    const sessionA = await continueToPayment(owner);
+
+    // The hold already takes A's kits: B is never offered them (COMMERCE-7).
+    assert.equal(await kitsLeft(), before - 4, "held kits count against the locker stock");
+    if (before - 4 < 2) {
+      await buyerB.goto(`/trips/${tripB}/checkout?${new URLSearchParams({ date: day, party: "2", addons: "gear-poles-pack" })}`, { timeout: NAV });
+      await assertText(buyerB.locator("main"), /Not enough locker gear for 2 hikers on this date/);
+      assert.ok(await buyerB.getByRole("button", { name: /Continue to secure payment/ }).isDisabled());
+    }
+
+    // Staff cancel A's pending checkout: the message says no payment had been completed (COMMERCE-1).
+    const bookingA = await adminFindBookingId(admin, ownerEmail, "pending_payment");
+    await admin.goto(`/admin/bookings/${bookingA}`, { timeout: NAV });
+    assert.ok((await admin.locator("main").innerText()).includes(TRAIL_NAME));
+    await admin.getByLabel("Reason (shared with the customer)").fill(`QA commerce: locker maintenance ${run}`);
+    await admin.getByLabel(/I understand this cancels the booking/).check();
+    await admin.getByRole("button", { name: "Cancel booking" }).click();
+    await assertText(admin.locator("body"), /No payment had been completed/, NAV);
+    assert.ok(!(await admin.locator("body").innerText()).includes("nothing was charged"), "no unverified 'nothing was charged' claim");
+
+    // The provider session can no longer be paid, and the kits are free again.
+    await owner.goto(`/checkout/demo/${sessionA}`);
+    await assertText(owner.locator("main"), /This simulated checkout has ended/);
+    assert.equal(await owner.getByRole("button", { name: "Simulate successful payment" }).count(), 0, "an ended checkout cannot be paid");
+    await owner.goto(`/trips/${tripA}`);
+    assert.equal(await bookingBadgeText(owner), "Checkout expired");
+    await assertText(owner.locator("main"), /This hike is saved but not booked yet/);
+    assert.equal(await kitsLeft(), before, "the cancelled hold released its kits");
+  } finally {
+    await ctxB.close();
   }
 });
 

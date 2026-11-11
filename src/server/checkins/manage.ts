@@ -47,6 +47,8 @@ export interface CheckinView extends CheckinState {
   emergencyContactId: string | null;
   createdAt: Date;
   updatedAt: Date;
+  /** completed by Ghost Guide staff ("hiker confirmed safe"), not by the hiker */
+  closedByStaff: boolean;
 }
 
 export interface CheckinEventView {
@@ -86,9 +88,11 @@ export async function getOwnedCheckin(user: SessionUser, tripId: string): Promis
   const [c] = await withUser(
     user,
     (tx) => tx<CheckinView[]>`
-      select id, trip_id, emergency_contact_id, expected_return_at, grace_minutes, reminder_offsets_min, status, version,
-             last_ok_at, overdue_at, contact_notified_at, completed_at, created_at, updated_at
-      from public.trip_checkins where trip_id = ${tripId} and user_id = ${user.id}`,
+      select c.id, c.trip_id, c.emergency_contact_id, c.expected_return_at, c.grace_minutes, c.reminder_offsets_min, c.status, c.version,
+             c.last_ok_at, c.overdue_at, c.contact_notified_at, c.completed_at, c.created_at, c.updated_at,
+             (c.status = 'completed' and exists (select 1 from public.checkin_events e where e.checkin_id = c.id and e.kind = 'staff_resolved'))
+               as closed_by_staff
+      from public.trip_checkins c where c.trip_id = ${tripId} and c.user_id = ${user.id}`,
   );
   return c ?? null;
 }
@@ -258,6 +262,10 @@ export async function confirmOkByUser(user: SessionUser, tripId: string, now = n
     if (row.status === "cancelled") return { ok: false, error: "Check-ins are off for this trip." };
     const result = confirmOkTransition(row, { tappedAt: now, now });
     await applyTransition(tx, row, result, { now, who: { actor: "user", actorId: user.id }, details: { source: "web" } });
+    if (result.event === "ok_recorded_late") {
+      // Not reachable with a live tap (an overdue check-in's deadline is always in the past), but never claim more than happened.
+      return { ok: true, message: "We've recorded your “I'm okay”, but your check-in is still waiting for confirmation. Please try again." };
+    }
     if (result.state.version === row.version) {
       return { ok: true, message: "Thanks — you're confirmed okay. Please still tap “Finish trip” when you're back." };
     }

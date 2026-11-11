@@ -92,8 +92,8 @@ export function draftWarnings(draft: Pick<DraftRow, "factsAsOf" | "trailIsDemo" 
   if (!weather) w.push("No weather snapshot attached.");
   else w.push(...classifyWeatherFreshness({ fetchedAt: weather.fetchedAt, simulated: weather.isSimulated }, now).warnings);
   const facts = classifyFactFreshness(draft.factsAsOf, now);
-  if (facts.status === "stale") w.push(`The oldest fact was verified ${facts.ageDays} days ago (older than ${FACTS_STALE_DAYS} days). Re-verify before publishing.`);
-  if (facts.status === "unverified") w.push("The facts have no verification date.");
+  if (facts.status === "stale") w.push(`The oldest fact was last checked ${facts.ageDays} days ago (older than ${FACTS_STALE_DAYS} days). Check it again before publishing.`);
+  if (facts.status === "unverified") w.push("The facts have no verification or review date.");
   if (!draft.sources.length) w.push("No sources are attached to this draft.");
   return w;
 }

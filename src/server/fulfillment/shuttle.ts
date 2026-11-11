@@ -6,7 +6,7 @@ import { enqueueJob, type JobOutcome } from "@/server/jobs/queue";
 import { recordAudit } from "@/server/audit";
 import { log } from "@/server/log";
 import { getShuttleProvider, ShuttleConfirmationRequiredError } from "@/integrations/partners";
-import { loadFulfillmentContext, quoteShuttle } from "./process";
+import { compensateLatePartnerOrder, loadFulfillmentContext, quoteShuttle } from "./process";
 
 /**
  * Customer-confirmed shuttle rides.
@@ -99,11 +99,20 @@ export async function confirmShuttleQuote(user: SessionUser, raw: z.input<typeof
     if (row.quotedPriceCents !== input.quotedPriceCents || !row.pickupAt || new Date(row.pickupAt).toISOString() !== new Date(input.pickupAt).toISOString()) {
       return { ok: false, code: "changed", error: "The quote changed since you opened this page. Please review the new details." };
     }
-    await tx`
+    const [confirmed] = await tx<{ confirmedMs: number }[]>`
       update public.shuttle_requests set customer_confirmed_at = now(), status = 'confirmed'
-      where id = ${row.srId} and status = 'quoted'`;
+      where id = ${row.srId} and status = 'quoted'
+      returning (extract(epoch from customer_confirmed_at) * 1000)::bigint as confirmed_ms`;
+    if (!confirmed) return { ok: false, code: "state", error: "This shuttle quote cannot be confirmed right now." };
     await tx`update public.fulfillments set status = 'requested' where id = ${input.fulfillmentId}`;
-    await enqueueJob(tx, "shuttle.request_ride", { fulfillmentId: input.fulfillmentId }, { dedupKey: `shuttle:${input.fulfillmentId}:ride:${row.srId}`, maxAttempts: 3 });
+    // One ride job per confirmation: a later re-quote + re-confirmation of the
+    // same shuttle request gets its own job instead of being deduplicated away.
+    await enqueueJob(
+      tx,
+      "shuttle.request_ride",
+      { fulfillmentId: input.fulfillmentId },
+      { dedupKey: `shuttle:${input.fulfillmentId}:ride:${row.srId}:c${confirmed.confirmedMs}`, maxAttempts: 3 },
+    );
     await recordAudit(tx, { id: user.id, roles: user.roles }, "shuttle.customer_confirmed", "fulfillment", input.fulfillmentId, {
       quotedPriceCents: row.quotedPriceCents,
     });
@@ -121,12 +130,15 @@ export async function requestNewShuttleQuote(user: SessionUser, tripId: string, 
   }
   const f = await withSystem((tx) => loadFulfillmentContext(tx, fulfillmentId, false));
   if (!f || f.bookingStatus !== "confirmed") return { ok: false, code: "state", error: "This booking is not active." };
+  let stored: boolean;
   try {
-    await quoteShuttle(f, f.attempts + 1, pickupKey);
+    stored = await quoteShuttle(f, f.attempts + 1, pickupKey);
   } catch (err) {
     log.warn("shuttle.requote_failed", { fulfillmentId, error: err instanceof Error ? err.message : String(err) });
     return { ok: false, error: "The shuttle partner did not return a quote. Please try again shortly." };
   }
+  // The shuttle changed while the partner was quoting (e.g. confirmed in another tab): keep that.
+  if (!stored) return { ok: false, code: "state", error: "This shuttle changed while we were getting a new quote, so nothing was replaced. Please review its current status." };
   return { ok: true, message: "Here is your new quote. Review it and confirm to request the ride." };
 }
 
@@ -144,6 +156,12 @@ export async function requestShuttleRide(fulfillmentId: string, job?: { attempts
     if (!sr) return { skip: "no shuttle request" };
     if (f.bookingStatus !== "confirmed" || f.status === "cancelled") return { skip: "booking not active" };
     if (sr.status === "requested") return { skip: "ride already requested" };
+    if ((!sr.customerConfirmedAt || sr.status !== "confirmed") && f.status === "requested" && sr.status === "quoted") {
+      // The quote awaiting this job is no longer confirmed: hand it back to the
+      // customer to confirm instead of leaving the fulfillment 'requested' for good.
+      await tx`update public.fulfillments set status = 'awaiting_customer' where id = ${f.id} and status = 'requested'`;
+      return { skip: "quote not confirmed; back to the customer" };
+    }
     if (!sr.customerConfirmedAt || sr.status !== "confirmed") throw new ShuttleConfirmationRequiredError();
     return { f, sr };
   });
@@ -164,6 +182,12 @@ export async function requestShuttleRide(fulfillmentId: string, job?: { attempts
       { fulfillmentId: f.id, attempt: (job?.attempts ?? 1), simulate: null },
     );
     await withSystem(async (tx) => {
+      const current = await loadFulfillmentContext(tx, f.id, true);
+      if (current?.status === "cancelled") {
+        // The booking was cancelled while the ride was being requested: cancel the ride with the partner.
+        await compensateLatePartnerOrder(tx, f.id, ride.rideRef, { rideRef: ride.rideRef, rideStatus: ride.status });
+        return;
+      }
       await tx`update public.shuttle_requests set status = 'requested' where id = ${sr.id} and status = 'confirmed'`;
       await tx`
         update public.fulfillments

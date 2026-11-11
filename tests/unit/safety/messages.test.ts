@@ -81,15 +81,15 @@ describe("overdue notice to the emergency contact", () => {
     expect(body).toContain("Hana");
     expect(body).toContain("Lantern Creek Loop");
     expect(body).toContain("2:15 PM PST"); // expected return in region tz
-    expect(body).toMatch(/has NOT received/);
+    expect(body).toMatch(/has NOT sent “I'm okay” or “Finish trip”/);
     expect(body).toMatch(/does not necessarily mean anything is wrong/);
     expect(body).toContain("47.50521, -121.70210");
     expect(body).toContain("2:41 PM PST"); // fix timestamp
     expect(body).toContain("accuracy ±12 m");
     expect(body).toContain("STALE — 49 min old");
     expect(body).toMatch(/Ghost Guide has NOT contacted emergency services/);
-    expect(body).toMatch(/try calling Hana/);
-    expect(body).toMatch(/contact local emergency services \(911\)/);
+    expect(body).toMatch(/Try calling them/);
+    expect(body).toMatch(/call local emergency services \(911\)/);
     expect(subject).not.toMatch(/emergency/i);
     expect(body.length).toBeLessThanOrEqual(SMS_MAX_CHARS);
   });

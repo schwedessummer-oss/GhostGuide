@@ -4,7 +4,10 @@ import { can, type Permission } from "@/server/auth/rbac";
 import { integrationStatus } from "@/config/env";
 import { getLaunchRegion } from "@/server/catalog/trails";
 import { zonedTimeToUtc, localDateInZone } from "@/lib/time";
+import { formatMoney } from "@/lib/format";
+import { getRunnerHealth, RUNNER_STALE_AFTER_MIN, type RunnerHealth } from "@/server/jobs/health";
 import { assertCan, staffTx, systemTx } from "./common";
+import { HIGH_PRIORITY_QUEUE_HREF } from "./support";
 
 export interface Kpi {
   key: string;
@@ -31,7 +34,37 @@ export interface Overview {
   kpis: Kpi[];
   alerts: OverviewAlert[];
   integrations: ReturnType<typeof integrationStatus>;
+  /** background job runner heartbeat (only for roles that depend on it) */
+  runner: RunnerHealth | null;
+  /** launch region zone, for displaying times */
+  timeZone: string;
   generatedAt: Date;
+}
+
+/** "1 dead job", "2 dead jobs" (no "(s)"). */
+export function plural(n: number, one: string, many = `${one}s`): string {
+  return `${n} ${n === 1 ? one : many}`;
+}
+
+/**
+ * Alert for a stale job runner. Check-in reminders, overdue notices and
+ * notification sends are background jobs: when the runner (cron) stops,
+ * they are delayed, and staff must be told plainly.
+ */
+export function runnerAlert(runner: RunnerHealth, canManageJobs: boolean): OverviewAlert | null {
+  if (!runner.stale) return null;
+  const since =
+    runner.minutesSinceRun === null
+      ? "Background jobs have not run yet in this deployment"
+      : `Background jobs have not run for ${runner.minutesSinceRun} min`;
+  return {
+    key: "jobRunner",
+    tone: "red",
+    title: `${since} — check-in reminders and overdue notices are delayed`,
+    detail: `The job runner should be invoked about once a minute (it is flagged after ${RUNNER_STALE_AFTER_MIN} min without a run). Until it runs, reminders, overdue check-in notices and other notifications are not processed. Check the cron configuration (see docs/DEPLOYMENT.md).`,
+    href: canManageJobs ? "/admin/jobs" : "/status",
+    linkLabel: canManageJobs ? "Open jobs" : "Open status page",
+  };
 }
 
 /**
@@ -99,6 +132,8 @@ export async function getOverview(user: SessionUser): Promise<Overview> {
       select count(*) filter (where status = 'dead')::int as dead, count(*) filter (where status = 'failed')::int as failed from public.jobs`);
     counts.deadJobs = r.dead;
   }
+  // The heartbeat matters to whoever runs jobs or watches check-ins.
+  const runner = allow("jobs.manage") || allow("trips.monitor") ? await getRunnerHealth() : null;
 
   const has = (k: string) => Object.hasOwn(counts, k);
   const kpis: Kpi[] = [];
@@ -110,8 +145,8 @@ export async function getOverview(user: SessionUser): Promise<Overview> {
       key: "revenue7d",
       label: paymentsSimulated ? "Simulated revenue, 7 days" : "Test/live revenue, 7 days",
       value: counts.revenue7d,
-      display: `$${(counts.revenue7d / 100).toFixed(2)}`,
-      hint: `Captured payments; ${(counts.refunds7d / 100).toFixed(2)} refunded`,
+      display: formatMoney(counts.revenue7d),
+      hint: `Captured payments; ${formatMoney(counts.refunds7d)} refunded`,
       simulated: paymentsSimulated,
     });
   }
@@ -124,23 +159,47 @@ export async function getOverview(user: SessionUser): Promise<Overview> {
 
   const alerts: OverviewAlert[] = [];
   const alert = (cond: boolean, a: OverviewAlert) => cond && alerts.push(a);
+  const stale = runner ? runnerAlert(runner, allow("jobs.manage")) : null;
+  if (stale) alerts.push(stale);
+  const needs = (n: number) => (n === 1 ? "needs" : "need");
   alert((counts.overdue ?? 0) > 0, {
     key: "overdue",
     tone: "amber",
-    title: `${counts.overdue} check-in(s) overdue`,
+    title: `${plural(counts.overdue, "check-in")} overdue`,
     detail: "Ghost Guide has not received confirmation from these hikers. That is not proof of an emergency.",
     href: "/admin/safety",
     linkLabel: "Open safety monitor",
   });
-  alert((counts.deadJobs ?? 0) > 0, { key: "deadJobs", tone: "red", title: `${counts.deadJobs} dead job(s)`, detail: "Background work exhausted its retries.", href: "/admin/jobs?status=dead", linkLabel: "Open retry queue" });
-  alert((counts.failedNotifications ?? 0) > 0, { key: "notifications", tone: "red", title: `${counts.failedNotifications} notification(s) failed in 24 h`, detail: "Check the delivery log for errors.", href: "/admin/notifications?status=failed", linkLabel: "Open delivery log" });
-  alert((counts.fulfillmentAttention ?? 0) > 0, { key: "fulfillment", tone: "amber", title: `${counts.fulfillmentAttention} partner fulfillment(s) need attention`, detail: "Failed or flagged partner requests.", href: "/admin/fulfillment", linkLabel: "Open fulfillment queue" });
-  alert((counts.bookingsAttention ?? 0) > 0, { key: "bookingsAttention", tone: "amber", title: `${counts.bookingsAttention} booking(s) need attention`, detail: "Payments that could not be matched to capacity or amount.", href: "/admin/bookings?status=needs_attention", linkLabel: "Review bookings" });
-  alert((counts.staleHolds ?? 0) > 0, { key: "staleHolds", tone: "blue", title: `${counts.staleHolds} expired checkout hold(s) still pending`, detail: "The hold-expiry job may be behind.", href: "/admin/bookings?status=pending_payment", linkLabel: "Review pending checkouts" });
-  alert((counts.integrationFailures ?? 0) > 0, { key: "integrations", tone: "amber", title: `${counts.integrationFailures} integration failure(s) in 24 h`, detail: "Provider calls that failed.", href: "/admin/jobs#integrations", linkLabel: "Open integration log" });
-  alert((counts.narrationsInReview ?? 0) > 0, { key: "narration", tone: "blue", title: `${counts.narrationsInReview} narration(s) awaiting review`, detail: "Approve with a cited source, or reject with a reason.", href: "/admin/content?status=in_review", linkLabel: "Open content queue" });
-  alert((counts.marketingInReview ?? 0) > 0, { key: "marketing", tone: "blue", title: `${counts.marketingInReview} marketing draft(s) awaiting review`, detail: "Check sources and freshness warnings.", href: "/admin/marketing?status=in_review", linkLabel: "Open marketing drafts" });
-  alert((counts.urgentTickets ?? 0) > 0, { key: "tickets", tone: "amber", title: `${counts.urgentTickets} high-priority support ticket(s) open`, detail: "", href: "/admin/support?priority=urgent", linkLabel: "Open support queue" });
+  alert((counts.deadJobs ?? 0) > 0, { key: "deadJobs", tone: "red", title: plural(counts.deadJobs, "dead job"), detail: "Background work exhausted its retries.", href: "/admin/jobs?status=dead", linkLabel: "Open retry queue" });
+  alert((counts.failedNotifications ?? 0) > 0, { key: "notifications", tone: "red", title: `${plural(counts.failedNotifications, "notification")} failed in 24 h`, detail: "Check the delivery log for errors.", href: "/admin/notifications?status=failed", linkLabel: "Open delivery log" });
+  alert((counts.fulfillmentAttention ?? 0) > 0, {
+    key: "fulfillment",
+    tone: "amber",
+    title: `${plural(counts.fulfillmentAttention, "partner fulfillment")} ${needs(counts.fulfillmentAttention)} attention`,
+    detail: "Failed or flagged partner requests.",
+    href: "/admin/fulfillment",
+    linkLabel: "Open fulfillment queue",
+  });
+  alert((counts.bookingsAttention ?? 0) > 0, {
+    key: "bookingsAttention",
+    tone: "amber",
+    title: `${plural(counts.bookingsAttention, "booking")} ${needs(counts.bookingsAttention)} attention`,
+    detail: "Payments that could not be matched to capacity or amount.",
+    href: "/admin/bookings?status=needs_attention",
+    linkLabel: "Review bookings",
+  });
+  alert((counts.staleHolds ?? 0) > 0, { key: "staleHolds", tone: "blue", title: `${plural(counts.staleHolds, "expired checkout hold")} still pending`, detail: "The hold-expiry job may be behind.", href: "/admin/bookings?status=pending_payment", linkLabel: "Review pending checkouts" });
+  alert((counts.integrationFailures ?? 0) > 0, { key: "integrations", tone: "amber", title: `${plural(counts.integrationFailures, "integration failure")} in 24 h`, detail: "Provider calls that failed.", href: "/admin/jobs#integrations", linkLabel: "Open integration log" });
+  alert((counts.narrationsInReview ?? 0) > 0, { key: "narration", tone: "blue", title: `${plural(counts.narrationsInReview, "narration")} awaiting review`, detail: "Approve with a cited source, or reject with a reason.", href: "/admin/content?status=in_review", linkLabel: "Open content queue" });
+  alert((counts.marketingInReview ?? 0) > 0, { key: "marketing", tone: "blue", title: `${plural(counts.marketingInReview, "marketing draft")} awaiting review`, detail: "Check sources and freshness warnings.", href: "/admin/marketing?status=in_review", linkLabel: "Open marketing drafts" });
+  alert((counts.urgentTickets ?? 0) > 0, {
+    key: "tickets",
+    tone: "amber",
+    title: `${plural(counts.urgentTickets, "high-priority support ticket")} open`,
+    detail: "Urgent or high priority, open or pending.",
+    href: HIGH_PRIORITY_QUEUE_HREF,
+    linkLabel: "Open these tickets",
+  });
 
-  return { kpis, alerts, integrations, generatedAt: new Date() };
+  return { kpis, alerts, integrations, runner, timeZone: region.timezone, generatedAt: new Date() };
 }

@@ -244,7 +244,10 @@ describe("checkout date rules", () => {
         returning id`,
     );
     try {
-      expect((await getClosuresOnDay(t2.trailId, day2, tz)).notices.map((n) => n.reason)).toEqual(["Upper viewpoint closed (test)"]);
+      // whisper-falls also carries a seeded demo advisory for the next ~60 days, so check for ours rather than an exact list
+      const verdict = await getClosuresOnDay(t2.trailId, day2, tz);
+      expect(verdict.closed).toBeNull();
+      expect(verdict.notices.map((n) => n.reason)).toContain("Upper viewpoint closed (test)");
       expect((await checkoutFor(u2, t2)).ok).toBe(true);
     } finally {
       await withSystem((tx) => tx`delete from public.trail_closures where id = ${p.id}`);

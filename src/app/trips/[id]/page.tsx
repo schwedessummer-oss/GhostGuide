@@ -12,11 +12,11 @@ import { CheckinStatusCard } from "@/components/checkin/checkin-status-card";
 import { getCurrentUser, requireUser } from "@/server/auth";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { getRegionById, getTrailById } from "@/server/catalog/trails";
-import { getTripBookingView, listTripReminders } from "@/server/commerce/queries";
+import { getTripBookingView, listTripReminders, type RefundView } from "@/server/commerce/queries";
 import { getCommerceSettings } from "@/server/commerce/settings";
 import { getClosuresOnDay } from "@/server/commerce/trip-plan";
 import { tripStartTime } from "@/server/commerce/checkout";
-import { BOOKING_STATUS_COPY, LIVE_BOOKING_STATUSES, describeCancellationPolicy } from "@/domain/booking";
+import { LIVE_BOOKING_STATUSES, bookingStatusCopy, describeCancellationPolicy } from "@/domain/booking";
 import { formatDate, formatMoney, titleCase } from "@/lib/format";
 import { formatInZone } from "@/lib/time";
 
@@ -66,6 +66,7 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
   const canCancel = (trip.status === "saved" && b?.status !== "pending_payment") || (trip.status === "booked" && b?.status === "confirmed");
   const flash = typeof sp.cancelled === "string" ? "cancelled" : typeof sp.shuttle === "string" ? "shuttle" : null;
   const lines = b?.priceBreakdown?.lines ?? [];
+  const bookingCopy = b ? bookingStatusCopy(b.status, { paidAt: b.paidAt }) : null;
 
   return (
     <Container className="py-8 sm:py-10">
@@ -86,7 +87,7 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
         actions={
           <div className="flex flex-wrap items-center gap-2">
             <TripStatusBadge status={trip.status} />
-            {b ? <BookingStatusBadge status={b.status} /> : null}
+            {b ? <BookingStatusBadge status={b.status} paidAt={b.paidAt} /> : null}
             {trip.trailIsDemo ? <DemoTrailBadge /> : null}
           </div>
         }
@@ -122,7 +123,8 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
 
             {!b || ((b.status === "expired" || b.status === "payment_failed") && trip.status === "saved") ? (
               <div className="mt-4 space-y-4">
-                {b ? <Alert tone={BOOKING_STATUS_COPY[b.status].tone}>{BOOKING_STATUS_COPY[b.status].description}</Alert> : null}
+                {b ? <Alert tone={bookingCopy!.tone}>{bookingCopy!.description}</Alert> : null}
+                {b?.paidAt && view?.refunds.length ? <RefundList refunds={view.refunds} currency={b.currency} /> : null}
                 <p className="text-muted">
                   {trip.status === "saved"
                     ? "This hike is saved but not booked yet. Book to reserve your spot and add optional gear, shuttle or meals."
@@ -141,7 +143,7 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
               </div>
             ) : (
               <div className="mt-4 space-y-4">
-                <p>{BOOKING_STATUS_COPY[b.status].description}</p>
+                <p>{bookingCopy!.description}</p>
                 {b.status === "pending_payment" && view?.holdValid ? (
                   <>
                     <p className="text-[0.95rem]">
@@ -168,23 +170,7 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
                   </p>
                 ) : null}
                 {lines.length ? <PriceBreakdown lines={lines} totalCents={b.totalCents} currency={b.currency} refundedCents={b.refundedCents} /> : null}
-                {view?.refunds.length ? (
-                  <div>
-                    <h3 className="font-semibold">Refunds</h3>
-                    <ul className="mt-1 space-y-1 text-[0.95rem]">
-                      {view.refunds.map((r) => (
-                        <li key={r.id} className="flex flex-wrap justify-between gap-2">
-                          <span>
-                            {formatMoney(r.amountCents, b.currency)} — {r.reason}
-                          </span>
-                          <Badge tone={r.status === "succeeded" ? "forest" : r.status === "failed" ? "red" : "blue"}>
-                            {r.status === "succeeded" ? "Refunded" : r.status === "failed" ? "Delayed — retrying" : "Processing"}
-                          </Badge>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : null}
+                {view?.refunds.length ? <RefundList refunds={view.refunds} currency={b.currency} /> : null}
                 {b.paidAt ? (
                   <ButtonLink href={`/bookings/${b.id}/receipt`} variant="secondary">
                     View receipt
@@ -336,5 +322,25 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
         </aside>
       </div>
     </Container>
+  );
+}
+
+function RefundList({ refunds, currency }: { refunds: RefundView[]; currency: string }) {
+  return (
+    <div>
+      <h3 className="font-semibold">Refunds</h3>
+      <ul className="mt-1 space-y-1 text-[0.95rem]">
+        {refunds.map((r) => (
+          <li key={r.id} className="flex flex-wrap justify-between gap-2">
+            <span>
+              {formatMoney(r.amountCents, currency)} — {r.reason}
+            </span>
+            <Badge tone={r.status === "succeeded" ? "forest" : r.status === "failed" ? "red" : "blue"}>
+              {r.status === "succeeded" ? "Refunded" : r.status === "failed" ? "Delayed — retrying" : "Processing"}
+            </Badge>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

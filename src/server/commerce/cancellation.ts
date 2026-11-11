@@ -37,22 +37,45 @@ export interface CancelBookingRow {
   refundedCents: number;
   paymentProvider: string;
   checkoutSessionId: string | null;
+  /** start time frozen at booking (price_breakdown.startTime) */
   startTime: string | null;
+  /** hike start instant frozen at booking (bookings.hike_start_at) */
+  hikeStartAt: Date | null;
 }
 
+/**
+ * Lock a booking for cancellation. Lock order is always trip, then booking
+ * (the same order the payment processor uses), so a cancellation and a
+ * payment for the same trip serialize instead of deadlocking.
+ */
 export async function lockBookingForCancel(tx: Tx, where: { bookingId?: string; tripId?: string }): Promise<CancelBookingRow | null> {
   const cols = tx`b.id, b.user_id, b.trip_id, b.status, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.total_cents, b.currency,
                   b.refunded_cents, b.payment_provider, b.checkout_session_id,
-                  coalesce(to_char(tr.start_time, 'HH24:MI'), b.price_breakdown ->> 'startTime') as start_time`;
-  const rows = where.bookingId
-    ? await tx<CancelBookingRow[]>`
-        select ${cols} from public.bookings b join public.trips tr on tr.id = b.trip_id where b.id = ${where.bookingId} for update of b`
-    : await tx<CancelBookingRow[]>`
-        select ${cols} from public.bookings b join public.trips tr on tr.id = b.trip_id
-        where b.trip_id = ${where.tripId!}
-          and b.status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')
-        for update of b`;
+                  b.price_breakdown ->> 'startTime' as start_time, b.hike_start_at`;
+  if (where.bookingId) {
+    const [ref] = await tx<{ tripId: string }[]>`select trip_id from public.bookings where id = ${where.bookingId}`;
+    if (!ref) return null;
+    await tx`select id from public.trips where id = ${ref.tripId} for update`;
+    const [row] = await tx<CancelBookingRow[]>`select ${cols} from public.bookings b where b.id = ${where.bookingId} for update of b`;
+    return row ?? null;
+  }
+  const rows = await tx<CancelBookingRow[]>`
+    select ${cols} from public.bookings b
+    where b.trip_id = ${where.tripId!}
+      and b.status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')
+    for update of b`;
   return rows[0] ?? null;
+}
+
+/**
+ * The hike start the refund policy is measured against: the instant frozen
+ * on the booking when it was sold — never the trip's current start_time,
+ * which the customer can edit.
+ */
+export function bookedHikeStart(b: Pick<CancelBookingRow, "hikeStartAt" | "hikeDate" | "startTime">, tz: string): Date {
+  if (b.hikeStartAt) return new Date(b.hikeStartAt);
+  const t = b.startTime && /^\d{2}:\d{2}/.test(b.startTime) ? b.startTime.slice(0, 5) : "08:00";
+  return zonedTimeToUtc(b.hikeDate, t, tz);
 }
 
 /**
@@ -133,7 +156,8 @@ export async function getCancellationPreview(user: SessionUser, tripId: string, 
   };
   const data = await withSystem(async (tx) => {
     const [b] = await tx<(CancelBookingRow & { paidAt: Date | null })[]>`
-      select b.id, b.status, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.total_cents, b.currency, b.refunded_cents, b.paid_at
+      select b.id, b.status, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.total_cents, b.currency, b.refunded_cents, b.paid_at,
+             b.price_breakdown ->> 'startTime' as start_time, b.hike_start_at
       from public.bookings b
       where b.trip_id = ${trip.id} and b.user_id = ${user.id}
         and b.status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')`;
@@ -143,8 +167,9 @@ export async function getCancellationPreview(user: SessionUser, tripId: string, 
       select provider_kind as kind, status from public.fulfillments where booking_id = ${b.id} and status not in ('cancelled', 'completed')`;
     return { b, balance, addons };
   });
-  const startTime = tripStartTime(trip);
-  const { tz, start } = await hikeStartFor(trip.regionId, data?.b.hikeDate ?? trip.plannedDate, startTime);
+  const { tz, start: plannedStart } = await hikeStartFor(trip.regionId, trip.plannedDate, tripStartTime(trip));
+  // With a booking, the policy window is measured from the start frozen at booking.
+  const start = data ? bookedHikeStart(data.b, tz) : plannedStart;
   let blockedReason: string | null = null;
   if (trip.status === "cancelled") blockedReason = "This trip is already cancelled.";
   else if (trip.status === "active") blockedReason = "Your hike is in progress, so it can't be cancelled here. Finish or end the hike from the trip page.";
@@ -187,7 +212,6 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
   const { policy } = await getCommerceSettings();
   const region = await getRegionById(trip.regionId);
   const tz = region?.timezone ?? "UTC";
-  const startTime = tripStartTime(trip);
 
   return withSystem(async (tx): Promise<CustomerCancelResult> => {
     const [t] = await tx<{ status: TripStatus }[]>`select status from public.trips where id = ${trip.id} and user_id = ${user.id} for update`;
@@ -210,7 +234,7 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
     if (b.status !== "confirmed") return { ok: true, alreadyCancelled: true, refundCents: 0, bookingStatus: b.status };
 
     const balance = await refundBalance(tx, b.id);
-    const hikeStart = zonedTimeToUtc(b.hikeDate, (b.startTime ?? startTime).slice(0, 5), tz);
+    const hikeStart = bookedHikeStart(b, tz);
     const refund = computeCancellationRefund({
       paidCents: balance.paidCents,
       alreadyRefundedCents: balance.refundedCents + balance.outstandingCents,

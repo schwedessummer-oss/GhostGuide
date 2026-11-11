@@ -132,7 +132,7 @@ export default async function TrailFactsPage({ params }: PageProps<"/admin/trail
             </details>
           ) : null}
           <p className="mt-3 text-sm text-muted">
-            Route validated: <When at={trail.geometryValidatedAt} /> · Facts last verified: {trail.factsVerifiedAt ? formatDate(trail.factsVerifiedAt) : "never"}
+            Route validated: <When at={trail.geometryValidatedAt} /> · Facts last checked: {trail.factsVerifiedAt ? formatDate(trail.factsVerifiedAt) : "never"}
           </p>
         </Card>
       </Section>
@@ -173,7 +173,7 @@ export default async function TrailFactsPage({ params }: PageProps<"/admin/trail
                         <>
                           <Badge tone={KIND_TONE[prov.kind]}>{KIND_LABEL[prov.kind]}</Badge>
                           <span>{prov.sourceLabel ?? "No source"}</span>
-                          <span>{prov.verifiedAt ? `verified ${formatDate(prov.verifiedAt)}` : "no verification date"}</span>
+                          <span>{prov.verifiedAt ? `${prov.kind === "verified" ? "verified" : "reviewed"} ${formatDate(prov.verifiedAt)}` : `no ${prov.kind === "verified" ? "verification" : "review"} date`}</span>
                         </>
                       ) : (
                         <Badge tone="red">No provenance</Badge>
@@ -197,7 +197,8 @@ export default async function TrailFactsPage({ params }: PageProps<"/admin/trail
                         <TextField
                           id={`fact-${field}-verified`}
                           name="verifiedAt"
-                          label="Verified on"
+                          label="Checked on"
+                          hint="When staff verified (or, for estimates and notes, reviewed) this fact."
                           type="date"
                           defaultValue={prov?.verifiedAt ? new Date(prov.verifiedAt).toISOString().slice(0, 10) : ""}
                         />

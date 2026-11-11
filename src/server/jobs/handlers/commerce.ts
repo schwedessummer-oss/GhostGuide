@@ -1,7 +1,7 @@
 import "server-only";
 import type { JobHandlers } from "../queue";
 import { processRefundJob } from "@/server/commerce/refunds";
-import { expireStaleHolds, reconcilePendingPayments } from "@/server/commerce/reconcile";
+import { expireStaleHolds, reconcileEndedCheckouts, reconcilePendingPayments } from "@/server/commerce/reconcile";
 import { processFulfillment } from "@/server/fulfillment/process";
 import { requestShuttleRide } from "@/server/fulfillment/shuttle";
 import { cancelWithPartner } from "@/server/fulfillment/cancel";
@@ -41,6 +41,7 @@ export const commerceHandlers: JobHandlers = {
 
   "payments.reconcile": async () => {
     const r = await reconcilePendingPayments();
-    return { outcome: "done", note: JSON.stringify(r) };
+    const ended = await reconcileEndedCheckouts();
+    return { outcome: "done", note: JSON.stringify({ ...r, endedCheckouts: ended }) };
   },
 };

@@ -12,11 +12,36 @@ export type ManifestItemKind = "page" | "data" | "audio";
 export interface ManifestItem {
   key: string;
   kind: ManifestItemKind;
+  /** where to fetch the item (for audio: a signed URL that changes on every bundle) */
   url: string;
+  /**
+   * The STABLE same-origin key the item is stored under on the device, when it
+   * differs from `url` (narration audio: see audioCacheKey). Presence checks
+   * and playback use this key, so a refreshed bundle with newly signed URLs
+   * still finds the audio downloaded earlier.
+   */
+  cacheAs?: string;
   /** sha256 hex of the item's content, when the server can provide it */
   sha256?: string;
   label?: string;
 }
+
+/** Path prefix of stable narration-audio keys in a trip cache (never requested from the server). */
+export const AUDIO_CACHE_PREFIX = "/__gg/audio/";
+const AUDIO_KEY_RE = /^\/__gg\/audio\/[0-9a-f-]{36}\/v\d{1,9}$/i;
+
+/**
+ * Stable on-device key for a narration's audio: narration id + version (an
+ * edited narration is a new row/version, so changed audio gets a new key).
+ */
+export function audioCacheKey(narrationId: string, version: number): string {
+  return `${AUDIO_CACHE_PREFIX}${narrationId}/v${Math.max(0, Math.floor(version))}`;
+}
+
+export const isAudioCacheKey = (path: string) => AUDIO_KEY_RE.test(path);
+
+/** The URL an item is stored under on the device. */
+export const storedUrlOf = (item: Pick<ManifestItem, "url" | "cacheAs">) => item.cacheAs ?? item.url;
 
 export interface OfflineManifest {
   version: number;
@@ -65,7 +90,7 @@ export function assetItems(urls: string[]): ManifestItem[] {
 export function canonicalManifestJson(manifest: OfflineManifest): string {
   const items = [...manifest.items]
     .sort((a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0))
-    .map((i) => ({ key: i.key, kind: i.kind, sha256: i.sha256 ?? null, url: i.url }));
+    .map((i) => ({ key: i.key, kind: i.kind, sha256: i.sha256 ?? null, url: storedUrlOf(i) }));
   return JSON.stringify({ version: manifest.version, items });
 }
 

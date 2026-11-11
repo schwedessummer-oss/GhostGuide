@@ -13,11 +13,22 @@ import { localDateInZone, zonedTimeToUtc } from "@/lib/time";
 import { formatDate } from "@/lib/format";
 import { getPaymentProvider, getPaymentProviderByName } from "@/integrations/payments";
 import { getCommerceSettings } from "./settings";
-import { loadPricingRules, lockAddonDay, lockTrailDay, usedAddonCapacity, usedTrailCapacity } from "./inventory";
+import {
+  gearAvailability,
+  gearNeedFor,
+  isGearAddon,
+  loadPricingRules,
+  lockAddonDay,
+  lockGearDay,
+  lockTrailDay,
+  mergeGearNeeds,
+  usedAddonCapacity,
+  usedTrailCapacity,
+  type GearAddonKind,
+} from "./inventory";
 import { abandonPendingBooking, expireHoldIfUnpaid } from "./reconcile";
 import { closuresOnDay, planForSelection } from "./trip-plan";
-import { getGearLockerProvider } from "@/integrations/partners";
-import { GEAR_KIT_KINDS } from "@/server/fulfillment/process";
+import type { GearKindRequest } from "@/integrations/partners";
 
 /**
  * Checkout: trip → pending booking (inventory held) → provider session.
@@ -239,25 +250,6 @@ export async function createCheckout(user: SessionUser, raw: CheckoutInput): Pro
   if (chosen.some((a) => !a)) return fail("invalid", "One of the selected add-ons is not available.");
   const addons = chosen as AddonRow[];
 
-  // Locker gear is finite: check the partner's availability for the group before selling a kit.
-  // (Read-only; a race is caught at fulfillment time and flagged for staff.)
-  for (const a of addons.filter((x) => x.kind === "gear_locker")) {
-    const available = await withSystem(async (tx) => {
-      try {
-        const res = await getGearLockerProvider(a.providerKey).checkAvailability(
-          tx,
-          trip.regionId,
-          input.hikeDate,
-          GEAR_KIT_KINDS.map((kind) => ({ kind, count: input.partySize })),
-        );
-        return res.ok;
-      } catch {
-        return false;
-      }
-    });
-    if (!available) return fail("sold_out", `Not enough locker gear is available on that date for ${input.partySize} hikers. Remove "${a.name}" or choose another date.`);
-  }
-
   // 3. A lapsed pending booking for this trip must be settled (provider checked) before a new one.
   const [lapsed] = await withSystem(
     (tx) => tx<{ id: string }[]>`
@@ -278,6 +270,13 @@ export async function createCheckout(user: SessionUser, raw: CheckoutInput): Pro
   let outcome: TxOutcome;
   try {
     outcome = await withSystem(async (tx): Promise<TxOutcome> => {
+      // Lock the trip first (the same order as payments and cancellations: trip,
+      // booking, trail day, add-on days, gear day) and re-check it under the
+      // lock, so a trip cancelled meanwhile never gets a new held booking.
+      const [lockedTrip] = await tx<{ status: string }[]>`select status from public.trips where id = ${trip.id} for update`;
+      if (!lockedTrip || lockedTrip.status !== "saved") {
+        return { kind: "error", result: fail("already_booked", "This trip is already booked or no longer open for booking.") };
+      }
       const [live] = await tx<LiveBookingRow[]>`
         select id, user_id, trip_id, status, hold_expires_at, checkout_session_id, payment_provider,
                to_char(hike_date, 'YYYY-MM-DD') as hike_date, party_size
@@ -326,6 +325,31 @@ export async function createCheckout(user: SessionUser, raw: CheckoutInput): Pro
         const usedUnits = await usedAddonCapacity(tx, a.id, input.hikeDate);
         if (usedUnits + units > a.dailyCapacity) {
           return { kind: "error", result: fail("sold_out", `${a.name} is sold out on that date. Remove it or choose another date.`) };
+        }
+      }
+
+      // Locker gear is finite physical stock. Count what held and paid-but-not-yet-fulfilled
+      // bookings will take, under a region/day lock, so sequential or concurrent checkouts
+      // cannot sell the same items twice (the hold itself reserves the demand).
+      const gearAddons = addons.filter((a) => isGearAddon(a.kind)).sort((x, y) => x.id.localeCompare(y.id));
+      if (gearAddons.length) {
+        await lockGearDay(tx, trip.regionId, input.hikeDate);
+        let needSoFar: GearKindRequest[] = [];
+        for (const a of gearAddons) {
+          const qty = a.pricingUnit === "per_person" ? input.partySize : 1;
+          needSoFar = mergeGearNeeds(needSoFar, gearNeedFor(a.kind as GearAddonKind, qty));
+          const check = await gearAvailability(tx, a.providerKey, trip.regionId, input.hikeDate, needSoFar);
+          if (!check.ok) {
+            return {
+              kind: "error",
+              result: fail(
+                "sold_out",
+                a.kind === "gear_locker"
+                  ? `Not enough locker gear is available on that date for ${input.partySize} ${input.partySize === 1 ? "hiker" : "hikers"}. Remove "${a.name}" or choose another date.`
+                  : `${a.name} is sold out on that date. Remove it or choose another date.`,
+              ),
+            };
+          }
         }
       }
 
@@ -471,25 +495,19 @@ export async function previewQuote(params: {
   });
 }
 
-/** Locker kits available per gear_locker add-on for a day and region (partner availability, read-only). */
+/**
+ * Locker kits still available per gear_locker add-on for a day and region:
+ * free items minus what held and paid-but-unfulfilled bookings will take
+ * (read-only display; the checkout re-checks under lock).
+ */
 export async function getGearKitsAvailable(addons: AddonRow[], regionId: string, day: string): Promise<Record<string, number>> {
   const gear = addons.filter((a) => a.kind === "gear_locker");
   if (!gear.length) return {};
   return withSystem(async (tx) => {
     const out: Record<string, number> = {};
     for (const a of gear) {
-      try {
-        const res = await getGearLockerProvider(a.providerKey).checkAvailability(
-          tx,
-          regionId,
-          day,
-          GEAR_KIT_KINDS.map((kind) => ({ kind, count: 1 })),
-        );
-        out[a.id] = Math.min(...res.byKind.map((k) => k.available));
-      } catch (err) {
-        log.warn("checkout.gear_availability_failed", { addonId: a.id, error: err instanceof Error ? err.message : String(err) });
-        out[a.id] = 0;
-      }
+      const res = await gearAvailability(tx, a.providerKey, regionId, day, gearNeedFor("gear_locker", 1));
+      out[a.id] = Math.min(...res.byKind.map((k) => k.available));
     }
     return out;
   });

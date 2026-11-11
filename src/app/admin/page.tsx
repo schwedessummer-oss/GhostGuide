@@ -1,10 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { Alert, Badge, Card, SimulatedBadge } from "@/components/ui";
-import { AdminHeader, KpiCard, Section } from "@/components/admin/admin-ui";
+import { AdminHeader, formatAdminDateTime, KpiCard, Section } from "@/components/admin/admin-ui";
 import { requirePermission } from "@/server/auth";
 import { getOverview } from "@/server/admin/overview";
-import { formatDateTime } from "@/lib/format";
+import { formatAge } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Overview" };
 
@@ -30,7 +30,7 @@ export default async function AdminOverviewPage() {
       <AdminHeader
         eyebrow="Admin"
         title="Overview"
-        description={<>What needs attention right now. Figures update on every page load ({formatDateTime(o.generatedAt)}).</>}
+        description={<>What needs attention right now. Figures update on every page load ({formatAdminDateTime(o.generatedAt, o.timeZone)}).</>}
       />
 
       <Section title="Needs attention" id="alerts">
@@ -91,6 +91,17 @@ export default async function AdminOverviewPage() {
                 </li>
               );
             })}
+            {o.runner ? (
+              <li className="flex flex-col gap-1 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+                <span className="font-semibold">Background job runner</span>
+                <span className="flex items-center gap-2 text-sm">
+                  {o.runner.stale ? <Badge tone="red">Delayed</Badge> : <Badge tone="forest">On schedule</Badge>}
+                  <span className="text-muted">
+                    {o.runner.lastRunAt ? `Last run ${formatAge(o.runner.lastRunAt)} (${formatAdminDateTime(o.runner.lastRunAt, o.timeZone)})` : "No run recorded"}
+                  </span>
+                </span>
+              </li>
+            ) : null}
           </ul>
         </Card>
         <p className="mt-2 text-sm text-muted">

@@ -1,10 +1,12 @@
 "use client";
 
-import { CalendarClock, CalendarDays, Download, MapPin, Play, Route } from "lucide-react";
+import { CalendarClock, CalendarDays, Download, Loader2, MapPin, Play, Route } from "lucide-react";
 import { Alert, Badge, Button, Card, Checkbox, SimulatedBadge } from "@/components/ui";
 import { formatBookedDate, startAllowed } from "@/lib/offline/start-window";
 import type { HikeEngine, HikeSnapshot } from "./engine/hike-engine";
 import { LimitationsList } from "./limitations";
+import { ClosureNotice } from "./closure-notice";
+import { TripLogistics } from "./trip-logistics";
 import { formatDistanceBoth, formatMinutes } from "./format";
 
 /**
@@ -12,6 +14,9 @@ import { formatDistanceBoth, formatMinutes } from "./format";
  * limitations (which must be acknowledged before starting) and the Start
  * button — enabled on the booked date only (region time zone). In demo mode
  * a clearly labelled "Start anyway (demo)" lets a demonstration run on any day.
+ * A trail fully closed today can never be started (no demo override); active
+ * and scheduled closures are shown first. Booked add-on details and permit
+ * status come from the downloaded trip data, so they are here offline too.
  */
 export function HikePrestart({ snap, engine, prepareHref }: { snap: HikeSnapshot; engine: HikeEngine; prepareHref: string }) {
   const b = snap.bundle!;
@@ -24,11 +29,20 @@ export function HikePrestart({ snap, engine, prepareHref }: { snap: HikeSnapshot
   const bookedShort = booked ? formatBookedDate(booked, { weekday: "short", month: "short", day: "numeric" }) : null;
   const dt = "flex items-center gap-2 text-sm text-muted";
   const icon = "size-4 shrink-0 text-forest-700";
-  const canStart = snap.limitationsAcknowledged && onDate;
-  const hintId = !snap.limitationsAcknowledged ? "start-hint" : !onDate ? "start-date-hint" : undefined;
+  const closedToday = snap.closures.closedToday;
+  const canStart = snap.limitationsAcknowledged && onDate && !closedToday;
+  const hintId = closedToday ? "start-closed-hint" : !snap.limitationsAcknowledged ? "start-hint" : !onDate ? "start-date-hint" : undefined;
+  const tz = b.region.timezone;
+  const checking = snap.bundleSource === "download" && snap.downloadComplete === null;
 
   return (
     <div className="space-y-5">
+      <ClosureNotice
+        closures={snap.closures.list}
+        blocking={closedToday ?? snap.closures.closedOnBookedDate}
+        timeZone={tz}
+        context={closedToday ? "start" : "booked"}
+      />
       <Card aria-labelledby="ready-heading">
         <h2 id="ready-heading" className="text-xl font-bold">
           Ready when you are
@@ -86,7 +100,11 @@ export function HikePrestart({ snap, engine, prepareHref }: { snap: HikeSnapshot
             ) : null}
           </p>
         ) : null}
-        {snap.bundleSource !== "download" || snap.downloadComplete === false ? (
+        {checking ? (
+          <p className="mt-4 flex items-center gap-2 text-sm text-muted" role="status" data-testid="hike-download-checking">
+            <Loader2 aria-hidden className="size-4 shrink-0 motion-safe:animate-spin" /> Checking the offline download on this device…
+          </p>
+        ) : snap.bundleSource !== "download" || snap.downloadComplete === false ? (
           <Alert tone="amber" className="mt-4" title={snap.bundleSource !== "download" ? "Not downloaded for offline use" : "Download incomplete"}>
             This hike screen may not work without signal. <a href={prepareHref} className="font-semibold underline">Download your trip</a> on the
             preparation page before you leave coverage.
@@ -101,6 +119,10 @@ export function HikePrestart({ snap, engine, prepareHref }: { snap: HikeSnapshot
             <SimulatedBadge label="Demonstration trail" /> Fictional route and stories — not for navigation.
           </p>
         ) : null}
+      </Card>
+
+      <Card>
+        <TripLogistics logistics={b.logistics} timeZone={tz} savedNote="Saved with your downloaded trip, so it's available without signal. Check your trip page for updates when you're online." />
       </Card>
 
       <Card aria-labelledby="limits-heading" className="border-[#f1d9b0]">
@@ -122,12 +144,16 @@ export function HikePrestart({ snap, engine, prepareHref }: { snap: HikeSnapshot
       <Button size="lg" className="w-full" disabled={!canStart} onClick={() => engine.start()} data-testid="hike-start" aria-describedby={hintId}>
         <Play aria-hidden className="size-5" /> Start hike
       </Button>
-      {!snap.limitationsAcknowledged ? (
+      {closedToday ? (
+        <p id="start-closed-hint" className="text-center text-sm font-semibold text-red-ink" data-testid="hike-start-closed">
+          The trail is closed today, so the hike can&apos;t be started.
+        </p>
+      ) : !snap.limitationsAcknowledged ? (
         <p id="start-hint" className="text-center text-sm text-muted">
           Tick the box above to start.
         </p>
       ) : null}
-      {!onDate && snap.demoMode ? (
+      {!onDate && snap.demoMode && !closedToday ? (
         <div className="rounded-2xl border-2 border-dashed border-amber-ink/50 bg-amber-bg/50 p-4" data-testid="hike-demo-start">
           <p className="flex flex-wrap items-center gap-2 text-sm">
             <SimulatedBadge label="Demo only" /> Demonstrations can start on any day. A real hike starts only on its booked date.

@@ -1,6 +1,6 @@
 import "server-only";
 import { withSystem, type JsonValue, type Tx } from "@/server/db";
-import type { JobOutcome } from "@/server/jobs/queue";
+import { enqueueJob, type JobOutcome } from "@/server/jobs/queue";
 import { log } from "@/server/log";
 import { addMinutesToClock, zonedTimeToUtc } from "@/lib/time";
 import {
@@ -63,14 +63,14 @@ export async function loadFulfillmentContext(tx: Tx, fulfillmentId: string, lock
            b.status as booking_status, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.party_size,
            ba.quantity, ba.details as addon_details, ba.total_cents as addon_total_cents, a.name as addon_name,
            t.region_id, r.timezone, t.trailhead_name, t.trailhead_lat, t.trailhead_lng,
-           coalesce(to_char(tr.start_time, 'HH24:MI'), b.price_breakdown ->> 'startTime') as start_time
+           -- the start time SOLD (frozen on the booking), never the trip's editable start_time
+           coalesce(to_char(b.hike_start_at at time zone r.timezone, 'HH24:MI'), b.price_breakdown ->> 'startTime') as start_time
     from public.fulfillments f
     join public.bookings b on b.id = f.booking_id
     join public.booking_addons ba on ba.id = f.booking_addon_id
     join public.addons a on a.id = ba.addon_id
     join public.trails t on t.id = b.trail_id
     join public.regions r on r.id = t.region_id
-    join public.trips tr on tr.id = b.trip_id
     where f.id = ${fulfillmentId}
     ${lock ? tx`for update of f` : tx``}`;
   return f ?? null;
@@ -119,17 +119,29 @@ export function shuttlePlan(f: Pick<FulfillmentContext, "addonDetails" | "hikeDa
   };
 }
 
-/** Request a fresh shuttle quote and store it (status quoted / awaiting_customer). */
-export async function quoteShuttle(f: FulfillmentContext, attempt: number, pickupKey?: string) {
+/** Fulfillment statuses in which a (new) shuttle quote may replace the current one. */
+export const SHUTTLE_QUOTABLE_STATUSES = ["pending", "failed", "awaiting_customer", "needs_attention"] as const;
+
+/**
+ * Request a fresh shuttle quote and store it (status quoted / awaiting_customer).
+ * The partner call happens outside any lock, so the write re-checks state:
+ * a quote never overwrites a shuttle the customer confirmed (or that was
+ * requested / cancelled) while the call was in flight. Returns whether the
+ * new quote was stored.
+ */
+export async function quoteShuttle(f: FulfillmentContext, attempt: number, pickupKey?: string): Promise<boolean> {
   const provider = getShuttleProvider(f.providerKey);
   const plan = shuttlePlan(f, pickupKey);
   const quote = await provider.requestQuote(
     { pickup: plan.pickup, dropoff: plan.dropoff, pickupAt: plan.pickupAt, partySize: f.partySize, prepaidCents: f.addonTotalCents },
     partnerCtx(f, attempt),
   );
-  await withSystem(async (tx) => {
+  return withSystem(async (tx) => {
     const current = await loadFulfillmentContext(tx, f.id, true);
-    if (!current || current.status === "cancelled") return;
+    if (!current || current.bookingStatus !== "confirmed" || !(SHUTTLE_QUOTABLE_STATUSES as readonly string[]).includes(current.status)) return false;
+    const [sr] = await tx<{ status: string; customerConfirmedAt: Date | null }[]>`
+      select status, customer_confirmed_at from public.shuttle_requests where fulfillment_id = ${f.id} for update`;
+    if (sr && (sr.customerConfirmedAt || ["confirmed", "requested", "completed", "cancelled"].includes(sr.status))) return false;
     await tx`
       insert into public.shuttle_requests (fulfillment_id, pickup_description, pickup_lat, pickup_lng, dropoff_description,
                                            pickup_at, quoted_price_cents, quote_expires_at, customer_confirmed_at, status)
@@ -151,7 +163,23 @@ export async function quoteShuttle(f: FulfillmentContext, attempt: number, picku
       quoteRef: quote.quoteRef,
       quoteExpiresAt: quote.expiresAt.toISOString(),
     });
+    return true;
   });
+}
+
+/**
+ * A partner accepted an order/ride while the fulfillment was being cancelled
+ * (the call ran outside the lock). Keep the partner's reference and queue the
+ * partner cancellation, so a paid order is never left orphaned. Call with the
+ * fulfillment row locked and its status 'cancelled'.
+ */
+export async function compensateLatePartnerOrder(tx: Tx, fulfillmentId: string, ref: string, extra: Record<string, unknown>) {
+  await tx`
+    update public.fulfillments
+    set external_ref = ${ref}, details = (details - 'partnerCancelledAt') || ${tx.json({ ...extra, acceptedAfterCancellation: true } as JsonValue)}
+    where id = ${fulfillmentId}`;
+  await enqueueJob(tx, "fulfillment.cancel", { fulfillmentId }, { dedupKey: `fulfill-cancel:${fulfillmentId}:${ref}`, maxAttempts: 5 });
+  log.warn("fulfillment.partner_order_after_cancel", { fulfillmentId });
 }
 
 /**
@@ -214,6 +242,11 @@ async function runPartner(f: FulfillmentContext, attempt: number) {
       const order = await provider.placeOrder({ hikeDate: f.hikeDate, quantity: f.quantity, partySize: f.partySize, pickupLocation: pickup.location }, ctx);
       await withSystem(async (tx) => {
         const current = await loadFulfillmentContext(tx, f.id, true);
+        if (current?.status === "cancelled") {
+          // Cancelled while the order was being placed: cancel it with the partner.
+          await compensateLatePartnerOrder(tx, f.id, order.orderRef, { orderRef: order.orderRef });
+          return;
+        }
         if (!current || !["pending", "failed"].includes(current.status)) return;
         await setDetails(tx, f.id, "confirmed", order.orderRef, {
           simulated: true,

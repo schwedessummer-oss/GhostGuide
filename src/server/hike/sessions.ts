@@ -7,6 +7,10 @@ import { enqueueJob } from "@/server/jobs/queue";
 import { log } from "@/server/log";
 import { isDemoMode } from "@/config/env";
 import type { TripStatus } from "@/domain/types";
+import { closureVerdict, type DayClosure } from "@/domain/booking";
+import { correctDeviceTime, estimateClockSkewMs } from "@/domain/outbox";
+import { localDateInZone, zonedTimeToUtc } from "@/lib/time";
+import { formatDate } from "@/lib/format";
 import { hikeStartWindow, startAllowed, startWindowMessage } from "@/lib/offline/start-window";
 import type { FinishResponse, SessionView, StartResponse } from "@/lib/offline/wire";
 import { FUTURE_TOLERANCE_MS, type FinishInput, type StartInput } from "./schemas";
@@ -44,14 +48,67 @@ export function toSessionView(s: SessionRow): SessionView {
   };
 }
 
-/** A device timestamp, accepted only within a plausible window around `now`. */
-export function plausibleClientTime(iso: string | undefined, now: Date, notBefore: Date): Date {
+/**
+ * A device timestamp, accepted only within a plausible window around `now`.
+ * `skewMs` (device clock − server clock, from the request's `sentAt`) is
+ * subtracted first, so a phone whose clock is wrong still records the real time.
+ */
+export function plausibleClientTime(iso: string | undefined, now: Date, notBefore: Date, skewMs = 0): Date {
   if (!iso) return now;
-  const t = new Date(iso);
-  if (Number.isNaN(t.getTime())) return now;
+  const raw = Date.parse(iso);
+  if (Number.isNaN(raw)) return now;
+  const t = new Date(correctDeviceTime(raw, skewMs));
   if (t.getTime() > now.getTime() + FUTURE_TOLERANCE_MS) return now;
   if (t.getTime() < notBefore.getTime()) return now;
   return t.getTime() > now.getTime() ? now : t;
+}
+
+/** The calendar day after a YYYY-MM-DD date. */
+export function nextDate(day: string): string {
+  const d = new Date(`${day}T12:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * Closures that still matter for starting a hike on a region-local calendar
+ * day: active now, or scheduled to begin later that day. Closures that have
+ * already ENDED (e.g. a morning storm closure lifted at 11:00) do not block an
+ * afternoon start. A full ("closed") closure means a hike cannot be STARTED —
+ * there is no demo override for it. Conservative: a full closure scheduled for
+ * later the same day still blocks the start.
+ */
+export async function closuresForDay(tx: Tx, trailId: string, day: string, timeZone: string, now: Date = new Date()) {
+  const dayStart = zonedTimeToUtc(day, "00:00", timeZone);
+  const dayEnd = zonedTimeToUtc(nextDate(day), "00:00", timeZone);
+  const notEndedBy = now.getTime() > dayStart.getTime() ? now : dayStart;
+  const rows = await tx<DayClosure[]>`
+    select severity, reason, starts_at, ends_at from public.trail_closures
+    where trail_id = ${trailId} and starts_at < ${dayEnd}::timestamptz and (ends_at is null or ends_at > ${notEndedBy}::timestamptz)
+    order by starts_at`;
+  return closureVerdict(rows, day, timeZone);
+}
+
+/**
+ * Closures a hiker needs to see for a trip: not ended, and starting before
+ * the end of the booked day (active now, or scheduled for the hike date).
+ * Full closures first.
+ */
+export async function tripClosures(
+  tx: Tx,
+  trailId: string,
+  when: { bookedDate: string | null; timezone: string } | null,
+): Promise<{ severity: string; reason: string; startsAt: Date; endsAt: Date | null }[]> {
+  const bookedDayEnd = when?.bookedDate ? zonedTimeToUtc(nextDate(when.bookedDate), "00:00", when.timezone) : null;
+  return tx<{ severity: string; reason: string; startsAt: Date; endsAt: Date | null }[]>`
+    select severity, reason, starts_at, ends_at from public.trail_closures
+    where trail_id = ${trailId} and (ends_at is null or ends_at > now())
+      and starts_at <= greatest(now(), coalesce(${bookedDayEnd}::timestamptz, now()))
+    order by (severity = 'closed') desc, starts_at`;
+}
+
+export function closedTrailStartMessage(day: string, reason: string): string {
+  return `The trail is closed on ${formatDate(day, { weekday: "long", month: "long", day: "numeric" })}: ${reason.replace(/[.\s]+$/, "")}. This hike can't be started on a closed trail. Contact us from your trip page about changing or cancelling your booking.`;
 }
 
 /** The date a trip's hike is booked for (live booking's hike date, else the trip's planned date) and its region time zone. */
@@ -92,7 +149,8 @@ export async function startHike(user: SessionUser, input: StartInput, now = new 
   if (trip.status !== "booked" && trip.status !== "active") {
     return conflict(trip.status === "completed" ? "This trip is already completed." : "This trip is not booked, so a hike cannot start.");
   }
-  const startedAt = plausibleClientTime(input.startedAt, now, new Date(now.getTime() - MAX_CLIENT_START_AGE_MS));
+  const skewMs = estimateClockSkewMs(input.sentAt, now.getTime());
+  const startedAt = plausibleClientTime(input.startedAt, now, new Date(now.getTime() - MAX_CLIENT_START_AGE_MS), skewMs);
 
   return withSystem(async (tx): Promise<HikeResult<StartResponse>> => {
     const [locked] = await tx<{ status: TripStatus }[]>`
@@ -125,6 +183,10 @@ export async function startHike(user: SessionUser, input: StartInput, now = new 
       const w = hikeStartWindow(when.bookedDate, when.timezone, startedAt);
       const demoOverride = input.demoStartAnyway === true && (opts.demoMode ?? isDemoMode());
       if (!startAllowed(w) && !demoOverride) return conflict(startWindowMessage(w) ?? "This hike can only start on its booked date.");
+      // A trail fully closed on the day the hike would start: never (not even in a demo).
+      const day = localDateInZone(startedAt, when.timezone);
+      const closures = await closuresForDay(tx, trip.trailId, day, when.timezone, startedAt);
+      if (closures.closed) return conflict(closedTrailStartMessage(day, closures.closed.reason));
     }
 
     const [session] = await tx<SessionRow[]>`
@@ -178,7 +240,7 @@ export async function finishHike(user: SessionUser, input: FinishInput, now = ne
       where trip_id = ${trip.id} and status in ('active', 'paused') order by started_at desc limit 1 for update`;
     let session: SessionRow | null = open ?? null;
     if (open) {
-      const finishedAt = plausibleClientTime(input.finishedAt, now, open.startedAt);
+      const finishedAt = plausibleClientTime(input.finishedAt, now, open.startedAt, estimateClockSkewMs(input.sentAt, now.getTime()));
       const distance = Math.round(input.distanceCompletedM ?? 0);
       [session] = await tx<SessionRow[]>`
         update public.hike_sessions

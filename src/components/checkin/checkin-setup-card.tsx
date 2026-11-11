@@ -3,12 +3,14 @@ import { ShieldCheck } from "lucide-react";
 import { Alert, Card, SimulatedBadge } from "@/components/ui";
 import { getCurrentUser } from "@/server/auth";
 import { getOwnedTrip } from "@/server/trips/queries";
+import { getRunnerHealth } from "@/server/jobs/health";
 import { isAwaiting, isOverdueState } from "@/domain/checkin";
 import { loadCheckinCardData, type CheckinCardData } from "./data";
 import { CheckinSetupForm, type SetupContactOption } from "./setup-form";
 import { CheckinOptOutForm } from "./quick-actions";
 import { CheckinStatusSummary } from "./status-summary";
 import { CHECKIN_LIMITS_NOTE } from "./copy";
+import { RunnerDelayNotice } from "./runner-delay";
 
 export function setupFormProps(d: CheckinCardData, mode: "create" | "update") {
   const consenting: SetupContactOption[] = d.contacts
@@ -18,7 +20,7 @@ export function setupFormProps(d: CheckinCardData, mode: "create" | "update") {
     tripId: d.trip.id,
     mode,
     contacts: consenting,
-    contactsNeedingConsent: d.contacts.filter((c) => !c.hasConsent).map((c) => c.name),
+    contactsNeedingConsent: d.contacts.filter((c) => !c.hasConsent).map((c) => (c.contactOptedOutAt ? `${c.name} (opted out)` : c.name)),
     selectedContactId: d.checkin?.emergencyContactId ?? null,
     expectedReturnLocal: d.defaults.expectedReturnLocal,
     tzLabel: d.tzLabel,
@@ -38,9 +40,10 @@ export async function CheckinSetupCard({ tripId }: { tripId: string }) {
   if (!user) return null;
   const trip = await getOwnedTrip(user, tripId);
   if (!trip) return null;
-  const d = await loadCheckinCardData(user, trip);
+  const [d, health] = await Promise.all([loadCheckinCardData(user, trip), getRunnerHealth()]);
   const c = d.checkin;
   const eligible = trip.status === "booked" || trip.status === "active";
+  const checkinsLive = eligible && d.checkinsEnabled && (!c || c.status !== "completed");
 
   return (
     <Card aria-labelledby={`checkin-setup-${trip.id}`}>
@@ -53,6 +56,7 @@ export async function CheckinSetupCard({ tripId }: { tripId: string }) {
       <p className="mt-1 text-muted">Optional. Pick a trusted contact and a return time; we&apos;ll send them a notice only if we don&apos;t hear from you.</p>
 
       <div className="mt-4 space-y-4">
+        {checkinsLive ? <RunnerDelayNotice health={health} /> : null}
         {c && (isAwaiting(c.status) || isOverdueState(c.status) || c.status === "completed") ? (
           <>
             <CheckinStatusSummary

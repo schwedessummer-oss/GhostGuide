@@ -156,14 +156,21 @@ async function afterContactNoticeDelivered(tx: Tx, n: NotificationRow, now: Date
   if (!row) return;
   const result = contactNotifiedTransition(row, n.checkinVersion, now);
   const next = result.changed ? await applyTransition(tx, row, result, { now, who: { actor: "system", actorId: null }, details: { notificationId: n.id } }) : row;
-  // Delivered while (or after) the hiker confirmed / extended / finished:
-  // the contact must hear that too.
+  // Delivered while (or after) the hiker confirmed / extended / finished (or
+  // staff recorded that they're safe): the contact must hear that too.
   if (!isOverdueState(next.status) && next.status !== "cancelled") {
-    const kind = next.status === "completed" ? "finished" : next.lastOkAt && next.lastOkAt.getTime() >= n.createdAt.getTime() ? "ok" : "extended";
+    const [last] = await tx<{ kind: string; createdAt: Date }[]>`
+      select kind, created_at from public.checkin_events
+      where checkin_id = ${row.id} and kind in ('ok_confirmed_auto_extended', 'extended', 'finished', 'staff_resolved')
+      order by created_at desc, id desc limit 1`;
+    const kind = next.status === "completed" ? "finished" : last?.kind === "ok_confirmed_auto_extended" ? "ok" : "extended";
     await queueContactFollowUps(tx, row.id, kind, {
-      at: now,
+      // when the hiker acted (tap time / finish time), not when this notice went out
+      at: kind === "ok" ? (next.lastOkAt ?? now) : kind === "finished" ? (next.completedAt ?? now) : (last?.createdAt ?? now),
       episodeVersion: kind === "finished" ? next.version : n.checkinVersion,
       newExpectedReturnAt: kind === "finished" ? null : next.expectedReturnAt,
+      graceMinutes: next.graceMinutes,
+      by: next.status === "completed" && last?.kind === "staff_resolved" ? "staff" : undefined,
       only: { recipientRef: n.recipientRef, channel: n.channel },
     });
   }

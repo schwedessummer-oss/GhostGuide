@@ -135,6 +135,8 @@ export async function listTripBookingSummaries(
       holdValid: boolean;
       awaitingShuttleFulfillmentId: string | null;
       receiptNumber: string | null;
+      /** set when a payment was received (also for an ended checkout whose late payment is refunded) */
+      paidAt: Date | null;
       /** The booked (or held) hike date and group, for live bookings. */
       hikeDate: string;
       partySize: number;
@@ -144,8 +146,8 @@ export async function listTripBookingSummaries(
 > {
   const rows = await withUser(
     user,
-    (tx) => tx<{ id: string; tripId: string; status: BookingStatus; holdExpiresAt: Date | null; receiptNumber: string | null; awaitingShuttle: string | null; hikeDate: string; partySize: number }[]>`
-      select distinct on (b.trip_id) b.id, b.trip_id, b.status, b.hold_expires_at, b.receipt_number,
+    (tx) => tx<{ id: string; tripId: string; status: BookingStatus; holdExpiresAt: Date | null; receiptNumber: string | null; paidAt: Date | null; awaitingShuttle: string | null; hikeDate: string; partySize: number }[]>`
+      select distinct on (b.trip_id) b.id, b.trip_id, b.status, b.hold_expires_at, b.receipt_number, b.paid_at,
         to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.party_size,
         (select f.id::text from public.fulfillments f where f.booking_id = b.id and f.provider_kind = 'shuttle' and f.status = 'awaiting_customer' limit 1) as awaiting_shuttle
       from public.bookings b
@@ -162,6 +164,7 @@ export async function listTripBookingSummaries(
         holdValid: r.status === "pending_payment" && holdIsValid(r.holdExpiresAt, now),
         awaitingShuttleFulfillmentId: r.awaitingShuttle,
         receiptNumber: r.receiptNumber,
+        paidAt: r.paidAt,
         hikeDate: r.hikeDate,
         partySize: r.partySize,
         live: r.status === "pending_payment" ? holdIsValid(r.holdExpiresAt, now) : (LIVE_BOOKING_STATUSES as readonly string[]).includes(r.status),

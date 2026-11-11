@@ -25,7 +25,7 @@ export function CheckinStatusSummary({
   tripId: string;
   compact?: boolean;
 }) {
-  const copy = describeCheckinForOwner(checkin, timeZone, { contactReachable, simulated });
+  const copy = describeCheckinForOwner(checkin, timeZone, { contactReachable, simulated, closedByStaff: checkin.closedByStaff });
   const open = isOpen(checkin.status);
   // The contact can only be changed while the check-in is awaiting; while a
   // notice is pending the change form isn't shown, so point to the contacts page.
@@ -55,7 +55,21 @@ export function CheckinStatusSummary({
           )}
         </Alert>
       ) : null}
-      {open && contact && !contact.hasConsent ? (
+      {open && contact && !contact.hasConsent && contact.contactOptedOutAt ? (
+        <Alert tone="amber" title={`${contact.name} opted out of Ghost Guide notices`}>
+          They used the link in one of our notices on {formatCheckinTime(contact.contactOptedOutAt, timeZone)} to stop receiving check-in notices, so
+          they won&apos;t be notified if we don&apos;t hear from you.{" "}
+          {canChange ? (
+            <Link className="font-semibold underline" href={`/trips/${tripId}/checkin#change`}>
+              Choose another contact
+            </Link>
+          ) : (
+            <Link className="font-semibold underline" href={`/account/emergency-contacts?trip=${tripId}`}>
+              Update your contacts
+            </Link>
+          )}
+        </Alert>
+      ) : open && contact && !contact.hasConsent ? (
         <Alert tone="amber" title={`${contact.name} has no consent on file`}>
           They won&apos;t be notified.{" "}
           <Link className="font-semibold underline" href={`/account/emergency-contacts?trip=${tripId}`}>

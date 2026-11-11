@@ -56,6 +56,10 @@ export default async function EmergencyContactsPage({ searchParams }: PageProps<
                         <Badge tone="forest">
                           <CheckCircle2 aria-hidden className="size-3.5" /> Consent confirmed
                         </Badge>
+                      ) : c.contactOptedOutAt ? (
+                        <Badge tone="amber">
+                          <CircleAlert aria-hidden className="size-3.5" /> Opted out
+                        </Badge>
                       ) : (
                         <Badge tone="amber">
                           <CircleAlert aria-hidden className="size-3.5" /> Consent needed
@@ -72,6 +76,14 @@ export default async function EmergencyContactsPage({ searchParams }: PageProps<
                         <dd className="break-all">{c.email ?? "—"}</dd>
                       </div>
                     </dl>
+                    {!c.hasConsent && c.contactOptedOutAt ? (
+                      <p className="rounded-lg bg-amber-bg p-3 text-sm text-amber-ink" role="note">
+                        <strong>Your contact opted out.</strong> {c.name} used the link in one of our notices on {formatDate(c.contactOptedOutAt)} to stop
+                        receiving check-in notices, so they can&apos;t be chosen for check-ins
+                        {c.usedByOpenCheckin ? " and won't be notified for your upcoming or active check-in — choose someone else for it" : ""}. Only
+                        confirm their consent again if they&apos;ve told you they want notices again.
+                      </p>
+                    ) : null}
                     <p className="text-sm text-muted">
                       {c.hasConsent && c.consentConfirmedAt
                         ? `You confirmed their consent on ${formatDate(c.consentConfirmedAt)}.`

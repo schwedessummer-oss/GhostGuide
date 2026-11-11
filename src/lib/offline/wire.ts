@@ -73,7 +73,12 @@ export interface TripBundle {
     permitRequired: boolean;
     provenance: { field: string; kind: string; note: string | null }[];
     provenanceSummary: string;
-    closures: { severity: string; reason: string; endsAt: string | null }[];
+    /**
+     * Closures that have not ended and start before the end of the booked day
+     * (active now or scheduled for the hike date). `startsAt` is absent in
+     * bundles downloaded before it was added: treat those as active now.
+     */
+    closures: BundleClosure[];
   };
   /** the route GeoJSON LineString, pre-serialized so the checksum covers these exact bytes */
   geometryJson: string;
@@ -95,7 +100,69 @@ export interface TripBundle {
     heardPoiIds: string[];
   } | null;
   settings: { staleLocationMinutes: number };
+  /**
+   * Booked add-on details and permit status for offline use (help and
+   * pre-start screens). Absent in bundles downloaded before it was added.
+   */
+  logistics?: BundleLogistics;
   manifest: OfflineManifest;
+}
+
+export interface BundleClosure {
+  severity: "closed" | "partial" | "advisory" | string;
+  reason: string;
+  startsAt?: string;
+  endsAt: string | null;
+}
+
+export interface BundleAddon {
+  /** fulfillment id */
+  id: string;
+  kind: "gear_locker" | "shuttle" | "meal_pack" | "satellite_device" | "other";
+  name: string;
+  quantity: number;
+  status: string;
+  /** plain-language status, e.g. "Gear locker: confirmed — code ready" */
+  statusText: string;
+  simulated: boolean;
+  /** gear locker / satellite device pickup */
+  locker: {
+    name: string | null;
+    location: string | null;
+    items: string[];
+    /** owner-only locker access code (derived at download time; null when not yet revealable) */
+    accessCode: string | null;
+    /** last digits shown when the full code is not available yet */
+    codeHint: string | null;
+    codeExpiresAt: string | null;
+    disclaimer: string | null;
+  } | null;
+  /** shuttle pickup (only a confirmed/requested ride is a booked ride) */
+  shuttle: {
+    pickup: string | null;
+    dropoff: string | null;
+    pickupAt: string | null;
+    confirmed: boolean;
+  } | null;
+  /** meal pack pickup instruction */
+  meal: { pickup: string | null } | null;
+}
+
+export interface BundlePermit {
+  name: string;
+  authority: string;
+  officialUrl: string;
+  requirementSummary: string;
+  howToObtain: string;
+  status: "not_started" | "applied" | "obtained" | "denied" | "not_required";
+  confirmationRef: string | null;
+}
+
+export interface BundleLogistics {
+  /** booking status of the live booking, null when none */
+  bookingStatus: string | null;
+  addons: BundleAddon[];
+  permits: BundlePermit[];
 }
 
 export const HIKE_EVENT_KINDS = [
@@ -109,6 +176,7 @@ export const HIKE_EVENT_KINDS = [
   "deviation_dismissed",
   "reminder",
   "checkin_ok",
+  "checkin_extend",
   "simulator_on",
   "simulator_off",
   "finish",
@@ -130,6 +198,8 @@ export interface HikeEventData {
   progressM?: number;
   movingTimeSec?: number;
   simulated?: boolean;
+  /** checkin_extend: the new expected return time (device clock), ISO */
+  newExpectedReturnAt?: string;
 }
 
 export interface SyncPoint {
@@ -154,12 +224,23 @@ export interface SyncRequest {
   events: SyncEvent[];
   /** client's route progress (m), for the session summary */
   progressM?: number;
+  /** the device clock when this request was sent: the server corrects device timestamps by the estimated skew */
+  sentAt?: string;
 }
 
 export interface SyncRejection {
   id: string;
   kind: "point" | "event";
-  reason: "future_timestamp";
+  /** future_timestamp: still in the future after clock correction; invalid: unusable data */
+  reason: "future_timestamp" | "invalid";
+}
+
+/** What the check-in contract did with a device "I'm okay" / "Extend my trip". */
+export interface CheckinSyncResult {
+  eventId: string;
+  kind: "checkin_ok" | "checkin_extend";
+  applied: boolean;
+  reason?: string;
 }
 
 export interface SyncResponse {
@@ -168,6 +249,9 @@ export interface SyncResponse {
   acceptedEventIds: string[];
   rejected: SyncRejection[];
   session: { id: string; status: string; lastSyncAt: string | null };
+  /** device clock − server clock applied to this batch's timestamps (0 = none) */
+  clockSkewMs?: number;
+  checkin?: CheckinSyncResult[];
 }
 
 export interface StartRequest {
@@ -176,6 +260,8 @@ export interface StartRequest {
   startedAt?: string;
   /** APP_MODE=demo only: the hiker explicitly chose "Start anyway (demo)" on a day other than the booked date */
   demoStartAnyway?: boolean;
+  /** device clock at send time (clock-skew correction of startedAt) */
+  sentAt?: string;
 }
 
 export interface SessionView {
@@ -199,6 +285,8 @@ export interface FinishRequest {
   sessionId?: string;
   finishedAt?: string;
   distanceCompletedM?: number;
+  /** device clock at send time (clock-skew correction of finishedAt) */
+  sentAt?: string;
 }
 
 export interface FinishResponse {

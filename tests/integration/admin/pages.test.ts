@@ -7,11 +7,12 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactElement, ReactNode } from "react";
 import { prerenderToNodeStream } from "react-dom/static";
-import { closeDb, sql } from "@/server/db";
+import { closeDb, sql, withSystem } from "@/server/db";
 import { signSession } from "@/server/auth/tokens";
 import type { SessionUser } from "@/server/auth";
 import { createNarration } from "@/server/admin/content";
-import { demoUser, trailBySlug } from "../../helpers/db";
+import { createCustomer, demoUser, trailBySlug } from "../../helpers/db";
+import { bookedTrip, consentedContact, optIn } from "../safety/helpers";
 
 const jar = vi.hoisted(() => ({ token: undefined as string | undefined }));
 vi.mock("next/headers", () => ({
@@ -77,6 +78,22 @@ describe("admin layout and access", () => {
     expect(html).not.toContain('href="/admin/safety"');
   });
 
+  it("signed out: the layout leaves the redirect to the page, which keeps the deep link", async () => {
+    const { default: Layout } = await import("@/app/admin/layout");
+    // no redirect (and no admin chrome) from the layout itself…
+    const html = await render(await Layout({ children: "child", params: params({}) } as never));
+    expect(html).toBe("child");
+    // …so the page's own redirect, with its own path, is the one that happens
+    const { default: Pricing } = await import("@/app/admin/pricing/page");
+    expect(await thrownDigest(Pricing())).toMatch(/NEXT_REDIRECT;[^;]*;\/login\?next=%2Fadmin%2Fpricing;/);
+    const { default: Closures } = await import("@/app/admin/trails/[id]/closures/page");
+    const trail = await trailBySlug("lantern-creek-loop");
+    expect(await thrownDigest(Closures(props({ id: trail.id })))).toContain(`/login?next=${encodeURIComponent(`/admin/trails/${trail.id}/closures`)}`);
+    // signed-in customers are still refused by the layout
+    signIn(await demoUser("hiker"));
+    expect(await thrownDigest(Layout({ children: "child", params: params({}) } as never))).toMatch(/NEXT_REDIRECT;.*\/forbidden/);
+  });
+
   it("redirects customers and under-privileged staff to /forbidden, and signed-out users to login", async () => {
     const { default: Pricing } = await import("@/app/admin/pricing/page");
     expect(await thrownDigest(Pricing())).toMatch(/NEXT_REDIRECT;.*\/login/);
@@ -88,6 +105,26 @@ describe("admin layout and access", () => {
   });
 });
 
+describe("safety monitor page", () => {
+  it("shows an overdue check-in in the trail's zone with a readable timeline and the staff follow-up form", async () => {
+    const hiker = await createCustomer("safety-page");
+    const trip = await bookedTrip(hiker, { status: "active" });
+    const c = await optIn(hiker, trip.id, await consentedContact(hiker), { minutesAhead: 90 });
+    await withSystem((tx) => tx`update public.trip_checkins set status = 'overdue', overdue_at = now() where id = ${c.id}`);
+    signIn(await demoUser("safety"));
+    const { default: Safety } = await import("@/app/admin/safety/page");
+    const html = await render(await Safety());
+    expect(html).toContain("Times are shown in the trail&#x27;s local time zone");
+    expect(html).toMatch(/Expected back <time[^>]*>[^<]*\b(PST|PDT)\b/);
+    expect(html).toContain("Check-ins turned on");
+    expect(html).toContain("Record a staff follow-up");
+    expect(html).toContain("never contacts emergency services or search and rescue");
+    expect(html).toContain('value="hiker_confirmed_safe"');
+    expect(html).toContain('value="note_only"');
+    expect(html).not.toMatch(/opted_in|clientEventId/);
+  });
+});
+
 describe("admin pages render for an admin", () => {
   it("overview, catalog and operations pages", async () => {
     const admin = await demoUser("admin");
@@ -95,7 +132,7 @@ describe("admin pages render for an admin", () => {
     const trail = await trailBySlug("lantern-creek-loop");
     const echo = await trailBySlug("echo-basin-traverse");
     const pages: [string, () => Promise<ReactElement>, string[]][] = [
-      ["/admin", async () => (await import("@/app/admin/page")).default(), ["Needs attention", "Integration status", "Simulated", "dead job"]],
+      ["/admin", async () => (await import("@/app/admin/page")).default(), ["Needs attention", "Integration status", "Simulated", "dead job", "Background job runner"]],
       ["/admin/trails", async () => (await import("@/app/admin/trails/page")).default(props()), ["Lantern Creek Loop", "Cinder Spur", "No validated route"]],
       ["/admin/trails/new", async () => (await import("@/app/admin/trails/new/page")).default(), ["New draft trail", 'name="distanceKm"']],
       ["/admin/trails/[id]", async () => (await import("@/app/admin/trails/[id]/page")).default(props({ id: trail.id })), ["Facts and provenance", "Distance (km)", "Unpublish"]],
@@ -112,7 +149,7 @@ describe("admin pages render for an admin", () => {
       ["/admin/safety", async () => (await import("@/app/admin/safety/page")).default(), ["It is not proof of an emergency", "does not contact emergency services automatically", "Active hikes"]],
       ["/admin/notifications", async () => (await import("@/app/admin/notifications/page")).default(props({}, { status: "failed" })), ["Notification delivery log"]],
       ["/admin/jobs", async () => (await import("@/app/admin/jobs/page")).default(props()), ["Run due jobs now", "Integration health", "Failed webhook deliveries", "evt_demo_admin_seed_failed"]],
-      ["/admin/pricing", async () => (await import("@/app/admin/pricing/page")).default(), ["Live preview", "Weekend surcharge", "Trail base prices", "Add-on prices"]],
+      ["/admin/pricing", async () => (await import("@/app/admin/pricing/page")).default(), ["Live preview", "Weekend surcharge", "Trail base prices", "Add an add-on", "Daily capacity (units per day)", "Pricing unit", "Offered in"]],
       ["/admin/availability", async () => (await import("@/app/admin/availability/page")).default(props({}, { trail: trail.id })), ["Capacity", "Remaining", "(today)"]],
       ["/admin/flags", async () => (await import("@/app/admin/flags/page")).default(), ["checkout_enabled", "marketing_drafts"]],
       ["/admin/marketing", async () => (await import("@/app/admin/marketing/page")).default(props()), ["Generate a draft", "no AI"]],

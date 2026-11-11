@@ -94,14 +94,58 @@ export function SelectField({
   );
 }
 
+/** The whole ≥44px row is the tap target (the label wraps the checkbox). */
 export function CheckField({ id, label, className, ...props }: ComponentProps<"input"> & { id: string; label: ReactNode }) {
   return (
-    <div className={clsx("flex min-h-11 items-center gap-3", className)}>
+    <label htmlFor={id} className={clsx("flex min-h-11 cursor-pointer items-center gap-3", className)}>
       <input id={id} type="checkbox" className="size-5 shrink-0 accent-forest-700" {...props} />
-      <label htmlFor={id} className="cursor-pointer">
-        {label}
-      </label>
-    </div>
+      <span>{label}</span>
+    </label>
+  );
+}
+
+/** Single-choice radio group; each whole option row is a ≥44px tap target. */
+export function RadioGroup({
+  idPrefix,
+  legend,
+  name,
+  options,
+  defaultValue,
+  required,
+}: {
+  idPrefix: string;
+  legend: ReactNode;
+  name: string;
+  options: readonly { value: string; label: ReactNode; hint?: ReactNode }[];
+  defaultValue?: string;
+  required?: boolean;
+}) {
+  return (
+    <fieldset className="space-y-1">
+      <legend className="text-sm font-semibold text-ink">{legend}</legend>
+      {options.map((o) => (
+        <label key={o.value} htmlFor={`${idPrefix}-${o.value}`} className="flex min-h-11 cursor-pointer items-start gap-3 py-2">
+          <input
+            id={`${idPrefix}-${o.value}`}
+            type="radio"
+            name={name}
+            value={o.value}
+            defaultChecked={defaultValue === o.value}
+            required={required}
+            aria-describedby={o.hint ? `${idPrefix}-${o.value}-hint` : undefined}
+            className="mt-0.5 size-5 shrink-0 accent-forest-700"
+          />
+          <span>
+            <span className="block">{o.label}</span>
+            {o.hint ? (
+              <span id={`${idPrefix}-${o.value}-hint`} className="block text-xs text-muted">
+                {o.hint}
+              </span>
+            ) : null}
+          </span>
+        </label>
+      ))}
+    </fieldset>
   );
 }
 

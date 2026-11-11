@@ -1,7 +1,9 @@
 import "server-only";
 import { z } from "zod";
 import type { SessionUser } from "@/server/auth";
-import { assertCan, auditInStaffTx, fail, guarded, isUuid, localDateTime, localDateTimeToUtc, ok, requiredText, staffTx, zodFail, type ActionResult } from "./common";
+import { can } from "@/server/auth/rbac";
+import type { Tx } from "@/server/db";
+import { assertCan, auditInStaffTx, fail, guarded, isUuid, localDateTime, localDateTimeToUtc, ok, requiredText, staffTx, systemTx, zodFail, type ActionResult } from "./common";
 
 /**
  * Trail closures. Recommendations, trail pages and checkout read active
@@ -70,7 +72,7 @@ export async function createClosure(user: SessionUser, trailId: string, input: C
   const w = resolveWindow(p.data, tz);
   if ("error" in w) return fail(w.error as string);
   const d = p.data;
-  return guarded(() =>
+  const result = await guarded(() =>
     staffTx(user, async (tx) => {
       const [row] = await tx<{ id: string }[]>`
         insert into public.trail_closures (trail_id, severity, reason, source_id, starts_at, ends_at, created_by)
@@ -84,6 +86,93 @@ export async function createClosure(user: SessionUser, trailId: string, input: C
       return ok(`Closure saved. ${effect}`, { data: { id: row.id } });
     }),
   );
+  if (!result.ok || d.severity !== "closed" || !result.data) return result;
+  const warning = await closureImpactWarning(trailId, result.data.id).catch(() => null);
+  return warning ? { ...result, warnings: [...(result.warnings ?? []), warning] } : result;
+}
+
+/**
+ * Count of paid bookings on the days a new full closure covers. Counts only
+ * (no customer details), so every closures.manage role may see it; computed
+ * by trusted code after the permission check because content editors cannot
+ * read bookings under RLS.
+ */
+async function closureImpactWarning(trailId: string, closureId: string): Promise<string | null> {
+  const impact = await systemTx((tx) => affectedBookingRows(tx, trailId, [closureId]));
+  if (!impact.length) return null;
+  const hikers = impact.reduce((n, b) => n + b.partySize, 0);
+  const one = impact.length === 1;
+  return `${impact.length} upcoming paid ${one ? "booking" : "bookings"} (${hikers} ${hikers === 1 ? "hiker" : "hikers"}) ${one ? "falls" : "fall"} on days this closure covers. ${one ? "It is" : "They are"} not cancelled automatically: see the list under the closure.`;
+}
+
+// ---------------------------------------------------------------------------
+// Bookings affected by a full closure
+// ---------------------------------------------------------------------------
+/** Paid bookings that still need a decision when their hike day is closed. */
+export const AFFECTED_BOOKING_STATUSES = ["confirmed", "cancellation_requested", "needs_attention"] as const;
+
+export interface AffectedBooking {
+  closureId: string;
+  id: string;
+  hikeDate: string;
+  partySize: number;
+  status: string;
+  customerEmail: string | null;
+}
+
+export interface ClosureImpact {
+  count: number;
+  hikers: number;
+  /** null when the viewer may not see bookings (bookings.view): count only */
+  bookings: AffectedBooking[] | null;
+}
+
+/**
+ * Upcoming paid bookings whose hike day (a local calendar day in the trail's
+ * region) overlaps an active or scheduled `closed` closure. A day overlaps
+ * when [day 00:00, next day 00:00) in the region's zone intersects
+ * [starts_at, ends_at); open-ended closures run until further notice.
+ */
+async function affectedBookingRows(tx: Tx, trailId: string, closureIds: string[] | null): Promise<AffectedBooking[]> {
+  return tx<AffectedBooking[]>`
+    select c.id as closure_id, b.id, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.party_size, b.status, p.email as customer_email
+    from public.trail_closures c
+    join public.trails t on t.id = c.trail_id
+    join public.regions r on r.id = t.region_id
+    join public.bookings b on b.trail_id = c.trail_id
+    left join public.profiles p on p.id = b.user_id
+    where c.trail_id = ${trailId}
+      and (${closureIds}::uuid[] is null or c.id = any(${closureIds}::uuid[]))
+      and c.severity = 'closed'
+      and (c.ends_at is null or c.ends_at > now())
+      and b.status::text = any(${[...AFFECTED_BOOKING_STATUSES]}::text[])
+      and b.hike_date >= (now() at time zone r.timezone)::date
+      and (b.hike_date::timestamp at time zone r.timezone) < coalesce(c.ends_at, 'infinity'::timestamptz)
+      and ((b.hike_date + 1)::timestamp at time zone r.timezone) > c.starts_at
+    order by b.hike_date, b.created_at
+    limit 500`;
+}
+
+/**
+ * Impact of each active/scheduled full closure of a trail, keyed by closure
+ * id. Staff with bookings.view get the bookings (to open, cancel or refund
+ * them on the booking page); other closures.manage roles get counts only.
+ */
+export async function listClosureImpacts(user: SessionUser, trailId: string): Promise<Record<string, ClosureImpact>> {
+  assertCan(user, "closures.manage");
+  if (!isUuid(trailId)) return {};
+  const canSeeBookings = can(user.roles, "bookings.view");
+  // bookings.view roles read under RLS; others get counts computed by
+  // trusted code after the permission check (no customer details leave it).
+  const rows = canSeeBookings ? await staffTx(user, (tx) => affectedBookingRows(tx, trailId, null)) : await systemTx((tx) => affectedBookingRows(tx, trailId, null));
+  const out: Record<string, ClosureImpact> = {};
+  for (const b of rows) {
+    const imp = (out[b.closureId] ??= { count: 0, hikers: 0, bookings: canSeeBookings ? [] : null });
+    imp.count++;
+    imp.hikers += b.partySize;
+    imp.bookings?.push(b);
+  }
+  return out;
 }
 
 export async function updateClosure(user: SessionUser, closureId: string, input: ClosureInput): Promise<ActionResult> {

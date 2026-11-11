@@ -13,6 +13,7 @@ import {
   isUuid,
   isoDate,
   likePattern,
+  notBlank,
   ok,
   optionalText,
   requiredText,
@@ -123,16 +124,16 @@ const createSchema = z.object({
   name: requiredText(3, 120, "Name"),
   summary: z.string().trim().max(400).default(""),
   description: z.string().trim().max(8000).default(""),
-  distanceKm: z.coerce.number().min(0.1, "Distance must be at least 0.1 km").max(500),
-  elevationGainM: z.coerce.number().int().min(0).max(10000),
+  distanceKm: notBlank(z.coerce.number("Enter the distance in km.").min(0.1, "Distance must be at least 0.1 km").max(500), "Enter the distance in km."),
+  elevationGainM: notBlank(z.coerce.number("Enter the elevation gain in metres.").int().min(0).max(10000), "Enter the elevation gain in metres."),
   difficulty: z.enum(DIFFICULTIES),
   routeType: z.enum(ROUTE_TYPES),
-  estimatedDurationMin: z.coerce.number().int().min(1).max(4320),
+  estimatedDurationMin: notBlank(z.coerce.number("Enter the typical time in minutes.").int().min(1).max(4320), "Enter the typical time in minutes."),
   trailheadName: optionalText(200),
-  trailheadLat: z.coerce.number().min(-90).max(90),
-  trailheadLng: z.coerce.number().min(-180).max(180),
-  basePriceCents: z.coerce.number().int().min(0).max(1_000_000),
-  dailyCapacity: z.coerce.number().int().min(0).max(1000),
+  trailheadLat: notBlank(z.coerce.number("Enter the trailhead latitude.").min(-90).max(90), "Enter the trailhead latitude."),
+  trailheadLng: notBlank(z.coerce.number("Enter the trailhead longitude.").min(-180).max(180), "Enter the trailhead longitude."),
+  basePriceCents: notBlank(z.coerce.number("Enter the base price.").int().min(0).max(1_000_000), "Enter the base price."),
+  dailyCapacity: notBlank(z.coerce.number("Enter the daily capacity.").int().min(0).max(1000), "Enter the daily capacity."),
   isDemo: z.boolean(),
 });
 
@@ -168,7 +169,7 @@ const basicsSchema = z.object({
   summary: z.string().trim().max(400),
   description: z.string().trim().max(8000),
   trailheadName: optionalText(200),
-  dailyCapacity: z.coerce.number().int().min(0).max(1000),
+  dailyCapacity: notBlank(z.coerce.number("Enter the daily capacity.").int().min(0).max(1000), "Enter the daily capacity."),
 });
 
 export async function updateTrailBasics(user: SessionUser, trailId: string, input: z.input<typeof basicsSchema>): Promise<ActionResult> {

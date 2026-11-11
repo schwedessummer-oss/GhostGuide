@@ -13,7 +13,9 @@ import { processPaymentEvent, type ProcessOutcome } from "./payments";
  *    booking expires (releasing inventory).
  *  - payments.reconcile (hourly): pending_payment bookings older than 10
  *    minutes are compared with the provider; paid-but-unnotified sessions are
- *    confirmed through the same processor.
+ *    confirmed through the same processor. Checkouts ended on purpose
+ *    (staff-cancelled / released) in the last few days are checked too: a
+ *    payment whose webhook never arrived is refunded by the same processor.
  * Every provider lookup is recorded as an integration event.
  */
 interface PendingRow {
@@ -56,7 +58,7 @@ async function lookupSession(b: PendingRow, operation: string): Promise<Provider
 }
 
 /** Feed a paid provider session through the normal processor (synthetic event id). */
-async function processPaidSession(b: PendingRow, s: ProviderSession, source: "reconcile" | "expire" | "release"): Promise<ProcessOutcome> {
+async function processPaidSession(b: PendingRow, s: ProviderSession, source: "reconcile" | "expire" | "release" | "cancel" | "ended"): Promise<ProcessOutcome> {
   return processPaymentEvent({
     provider: b.paymentProvider === "stripe" ? "stripe" : "demo",
     eventId: `${source}:${s.sessionId}`,
@@ -144,6 +146,34 @@ export async function abandonPendingBooking(bookingId: string, reason: string): 
   return rows.length ? "expired" : "skipped";
 }
 
+/**
+ * After a pending checkout was ended on purpose (e.g. cancelled by staff),
+ * close its provider session and look it up. A session that had already been
+ * paid is processed right away: the payment processor refunds it in full
+ * (the booking carries a cancellation reason) instead of waiting for a
+ * webhook that might never arrive. Best effort; never throws.
+ */
+export async function closeEndedCheckoutSession(bookingId: string): Promise<"refunding" | "closed" | "error" | "skipped"> {
+  const [b] = await withSystem(
+    (tx) => tx<PendingRow[]>`
+      select id, checkout_session_id, payment_provider from public.bookings
+      where id = ${bookingId} and checkout_session_id is not null and status in ('expired', 'payment_failed')`,
+  );
+  if (!b?.checkoutSessionId) return "skipped";
+  try {
+    await getPaymentProviderByName(b.paymentProvider).expireSession?.(b.checkoutSessionId);
+  } catch (err) {
+    log.warn("payments.cancel_expire_session_failed", { bookingId: b.id, error: err instanceof Error ? err.message : String(err) });
+  }
+  const s = await lookupSession(b, "cancel.get_session");
+  if (s === "error") return "error";
+  if (s && s.paymentStatus === "paid") {
+    const outcome = await processPaidSession(b, s, "cancel");
+    return outcome === "needs_attention" || outcome === "noop" ? "refunding" : outcome === "failed" ? "error" : "skipped";
+  }
+  return "closed";
+}
+
 export async function expireStaleHolds(limit = 100): Promise<Record<HoldOutcome, number>> {
   const rows = await withSystem(
     (tx) => tx<{ id: string }[]>`
@@ -177,6 +207,37 @@ export async function reconcilePendingPayments(olderThanMinutes = 10, limit = 10
       if (outcome === "needs_attention") out.needsAttention++;
       if (outcome === "failed") out.errors++;
       log.info("payments.reconciled", { bookingId: b.id, outcome });
+    }
+  }
+  return out;
+}
+
+/**
+ * Checkouts ended on purpose (cancelled by staff, released by the customer)
+ * whose provider session may still have been paid, e.g. by a slow payment
+ * method, while the webhook never arrived. The processor never confirms such
+ * a booking: it refunds the payment in full and opens a support ticket.
+ */
+export async function reconcileEndedCheckouts(withinDays = 3, limit = 50): Promise<{ checked: number; refunded: number; errors: number }> {
+  const rows = await withSystem(
+    (tx) => tx<PendingRow[]>`
+      select id, checkout_session_id, payment_provider from public.bookings
+      where status in ('expired', 'payment_failed') and checkout_session_id is not null and paid_at is null
+        and cancellation_reason is not null and updated_at > now() - make_interval(days => ${withinDays})
+      order by updated_at desc limit ${limit}`,
+  );
+  const out = { checked: rows.length, refunded: 0, errors: 0 };
+  for (const b of rows) {
+    const s = await lookupSession(b, "reconcile_ended.get_session");
+    if (s === "error") {
+      out.errors++;
+      continue;
+    }
+    if (s && s.paymentStatus === "paid") {
+      const outcome = await processPaidSession(b, s, "ended");
+      if (outcome === "needs_attention") out.refunded++;
+      if (outcome === "failed") out.errors++;
+      log.info("payments.reconciled_ended_checkout", { bookingId: b.id, outcome });
     }
   }
   return out;

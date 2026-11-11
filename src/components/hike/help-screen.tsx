@@ -7,6 +7,8 @@ import { fetchBundleDetailed, getStoredBundle } from "@/lib/offline/bundle-store
 import { loadHikeState, saveHikeState } from "@/lib/offline/hike-state";
 import { SIGN_IN_AGAIN, currentOwnerHint, enforceDeviceOwner } from "@/lib/offline/owner";
 import { accuracyGrade } from "@/domain/location-quality";
+import type { BundleLogistics } from "@/lib/offline/wire";
+import { TripLogistics } from "./trip-logistics";
 import { formatAgo, formatClock, formatCoords } from "./format";
 import { useOnline } from "./use-online";
 
@@ -72,6 +74,7 @@ export function HelpScreen({
   const [copied, setCopied] = useState<string | null>(null);
   const [locating, setLocating] = useState(false);
   const [locateError, setLocateError] = useState<string | null>(null);
+  const [booking, setBooking] = useState<{ logistics: BundleLogistics | null; timeZone: string } | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -96,6 +99,8 @@ export function HelpScreen({
       if (stored?.bundle && stored.bundle.ownerHint === check.owner) {
         setRegion((r) => r ?? stored.bundle.region);
         setStaleMinutes(stored.bundle.settings.staleLocationMinutes);
+        // Booked add-ons (locker code, pickup point and time) and permit status, saved with the download.
+        setBooking({ logistics: stored.bundle.logistics ?? null, timeZone: stored.bundle.region.timezone });
       }
     })().catch(() => alive && setAccess((a) => (a === "checking" ? "signed_out" : a)));
     const t = setInterval(() => setNow(Date.now()), 10_000);
@@ -262,6 +267,16 @@ export function HelpScreen({
         ) : null}
         {!online ? <p className="mt-3 text-sm text-muted">You&apos;re offline — this page is working from your downloaded trip.</p> : null}
       </Card>
+
+      {access === "owner" && booking ? (
+        <Card>
+          <TripLogistics
+            logistics={booking.logistics}
+            timeZone={booking.timeZone}
+            savedNote="Saved on this device with your downloaded trip. Check your trip page for updates when you're online."
+          />
+        </Card>
+      ) : null}
 
       <Alert tone="amber" title="What Ghost Guide can't do">
         <ul className="mt-1 list-disc space-y-1 pl-5">

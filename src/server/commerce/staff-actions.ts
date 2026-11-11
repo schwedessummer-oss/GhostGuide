@@ -7,10 +7,10 @@ import { withSystem } from "@/server/db";
 import { cancelQueuedJobs, enqueueJob } from "@/server/jobs/queue";
 import { recordAudit } from "@/server/audit";
 import { log } from "@/server/log";
-import { getPaymentProviderByName } from "@/integrations/payments";
 import { cancelOneFulfillment } from "@/server/fulfillment/cancel";
 import { cancelBookingCore, lockBookingForCancel } from "./cancellation";
 import { refundBalance, requestRefund } from "./refunds";
+import { closeEndedCheckoutSession } from "./reconcile";
 
 /**
  * CROSS-SLICE CONTRACT — implemented by the commerce slice, called by the
@@ -28,8 +28,10 @@ const actorOf = (u: SessionUser) => ({ id: u.id, roles: u.roles });
 /**
  * Cancel a booking on behalf of the business (e.g. closure, partner issue).
  * Operator-initiated cancellations refund everything still refundable,
- * regardless of the customer policy window. Pending checkouts are expired
- * (no money was taken). Idempotent: an already-cancelled booking is a no-op.
+ * regardless of the customer policy window. Pending checkouts are expired with
+ * the staff reason recorded, so a payment that still arrives is refunded
+ * automatically and never confirms the booking. Idempotent: an
+ * already-cancelled booking is a no-op.
  */
 export async function staffCancelBooking(actor: SessionUser, bookingId: string, reason: string): Promise<StaffActionResult> {
   if (!can(actor.roles, "bookings.cancel")) return { ok: false, error: "You do not have permission to cancel bookings." };
@@ -37,7 +39,7 @@ export async function staffCancelBooking(actor: SessionUser, bookingId: string, 
   const r = reasonSchema.safeParse(reason);
   if (!r.success) return { ok: false, error: r.error.issues[0].message };
 
-  let expireSession: { provider: string; sessionId: string } | null = null;
+  let endedCheckout = false;
   const result = await withSystem(async (tx): Promise<StaffActionResult> => {
     const b = await lockBookingForCancel(tx, { bookingId });
     if (!b) return { ok: false, error: "Booking not found." };
@@ -47,10 +49,12 @@ export async function staffCancelBooking(actor: SessionUser, bookingId: string, 
     if (b.status === "pending_payment") {
       await tx`update public.bookings set status = 'expired', cancellation_reason = ${r.data} where id = ${b.id} and status = 'pending_payment'`;
       await recordAudit(tx, actorOf(actor), "booking.staff_cancelled", "booking", b.id, { from: b.status, to: "expired", reason: r.data });
-      if (b.checkoutSessionId) expireSession = { provider: b.paymentProvider, sessionId: b.checkoutSessionId };
-      return { ok: true, message: "Pending checkout cancelled; the hold was released and nothing was charged." };
+      endedCheckout = !!b.checkoutSessionId;
+      return { ok: true, message: "Pending checkout cancelled and the hold released. No payment had been completed." };
     }
-    if (b.status === "expired" || b.status === "payment_failed") return { ok: true, message: "Booking was never paid; nothing to cancel." };
+    if (b.status === "expired" || b.status === "payment_failed") {
+      return { ok: true, message: "This checkout already ended without a booking; nothing to cancel. Any payment that arrives for it is refunded automatically." };
+    }
     const balance = await refundBalance(tx, b.id);
     const res = await cancelBookingCore(tx, b, {
       refundCents: balance.availableCents,
@@ -65,12 +69,20 @@ export async function staffCancelBooking(actor: SessionUser, bookingId: string, 
       message: balance.availableCents > 0 ? `Booking cancelled; refund of ${balance.availableCents} cents requested.` : `Booking ${res.status}.`,
     };
   });
-  if (expireSession) {
-    const s = expireSession as { provider: string; sessionId: string };
-    try {
-      await getPaymentProviderByName(s.provider).expireSession?.(s.sessionId);
-    } catch (err) {
-      log.warn("staff.expire_session_failed", { bookingId, error: err instanceof Error ? err.message : String(err) });
+  if (endedCheckout && result.ok) {
+    // Close the provider session so it can no longer be paid. A payment that
+    // already went through is refunded in full by the payment processor (the
+    // booking is ended on purpose), never turned into a confirmed booking.
+    const settled = await closeEndedCheckoutSession(bookingId);
+    if (settled === "refunding") {
+      return { ok: true, message: "Pending checkout cancelled. The customer had already paid, so the payment is being refunded automatically in full." };
+    }
+    if (settled === "error") {
+      log.warn("staff.cancel_session_check_failed", { bookingId });
+      return {
+        ok: true,
+        message: "Pending checkout cancelled and the hold released. The payment provider could not be reached to confirm nothing was paid; any payment that arrives is refunded automatically.",
+      };
     }
   }
   return result;
@@ -106,7 +118,7 @@ export async function staffRefundBooking(
   });
 }
 
-/** Re-run a failed / needs_attention partner fulfillment. */
+/** Re-run a failed / needs_attention partner fulfillment, or a pending / requested one that has no job left. */
 export async function staffRetryFulfillment(actor: SessionUser, fulfillmentId: string): Promise<StaffActionResult> {
   if (!can(actor.roles, "fulfillment.manage")) return { ok: false, error: "You do not have permission to manage fulfillment." };
   if (!uuid.safeParse(fulfillmentId).success) return { ok: false, error: "Fulfillment not found." };
@@ -118,8 +130,16 @@ export async function staffRetryFulfillment(actor: SessionUser, fulfillmentId: s
       where f.id = ${fulfillmentId}
       for update of f`;
     if (!f) return { ok: false, error: "Fulfillment not found." };
-    if (["pending", "requested"].includes(f.status)) return { ok: true, message: "Already queued; nothing changed." };
-    if (!["failed", "needs_attention"].includes(f.status)) return { ok: false, error: `Only failed or needs-attention fulfillments can be retried (status: ${f.status}).` };
+    if (["pending", "requested"].includes(f.status)) {
+      // Normally a job is on its way; only a fulfillment stuck without one can be retried.
+      const [active] = await tx`
+        select 1 from public.jobs
+        where status in ('queued', 'running') and (dedup_key like ${`fulfill:${f.id}%`} or dedup_key like ${`shuttle:${f.id}:%`})
+        limit 1`;
+      if (active) return { ok: true, message: "Already queued; nothing changed." };
+    } else if (!["failed", "needs_attention"].includes(f.status)) {
+      return { ok: false, error: `Only failed, needs-attention or stuck fulfillments can be retried (status: ${f.status}).` };
+    }
     if (f.bookingStatus !== "confirmed") return { ok: false, error: "The booking is not confirmed, so the fulfillment cannot be retried." };
     const token = randomUUID();
     if (f.providerKind === "shuttle" && f.customerConfirmedAt && f.srStatus === "confirmed") {

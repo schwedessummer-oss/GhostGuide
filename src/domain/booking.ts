@@ -240,6 +240,24 @@ export const BOOKING_STATUS_COPY: Record<BookingStatus, { label: string; tone: T
   },
 };
 
+/**
+ * Status copy for one booking. An expired / failed checkout normally means
+ * "you were not charged" — but when a payment still arrived after it had
+ * ended (paidAt set), that would be untrue: the payment is refunded instead.
+ */
+export function bookingStatusCopy(status: BookingStatus, opts: { paidAt?: Date | string | null } = {}): { label: string; tone: Tone; description: string } {
+  const base = BOOKING_STATUS_COPY[status];
+  if (opts.paidAt && (status === "expired" || status === "payment_failed")) {
+    return {
+      label: "Checkout ended — automatic refund",
+      tone: "amber",
+      description:
+        "A payment arrived after this checkout had already ended, so it could not be used for a booking. It is refunded to you automatically and in full, and our team has been alerted.",
+    };
+  }
+  return base;
+}
+
 export const TRIP_STATUS_COPY: Record<TripStatus, { label: string; tone: Tone }> = {
   saved: { label: "Saved", tone: "neutral" },
   booked: { label: "Booked", tone: "forest" },

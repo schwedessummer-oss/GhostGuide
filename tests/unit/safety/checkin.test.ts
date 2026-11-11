@@ -115,9 +115,9 @@ describe("check-in state machine", () => {
       tappedAt: at(-5), // tapped offline 5 min ago, synced now
       now,
     });
-    expect(notified.state.expectedReturnAt).toEqual(at(OK_AUTO_EXTEND_MIN)); // from processing time
+    expect(notified.state.expectedReturnAt).toEqual(at(-5 + OK_AUTO_EXTEND_MIN)); // from the tap (as if it had arrived then)
     expect(notified.state.lastOkAt).toEqual(at(-5));
-    expect(notified.effects).toContainEqual({ type: "follow_up_contact", kind: "ok" });
+    expect(notified.effects).toContainEqual({ type: "follow_up_contact", kind: "ok", at: at(-5) });
   });
 
   it("an offline “I'm okay” tapped before the expected return keeps the original deadline", () => {

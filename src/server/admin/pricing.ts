@@ -2,8 +2,8 @@ import "server-only";
 import { z } from "zod";
 import type { SessionUser } from "@/server/auth";
 import type { PricingRule, PricingRuleKind } from "@/domain/pricing";
-import type { JsonValue } from "@/server/db";
-import { assertCan, auditInStaffTx, fail, guarded, isUuid, isoDate, ok, requiredText, staffTx, zodFail, type ActionResult } from "./common";
+import type { JsonValue, Tx } from "@/server/db";
+import { assertCan, auditInStaffTx, blankAsNull, fail, guarded, isUuid, isoDate, notBlank, ok, requiredText, staffTx, zodFail, type ActionResult } from "./common";
 
 /**
  * Transparent, rule-based pricing (no ML / dynamic pricing — deferred).
@@ -26,17 +26,29 @@ export interface PricingAddon {
   id: string;
   code: string;
   name: string;
+  description: string;
   kind: string;
+  providerKey: string;
   priceCents: number;
   pricingUnit: "per_booking" | "per_person";
+  requiresCustomerConfirmation: boolean;
+  dailyCapacity: number | null;
+  regionId: string | null;
+  regionName: string | null;
   active: boolean;
+}
+export interface PricingRegion {
+  id: string;
+  name: string;
 }
 export interface PricingRuleRow extends PricingRule {
   trailName: string | null;
   updatedAt: Date;
 }
 
-export async function getPricingData(user: SessionUser): Promise<{ rules: PricingRuleRow[]; trails: PricingTrail[]; addons: PricingAddon[]; regionIds: string[] }> {
+export async function getPricingData(
+  user: SessionUser,
+): Promise<{ rules: PricingRuleRow[]; trails: PricingTrail[]; addons: PricingAddon[]; regionIds: string[]; regions: PricingRegion[] }> {
   assertCan(user, "pricing.manage");
   return staffTx(user, async (tx) => {
     const [rules, trails, addons, regions] = await Promise.all([
@@ -49,10 +61,14 @@ export async function getPricingData(user: SessionUser): Promise<{ rules: Pricin
       tx<PricingTrail[]>`
         select id, name, status, region_id, base_price_cents, currency, daily_capacity, is_demo
         from public.trails where status <> 'archived' order by name`,
-      tx<PricingAddon[]>`select id, code, name, kind, price_cents, pricing_unit, active from public.addons order by name`,
-      tx<{ id: string }[]>`select id from public.regions order by name`,
+      tx<PricingAddon[]>`
+        select a.id, a.code, a.name, a.description, a.kind, a.provider_key, a.price_cents, a.pricing_unit, a.requires_customer_confirmation,
+               a.daily_capacity, a.region_id, rg.name as region_name, a.active
+        from public.addons a left join public.regions rg on rg.id = a.region_id
+        order by a.active desc, a.name`,
+      tx<PricingRegion[]>`select id, name from public.regions order by name`,
     ]);
-    return { rules, trails, addons, regionIds: regions.map((r) => r.id) };
+    return { rules, trails, addons, regionIds: regions.map((r) => r.id), regions };
   });
 }
 
@@ -60,7 +76,7 @@ const ruleSchema = z
   .object({
     name: requiredText(3, 120, "Name"),
     kind: z.enum(RULE_KINDS),
-    value: z.coerce.number().refine(Number.isFinite, "Enter a number"),
+    value: notBlank(z.coerce.number("Enter a number.").refine(Number.isFinite, "Enter a number."), "Enter the rule value."),
     threshold: z.union([z.coerce.number().min(0.05).max(1), z.literal("")]).transform((v) => (v === "" ? null : v)),
     minParty: z.union([z.coerce.number().int().min(2).max(12), z.literal("")]).transform((v) => (v === "" ? null : v)),
     dates: z
@@ -150,11 +166,11 @@ export async function deletePricingRule(user: SessionUser, ruleId: string): Prom
   );
 }
 
-const centsFromDollars = z.coerce
-  .number()
-  .min(0, "Price cannot be negative")
-  .max(10_000, "Price looks too high")
-  .transform((v) => Math.round(v * 100));
+/** Dollars → cents. Blank is an error, never $0 (Number("") is 0). */
+const centsFromDollars = notBlank(
+  z.coerce.number("Enter a price in dollars, e.g. 12.50.").min(0, "Price cannot be negative.").max(10_000, "Price looks too high."),
+  "Enter a price (0 for free).",
+).transform((v) => Math.round(v * 100));
 
 export async function updateTrailBasePrice(user: SessionUser, trailId: string, dollars: unknown): Promise<ActionResult> {
   assertCan(user, "pricing.manage");
@@ -172,18 +188,156 @@ export async function updateTrailBasePrice(user: SessionUser, trailId: string, d
   );
 }
 
-export async function updateAddonPricing(user: SessionUser, addonId: string, input: { dollars: unknown; active: boolean }): Promise<ActionResult> {
+// ---------------------------------------------------------------------------
+// Add-on configuration (admin only: pricing.manage; the addons table is
+// admin-write in RLS, see 20261105009000_security_hardening.sql)
+// ---------------------------------------------------------------------------
+
+/** Kinds with a partner adapter and an addon_<kind> feature flag. */
+export const ADDON_KINDS = ["gear_locker", "shuttle", "meal_pack", "satellite_device"] as const;
+export const ADDON_UNITS = ["per_booking", "per_person"] as const;
+/** Only simulated ("demo") partner adapters exist (src/integrations/partners). */
+export const ADDON_PROVIDER_KEY = "demo";
+
+const trimmed = (v: unknown) => (v === null || v === undefined ? "" : typeof v === "string" ? v.trim() : v);
+
+/** Empty = no daily limit (NULL). The empty check comes before number coercion (Number("") is 0). */
+export const addonCapacitySchema = blankAsNull(
+  z.coerce
+    .number("Enter a whole number, or leave it empty for no daily limit.")
+    .int("Enter a whole number, or leave it empty for no daily limit.")
+    .min(1, "Daily capacity must be at least 1 (leave it empty for no daily limit).")
+    .max(10_000, "Daily capacity can be at most 10000."),
+);
+
+const addonFieldsSchema = z.object({
+  name: requiredText(3, 120, "Name"),
+  description: z.preprocess(trimmed, z.string().max(1000, "Keep the description under 1000 characters.")),
+  price: centsFromDollars,
+  pricingUnit: z.enum(ADDON_UNITS, "Choose per booking or per person."),
+  dailyCapacity: addonCapacitySchema,
+  requiresCustomerConfirmation: z.boolean(),
+  regionId: z.preprocess(trimmed, z.union([z.literal("").transform(() => null), z.uuid("Choose a region.")])),
+  active: z.boolean(),
+});
+const addonCreateSchema = addonFieldsSchema.extend({
+  code: z.preprocess(
+    (v) => (typeof v === "string" ? v.trim().toLowerCase() : v),
+    z.string("Enter a code.").regex(/^[a-z0-9][a-z0-9-]{1,58}[a-z0-9]$/, "Use 3–60 lowercase letters, digits and hyphens for the code (e.g. meal-pack)."),
+  ),
+  kind: z.enum(ADDON_KINDS, "Choose the add-on type."),
+});
+export type AddonInput = z.input<typeof addonFieldsSchema>;
+export type AddonCreateInput = z.input<typeof addonCreateSchema>;
+type AddonFields = z.output<typeof addonFieldsSchema>;
+
+/**
+ * Product rules for add-ons (honesty & safety): a shuttle always needs the
+ * customer to confirm pickup location, price and time before any paid ride
+ * is requested; a satellite device rental must not read as an SOS service.
+ */
+export function addonRuleCheck(kind: string, d: Pick<AddonFields, "requiresCustomerConfirmation" | "description">): { error?: string; warnings: string[] } {
+  const warnings: string[] = [];
+  if (kind === "shuttle" && !d.requiresCustomerConfirmation) {
+    return { error: "Shuttle add-ons must require customer confirmation: customers confirm the pickup location, price and time before any ride is requested.", warnings };
+  }
+  if (kind === "satellite_device" && !/(does not|doesn['’]t|not) provide (an? )?SOS/i.test(d.description)) {
+    warnings.push("Say in the description that Ghost Guide does not provide SOS service (the device's own service applies).");
+  }
+  return { warnings };
+}
+
+async function addonRegionExists(tx: Tx, regionId: string | null): Promise<boolean> {
+  if (!regionId) return true;
+  const [r] = await tx<{ id: string }[]>`select id from public.regions where id = ${regionId}`;
+  return !!r;
+}
+
+async function addonFlagWarning(tx: Tx, kind: string, active: boolean): Promise<string[]> {
+  if (!active) return [];
+  const [f] = await tx<{ enabled: boolean }[]>`select enabled from public.feature_flags where key = ${`addon_${kind}`}`;
+  return f?.enabled ? [] : [`Customers will not see it until the feature flag addon_${kind} is turned on (Feature flags).`];
+}
+
+const addonAuditView = (d: AddonFields) => ({
+  name: d.name,
+  priceCents: d.price,
+  pricingUnit: d.pricingUnit,
+  dailyCapacity: d.dailyCapacity,
+  requiresCustomerConfirmation: d.requiresCustomerConfirmation,
+  regionId: d.regionId,
+  active: d.active,
+});
+
+/** Create an add-on (admin; audited). The partner adapter is the simulated "demo" one. */
+export async function createAddon(user: SessionUser, input: AddonCreateInput): Promise<ActionResult<{ id: string }>> {
   assertCan(user, "pricing.manage");
-  if (!isUuid(addonId)) return fail("Add-on not found.");
-  const p = centsFromDollars.safeParse(input.dollars);
+  const p = addonCreateSchema.safeParse(input);
   if (!p.success) return zodFail(p.error);
+  const d = p.data;
+  const rules = addonRuleCheck(d.kind, d);
+  if (rules.error) return fail(rules.error);
   return guarded(() =>
     staffTx(user, async (tx) => {
-      const [before] = await tx<{ priceCents: number; active: boolean; name: string }[]>`select price_cents, active, name from public.addons where id = ${addonId} for update`;
+      if (!(await addonRegionExists(tx, d.regionId))) return fail("Choose a region.");
+      const [dup] = await tx<{ id: string }[]>`select id from public.addons where code = ${d.code}`;
+      if (dup) return fail(`The code “${d.code}” is already used by another add-on.`);
+      const [row] = await tx<{ id: string }[]>`
+        insert into public.addons (code, name, description, kind, provider_key, price_cents, pricing_unit, requires_customer_confirmation, daily_capacity, active, region_id)
+        values (${d.code}, ${d.name}, ${d.description}, ${d.kind}, ${ADDON_PROVIDER_KEY}, ${d.price}, ${d.pricingUnit}, ${d.requiresCustomerConfirmation},
+                ${d.dailyCapacity}, ${d.active}, ${d.regionId})
+        returning id`;
+      await auditInStaffTx(tx, user, "pricing.addon_created", "addon", row.id, { code: d.code, kind: d.kind, providerKey: ADDON_PROVIDER_KEY, ...addonAuditView(d) });
+      return ok(`Add-on “${d.name}” created. Partner fulfillment is simulated in this deployment.`, {
+        data: { id: row.id },
+        warnings: [...rules.warnings, ...(await addonFlagWarning(tx, d.kind, d.active))],
+      });
+    }),
+  );
+}
+
+/** Edit an add-on's configuration and price (admin; audited with before/after). Code and kind are fixed after creation. */
+export async function updateAddon(user: SessionUser, addonId: string, input: AddonInput): Promise<ActionResult> {
+  assertCan(user, "pricing.manage");
+  if (!isUuid(addonId)) return fail("Add-on not found.");
+  const p = addonFieldsSchema.safeParse(input);
+  if (!p.success) return zodFail(p.error);
+  const d = p.data;
+  return guarded(() =>
+    staffTx(user, async (tx) => {
+      const [before] = await tx<
+        {
+          kind: string;
+          name: string;
+          priceCents: number;
+          pricingUnit: string;
+          dailyCapacity: number | null;
+          requiresCustomerConfirmation: boolean;
+          regionId: string | null;
+          active: boolean;
+          description: string;
+        }[]
+      >`
+        select kind, name, price_cents, pricing_unit, daily_capacity, requires_customer_confirmation, region_id, active, description
+        from public.addons where id = ${addonId} for update`;
       if (!before) return fail("Add-on not found.");
-      await tx`update public.addons set price_cents = ${p.data}, active = ${input.active === true} where id = ${addonId}`;
-      await auditInStaffTx(tx, user, "pricing.addon_updated", "addon", addonId, { from: { priceCents: before.priceCents, active: before.active }, to: { priceCents: p.data, active: input.active === true } });
-      return ok(`${before.name} saved.`);
+      const rules = addonRuleCheck(before.kind, d);
+      if (rules.error) return fail(rules.error);
+      if (!(await addonRegionExists(tx, d.regionId))) return fail("Choose a region.");
+      await tx`
+        update public.addons set name = ${d.name}, description = ${d.description}, price_cents = ${d.price}, pricing_unit = ${d.pricingUnit},
+          daily_capacity = ${d.dailyCapacity}, requires_customer_confirmation = ${d.requiresCustomerConfirmation}, region_id = ${d.regionId}, active = ${d.active}
+        where id = ${addonId}`;
+      const { kind, description, ...beforeView } = before;
+      await auditInStaffTx(tx, user, "pricing.addon_updated", "addon", addonId, {
+        kind,
+        before: beforeView,
+        after: addonAuditView(d),
+        descriptionChanged: description !== d.description,
+      });
+      const warnings = [...rules.warnings, ...(await addonFlagWarning(tx, kind, d.active))];
+      if (before.priceCents !== d.price || before.pricingUnit !== d.pricingUnit) warnings.push("Existing bookings keep the add-on price they were charged.");
+      return ok(`${d.name} saved.`, { warnings });
     }),
   );
 }

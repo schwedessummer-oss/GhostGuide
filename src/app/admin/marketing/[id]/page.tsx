@@ -82,7 +82,7 @@ export default async function MarketingDraftPage({ params, searchParams }: PageP
                     </>
                   ) : null}
                   {s.retrievedAt ? ` · retrieved ${formatDate(s.retrievedAt)}` : ""}
-                  {s.verifiedAt ? ` · verified ${formatDate(s.verifiedAt)}` : ""}
+                  {s.verifiedAt ? ` · ${s.verifiedKind ? "verified" : "reviewed"} ${formatDate(s.verifiedAt)}` : ""}
                 </li>
               ))}
             </ul>

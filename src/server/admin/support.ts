@@ -23,10 +23,23 @@ export interface TicketRow {
   updatedAt: Date;
 }
 
+/** Group filters (the overview's "high-priority tickets" card links to exactly these). */
+export const TICKET_STATUS_GROUPS = { unresolved: ["open", "pending"] } as const satisfies Record<string, readonly (typeof TICKET_STATUSES)[number][]>;
+export const TICKET_PRIORITY_GROUPS = { high_or_urgent: ["high", "urgent"] } as const satisfies Record<string, readonly (typeof TICKET_PRIORITIES)[number][]>;
+export const TICKET_STATUS_FILTERS = [...TICKET_STATUSES.map((s) => ({ value: s, label: s })), { value: "unresolved", label: "open or pending" }];
+export const TICKET_PRIORITY_FILTERS = [...TICKET_PRIORITIES.map((p) => ({ value: p, label: p })), { value: "high_or_urgent", label: "high or urgent" }];
+export const HIGH_PRIORITY_QUEUE_HREF = "/admin/support?status=unresolved&priority=high_or_urgent";
+
+function filterValues<V extends string>(value: string | undefined, single: readonly V[], groups: Record<string, readonly V[]>): V[] | null {
+  if (!value) return null;
+  if ((single as readonly string[]).includes(value)) return [value as V];
+  return Object.hasOwn(groups, value) ? [...groups[value]] : null;
+}
+
 export async function listTickets(user: SessionUser, f: { status?: string; priority?: string; assigned?: string }, page: Page): Promise<Paged<TicketRow>> {
   assertCan(user, "support.manage");
-  const status = z.enum(TICKET_STATUSES).safeParse(f.status).data ?? null;
-  const priority = z.enum(TICKET_PRIORITIES).safeParse(f.priority).data ?? null;
+  const status = filterValues(f.status, TICKET_STATUSES, TICKET_STATUS_GROUPS);
+  const priority = filterValues(f.priority, TICKET_PRIORITIES, TICKET_PRIORITY_GROUPS);
   const assigned = f.assigned === "me" ? user.id : f.assigned === "unassigned" ? "unassigned" : f.assigned && isUuid(f.assigned) ? f.assigned : null;
   const assignee = assigned && assigned !== "unassigned" ? assigned : null;
   const rows = await staffTx(user, (tx) => tx<(TicketRow & { total: number })[]>`
@@ -35,8 +48,8 @@ export async function listTickets(user: SessionUser, f: { status?: string; prior
     from public.support_tickets st
     left join public.profiles cp on cp.id = st.user_id
     left join public.profiles ap on ap.id = st.assigned_to
-    where (${status}::text is null or st.status = ${status}::text)
-      and (${priority}::text is null or st.priority = ${priority}::text)
+    where (${status}::text[] is null or st.status = any(${status}::text[]))
+      and (${priority}::text[] is null or st.priority = any(${priority}::text[]))
       and (${assigned === "unassigned"}::boolean is false or st.assigned_to is null)
       and (${assignee}::uuid is null or st.assigned_to = ${assignee}::uuid)
     order by case st.status when 'open' then 0 when 'pending' then 1 else 2 end,

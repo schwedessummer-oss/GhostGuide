@@ -17,6 +17,7 @@ import {
 import { buildOverdueContactMessage, buildOverdueUserMessage, buildReminderMessage } from "@/domain/notification-messages";
 import { createNotification, NOTIFICATION_TEMPLATES } from "@/server/notifications/create";
 import { contactAddresses, userAddress } from "@/server/notifications/addresses";
+import { discardOptOutLink, issueOptOutLink } from "@/server/notifications/optout";
 import { applyTransition, lockCheckinById, recordCheckinEvent, type CheckinRow } from "./core";
 import { loadContact, loadLastLocationForTrip, loadNoticeContext } from "./context";
 import { getSafetySettings } from "./settings";
@@ -111,6 +112,7 @@ export async function processOverdueJob(payload: unknown, now: Date): Promise<Jo
     const addresses = contact?.consentConfirmedAt ? contactAddresses(contact) : [];
     if (addresses.length && contact) {
       for (const addr of addresses) {
+        const link = await issueOptOutLink(tx, { id: contact.id, userId: row.userId }, now);
         const msg = buildOverdueContactMessage({
           channel: addr.channel,
           hikerFirstName: ctx.hikerFirstName,
@@ -123,8 +125,9 @@ export async function processOverdueJob(payload: unknown, now: Date): Promise<Jo
           locationSharingDisabled: !ctx.shareLocation,
           staleMinutes: settings.staleLocationMinutes,
           emergencyNumber: ctx.emergencyNumber,
+          optOutUrl: link.url,
         });
-        await createNotification(tx, {
+        const created = await createNotification(tx, {
           userId: row.userId,
           tripId: row.tripId,
           checkinId: row.id,
@@ -139,6 +142,7 @@ export async function processOverdueJob(payload: unknown, now: Date): Promise<Jo
           // unique: a duplicate, re-queued or delayed job can never double-notify
           dedupKey: `notify:${row.id}:v${row.version}:overdue:contact:${contact.id}:${addr.channel}`,
         });
+        if (!created.created) await discardOptOutLink(tx, link.tokenHash);
         contactNotices++;
       }
     } else {

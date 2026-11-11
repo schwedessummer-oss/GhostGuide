@@ -154,3 +154,41 @@ export function shouldSamplePoint(
   if (fix.timestamp - last.at >= cfg.minIntervalMs) return true;
   return haversineM(last, fix) >= cfg.minDistanceM;
 }
+
+// ---------------------------------------------------------------------------
+// Device clock skew
+// ---------------------------------------------------------------------------
+
+/** Skews smaller than this are network latency / noise: no correction. */
+export const CLOCK_SKEW_MIN_MS = 30_000;
+/** Larger skews are not trusted (garbage clock or a stale `sentAt`): no correction. */
+export const CLOCK_SKEW_MAX_MS = 24 * 3600_000;
+
+/**
+ * Device clock minus server clock, estimated from the device's send time of a
+ * request (`sentAt`, device clock) and when the server received it. Positive =
+ * the device clock is ahead. Returns 0 (no correction) when `sentAt` is
+ * missing or invalid, when the skew is within latency noise, or when it is
+ * implausibly large (correction is bounded).
+ */
+export function estimateClockSkewMs(sentAt: string | number | null | undefined, serverNowMs: number): number {
+  if (sentAt === null || sentAt === undefined) return 0;
+  const sent = typeof sentAt === "number" ? sentAt : Date.parse(sentAt);
+  if (!Number.isFinite(sent) || !Number.isFinite(serverNowMs)) return 0;
+  const skew = sent - serverNowMs;
+  const abs = Math.abs(skew);
+  if (abs < CLOCK_SKEW_MIN_MS || abs > CLOCK_SKEW_MAX_MS) return 0;
+  return Math.round(skew);
+}
+
+/** A device timestamp on the server's clock. */
+export function correctDeviceTime(deviceMs: number, skewMs: number): number {
+  return deviceMs - skewMs;
+}
+
+/**
+ * Event kinds that must never be dropped for clock reasons: the server
+ * accepts them with a corrected (and, if still in the future, clamped) time.
+ */
+export const SAFETY_EVENT_KINDS = ["checkin_ok", "checkin_extend", "finish"] as const;
+export const isSafetyEventKind = (kind: string): boolean => (SAFETY_EVENT_KINDS as readonly string[]).includes(kind);

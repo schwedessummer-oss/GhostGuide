@@ -233,21 +233,25 @@ describe("“I'm okay”", () => {
     const contact = await consentedContact(user, { email: "" });
     const now = new Date();
     const c = await optIn(user, trip.id, contact, { now, minutesAhead: 20, graceMinutes: 15, reminders: [] });
-    await runCheckinJobs(c.id, addMin(now, 40));
+    // the deadline passed in real time (device taps are judged against the server clock)
+    await sql()`update public.trip_checkins set expected_return_at = now() - interval '40 minutes' where id = ${c.id}`;
+    expect(await processOverdueJob({ checkinId: c.id, version: c.version }, new Date())).toMatchObject({ outcome: "done" });
+    await runCheckinJobs(c.id, new Date(), { kinds: ["notifications.send"] });
     expect((await checkinRow(trip.id)).status).toBe("contact_notified");
-    // device tap synced later (idempotent per clientEventId)
-    await withSystem((tx) => onCheckinConfirmedFromDevice(tx, trip.id, user.id, addMin(now, 41), "device-evt-1"));
-    await withSystem((tx) => onCheckinConfirmedFromDevice(tx, trip.id, user.id, addMin(now, 41), "device-evt-1"));
+    // device tap (after the deadline) synced later (idempotent per clientEventId)
+    const tappedAt = addMin(new Date(), -2);
+    await withSystem((tx) => onCheckinConfirmedFromDevice(tx, trip.id, user.id, tappedAt, "device-evt-1"));
+    await withSystem((tx) => onCheckinConfirmedFromDevice(tx, trip.id, user.id, tappedAt, "device-evt-1"));
     const row = await checkinRow(trip.id);
     expect(row.status).toBe("confirmed_ok");
     expect(row.version).toBe(2);
     const okEvents = await sql()`select 1 from public.checkin_events where checkin_id = ${c.id} and details ->> 'clientEventId' = 'device-evt-1'`;
     expect(okEvents).toHaveLength(1);
-    await runCheckinJobs(c.id, addMin(now, 42), { kinds: ["notifications.send"] });
+    await runCheckinJobs(c.id, new Date(), { kinds: ["notifications.send"] });
     const followUps = (await notificationsFor(c.id)).filter((n) => n.template === "checkin_followup_ok");
     expect(followUps).toHaveLength(1);
     expect(followUps[0].status).toBe("simulated");
-    expect(followUps[0].body).toMatch(/Ravi has now confirmed they're okay/);
+    expect(followUps[0].body).toMatch(/Ravi has confirmed they're okay/);
   });
 });
 

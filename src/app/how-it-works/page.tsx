@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const STEPS = [
   { icon: Compass, title: "Find a hike", body: "Browse trails with clear facts — distance, climb, terrain, closures — each labelled verified, estimated or demonstration." },
   { icon: ListChecks, title: "Get a personal itinerary", body: "Tell us your pace, time and needs. We build a schedule with estimated times and a turnaround time. Estimates, not promises." },
-  { icon: CloudDownload, title: "Book and download", body: "Book the self-guided experience (and optional gear, shuttle or meals), then download the trip so it works without signal." },
+  { icon: CloudDownload, title: "Book and download", body: "Book the self-guided experience (and optional gear, shuttle or meals), then download the trip: the hike and help screens, route, stories, emergency info, your add-on details (locker code, pickup time) and permit status then work without signal." },
   { icon: Headphones, title: "Hike with the audio guide", body: "Stories play when you reach each stop, with a written transcript. You see your progress, time and an offline route view." },
   { icon: UserRoundCheck, title: "Optional check-in", body: "Choose an expected return time and a contact who agreed to be notified if we don't hear from you. Finish the hike to stop it." },
 ];
@@ -64,8 +64,11 @@ export default function HowItWorksPage() {
               <li>Uses GPS while the hike screen is open and visible.</li>
               <li>Plays narration from downloaded audio or your device&apos;s voice while open.</li>
               <li>Asks the screen to stay on (Wake Lock) where the browser supports it.</li>
-              <li>Works offline after download: route, stops, stories, help info.</li>
-              <li>Saves your location and taps on the device and sends them when you reconnect.</li>
+              <li>Works offline after download: route, stops, stories, help info, booked add-on details and permit status.</li>
+              <li>
+                Saves your location, &quot;I&apos;m okay&quot;, trip extensions and finish on the device and sends them the next time any Ghost Guide
+                page is open with a connection. Some browsers can also send them in the background — not guaranteed.
+              </li>
             </ul>
           </div>
           <div>

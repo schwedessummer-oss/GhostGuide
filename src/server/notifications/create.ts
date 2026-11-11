@@ -11,6 +11,8 @@ export const NOTIFICATION_TEMPLATES = {
   followUpOk: "checkin_followup_ok",
   followUpFinished: "checkin_followup_finished",
   followUpExtended: "checkin_followup_extended",
+  /** to the hiker: an emergency contact opted out via the link in a notice */
+  contactOptedOut: "checkin_contact_opted_out",
 } as const;
 export type NotificationTemplate = (typeof NOTIFICATION_TEMPLATES)[keyof typeof NOTIFICATION_TEMPLATES];
 

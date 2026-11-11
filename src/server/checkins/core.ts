@@ -12,6 +12,7 @@ import { buildContactFollowUpMessage } from "@/domain/notification-messages";
 import type { CheckinStatus, TripStatus } from "@/domain/types";
 import { createNotification, NOTIFICATION_TEMPLATES, sendJobDedupKey, VERSIONED_TEMPLATES } from "@/server/notifications/create";
 import { addressOn } from "@/server/notifications/addresses";
+import { discardOptOutLink, issueOptOutLink } from "@/server/notifications/optout";
 import { loadContact, loadNoticeContext } from "./context";
 
 /**
@@ -106,12 +107,22 @@ const FOLLOW_UP_TEMPLATE = {
  * sent/simulated/delivered) for this check-in. `episodeVersion` scopes the
  * dedup key so each overdue episode gets at most one follow-up of each kind
  * per recipient. Contacts deleted since, or without consent, are skipped.
+ * `at` is when the hiker acted (e.g. the tap time of an offline "I'm okay"),
+ * `receivedAt` when it reached us; each follow-up carries an opt-out link.
  */
 export async function queueContactFollowUps(
   tx: Tx,
   checkinId: string,
   kind: FollowUpKind,
-  opts: { at: Date; episodeVersion: number; newExpectedReturnAt?: Date | null; only?: { recipientRef: string; channel: string } },
+  opts: {
+    at: Date;
+    receivedAt?: Date | null;
+    episodeVersion: number;
+    newExpectedReturnAt?: Date | null;
+    graceMinutes?: number | null;
+    by?: "staff";
+    only?: { recipientRef: string; channel: string };
+  },
 ): Promise<number> {
   const recipients = await tx<{ recipientRef: string; channel: "sms" | "email" }[]>`
     select distinct recipient_ref, channel from public.notifications
@@ -127,14 +138,22 @@ export async function queueContactFollowUps(
     if (!contact?.consentConfirmedAt) continue;
     const addr = addressOn(r.channel, contact);
     if (!addr) continue;
+    const dedupKey = `notify:${checkinId}:v${opts.episodeVersion}:followup_${kind}:contact:${contact.id}:${r.channel}`;
+    const [exists] = await tx`select 1 from public.notifications where dedup_key = ${dedupKey}`;
+    if (exists) continue;
+    const link = await issueOptOutLink(tx, { id: contact.id, userId: ctx.userId }, opts.receivedAt ?? opts.at);
     const msg = buildContactFollowUpMessage({
       channel: r.channel,
       kind,
+      by: opts.by,
       hikerFirstName: ctx.hikerFirstName,
       trailName: ctx.trailName,
       at: opts.at,
+      receivedAt: opts.receivedAt ?? null,
       newExpectedReturnAt: opts.newExpectedReturnAt ?? null,
+      graceMinutes: opts.graceMinutes ?? null,
       timeZone: ctx.timeZone,
+      optOutUrl: link.url,
     });
     const res = await createNotification(tx, {
       userId: ctx.userId,
@@ -148,9 +167,10 @@ export async function queueContactFollowUps(
       template: FOLLOW_UP_TEMPLATE[kind],
       subject: msg.subject,
       body: msg.body,
-      dedupKey: `notify:${checkinId}:v${opts.episodeVersion}:followup_${kind}:contact:${contact.id}:${r.channel}`,
+      dedupKey,
     });
     if (res.created) created++;
+    else await discardOptOutLink(tx, link.tokenHash);
   }
   return created;
 }
@@ -194,18 +214,24 @@ export async function applyTransition(
         await suppressPendingNotices(
           tx,
           row.id,
-          next.status === "completed"
-            ? "Not sent: you finished your trip before it was delivered."
-            : next.status === "cancelled"
-              ? "Not sent: check-ins were turned off for this trip."
-              : "Not sent: you confirmed before it was delivered.",
+          result.event === "staff_resolved"
+            ? "Not sent: Ghost Guide staff recorded that you're safe before it was delivered."
+            : next.status === "completed"
+              ? "Not sent: you finished your trip before it was delivered."
+              : next.status === "cancelled"
+                ? "Not sent: check-ins were turned off for this trip."
+                : "Not sent: you confirmed before it was delivered.",
         );
         break;
       case "follow_up_contact":
         await queueContactFollowUps(tx, row.id, effect.kind, {
-          at: effect.kind === "ok" && next.lastOkAt ? next.lastOkAt : ctx.now,
+          // when the hiker actually acted (an offline tap/extension reaches us later)
+          at: effect.at ?? ctx.now,
+          receivedAt: ctx.now,
           episodeVersion: effect.kind === "finished" ? next.version : row.version,
           newExpectedReturnAt: effect.kind === "finished" ? null : next.expectedReturnAt,
+          graceMinutes: next.graceMinutes,
+          by: effect.by,
         });
         break;
     }

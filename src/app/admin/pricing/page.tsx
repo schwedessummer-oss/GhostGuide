@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Card } from "@/components/ui";
+import { Card, SimulatedBadge } from "@/components/ui";
 import { AdminHeader, DemoBadge, Section, StatusBadge, money } from "@/components/admin/admin-ui";
 import { ActionForm } from "@/components/admin/action-form";
-import { CheckField, SelectField, TextField } from "@/components/admin/fields";
+import { CheckField, SelectField, TextAreaField, TextField } from "@/components/admin/fields";
 import { PricingPreview } from "@/components/admin/pricing-preview";
 import { requirePermission } from "@/server/auth";
-import { getPricingData, RULE_KINDS, type PricingRuleRow, type PricingTrail } from "@/server/admin/pricing";
+import { ADDON_KINDS, getPricingData, RULE_KINDS, type PricingAddon, type PricingRegion, type PricingRuleRow, type PricingTrail } from "@/server/admin/pricing";
 import { getLaunchRegion } from "@/server/catalog/trails";
 import { localDateInZone } from "@/lib/time";
-import { addonPriceAction, deleteRuleAction, saveRuleAction, trailPriceAction } from "./actions";
+import { createAddonAction, deleteRuleAction, saveAddonAction, saveRuleAction, trailPriceAction } from "./actions";
 
 export const metadata: Metadata = { title: "Pricing" };
 
@@ -47,6 +47,69 @@ function RuleFields({ idPrefix, r, trails, regionId }: { idPrefix: string; r?: P
       <TextField id={`${idPrefix}-from`} name="effectiveFrom" label="Effective from" type="date" defaultValue={r?.effectiveFrom ?? ""} />
       <TextField id={`${idPrefix}-to`} name="effectiveTo" label="Effective to" type="date" defaultValue={r?.effectiveTo ?? ""} />
       <CheckField id={`${idPrefix}-active`} name="active" defaultChecked={r ? r.active : true} label="Active" />
+    </div>
+  );
+}
+
+const ADDON_KIND_LABEL: Record<string, string> = {
+  gear_locker: "Gear locker",
+  shuttle: "Shuttle",
+  meal_pack: "Meal pack",
+  satellite_device: "Satellite communicator rental",
+  other: "Other",
+};
+
+function AddonFields({ idPrefix, a, regions }: { idPrefix: string; a?: PricingAddon; regions: PricingRegion[] }) {
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <TextField id={`${idPrefix}-name`} name="name" label="Name (shown to customers)" required minLength={3} maxLength={120} defaultValue={a?.name ?? ""} />
+      <TextField id={`${idPrefix}-price`} name="price" label="Price (USD)" type="number" step="0.01" min="0" max="10000" required defaultValue={a ? (a.priceCents / 100).toFixed(2) : ""} />
+      <TextAreaField
+        id={`${idPrefix}-desc`}
+        name="description"
+        label="Description (shown to customers)"
+        maxLength={1000}
+        defaultValue={a?.description ?? ""}
+        className="sm:col-span-2"
+        hint="Describe what the customer gets. Partner services are simulated in this deployment; never promise rescue or SOS service."
+      />
+      <SelectField
+        id={`${idPrefix}-unit`}
+        name="pricingUnit"
+        label="Pricing unit"
+        options={[
+          { value: "per_person", label: "Per person" },
+          { value: "per_booking", label: "Per booking" },
+        ]}
+        defaultValue={a?.pricingUnit ?? "per_person"}
+      />
+      <TextField
+        id={`${idPrefix}-cap`}
+        name="dailyCapacity"
+        label="Daily capacity (units per day)"
+        type="number"
+        min="1"
+        max="10000"
+        defaultValue={a?.dailyCapacity ?? ""}
+        hint="Empty = no daily limit. Checkout re-checks it for each hike date."
+      />
+      <SelectField
+        id={`${idPrefix}-region`}
+        name="regionId"
+        label="Offered in"
+        options={regions.map((r) => ({ value: r.id, label: r.name }))}
+        placeholder="All regions"
+        defaultValue={a?.regionId ?? ""}
+      />
+      <div className="sm:col-span-2">
+        <CheckField
+          id={`${idPrefix}-confirm`}
+          name="requiresCustomerConfirmation"
+          defaultChecked={a ? a.requiresCustomerConfirmation : false}
+          label="Requires customer confirmation before the partner request (always on for shuttles: pickup location, price and time)"
+        />
+        <CheckField id={`${idPrefix}-active`} name="active" defaultChecked={a ? a.active : true} label="Active (offered to customers when its feature flag is on)" />
+      </div>
     </div>
   );
 }
@@ -141,23 +204,54 @@ export default async function PricingPage() {
         </ul>
       </Section>
 
-      <Section id="addons" title="Add-on prices" description="Partner add-ons are simulated in this deployment. Inactive add-ons are not offered to customers.">
-        <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <Section
+        id="addons"
+        title="Add-ons"
+        description="Configure what customers can add to a booking. Partner fulfillment is simulated in this deployment. Inactive add-ons, and add-ons whose feature flag is off, are not offered. Existing bookings keep the add-on price they were charged."
+      >
+        <ul className="space-y-3">
           {data.addons.map((a) => (
             <li key={a.id}>
-              <Card className="p-4 sm:p-4">
-                <p className="font-semibold">{a.name}</p>
-                <p className="text-sm text-muted">
-                  {a.kind.replace(/_/g, " ")} · {a.pricingUnit === "per_person" ? "per person" : "per booking"}
-                </p>
-                <ActionForm action={addonPriceAction.bind(null, a.id)} submitLabel="Save add-on" compact inline className="mt-2">
-                  <TextField id={`ap-${a.id}`} name="price" label="Price (USD)" type="number" step="0.01" min="0" required defaultValue={(a.priceCents / 100).toFixed(2)} />
-                  <CheckField id={`ap-${a.id}-active`} name="active" defaultChecked={a.active} label="Offered" />
-                </ActionForm>
-              </Card>
+              <details className="rounded-xl border border-sand-200 bg-surface">
+                <summary className="flex min-h-12 cursor-pointer list-none flex-wrap items-center gap-2 p-4 [&::-webkit-details-marker]:hidden">
+                  <span className="font-semibold">{a.name}</span>
+                  <StatusBadge status={a.active ? "active" : "retired"} label={a.active ? "Active" : "Inactive"} />
+                  {a.providerKey === "demo" ? <SimulatedBadge label="Simulated partner" /> : null}
+                  <span className="text-sm text-muted">
+                    {ADDON_KIND_LABEL[a.kind] ?? a.kind} · {money(a.priceCents)} {a.pricingUnit === "per_person" ? "per person" : "per booking"} ·{" "}
+                    {a.dailyCapacity === null ? "no daily limit" : `${a.dailyCapacity}/day`} · {a.regionName ?? "all regions"}
+                    {a.requiresCustomerConfirmation ? " · customer confirms first" : ""} · code {a.code}
+                  </span>
+                </summary>
+                <div className="border-t border-sand-200 p-4">
+                  <ActionForm action={saveAddonAction.bind(null, a.id)} submitLabel="Save add-on">
+                    <AddonFields idPrefix={`ad-${a.id}`} a={a} regions={data.regions} />
+                  </ActionForm>
+                </div>
+              </details>
             </li>
           ))}
         </ul>
+        <Card className="mt-4">
+          <h3 className="mb-1 font-semibold">Add an add-on</h3>
+          <p className="mb-3 text-sm text-muted">The code and type cannot be changed later. Only simulated partner adapters exist, so the add-on is fulfilled by the demo partner.</p>
+          <ActionForm action={createAddonAction} submitLabel="Create add-on">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <TextField
+                id="ad-new-code"
+                name="code"
+                label="Code (used in links, e.g. meal-pack)"
+                required
+                minLength={3}
+                maxLength={60}
+                pattern="[a-z0-9][a-z0-9\-]{1,58}[a-z0-9]"
+                hint="Lowercase letters, digits and hyphens."
+              />
+              <SelectField id="ad-new-kind" name="kind" label="Type" options={ADDON_KINDS.map((k) => ({ value: k, label: ADDON_KIND_LABEL[k] ?? k }))} required defaultValue="meal_pack" />
+            </div>
+            <AddonFields idPrefix="ad-new" regions={data.regions} />
+          </ActionForm>
+        </Card>
       </Section>
     </>
   );

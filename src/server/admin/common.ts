@@ -52,15 +52,39 @@ export const fail = (error: string, fieldErrors?: Record<string, string[]>): { o
   ...(fieldErrors ? { fieldErrors } : {}),
 });
 
+/** "sourceId" → "Source", "effectiveTo" → "Effective to" (never shows internal keys). */
+export function fieldLabel(path: readonly PropertyKey[]): string {
+  const key = [...path].reverse().find((p): p is string => typeof p === "string") ?? "";
+  const words = key
+    .replace(/Id$/, "")
+    .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+    .replace(/[_.]+/g, " ")
+    .trim()
+    .toLowerCase();
+  return words ? words[0].toUpperCase() + words.slice(1) : "";
+}
+
+/** zod's built-in (non-custom) messages need the field name for context. */
+const GENERIC_ZOD_MESSAGE = /^(Invalid|Too (small|big)|Expected|Required)\b/;
+
+/**
+ * Form result for a failed zod parse. Messages are plain language: custom
+ * messages are used as written; zod's generic ones get a readable field
+ * label ("Capacity: Too small…"), never an internal key like "sourceId:".
+ * `fieldErrors` stays keyed by path for programmatic use.
+ */
 export function zodFail(err: z.ZodError): { ok: false; error: string; fieldErrors: Record<string, string[]> } {
   const fieldErrors: Record<string, string[]> = {};
+  const readable = (issue: z.core.$ZodIssue) => {
+    const label = issue.path.length ? fieldLabel(issue.path) : "";
+    return label && GENERIC_ZOD_MESSAGE.test(issue.message) ? `${label}: ${issue.message}` : issue.message;
+  };
   for (const issue of err.issues) {
     const key = issue.path.length ? issue.path.join(".") : "_form";
-    (fieldErrors[key] ??= []).push(issue.message);
+    (fieldErrors[key] ??= []).push(readable(issue));
   }
   const first = err.issues[0];
-  const where = first?.path.length ? `${first.path.join(".")}: ` : "";
-  return { ok: false, error: `${where}${first?.message ?? "Invalid input"}`, fieldErrors };
+  return { ok: false, error: first ? readable(first) : "Invalid input", fieldErrors };
 }
 
 /** Run as the signed-in staff member (RLS applies). */
@@ -217,6 +241,8 @@ export const optionalText = (max: number) =>
     .transform((v) => (v === "" ? null : v))
     .nullish()
     .transform((v) => v ?? null);
+
+export { blankAsNull, notBlank } from "./number-fields";
 
 export const requiredText = (min: number, max: number, label = "This field") =>
   z.string().trim().min(min, `${label} is required${min > 1 ? ` (at least ${min} characters)` : ""}.`).max(max, `${label} is too long.`);

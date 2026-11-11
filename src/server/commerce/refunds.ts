@@ -67,20 +67,31 @@ interface RefundRow {
   providerRefundId: string | null;
 }
 
-/** Record a successful provider refund; settles booking/payment status. Idempotent. */
+/**
+ * Record a successful provider refund; settles booking/payment status.
+ * Idempotent per refund row. bookings.refunded_cents is capped at the amount
+ * actually paid: money can never be refunded twice at the provider, so a sum
+ * above it can only be a bookkeeping double count (logged for review).
+ */
 export async function applyRefundSucceeded(tx: Tx, refund: RefundRow, providerRefundId: string | null) {
   const [updated] = await tx<{ id: string }[]>`
     update public.refunds set status = 'succeeded', provider_refund_id = coalesce(provider_refund_id, ${providerRefundId}), last_error = null
     where id = ${refund.id} and status <> 'succeeded' returning id`;
   if (!updated) return;
+  const before = await refundBalance(tx, refund.bookingId);
+  const target = Math.min(before.refundedCents + refund.amountCents, Math.max(before.paidCents, before.refundedCents));
+  if (target < before.refundedCents + refund.amountCents) {
+    log.warn("refund.capped_at_paid", { refundId: refund.id, bookingId: refund.bookingId, amountCents: refund.amountCents, paidCents: before.paidCents });
+  }
   const [b] = await tx<{ status: string; refundedCents: number }[]>`
-    update public.bookings set refunded_cents = refunded_cents + ${refund.amountCents}
-    where id = ${refund.bookingId} returning status, refunded_cents`;
+    update public.bookings set refunded_cents = ${target} where id = ${refund.bookingId} returning status, refunded_cents`;
   const balance = await refundBalance(tx, refund.bookingId);
   if (refund.paymentId) {
     await tx`
-      update public.payments set status = case when ${b.refundedCents} >= amount_cents then 'refunded' else 'partially_refunded' end
-      where id = ${refund.paymentId}`;
+      update public.payments p set status = case
+        when (select coalesce(sum(r.amount_cents), 0) from public.refunds r where r.payment_id = p.id and r.status = 'succeeded') >= p.amount_cents
+          then 'refunded' else 'partially_refunded' end
+      where p.id = ${refund.paymentId}`;
   }
   const fullyRefunded = b.refundedCents >= balance.paidCents;
   if (balance.outstandingCents === 0) {
@@ -120,10 +131,12 @@ export async function processRefundJob(refundId: string): Promise<JobOutcome> {
     const result = await provider.refund({ paymentIntentId, amountCents: r.amountCents, idempotencyKey: `refund:${r.id}` });
     if (result.status === "failed") throw new Error("Provider reported the refund as failed");
     await withSystem(async (tx) => {
+      // Booking first, then the refund row: the same order as charge.refunded
+      // processing and staff refunds, so they serialize instead of deadlocking.
+      await tx`select id from public.bookings where id = ${r.bookingId} for update`;
       const [locked] = await tx<RefundRow[]>`
         select id, booking_id, payment_id, amount_cents, status, provider_refund_id from public.refunds where id = ${r.id} for update`;
       if (!locked || locked.status === "succeeded") return;
-      await tx`select id from public.bookings where id = ${r.bookingId} for update`;
       if (result.status === "succeeded") await applyRefundSucceeded(tx, locked, result.refundId);
       else await tx`update public.refunds set status = 'pending', provider_refund_id = ${result.refundId} where id = ${r.id}`;
     });

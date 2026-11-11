@@ -56,10 +56,15 @@ export async function purgeExpiredLocations(now: Date): Promise<JobOutcome> {
           where c.trip_id = s.trip_id and c.status = any(${OPEN_STATUSES as string[]}::checkin_status[]))
       returning hll.hike_session_id`;
     noticesRedacted = await redactExpiredNoticeLocations(tx, now, retentionDefaultDays);
+    // Expired contact opt-out links (hashes only) are no longer useful.
+    const optOutTokensDeleted = (
+      await tx`delete from public.contact_optout_tokens where expires_at < ${now}::timestamptz - interval '30 days' returning id`
+    ).length;
     await recordAudit(tx, { id: null }, "retention.purge", "location_points", null, {
       pointsDeleted,
       lastFixesDeleted: rows.length,
       noticesRedacted,
+      optOutTokensDeleted,
       defaultRetentionDays: retentionDefaultDays,
       batches: batches + 1,
       ranAt: now.toISOString(),

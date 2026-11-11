@@ -6,11 +6,23 @@ import { recordAudit } from "@/server/audit";
 import { recordIntegrationEvent } from "@/server/integration-log";
 import { log } from "@/server/log";
 import { assertTransition, formatReceiptNumber } from "@/domain/booking";
-import type { BookingStatus } from "@/domain/types";
+import type { BookingStatus, TripStatus } from "@/domain/types";
 import { getPaymentProviderByName, WebhookSignatureError, type NormalizedPaymentEvent } from "@/integrations/payments";
-import { lockTrailDay, usedTrailCapacity } from "./inventory";
-import { applyRefundSucceeded, requestRefund } from "./refunds";
-import { syncTripToBooking } from "./trip-plan";
+import type { GearKindRequest } from "@/integrations/partners";
+import {
+  gearAvailability,
+  gearNeedFor,
+  isGearAddon,
+  lockAddonDay,
+  lockGearDay,
+  lockTrailDay,
+  mergeGearNeeds,
+  usedAddonCapacity,
+  usedTrailCapacity,
+  type GearAddonKind,
+} from "./inventory";
+import { applyRefundSucceeded, refundBalance, requestRefund } from "./refunds";
+import { closuresOnDay, syncTripToBooking } from "./trip-plan";
 
 /**
  * Provider-agnostic payment event processor. Used by BOTH webhook routes
@@ -27,10 +39,18 @@ import { syncTripToBooking } from "./trip-plan";
  *
  * Decisions (documented for operators):
  *  - Paid with the hold still valid and the right amount → confirmed.
- *  - Paid after the hold expired: confirmed if capacity is still available,
- *    otherwise needs_attention + an AUTOMATIC FULL REFUND (we cannot honor the
- *    booking, and holding a customer's money for a hike that cannot happen is
- *    worse than refunding). A high-priority support ticket surfaces it.
+ *  - A payment for a booking that was deliberately ended — trip cancelled (or
+ *    already started/completed), checkout cancelled by staff or released by
+ *    the customer (cancellation_reason set), another booking on the trip — or
+ *    a late payment once the frozen hike start has passed or the trail is
+ *    closed that day: NEVER confirmed. AUTOMATIC FULL REFUND + high-priority
+ *    support ticket; an expired / payment_failed booking stays in that state
+ *    so neither the booking nor the trip is resurrected.
+ *  - Paid after the hold expired, or paid inside the hold but processed after
+ *    it lapsed: trail-day, add-on and locker-gear capacity are re-checked
+ *    under lock; confirmed if still available, otherwise needs_attention +
+ *    an AUTOMATIC FULL REFUND (holding a customer's money for a hike that
+ *    cannot happen is worse than refunding). A support ticket surfaces it.
  *  - Paid amount/currency differs from the booking total → needs_attention +
  *    automatic full refund of what was actually paid + support ticket.
  *  - Payment failed → payment_failed (hold released). Session expired → expired.
@@ -143,23 +163,45 @@ interface LockedBooking {
   checkoutSessionId: string | null;
   paymentIntentId: string | null;
   holdExpiresAt: Date | null;
+  /** hold_expires_at > now() (database clock) */
+  holdValidNow: boolean;
+  cancellationReason: string | null;
+  /** the hike start frozen at booking (bookings.hike_start_at) has passed */
+  started: boolean;
+  regionId: string;
+  timezone: string;
 }
 
-async function lockBooking(tx: Tx, provider: string, sessionId: string | null, bookingId: string | null): Promise<LockedBooking | null> {
-  const cols = tx`id, user_id, trip_id, trail_id, to_char(hike_date, 'YYYY-MM-DD') as hike_date, party_size, status, currency, total_cents,
-                  payment_provider, checkout_session_id, payment_intent_id, hold_expires_at`;
+/**
+ * Find and lock the booking a payment event refers to. With `lockTrip`, the
+ * trip row is locked FIRST (same order as customer cancellation: trip, then
+ * booking), so a payment and a cancellation of the same trip serialize and
+ * the payment sees the trip's committed status.
+ */
+async function lockBooking(tx: Tx, provider: string, sessionId: string | null, bookingId: string | null, lockTrip = false): Promise<LockedBooking | null> {
+  let ref: { id: string; tripId: string } | undefined;
   if (sessionId) {
-    const [b] = await tx<LockedBooking[]>`select ${cols} from public.bookings where checkout_session_id = ${sessionId} for update`;
-    if (b) return b;
+    [ref] = await tx<{ id: string; tripId: string }[]>`select id, trip_id from public.bookings where checkout_session_id = ${sessionId}`;
   }
-  if (bookingId && /^[0-9a-f-]{36}$/i.test(bookingId)) {
-    const [b] = await tx<LockedBooking[]>`
-      select ${cols} from public.bookings where id = ${bookingId} and payment_provider = ${provider}
-        and (checkout_session_id is null or ${sessionId}::text is null or checkout_session_id = ${sessionId}::text)
-      for update`;
-    if (b) return b;
+  if (!ref && bookingId && /^[0-9a-f-]{36}$/i.test(bookingId)) {
+    [ref] = await tx<{ id: string; tripId: string }[]>`
+      select id, trip_id from public.bookings where id = ${bookingId} and payment_provider = ${provider}
+        and (checkout_session_id is null or ${sessionId}::text is null or checkout_session_id = ${sessionId}::text)`;
   }
-  return null;
+  if (!ref) return null;
+  if (lockTrip) await tx`select id from public.trips where id = ${ref.tripId} for update`;
+  const [b] = await tx<LockedBooking[]>`
+    select b.id, b.user_id, b.trip_id, b.trail_id, to_char(b.hike_date, 'YYYY-MM-DD') as hike_date, b.party_size, b.status, b.currency,
+           b.total_cents, b.payment_provider, b.checkout_session_id, b.payment_intent_id, b.hold_expires_at,
+           coalesce(b.hold_expires_at > now(), false) as hold_valid_now, b.cancellation_reason,
+           coalesce(b.hike_start_at <= now(), false) as started,
+           t.region_id, r.timezone
+    from public.bookings b
+    join public.trails t on t.id = b.trail_id
+    join public.regions r on r.id = t.region_id
+    where b.id = ${ref.id}
+    for update of b`;
+  return b ?? null;
 }
 
 export async function applyPaymentEvent(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOutcome> {
@@ -189,8 +231,76 @@ export async function applyPaymentEvent(tx: Tx, e: NormalizedPaymentEvent): Prom
   }
 }
 
+const SETTLED_STATUSES: readonly BookingStatus[] = ["confirmed", "cancellation_requested", "refund_pending", "refunded", "cancelled", "needs_attention"];
+
+/**
+ * Why this payment must NOT confirm the booking because the booking or its
+ * trip was deliberately ended (or the hike is over), or null. Such payments
+ * are refunded in full and surfaced to operators; they never resurrect the
+ * booking or the trip. Caller holds the trip and booking locks.
+ */
+async function endedReason(tx: Tx, b: LockedBooking, late: boolean): Promise<string | null> {
+  if (b.status !== "pending_payment") {
+    const [other] = await tx`
+      select id from public.bookings where trip_id = ${b.tripId} and id <> ${b.id}
+        and status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')`;
+    if (other) return "Late payment for an expired checkout; the trip has another booking";
+  }
+  const [trip] = await tx<{ status: TripStatus }[]>`select status from public.trips where id = ${b.tripId}`;
+  if (!trip || trip.status !== "saved") {
+    return trip?.status === "cancelled"
+      ? "Payment arrived after the trip was cancelled"
+      : `Payment arrived for a trip that is already ${trip?.status ?? "gone"}`;
+  }
+  if (b.status !== "pending_payment" && b.cancellationReason) {
+    return `Payment arrived after the checkout was ended (${b.cancellationReason.slice(0, 200)})`;
+  }
+  if (late && b.started) return "Payment arrived after the booked hike start time";
+  if (late) {
+    const closures = await closuresOnDay(tx, b.trailId, b.hikeDate, b.timezone);
+    if (closures.closed) return `Payment arrived after the hold expired and the trail is closed on the hike date (${closures.closed.reason})`;
+  }
+  return null;
+}
+
+/**
+ * Re-check trail-day, add-on and locker-gear capacity for a booking whose
+ * hold has lapsed (its capacity was released and may have been resold).
+ * Takes the same locks, in the same order, as the checkout. Returns the
+ * problem, or null when everything is still available.
+ */
+async function capacityProblem(tx: Tx, b: LockedBooking): Promise<string | null> {
+  const day = await lockTrailDay(tx, b.trailId, b.hikeDate);
+  if (day.blocked) return "the date is no longer available";
+  const used = await usedTrailCapacity(tx, b.trailId, b.hikeDate, b.id);
+  if (used + b.partySize > day.capacity) return "the date is now fully booked";
+
+  const lines = await tx<{ addonId: string; name: string; kind: string; providerKey: string; quantity: number; dailyCapacity: number | null }[]>`
+    select ba.addon_id, a.name, a.kind, a.provider_key, ba.quantity, a.daily_capacity
+    from public.booking_addons ba join public.addons a on a.id = ba.addon_id
+    where ba.booking_id = ${b.id}
+    order by ba.addon_id`;
+  for (const l of lines) {
+    if (l.dailyCapacity == null) continue;
+    await lockAddonDay(tx, l.addonId, b.hikeDate);
+    const usedUnits = await usedAddonCapacity(tx, l.addonId, b.hikeDate, b.id);
+    if (usedUnits + l.quantity > l.dailyCapacity) return `${l.name} is now sold out on that date`;
+  }
+  const gear = lines.filter((l) => isGearAddon(l.kind));
+  if (gear.length) {
+    await lockGearDay(tx, b.regionId, b.hikeDate);
+    let need: GearKindRequest[] = [];
+    for (const l of gear) {
+      need = mergeGearNeeds(need, gearNeedFor(l.kind as GearAddonKind, l.quantity));
+      const check = await gearAvailability(tx, l.providerKey, b.regionId, b.hikeDate, need, b.id);
+      if (!check.ok) return `${l.name} is no longer available on that date`;
+    }
+  }
+  return null;
+}
+
 async function handlePaid(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOutcome> {
-  const b = await lockBooking(tx, e.provider, e.sessionId, e.bookingId);
+  const b = await lockBooking(tx, e.provider, e.sessionId, e.bookingId, true);
   if (!b) {
     log.warn("payments.paid_unknown_booking", { provider: e.provider, eventId: e.eventId });
     return "ignored";
@@ -209,7 +319,7 @@ async function handlePaid(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOut
     return p?.id ?? null;
   };
 
-  if (b.status === "confirmed" || b.status === "cancellation_requested" || b.status === "refund_pending" || b.status === "refunded" || b.status === "cancelled" || b.status === "needs_attention") {
+  if (SETTLED_STATUSES.includes(b.status)) {
     // A second, different payment for a booking that is already settled
     // (should not happen with one session per booking): never keep it.
     const paymentId = await insertPayment();
@@ -222,39 +332,43 @@ async function handlePaid(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOut
 
   // pending_payment, or a LATE payment for an expired / payment_failed booking
   const amountOk = paidAmount === b.totalCents && currency === b.currency.toLowerCase();
-  const holdOk = b.status === "pending_payment" && !!b.holdExpiresAt && e.occurredAt.getTime() <= new Date(b.holdExpiresAt).getTime();
+  const paidInHold = b.status === "pending_payment" && !!b.holdExpiresAt && e.occurredAt.getTime() <= new Date(b.holdExpiresAt).getTime();
 
-  if (b.status !== "pending_payment") {
-    const [other] = await tx`
-      select id from public.bookings where trip_id = ${b.tripId} and id <> ${b.id}
-        and status in ('pending_payment', 'confirmed', 'cancellation_requested', 'refund_pending', 'needs_attention')`;
-    if (other) {
-      // The customer already started/finished another booking for this trip.
-      const paymentId = await insertPayment();
-      await tx`update public.bookings set paid_at = now(), payment_intent_id = ${e.paymentIntentId} where id = ${b.id}`;
-      if (paymentId && paidAmount > 0) await refundUnattributable(tx, b, paymentId, paidAmount, "Late payment for an expired checkout; the trip has another booking");
-      return "needs_attention";
+  // 1. A deliberately ended booking/trip (or a hike already under way) is never confirmed.
+  const ended = await endedReason(tx, b, !paidInHold);
+  if (ended) {
+    const paymentId = await insertPayment();
+    if (!paymentId) return "noop";
+    if (b.status === "pending_payment") {
+      assertTransition(b.status, "needs_attention");
+      await tx`update public.bookings set status = 'needs_attention', paid_at = now(), payment_intent_id = ${e.paymentIntentId} where id = ${b.id}`;
+    } else {
+      // Stays expired / payment_failed: it must not become a live booking again.
+      await tx`
+        update public.bookings set paid_at = coalesce(paid_at, now()), payment_intent_id = coalesce(payment_intent_id, ${e.paymentIntentId})
+        where id = ${b.id}`;
     }
+    if (paidAmount > 0) await refundUnattributable(tx, b, paymentId, paidAmount, ended);
+    else await openTicket(tx, b, "Payment received for an ended booking", ended);
+    return "needs_attention";
   }
 
-  let capacityOk = holdOk;
-  if (!capacityOk) {
-    const day = await lockTrailDay(tx, b.trailId, b.hikeDate);
-    const used = await usedTrailCapacity(tx, b.trailId, b.hikeDate, b.id);
-    capacityOk = !day.blocked && used + b.partySize <= day.capacity;
-  }
+  // 2. Capacity: re-checked whenever the hold has lapsed by the time we process
+  //    the payment — even one made inside the hold — because the held spots,
+  //    add-on units and locker gear were released then and may have been resold.
+  const problem = paidInHold && b.holdValidNow ? null : await capacityProblem(tx, b);
 
   const paymentId = await insertPayment();
   if (!paymentId) return "noop";
 
-  if (amountOk && capacityOk) {
+  if (amountOk && !problem) {
     await confirmBooking(tx, b, e.paymentIntentId);
     return "confirmed";
   }
 
   const reason = !amountOk
     ? `Paid amount (${paidAmount} ${currency}) does not match the booking total (${b.totalCents} ${b.currency})`
-    : "Payment arrived after the hold expired and the date is now fully booked";
+    : `Payment was processed after the hold expired and ${problem}`;
   assertTransition(b.status, "needs_attention");
   await tx`
     update public.bookings set status = 'needs_attention', paid_at = now(), payment_intent_id = ${e.paymentIntentId}
@@ -325,7 +439,16 @@ async function openTicket(tx: Tx, b: LockedBooking, subject: string, body: strin
     values (${b.userId}, ${b.tripId}, ${b.id}, ${subject}, ${body}, 'open', 'high')`;
 }
 
-/** Sync refunds made directly in the provider (e.g. Stripe dashboard) or confirm pending ones. */
+/**
+ * Sync refunds made directly in the provider (e.g. Stripe dashboard) or
+ * confirm pending ones. `amountRefunded` is the charge's cumulative refunded
+ * amount, so only the part not explained by our own refunds of THIS payment
+ * is booked as external. A refund of ours in any unfinished state —
+ * requested, pending, or failed (a timeout may have happened after the
+ * provider already refunded; the job retries with the same idempotency key)
+ * — explains part of that amount and is never booked a second time.
+ * refunded_cents never exceeds what was paid.
+ */
 async function handleChargeRefunded(tx: Tx, e: NormalizedPaymentEvent): Promise<ProcessOutcome> {
   if (!e.paymentIntentId || e.amountRefunded == null) return "ignored";
   const [payment] = await tx<{ id: string; bookingId: string; amountCents: number }[]>`
@@ -334,22 +457,32 @@ async function handleChargeRefunded(tx: Tx, e: NormalizedPaymentEvent): Promise<
   await tx`select id from public.bookings where id = ${payment.bookingId} for update`;
   const refunds = await tx<{ id: string; bookingId: string; paymentId: string | null; amountCents: number; status: "requested" | "pending" | "succeeded" | "failed"; providerRefundId: string | null }[]>`
     select id, booking_id, payment_id, amount_cents, status, provider_refund_id from public.refunds
-    where booking_id = ${payment.bookingId} order by created_at for update`;
+    where booking_id = ${payment.bookingId} and (payment_id = ${payment.id} or payment_id is null)
+    order by created_at for update`;
+  const refundedOnCharge = Math.min(e.amountRefunded, payment.amountCents);
   let accounted = refunds.filter((r) => r.status === "succeeded").reduce((s, r) => s + r.amountCents, 0);
+  const confirmedNow = new Set<string>();
   for (const r of refunds) {
-    if (r.status === "pending" && r.providerRefundId && accounted + r.amountCents <= e.amountRefunded) {
+    if (r.status === "pending" && r.providerRefundId && accounted + r.amountCents <= refundedOnCharge) {
       await applyRefundSucceeded(tx, r, r.providerRefundId);
       accounted += r.amountCents;
+      confirmedNow.add(r.id);
     }
   }
-  const external = e.amountRefunded - accounted - refunds.filter((r) => r.status === "pending" || r.status === "requested").reduce((s, r) => s + r.amountCents, 0);
+  const stillOpen = refunds
+    .filter((r) => !confirmedNow.has(r.id) && (r.status === "requested" || r.status === "pending" || r.status === "failed"))
+    .reduce((s, r) => s + r.amountCents, 0);
+  const external = refundedOnCharge - accounted - stillOpen;
   if (external > 0) {
+    const balance = await refundBalance(tx, payment.bookingId);
+    const amount = Math.min(external, balance.availableCents);
+    if (amount <= 0) return "refund_synced";
     const [r] = await tx<{ id: string; bookingId: string; paymentId: string | null; amountCents: number; status: "requested"; providerRefundId: null }[]>`
       insert into public.refunds (booking_id, payment_id, amount_cents, reason, status)
-      values (${payment.bookingId}, ${payment.id}, ${external}, 'Refunded directly in the payment provider dashboard', 'requested')
+      values (${payment.bookingId}, ${payment.id}, ${amount}, 'Refunded directly in the payment provider dashboard', 'requested')
       returning id, booking_id, payment_id, amount_cents, status, provider_refund_id`;
     await applyRefundSucceeded(tx, r, null);
-    await recordAudit(tx, SYSTEM_ACTOR, "refund.external_synced", "booking", payment.bookingId, { amountCents: external });
+    await recordAudit(tx, SYSTEM_ACTOR, "refund.external_synced", "booking", payment.bookingId, { amountCents: amount });
   }
   return "refund_synced";
 }

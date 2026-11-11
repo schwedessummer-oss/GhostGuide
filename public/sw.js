@@ -9,6 +9,15 @@
  *                        non-secret owner hint). Written ONLY when the page asks (CACHE_TRIP) so a
  *                        download can be verified (VERIFY_TRIP) and removed (DELETE_TRIP); sign-out
  *                        removes them all (CLEAR_ALL). Trip caches survive service-worker updates.
+ *                        Narration audio is stored under a STABLE key, /__gg/audio/<narrationId>/v<n>
+ *                        (the signed URL it was fetched from changes with every bundle), and served
+ *                        from there; older downloads keyed by signed URL still match ignoring the query.
+ *
+ * Background Sync (best effort, Chromium-based browsers only): when the page queues hike data it
+ * registers the "gg-outbox" sync tag; when connectivity returns the browser may wake this worker,
+ * which sends queued hike updates (start, location points, events incl. "I'm okay" / extend, then
+ * finish) from IndexedDB `ghostguide` with the signed-in cookies. Nothing is deleted unless the
+ * server accepted it. Browsers can delay or skip this; the pages also send on every load.
  *
  * Shared devices: a cached trip page is only a stand-in when the network fails, the session
  * expired (sign-in redirect) or the server errors — never for a 404 (another account) — and,
@@ -18,7 +27,7 @@
  * Never cached: Mapbox (api.mapbox.com, *.tiles.mapbox.com, any *.mapbox.com) and every /api/
  * response other than the trip bundle / narration audio the page explicitly stores.
  */
-const SW_VERSION = "2026-11-11.1";
+const SW_VERSION = "2026-11-11.2";
 const STATIC_CACHE = `gg-static-${SW_VERSION}`;
 const SHELL_CACHE = `gg-shell-${SW_VERSION}`;
 const TRIP_CACHE_PREFIX = "gg-trip-v1-";
@@ -29,6 +38,8 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const OWNER_COOKIE = "gg_owner"; // src/server/auth/owner-hint.ts
 const OWNER_HINT_RE = /^[A-Za-z0-9_-]{8,128}$/;
 const OWNER_MARKER_PATH = "/__gg/trip-owner"; // stored inside each trip cache; never requested by pages
+const AUDIO_KEY_RE = /^\/__gg\/audio\/[0-9a-f-]{36}\/v\d{1,9}$/i; // src/domain/offline-manifest.ts audioCacheKey
+const OUTBOX_SYNC_TAG = "gg-outbox";
 const ASSET_RE = /(?:\/_next\/)?static\/(?:chunks|css|media)\/[^"'\\\s<>()]+?\.(?:js|css|woff2?|ttf|otf|png|svg|jpe?g|webp|avif|ico)(?:\?[^"'\\\s<>()]*)?/g;
 
 const tripCacheName = (tripId) => TRIP_CACHE_PREFIX + tripId;
@@ -164,8 +175,15 @@ async function staticCacheFirst(request) {
 }
 
 async function tripCacheFirst(request) {
-  const hit = await matchInTrips(request);
+  // Signed URLs change with every bundle: an exact match first, then the same file ignoring the signature.
+  const hit = (await matchInTrips(request)) || (await matchInTrips(request, { ignoreSearch: true }));
   return hit || fetch(request);
+}
+
+/** Narration audio by its stable key: only ever from a trip cache (404 → the page falls back to the signed URL). */
+async function stableAudio(request) {
+  const hit = await matchInTrips(request, { ignoreSearch: true });
+  return hit || new Response("Not downloaded", { status: 404, headers: { "content-type": "text/plain", "x-gg-offline": "1" } });
 }
 
 /** A cached answer, marked so the page knows it did not come from the server just now. */
@@ -245,6 +263,11 @@ self.addEventListener("fetch", (event) => {
     if (isSignedStorageUrl(url)) event.respondWith(tripCacheFirst(request)); // narration audio stored for a trip
     return;
   }
+  if (url.pathname.startsWith("/__gg/")) {
+    if (AUDIO_KEY_RE.test(url.pathname)) event.respondWith(stableAudio(request));
+    else event.respondWith(new Response("Not found", { status: 404 }));
+    return;
+  }
   if (isRscRequest(request, url)) return; // never answer an RSC fetch with cached HTML; Next falls back to a full navigation
   if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(staticCacheFirst(request));
@@ -299,7 +322,16 @@ async function cacheTrip(data, reply) {
   }
   const results = [];
   const assets = new Set();
-  const items = data.urls.map((u) => String(u));
+  // Items are URLs, or { url, as } to store a response under a stable key (narration audio).
+  const storeAs = new Map();
+  const items = data.urls.map((u) => {
+    if (u && typeof u === "object") {
+      const raw = String(u.url);
+      if (typeof u.as === "string" && AUDIO_KEY_RE.test(u.as)) storeAs.set(raw, u.as);
+      return raw;
+    }
+    return String(u);
+  });
   let done = 0;
   const total = () => items.length + assets.size;
 
@@ -326,10 +358,14 @@ async function cacheTrip(data, reply) {
         const html = await res.text();
         for (const a of extractAssets(html)) assets.add(a);
         await cache.put(url.href, new Response(html, { status: 200, headers: { "content-type": res.headers.get("content-type") || "text/html; charset=utf-8" } }));
+      } else if (storeAs.has(raw)) {
+        // Narration audio under its stable key (a plain 200 with the content type).
+        const body = await res.blob();
+        await cache.put(new URL(storeAs.get(raw), self.location.origin).href, new Response(body, { status: 200, headers: { "content-type": res.headers.get("content-type") || "audio/mpeg" } }));
       } else {
         await cache.put(url.href, res);
       }
-      results.push({ url: raw, ok: true, status: res.status });
+      results.push({ url: raw, ok: true, status: res.status, as: storeAs.get(raw) });
     } catch (err) {
       results.push({ url: raw, ok: false, status: 0, error: String((err && err.message) || err) });
     } finally {
@@ -403,4 +439,214 @@ self.addEventListener("message", (event) => {
   else if (data.type === "DELETE_TRIP") run(deleteTrip);
   else if (data.type === "CLEAR_ALL") run(clearAll);
   else if (data.type === "SKIP_WAITING") self.skipWaiting();
+});
+
+// ---------------------------------------------------------------------------
+// Background Sync (best effort): send queued hike updates when connectivity returns,
+// even if no Ghost Guide page is open. Mirrors src/lib/offline/outbox.ts (start → points/events
+// in recording order, ≤ 500 points / ≤ 200 events per request → finish). Conservative: entries
+// are deleted only when the server acknowledged them; any error leaves everything queued for the
+// pages (which also send on every load and report problems to the hiker).
+// ---------------------------------------------------------------------------
+const IDB_NAME = "ghostguide"; // src/lib/offline/idb.ts
+const IDB_VERSION = 1;
+const SYNC_MAX_POINTS = 500;
+const SYNC_MAX_EVENTS = 200;
+const SYNC_MAX_BATCHES = 10;
+
+/** Open the pages' database only if it already exists with the expected schema (never create it here). */
+function idbOpenExisting() {
+  return new Promise((resolve) => {
+    let req;
+    try {
+      req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    } catch {
+      resolve(null);
+      return;
+    }
+    req.onupgradeneeded = () => {
+      try {
+        req.transaction.abort(); // no database yet: the pages own its schema
+      } catch {
+        /* ignore */
+      }
+    };
+    req.onsuccess = () => {
+      const db = req.result;
+      db.onversionchange = () => db.close();
+      resolve(db);
+    };
+    req.onerror = () => resolve(null);
+    req.onblocked = () => resolve(null);
+  });
+}
+
+const idbReq = (r) =>
+  new Promise((resolve, reject) => {
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+
+const idbDone = (tx) =>
+  new Promise((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onerror = tx.onabort = () => reject(tx.error);
+  });
+
+const tripRange = (tripId) => IDBKeyRange.bound([tripId, -Infinity], [tripId, Infinity]);
+
+/** The signed-in account's owner hint; null = signed out; undefined = this browser can't tell. */
+async function swOwnerHint() {
+  const store = self.cookieStore;
+  if (!store || typeof store.get !== "function") return undefined;
+  try {
+    const c = await store.get(OWNER_COOKIE);
+    return c && c.value ? decodeURIComponent(c.value) : null;
+  } catch {
+    return undefined;
+  }
+}
+
+async function postJson(url, body) {
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      /* no body */
+    }
+    return { status: res.status, ok: res.ok, data };
+  } catch {
+    return { status: 0, ok: false, data: null };
+  }
+}
+
+const retryable = (status) => status === 0 || status === 408 || status === 429 || status >= 500;
+
+/** Patch the stored hike state (sync bookkeeping only). `updatedAt` is left alone so a newer on-page copy still wins. */
+async function patchHikeState(db, tripId, patchFn) {
+  const tx = db.transaction("hikeState", "readwrite");
+  const store = tx.objectStore("hikeState");
+  const cur = await idbReq(store.get(tripId));
+  if (cur && cur.version === 1) store.put({ ...cur, ...patchFn(cur) });
+  await idbDone(tx);
+}
+
+async function flushTripFromWorker(db, state) {
+  const tripId = state.tripId;
+  const sentAt = () => new Date().toISOString();
+  let sessionId = state.serverSessionId;
+  let outcome = "done";
+  const patch = {};
+  let dropped = 0;
+  if (!state.startSynced) {
+    const r = await postJson("/api/hike/start", {
+      tripId,
+      clientSessionId: state.localSessionId || undefined,
+      startedAt: state.startedAt ? new Date(state.startedAt).toISOString() : undefined,
+      demoStartAnyway: state.demoStartAnyway || undefined,
+      sentAt: sentAt(),
+    });
+    if (!r.ok || !r.data || !r.data.session) return retryable(r.status) ? "retry" : "stop";
+    sessionId = r.data.session.id;
+    Object.assign(patch, { serverSessionId: sessionId, startSynced: true, startError: null });
+  }
+  if (!sessionId) return "stop";
+
+  for (let i = 0; i < SYNC_MAX_BATCHES; i++) {
+    const entries = await idbReq(db.transaction("outbox", "readonly").objectStore("outbox").index("byTripSeq").getAll(tripRange(tripId), 800));
+    if (!entries.length) break;
+    entries.sort((a, b) => a.seq - b.seq || (a.id < b.id ? -1 : 1));
+    const points = [];
+    const events = [];
+    const ids = [];
+    for (const e of entries) {
+      if (e.kind === "point") {
+        if (points.length >= SYNC_MAX_POINTS) break;
+        points.push({ id: e.id, ...e.payload });
+      } else {
+        if (events.length >= SYNC_MAX_EVENTS) break;
+        events.push({ id: e.id, ...e.payload });
+      }
+      ids.push(e.id);
+    }
+    const progressM = Math.round((state.progress && state.progress.alongM) || 0);
+    const r = await postJson("/api/hike/sync", { sessionId, points, events, progressM, sentAt: sentAt() });
+    if (!r.ok || !r.data) {
+      outcome = retryable(r.status) ? "retry" : "stop";
+      break;
+    }
+    const rejected = Array.isArray(r.data.rejected) ? r.data.rejected.map((x) => x.id) : [];
+    const acked = new Set([...(r.data.acceptedPointIds || []), ...(r.data.acceptedEventIds || []), ...rejected]);
+    const tx = db.transaction("outbox", "readwrite");
+    const store = tx.objectStore("outbox");
+    for (const id of acked) store.delete(id);
+    await idbDone(tx);
+    dropped += rejected.length;
+    patch.lastSyncAt = Date.now();
+    if (ids.some((id) => !acked.has(id))) {
+      outcome = "stop";
+      break;
+    }
+  }
+
+  if (outcome === "done" && state.finishPending) {
+    const left = await idbReq(db.transaction("outbox", "readonly").objectStore("outbox").index("byTripSeq").count(tripRange(tripId)));
+    if (left === 0) {
+      const r = await postJson("/api/hike/finish", {
+        tripId,
+        sessionId,
+        finishedAt: state.finishedAt ? new Date(state.finishedAt).toISOString() : undefined,
+        distanceCompletedM: Math.round((state.progress && state.progress.alongM) || 0),
+        sentAt: sentAt(),
+      });
+      if (r.ok) Object.assign(patch, { finishPending: false, finishSynced: true });
+      else outcome = retryable(r.status) ? "retry" : "stop";
+    }
+  }
+  if (Object.keys(patch).length || dropped) {
+    await patchHikeState(db, tripId, (cur) => ({
+      ...patch,
+      ...(dropped ? { droppedCount: (cur.droppedCount || 0) + dropped, droppedAt: Date.now() } : {}),
+    })).catch(() => undefined);
+  }
+  return outcome;
+}
+
+async function flushOutboxFromWorker() {
+  const owner = await swOwnerHint();
+  if (owner === null) return; // signed out on this browser: nothing can be sent
+  const db = await idbOpenExisting();
+  if (!db) return;
+  let retry = false;
+  try {
+    if (!db.objectStoreNames.contains("hikeState") || !db.objectStoreNames.contains("outbox")) return;
+    const states = await idbReq(db.transaction("hikeState", "readonly").objectStore("hikeState").getAll());
+    for (const state of states) {
+      if (!state || state.version !== 1 || !state.tripId || state.status === "not_started") continue;
+      // Only the signed-in account's hikes (when the worker can read the owner cookie).
+      if (owner !== undefined && state.ownerHint !== owner) continue;
+      const run = () => flushTripFromWorker(db, state);
+      const locks = self.navigator && self.navigator.locks;
+      const outcome =
+        locks && typeof locks.request === "function"
+          ? await locks.request(`gg-outbox-${state.tripId}`, { ifAvailable: true }, (lock) => (lock ? run() : "busy"))
+          : await run();
+      if (outcome === "retry") retry = true;
+    }
+  } finally {
+    db.close();
+  }
+  // Ask the browser to try again later (it applies its own backoff and limits).
+  if (retry) throw new Error("Some hike updates could not be sent yet");
+}
+
+self.addEventListener("sync", (event) => {
+  if (event.tag === OUTBOX_SYNC_TAG) event.waitUntil(flushOutboxFromWorker());
 });
