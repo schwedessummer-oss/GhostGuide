@@ -93,6 +93,20 @@ export function env(): ServerEnv {
   return value;
 }
 
+/**
+ * On Vercel, never fall back to the local development database: a missing
+ * DATABASE_URL would otherwise surface as a confusing
+ * "connect ECONNREFUSED 127.0.0.1:54322" on every page.
+ */
+export function assertDatabaseConfigured(source: Record<string, string | undefined> = process.env) {
+  if (source.VERCEL && !source.DATABASE_URL) {
+    throw new Error(
+      "DATABASE_URL is not set for this Vercel deployment. Add it in Vercel → Settings → Environment Variables " +
+        "(run `npm run vercel:secrets` locally to copy it), then redeploy. See docs/DEPLOYMENT.md.",
+    );
+  }
+}
+
 /** Reset cached env (tests only). */
 export function resetEnvCache() {
   cached = null;

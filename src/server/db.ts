@@ -1,6 +1,6 @@
 import "server-only";
 import postgres from "postgres";
-import { env } from "@/config/env";
+import { assertDatabaseConfigured, env } from "@/config/env";
 
 /**
  * Database access layer.
@@ -39,6 +39,7 @@ export interface DbUser {
 const globalForDb = globalThis as unknown as { __ggSql?: postgres.Sql };
 
 function createPool(): postgres.Sql {
+  assertDatabaseConfigured();
   const e = env();
   return postgres(e.DATABASE_URL, {
     max: e.DATABASE_POOL_MAX,

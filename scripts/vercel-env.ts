@@ -2,7 +2,9 @@
  * Build the Vercel environment variables from .env.local and copy them to
  * the clipboard, ready to paste into Vercel's "Environment Variables" box.
  *
- *   npm run vercel:env
+ *   npm run vercel:env        all settings (first setup)
+ *   npm run vercel:secrets    only DATABASE_URL, AUTH_SECRET and CRON_SECRET, for a
+ *                             project whose other settings are already in place
  *
  * - Uses the TRANSACTION pooler (port 6543) for the app, as serverless
  *   functions need.
@@ -51,7 +53,10 @@ function mask(key: string, value: string): string {
   return value;
 }
 
+const SECRET_KEYS = ["DATABASE_URL", "AUTH_SECRET", "CRON_SECRET"];
+
 async function main() {
+  const secretsOnly = process.argv.includes("--secrets-only");
   const local = readEnvFile();
   const missing = ["NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_SECRET_KEY", "DATABASE_URL"].filter((k) => !local[k]);
   if (missing.length) {
@@ -61,7 +66,7 @@ async function main() {
   }
 
   let publishable = local.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-  if (!publishable || !publishable.startsWith("sb_publishable_")) {
+  if (!secretsOnly && (!publishable || !publishable.startsWith("sb_publishable_"))) {
     const rl = createInterface({ input: process.stdin, output: process.stdout });
     for (;;) {
       const v = (await rl.question("Paste your Supabase PUBLISHABLE key (Settings → API Keys, starts with sb_publishable_):\n> ")).trim().replace(/^["']|["']$/g, "");
@@ -78,14 +83,15 @@ async function main() {
   const cronSecret = strong(local.CRON_SECRET, 16) ? local.CRON_SECRET : randomBytes(24).toString("hex");
 
   // Persist generated values so re-running gives the same secrets.
-  const updatedLocal = { ...local, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: publishable, AUTH_SECRET: authSecret, CRON_SECRET: cronSecret };
+  const updatedLocal: Record<string, string> = { ...local, AUTH_SECRET: authSecret, CRON_SECRET: cronSecret };
+  if (publishable) updatedLocal.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY = publishable;
   writeFileSync(ENV_FILE, Object.entries(updatedLocal).map(([k, v]) => `${k}=${v}`).join("\n") + "\n", "utf8");
 
   const transactionUrl = local.DATABASE_URL.replace(/:5432\//, ":6543/");
   const vars: [string, string][] = [
     ["APP_MODE", "demo"],
     ["NEXT_PUBLIC_SUPABASE_URL", local.NEXT_PUBLIC_SUPABASE_URL],
-    ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", publishable],
+    ["NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", publishable ?? ""],
     ["SUPABASE_SECRET_KEY", local.SUPABASE_SECRET_KEY],
     ["DATABASE_URL", transactionUrl],
     ["DATABASE_TRANSACTION_POOLER", "true"],
@@ -102,14 +108,15 @@ async function main() {
     ["WEATHER_PROVIDER", "demo"],
     ["LAUNCH_REGION_SLUG", "demo-ghost-ridge"],
   ];
-  const block = vars.map(([k, v]) => `${k}=${v}`).join("\n");
+  const selected = secretsOnly ? vars.filter(([k]) => SECRET_KEYS.includes(k)) : vars;
+  const block = selected.map(([k, v]) => `${k}=${v}`).join("\n");
 
   console.log("\nVercel environment variables (secrets hidden here):\n");
-  for (const [k, v] of vars) console.log(`  ${k}=${mask(k, v)}`);
+  for (const [k, v] of selected) console.log(`  ${k}=${mask(k, v)}`);
   if (!/:6543\//.test(transactionUrl)) console.log("\n  ⚠ DATABASE_URL does not use port 6543; check the connection string in .env.local.");
 
   if (copyToClipboard(block)) {
-    console.log("\n✓ Copied all of them (with the real values) to your clipboard.");
+    console.log(`\n✓ Copied ${secretsOnly ? "these 3" : "all of them"} (with the real values) to your clipboard. Don't paste them anywhere except Vercel.`);
     console.log("  In Vercel: open \"Environment Variables\", click in the first Key box, and paste (Ctrl + V).");
   } else {
     const fallback = path.join(ROOT, ".env.vercel.local"); // git-ignored (.env*)

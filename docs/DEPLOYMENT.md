@@ -72,6 +72,13 @@ notifications) until you configure real providers.
    | `NOTIFY_PROVIDER` | `demo` (recorded, never delivered) or `live` with Twilio/Resend |
    | `WEATHER_PROVIDER` | `demo` or `nws` with `WEATHER_USER_AGENT` |
 
+   **If Supabase's Vercel integration is connected**, it adds `POSTGRES_*` and `SUPABASE_*` variables
+   (plus `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) but
+   none of Ghost Guide's own settings. Add the non-secret ones from the table, then run
+   `npm run vercel:secrets` and paste just `DATABASE_URL`, `AUTH_SECRET` and `CRON_SECRET`.
+   Symptom of a missing `DATABASE_URL`: every page fails and the logs say
+   "DATABASE_URL is not set for this Vercel deployment" (older builds: `ECONNREFUSED 127.0.0.1:54322`).
+
 3. **Keep previews private**: Settings → Deployment Protection → enable Vercel Authentication
    for Preview (and Production while in demo).
 4. Deploy. Visit `/status` to confirm which integrations are live vs simulated.
