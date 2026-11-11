@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, type ReactNode } from "react";
+import { startTransition, useActionState, useRef, type FormEvent, type ReactNode } from "react";
 import clsx from "clsx";
 import { Button } from "@/components/ui";
 import { useAdminFlash } from "./flash";
@@ -106,8 +106,13 @@ export function ActionForm<S extends AdminFormState>({
   disabled?: boolean;
 }) {
   const flash = useAdminFlash();
+  const formRef = useRef<HTMLFormElement>(null);
   const [state, formAction, pending] = useActionState<S | undefined, FormData>(async (prev, fd) => {
     const result = await action(prev, fd);
+    // Clear the fields only after a successful action. (React's automatic
+    // reset for <form action> would also wipe what staff typed when the
+    // server rejects a field, forcing them to start over.)
+    if (result?.ok) formRef.current?.reset();
     // Hand the confirmation to the persistent layout region: this form may
     // not be rendered any more once the refreshed page commits. An error is
     // shown by this form, and clears an older confirmation so the two never
@@ -115,8 +120,16 @@ export function ActionForm<S extends AdminFormState>({
     if (result) flash?.(result.ok ? { message: result.message, warnings: result.warnings } : null);
     return result;
   }, undefined);
+  // Submit via onSubmit (not the action prop) so React does not auto-reset
+  // the form; include the clicked submit button's name/value.
+  function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const submitter = (event.nativeEvent as SubmitEvent).submitter as HTMLElement | null;
+    const fd = new FormData(event.currentTarget, submitter);
+    startTransition(() => formAction(fd));
+  }
   return (
-    <form action={formAction} className={clsx("space-y-3", className)} aria-busy={pending}>
+    <form ref={formRef} onSubmit={submit} className={clsx("space-y-3", className)} aria-busy={pending}>
       <div className={clsx(inline ? "flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end" : "space-y-3")}>
         {children}
         <div>

@@ -35,8 +35,11 @@ Owners are suggestions; adapt them to your organization.
 - [ ] Battery drain over a full hike; storage usage of downloads.
 - [ ] Accessibility: VoiceOver/TalkBack walkthrough of plan → book → hike → finish; captions/transcripts; contrast in sunlight; large text.
 - [ ] Check-in drills: late finish, extension, "I'm okay" offline then online, overdue notice content received by a test contact.
+- [ ] Device clock-skew and Background Sync behavior verified on iOS and Android (sync is best effort on the web).
 
 ## 4. Operating procedures
+- [ ] Decide whether emergency contacts must confirm (e.g. reply YES / click a link) BEFORE their first notice. Today consent is the hiker's attestation, and contacts can opt out from any notice.
+- [ ] Decide how long unresolved overdue check-ins stay open (they keep the last location until staff resolve them); add an auto-close policy if desired.
 - [ ] Safety desk runbook: what staff do when a check-in becomes overdue (notice already sent to the contact; staff may call the customer/contact; staff never claim to dispatch rescue; when staff should advise contacting 911).
 - [ ] Hours of operation for the safety desk stated honestly in the product (no "24/7 monitoring" claims).
 - [ ] Partner runbooks: gear locker failures, access-code resets, maintenance, shuttle no-shows, meal-pack failures, satellite-device returns; escalation contacts.

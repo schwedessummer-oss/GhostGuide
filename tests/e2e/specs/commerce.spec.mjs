@@ -696,8 +696,9 @@ test("capacity: a date blocked in /admin/availability is refused at checkout wit
     else await box.uncheck();
     await admin.locator(`#av-${blockDay}-note`).fill(blocked ? `QA commerce block ${run}` : "");
     await details.getByRole("button", { name: "Save day" }).click();
-    const result = details.getByRole("status");
-    await result.filter({ hasText: /blocked for new bookings|saved|!/ }).waitFor({ timeout: NAV });
+    // Admin confirmations are announced in the page-level status region (they survive re-renders).
+    const result = admin.getByRole("status").filter({ hasText: new RegExp(`${blockDay} (blocked for new bookings|saved)`) }).first();
+    await result.waitFor({ timeout: NAV });
     return result.innerText();
   };
 
@@ -824,7 +825,8 @@ test("locker gear held in another customer's checkout is not sold again; a staff
     // Staff cancel A's pending checkout: the message says no payment had been completed (COMMERCE-1).
     const bookingA = await adminFindBookingId(admin, ownerEmail, "pending_payment");
     await admin.goto(`/admin/bookings/${bookingA}`, { timeout: NAV });
-    assert.ok((await admin.locator("main").innerText()).includes(TRAIL_NAME));
+    // admin pages stream in behind a loading boundary: wait for the content
+    await assertText(admin.locator("main"), new RegExp(TRAIL_NAME));
     await admin.getByLabel("Reason (shared with the customer)").fill(`QA commerce: locker maintenance ${run}`);
     await admin.getByLabel(/I understand this cancels the booking/).check();
     await admin.getByRole("button", { name: "Cancel booking" }).click();

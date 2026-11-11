@@ -216,6 +216,25 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
 - **Job-runner heartbeat**: every runner invocation writes `app_settings.job_runner_heartbeat`;
   `getRunnerHealth()` (`src/server/jobs/health.ts`) reports staleness (> 5 min) to `/status`, admin and
   check-in screens.
+- **Bookings freeze the hike start** in `bookings.hike_start_at` (insert trigger); refund tiers and partner
+  timing use it. Once a trip is no longer `saved`, customers cannot change its date, start time or party size
+  (trigger `trips_guard_booked_changes`). Late payments for deliberately ended bookings are refunded
+  automatically and raised to operators; they never resurrect the booking. Lock order: trip → booking →
+  trail day → add-on days.
+- **Device check-in events**: an "I'm okay" tapped before the due time that syncs after the check-in went
+  overdue is recorded (`ok_recorded_late`) but does not clear overdue. "Extend my trip" can be queued offline
+  (`checkin_extend` → `onCheckinExtendedFromDevice`); stale extensions never move the time backwards.
+  Hike sync corrects device clock skew instead of dropping safety events.
+- **Staff resolution**: `staffResolveCheckin` (admin → /admin/safety) adds notes or marks a check-in
+  resolved after staff confirmed the hiker is safe; it never contacts emergency services.
+- **Contact opt-out**: every notice to an emergency contact carries a one-click opt-out link
+  (`/contact/opt-out/<token>`, hashed tokens in `contact_optout_tokens`) that withdraws consent immediately.
+  Customers write `emergency_contacts` through column-level grants only.
+- **Service worker** `SW_VERSION 2026-11-11.2`: narration audio cached under stable keys
+  (`/__gg/audio/<narrationId>/v<version>`), outbox flushed from any page and via Background Sync
+  (`gg-outbox`, best effort); the header's sign-out button warns before unsynced hike updates are wiped.
+- **Hike start and closures**: a full closure active now or scheduled later the same day blocks the start;
+  closures that already ended do not.
 
 ## Testing
 - `npm run test:unit` — pure domain logic (`tests/unit/<slice>/…`).

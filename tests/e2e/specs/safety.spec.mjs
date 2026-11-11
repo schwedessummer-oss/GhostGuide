@@ -1142,7 +1142,8 @@ test("trip share links: neutral public view, location only when included, revoke
     const card = page.locator("section", { has: page.getByRole("heading", { name: "Check-ins", level: 2 }) });
     await assertText(card, /Trip finished/);
     assert.equal(await card.getByRole("button", { name: "Create share link" }).count(), 0, "sharing is not offered after finishing");
-    assert.deepEqual(anonErrors, []);
+    // Unavailable links (revoked, expired, unknown) correctly answer 404; anything else is a real error.
+    assert.deepEqual(anonErrors.filter((e) => !/\/share\/[^ ]+ :: Failed to load resource: the server responded with a status of 404/.test(e)), []);
   });
 });
 

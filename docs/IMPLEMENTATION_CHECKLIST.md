@@ -56,9 +56,10 @@ production build in headless Chromium. Nothing has been field-tested on real pho
 - ⏭ Offline basemap tiles (licensing)
 
 ## M3/M4 — Check-ins & emergency contacts
-- ✅ Emergency contacts with explicit consent attestation; consent cleared when contact details change
+- ✅ Emergency contacts with explicit consent attestation; consent cleared when contact details change; one-click opt-out link in every notice to a contact
 - ✅ Opt-in check-ins: expected return, grace, configurable reminders, "I'm okay", "Extend my trip", "Finish trip"
-- ✅ Server-side jobs: reminders, overdue (version-guarded, deduplicated), periodic safety-net scan, retention purge
+- ✅ Server-side jobs: reminders, overdue (version-guarded, deduplicated), periodic safety-net scan (recovers late-queued jobs), retention purge; job-runner heartbeat shown on /status, admin and check-in screens
+- ✅ Staff can annotate or resolve overdue check-ins (/admin/safety); "Extend my trip" also queued offline from the hike screen
 - ✅ Notification audit trail (masked recipients); notices include last coordinates, timestamp, accuracy, stale label; never claim an emergency; state that emergency services were not contacted
 - 🟡 Demo notification provider (recorded, never delivered); 🔶 Twilio SMS / Resend email (live mode only, fails loudly when unconfigured)
 - ✅ Expiring, revocable trip-share links (hashed tokens, rate-limited lookups)
@@ -79,5 +80,15 @@ production build in headless Chromium. Nothing has been field-tested on real pho
 - ✅ Support tickets, staff roles (last admin protected), audit log viewer
 - ⏭ ML pricing (rules only until enough data)
 
-## Verification status
-See the final report in the session and `docs/INTEGRATIONS.md`. Run `npm run verify` and `npm run test:e2e` locally.
+## Verification status (last run)
+- `npm run typecheck` — clean. `npm run lint` — clean.
+- `npm test` — 79 files, **729 tests passing** (unit + integration against PostgreSQL 16 with all migrations and seeds), stable across repeated runs.
+- `npm run test:e2e` — production build + fresh database, **161/161 browser checks passing** (discover, commerce, hike incl. offline/service worker, safety/check-ins, admin/RBAC), headless Chromium at phone and desktop sizes.
+- Not verified: anything requiring real credentials (Supabase project, Stripe, Anthropic, Twilio/Resend, NWS, Mapbox), real phones (GPS, screen lock, background behavior, battery), or real trails.
+
+## Known gaps (deferred)
+- Emergency contacts consent is the hiker's attestation; contacts can opt out from every notice but do not confirm before the first one.
+- Overdue check-ins that staff never resolve stay open (and keep the last location) until resolved; no auto-close policy yet.
+- A Finish that the server permanently refuses (e.g. trip cancelled meanwhile) stays pending on the device; the sign-out guard still warns about it.
+- If a partner accepts an order but the response is lost and the booking is then cancelled, the partner order needs manual cancellation (needs a partner API that cancels by our idempotency key).
+- Admin "reveal sensitive details" form clears its reason field after a rejected submission (minor).
