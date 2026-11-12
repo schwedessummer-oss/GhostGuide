@@ -138,6 +138,9 @@ export interface TrailSummaryRow {
   routeType: string;
   elevationGainM: number | null;
   estimatedDurationMin: number | null;
+  /** Stored hike total (migration 20261112002000); absent on rows from older queries/tests. */
+  hikeDurationMin?: number | null;
+  hikeLossM?: number | null;
   difficulty: string;
   difficultySource: string | null;
   features: string[] | null;
@@ -220,6 +223,22 @@ function point(lng: unknown, lat: unknown): LngLat | null {
 }
 
 /** DB row → public summary DTO (unknown vocabulary values become "unknown"/null). */
+/**
+ * The hike as usually walked (out-and-back for linear routes), using the same
+ * rules as the search filters (module header) and the stored ingestion estimate.
+ */
+export function hikeTotals(row: TrailSummaryRow): Pick<TrailSummaryDto, "hikeDistanceM" | "hikeGainM" | "hikeDurationMin"> {
+  const linear = row.routeType === "linear";
+  const gain = finiteOrNull(row.elevationGainM);
+  const loss = finiteOrNull(row.hikeLossM ?? null);
+  const oneWay = finiteOrNull(row.estimatedDurationMin);
+  return {
+    hikeDistanceM: linear ? row.distanceM * 2 : row.distanceM,
+    hikeGainM: gain === null ? null : linear ? gain + (loss ?? 0) : gain,
+    hikeDurationMin: finiteOrNull(row.hikeDurationMin ?? null) ?? (oneWay === null ? null : linear ? oneWay * 2 : oneWay),
+  };
+}
+
 export function toSummaryDto(row: TrailSummaryRow): TrailSummaryDto {
   return {
     id: row.id,
@@ -236,6 +255,7 @@ export function toSummaryDto(row: TrailSummaryRow): TrailSummaryDto {
     routeType: oneOf<RouteType>(ROUTE_TYPES, row.routeType, "unknown"),
     elevationGainM: finiteOrNull(row.elevationGainM),
     estimatedDurationMin: finiteOrNull(row.estimatedDurationMin),
+    ...hikeTotals(row),
     difficulty: oneOf<Difficulty>(DIFFICULTIES, row.difficulty, "unknown"),
     difficultySource:
       typeof row.difficultySource === "string" && DIFFICULTY_SOURCES.includes(row.difficultySource as DifficultySource)
@@ -376,7 +396,8 @@ const summaryColumns = (tx: Tx) => tx`
   st_x(t.trailhead::geometry) as trailhead_lng, st_y(t.trailhead::geometry) as trailhead_lat,
   t.distance_m, t.route_type, t.elevation_gain_m, t.estimated_duration_min, t.difficulty, t.difficulty_source,
   t.features, t.dog_policy, t.fee_required, t.permit_required, t.has_parking, t.has_toilets, t.has_camping,
-  t.family_friendly, t.provider, t.source_name, t.last_synced_at`;
+  t.family_friendly, t.provider, t.source_name, t.last_synced_at,
+  t.hike_duration_min, t.elevation_loss_m as hike_loss_m`;
 
 const detailColumns = (tx: Tx) => tx`
   ${summaryColumns(tx)},
@@ -399,7 +420,7 @@ const hikeDistance = (tx: Tx) => tx`(case when t.route_type = 'linear' then t.di
 const hikeGain = (tx: Tx) =>
   tx`(case when t.route_type = 'linear' then t.elevation_gain_m + coalesce(t.elevation_loss_m, 0) else t.elevation_gain_m end)`;
 const hikeDuration = (tx: Tx) =>
-  tx`(case when t.route_type = 'linear' then t.estimated_duration_min * 2 else t.estimated_duration_min end)`;
+  tx`coalesce(t.hike_duration_min, case when t.route_type = 'linear' then t.estimated_duration_min * 2 else t.estimated_duration_min end)`;
 
 /** Escape LIKE metacharacters so user text matches literally. */
 export function escapeLike(s: string): string {

@@ -18,7 +18,7 @@ import type { ElevationResult } from "@/server/geo/elevation";
 import type { AdminArea } from "@/server/geo/geocode";
 import { boundsOfLines, cleanLines, distancePointToLinesM, lengthWeightedCentroid, lineEndpoints, linesLengthM } from "@/server/geo/geodesy";
 import { highestSacScale, worstTrailVisibility } from "@/server/trails/providers/osm/tags";
-import { classifyDifficulty, estimateDurationMin, isFamilyFriendly, qualityScore } from "./estimate";
+import { classifyDifficulty, estimateDurationMin, estimateOutAndBackMin, isFamilyFriendly, qualityScore } from "./estimate";
 import { countryCodeOrUnknown, regionSlugFor, slugify } from "./slug";
 import type { Line, NormalizedTrail, ProviderId } from "./types";
 
@@ -150,6 +150,8 @@ export interface TrailRecord extends TrailAttributes {
   elevationProfile: [number, number][] | null;
   elevationSource: string | null;
   estimatedDurationMin: number;
+  /** Out-and-back for linear routes, else one traversal (see migration 20261112002000). */
+  hikeDurationMin: number;
   difficulty: Difficulty;
   difficultySource: DifficultySource | null;
   features: TrailFeature[];
@@ -222,6 +224,28 @@ export function selectTrailhead(lines: Line[], pois: readonly NearbyPoi[]): Trai
   if (parking) return { point: { lng: parking.poi.lng, lat: parking.poi.lat }, source: "parking", poiId: parking.poi.providerId };
 
   return { point: { lng: clean[0][0][0], lat: clean[0][0][1] }, source: "route_start", poiId: null };
+}
+
+/**
+ * Orient a linear route so it starts at its trailhead. Providers draw lines in
+ * any direction (OSM often maps a summit trail top-down); hikers start at the
+ * trailhead, so "gain" and the one-way duration must be measured from there.
+ * Reverses line order and vertex order when the trailhead is closer to the
+ * route's last vertex than to its first; otherwise returns the lines as is.
+ */
+export function orientFromTrailhead(lines: Line[], trailhead: LngLat | null): Line[] {
+  const clean = cleanLines(lines);
+  if (!trailhead || clean.length === 0) return clean;
+  const first = clean[0][0];
+  const lastLine = clean[clean.length - 1];
+  const last = lastLine[lastLine.length - 1];
+  const dFirst = haversineM(trailhead, { lng: first[0], lat: first[1] });
+  const dLast = haversineM(trailhead, { lng: last[0], lat: last[1] });
+  if (!(dLast < dFirst)) return clean;
+  return clean
+    .slice()
+    .reverse()
+    .map((line) => line.slice().reverse());
 }
 
 /**
@@ -478,6 +502,7 @@ export function buildTrailRecord(input: TrailRecordInput): TrailRecord | null {
     elevationSource: hasElevation ? cleanText(elevation.source, 300) : null,
     // One traversal of the mapped geometry (an estimate; labelled in the UI).
     estimatedDurationMin: estimateDurationMin({ distanceM, profile }),
+    hikeDurationMin: routeType === "linear" ? estimateOutAndBackMin(distanceM, profile) : estimateDurationMin({ distanceM, profile }),
     difficulty: classified.difficulty,
     difficultySource,
     features: amenities.features,

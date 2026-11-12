@@ -20,7 +20,8 @@
     "setup:supabase": "tsx scripts/setup-supabase.ts",
     "vercel:env": "tsx scripts/vercel-env.ts",
     "vercel:secrets": "tsx scripts/vercel-env.ts --secrets-only",
-    "setup:cron": "tsx scripts/setup-cron.ts"
+    "setup:cron": "tsx scripts/setup-cron.ts",
+    "db:seed:catalog-fixtures": "tsx --conditions=react-server scripts/dev/seed-catalog-fixtures.ts"
   },
   "dependencies": {
     "@photostructure/tz-lookup": "^11.8.0",

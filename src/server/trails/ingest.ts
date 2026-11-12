@@ -14,6 +14,8 @@ import {
   POI_LOOKUP_RADIUS_M,
   attributesOf,
   buildTrailRecord,
+  orientFromTrailhead,
+  selectTrailhead,
   combineAttributes,
   geometryHash,
   trailCentroid,
@@ -319,9 +321,11 @@ async function storeTrail(
       }
     }
 
+    const pois = await repo.nearbyOutdoorPois(tx, lines, POI_LOOKUP_RADIUS_M, ENRICHMENT_POI_CATEGORIES);
+    // Measure linear routes from their trailhead (gain, one-way duration).
+    if (routeType === "linear") lines = orientFromTrailhead(lines, selectTrailhead(lines, pois)?.point ?? null);
     const sameGeometry = stored !== null && stored.geomHash === geometryHash(lines);
     const elevation = sameGeometry && stored!.elevation ? stored!.elevation : await ctx.elevation(lines);
-    const pois = await repo.nearbyOutdoorPois(tx, lines, POI_LOOKUP_RADIUS_M, ENRICHMENT_POI_CATEGORIES);
     const centroid = trailCentroid(lines) ?? pieceCentroid;
     const keepIdentity = stored !== null && stored.providerId !== t.providerId;
     const record = buildTrailRecord({

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { TRAIL_FEATURES, type PoiCategory } from "@/domain/catalog";
 import { offsetMeters } from "@/domain/geo";
 import {
+  orientFromTrailhead,
   CAMPING_NEAR_ROUTE_M,
   FEATURE_RADIUS_M,
   PARKING_NEAR_TRAILHEAD_M,
@@ -335,5 +336,45 @@ describe("geometryHash / trailCentroid", () => {
   it("centroid is null without geometry", () => {
     expect(trailCentroid([])).toBeNull();
     expect(trailCentroid(LINE)!.lat).toBeCloseTo(ORIGIN.lat, 6);
+  });
+});
+
+describe("orientFromTrailhead", () => {
+  // A one-way line drawn summit → base (OSM often maps it this way).
+  const summitToBase: [number, number][] = [
+    [-82.7, 35.1],
+    [-82.71, 35.09],
+    [-82.72, 35.08],
+  ];
+  const base = { lng: -82.7201, lat: 35.0801 };
+  const summit = { lng: -82.7001, lat: 35.1001 };
+
+  it("reverses a linear route whose trailhead is at its far end", () => {
+    const out = orientFromTrailhead([summitToBase], base);
+    expect(out).toEqual([[...summitToBase].reverse()]);
+  });
+
+  it("keeps a route that already starts at the trailhead", () => {
+    expect(orientFromTrailhead([summitToBase], summit)).toEqual([summitToBase]);
+  });
+
+  it("reverses line order and each line for multi-line routes", () => {
+    const a: [number, number][] = [
+      [0, 0],
+      [0, 0.01],
+    ];
+    const b: [number, number][] = [
+      [0, 0.01],
+      [0, 0.02],
+    ];
+    const out = orientFromTrailhead([a, b], { lng: 0, lat: 0.0201 });
+    expect(out).toEqual([
+      [...b].reverse(),
+      [...a].reverse(),
+    ]);
+  });
+
+  it("returns cleaned lines unchanged without a trailhead", () => {
+    expect(orientFromTrailhead([summitToBase], null)).toEqual([summitToBase]);
   });
 });

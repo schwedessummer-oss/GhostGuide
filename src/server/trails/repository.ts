@@ -752,6 +752,7 @@ function derivedColumns(tx: Tx, r: TrailRecord): [string, Fragment][] {
     ["elevation_profile", profile ? tx`${profile}` : tx`null::jsonb`],
     ["elevation_source", tx`${r.elevationSource}::text`],
     ["estimated_duration_min", tx`${r.estimatedDurationMin}::int`],
+    ["hike_duration_min", tx`${r.hikeDurationMin}::int`],
     ["difficulty", tx`${r.difficulty}::text`],
     ["difficulty_source", tx`${r.difficultySource}::text`],
     ["sac_scale", tx`${r.sacScale}::text`],

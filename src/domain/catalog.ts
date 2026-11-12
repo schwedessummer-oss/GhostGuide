@@ -91,8 +91,16 @@ export interface TrailSummaryDto {
   trailhead: LngLat | null;
   distanceM: number;
   routeType: RouteType;
+  /** Climb of one traversal measured from the trailhead (DEM estimate). */
   elevationGainM: number | null;
+  /** One traversal from the trailhead, minutes (estimate). */
   estimatedDurationMin: number | null;
+  /** The hike as usually walked: out-and-back for linear routes, one traversal otherwise. */
+  hikeDistanceM: number;
+  /** Total climb of that hike (linear: climb out + climb back). */
+  hikeGainM: number | null;
+  /** Total moving time of that hike, minutes (estimate). */
+  hikeDurationMin: number | null;
   difficulty: Difficulty;
   difficultySource: DifficultySource | null;
   features: TrailFeature[];
