@@ -1,0 +1,367 @@
+{
+  "RECDATA": [
+    {
+      "FacilityID": "233115",
+      "LegacyFacilityID": "71992",
+      "OrgFacilityID": "AN371992",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "UNION CREEK CAMPGROUND",
+      "FacilityDescription": "<h2>Overview:</h2>The Union Creek Campground is one of the largest Forest Service campgrounds in eastern Oregon. It's nestled on the northern shore of Phillips Reservoir amid mature Ponderosa pine, with a few sites offering views of the lake.<br /><br />\n\nThis camp is part of the Union Creek Recreation Area, which includes a picnic and day-use area. Union Creek Campground is set on three loops with separate walk-in tent camping, and it has four group sites that can accommodate from 60-100 people.<h4>Natural Features:</h4>Phillips Reservoir is a popular destination within the Wallowa-Whitman National Forest because it offers scenic views of the surrounding Elkhorn Mountains. The shoreline is forested with a mix of Ponderosa pine and various firs interspersed with small grasslands.<br /><br />\n\nVisitors enjoy several varieties of colorful wildflowers in the spring.<h4>Recreation:</h4>The campground is near a boat launch and a small, rocky swim beach. Activities include swimming, fishing, boating and water skiing.<br /><br />\n\nAnglers can fish for bass, trout and perch. There's an access point for the Phillips Lake Shoreline Trail, a 6.5-mile scenic trail for hiking and mountain biking.<h4>Facilities:</h4>The parking spurs are paved and gravel and large enough for any size RV. Several sites offer full hookups, and some others offer water and electric.<br /><br />\n\nUnits are equipped with picnic tables and grills. Drinking water and flush toilets are available.\nSome of the facilities are handicap-accessible.<h4>Nearby Attractions:</h4>The historic gold mining town of Sumpter is about 10 miles away. Visitors can explore the Sumpter Dredge State Heritage Park, browse the holiday weekend flea markets or take a ride on a historic steam locomotive.\n",
+      "FacilityTypeDescription": "Campground",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "From Baker City, Oregon, travel south on Highway 7 for about 18 miles. The campground and day-use entrance is signed on the left side of the road. Follow the signs in the Union Creek Recreation Area down to the various campground loops and areas.",
+      "FacilityAccessibilityText": "Facility contains wheelchair accessable restrooms.",
+      "FacilityPhone": "541-894-2332",
+      "FacilityEmail": "campgrounds@anthonylakes.com",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.0186111,
+          44.6969444
+        ]
+      },
+      "FacilityLongitude": -118.0186111,
+      "FacilityLatitude": 44.6969444,
+      "StayLimit": "",
+      "Keywords": "NW02,Phillips Reservoir",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2018-10-01"
+    },
+    {
+      "FacilityID": "990001",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "EX990001",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "EXAMPLE LAKE CAMPGROUND",
+      "FacilityDescription": "<p>Synthetic test campground.</p>",
+      "FacilityTypeDescription": "Campground",
+      "FacilityUseFeeDescription": "<p><strong>Fees:</strong> $20.00 per night for single sites &amp; $5.00 per extra vehicle.</p><ul><li>Group sites: $60.00 per night (up to 25 people).</li><li>Day use: $5.00 per vehicle.</li></ul><p>Half price with an America the Beautiful Senior or Access pass. Fees are subject to change without notice; check the reservation page.</p>",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "(541) 555-0100",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "https://www.recreation.gov/camping/campgrounds/990001",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.1012,
+          44.6521
+        ]
+      },
+      "FacilityLongitude": -118.1012,
+      "FacilityLatitude": 44.6521,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": true,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990002",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Ridge Trailhead",
+      "FacilityDescription": "<p>Synthetic trailhead with a <a href=\"https://example.org\">link</a>.</p>",
+      "FacilityTypeDescription": "Trailhead",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.2033,
+          44.7044
+        ]
+      },
+      "FacilityLongitude": -118.2033,
+      "FacilityLatitude": 44.7044,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990003",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Creek Visitor Center",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Visitor Center",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "541-555-0101",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "https://example.org/map.pdf",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.0555,
+          44.531
+        ]
+      },
+      "FacilityLongitude": -118.0555,
+      "FacilityLatitude": 44.531,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990004",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Ranger Station",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Ranger Station",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "541-555-0102",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.15,
+          44.6
+        ]
+      },
+      "FacilityLongitude": -118.15,
+      "FacilityLatitude": 44.6,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990005",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example &amp; Co <b>Information</b> Site",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Information Site",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.24,
+          44.74
+        ]
+      },
+      "FacilityLongitude": -118.24,
+      "FacilityLatitude": 44.74,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990006",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "EXAMPLE DAY USE AREA",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Facility",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.12,
+          44.66
+        ]
+      },
+      "FacilityLongitude": -118.12,
+      "FacilityLatitude": 44.66,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990007",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Wilderness Permit",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Permit",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.13,
+          44.67
+        ]
+      },
+      "FacilityLongitude": -118.13,
+      "FacilityLatitude": 44.67,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": true,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990008",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Campground Without Coordinates",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Campground",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          0,
+          0
+        ]
+      },
+      "FacilityLongitude": 0,
+      "FacilityLatitude": 0,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990009",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Closed Trailhead",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Trailhead",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -118.11,
+          44.61
+        ]
+      },
+      "FacilityLongitude": -118.11,
+      "FacilityLatitude": 44.61,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": false,
+      "LastUpdatedDate": "2026-10-01"
+    },
+    {
+      "FacilityID": "990010",
+      "LegacyFacilityID": "",
+      "OrgFacilityID": "",
+      "ParentOrgID": "131",
+      "ParentRecAreaID": "1113",
+      "FacilityName": "Example Campground East Of The Tile",
+      "FacilityDescription": "",
+      "FacilityTypeDescription": "Campground",
+      "FacilityUseFeeDescription": "",
+      "FacilityDirections": "",
+      "FacilityAccessibilityText": "",
+      "FacilityPhone": "",
+      "FacilityEmail": "",
+      "FacilityReservationURL": "",
+      "FacilityMapURL": "",
+      "FacilityAdaAccess": "N",
+      "GEOJSON": {
+        "TYPE": "Point",
+        "COORDINATES": [
+          -117.93,
+          44.64
+        ]
+      },
+      "FacilityLongitude": -117.93,
+      "FacilityLatitude": 44.64,
+      "StayLimit": "",
+      "Keywords": "",
+      "Reservable": false,
+      "Enabled": true,
+      "LastUpdatedDate": "2026-10-01"
+    }
+  ],
+  "METADATA": {
+    "RESULTS": {
+      "CURRENT_COUNT": 11,
+      "TOTAL_COUNT": 11
+    },
+    "PARAMETERS": {
+      "QUERY": "",
+      "LIMIT": 50,
+      "OFFSET": 0
+    }
+  }
+}

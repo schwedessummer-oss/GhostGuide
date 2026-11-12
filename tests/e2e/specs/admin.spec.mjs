@@ -380,6 +380,7 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
       ["/admin/safety", "Safety monitor"],
       ["/admin/notifications", "Notification delivery log"],
       ["/admin/jobs", "Jobs & integrations"],
+      ["/admin/data", "Trail data"],
       ["/admin/pricing", "Pricing"],
       ["/admin/availability", "Availability"],
       ["/admin/flags", "Feature flags"],

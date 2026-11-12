@@ -5,6 +5,33 @@ browser's sandbox, so several capabilities a hiking companion would ideally have
 available**. The product says this to customers on the pre-hike screen and on `/how-it-works`, and
 never presents these as guaranteed.
 
+## Trail data (Phase 1, real data)
+- **Coverage depends on OpenStreetMap.** Ghost Guide shows *named* hiking routes and named paths;
+  unnamed paths are not listed as trails. Data quality varies by country and area, so every trail
+  page shows its source, license and last sync time, and links to the OSM feature to fix it there.
+- **First search of an area takes time.** Areas load on demand from the public Overpass API, which
+  can take 30–90 s or be temporarily unavailable. The UI says "Loading trails for this area…" or
+  "could not be loaded right now"; it never shows placeholder trails. Very large areas must be
+  zoomed into before they load (more than 16 tiles of about 28 km each).
+- **Route shape is inferred.** Loop / one-way / network comes from the mapped geometry. One-way
+  routes are measured from the trailhead and shown as out-and-back totals, the usual way they are
+  hiked. Trails split across tile edges are merged by name and proximity, which is rarely imperfect.
+- **Elevation is an estimate** from terrain tiles (about 30 m grid; the underlying DEM is 10–90 m
+  depending on region), smoothed with a 3 m threshold. Short, steep climbs can be under-counted.
+- **Times are moving-time estimates** (Tobler's hiking function on the elevation profile, average
+  pace, no breaks). **Difficulty** comes from the OSM SAC grade when mapped, otherwise from distance
+  and climb (marked "estimated").
+- **Trailheads** come from OSM trailhead nodes, else the nearest mapped parking within 300 m of a
+  route end, else the route start (labeled).
+- **Nearby services** are OSM points of interest. Distances are straight-line, ratings are not
+  available, and opening hours are as mapped by volunteers.
+- **Weather:** forecasts are model output from MET Norway. Official alerts are shown only in the US
+  (NWS); elsewhere the page says alerts are not available. Sun times assume a flat horizon.
+- **Fees and permits** are shown only when the source says so. Otherwise the page says "unknown —
+  check with the land manager".
+- **Region names** come from reverse geocoding on a ~11 km grid, so near borders the region or
+  nearest town can be the neighbouring one.
+
 ## Location (GPS)
 - **Foreground only.** Browsers deliver `watchPosition` updates while the page is visible. When the
   screen locks or another app is in front, iOS Safari and Android Chrome may pause or throttle
@@ -26,9 +53,9 @@ never presents these as guaranteed.
   completeness (presence + checksums) and offers retry.
 - **Storage can be evicted** by the browser under storage pressure (persistent storage is requested
   but may be denied). Re-check the download on the morning of the hike.
-- **No offline basemap.** The offline view draws the route and POIs without map tiles. Mapbox tiles
-  are not cached (licensing); offline maps need a native client using Mapbox's mobile SDK offline
-  features under its terms.
+- **No offline basemap.** The offline view draws the route and POIs without map tiles. Basemap tiles
+  are not cached (tile terms); offline maps need a licensed offline package or a self-hosted
+  vector extract (e.g. Protomaps PMTiles) — planned with Phase 4 offline packages.
 - Location points and events recorded offline are **queued and synced** when connectivity returns.
   Until then, the server (and therefore check-in notices) only knows the last location it received.
 - **Offline notifications are not guaranteed.** Reminders are shown in-app while the page is open;

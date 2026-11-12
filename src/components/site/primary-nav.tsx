@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSyncExternalStore } from "react";
 import clsx from "clsx";
 import { Bookmark, CalendarDays, CircleUserRound, Compass, Footprints, type LucideIcon } from "lucide-react";
 import { activeNavKey, primaryNav, type NavKey } from "./nav";
@@ -15,8 +16,22 @@ const ICONS: Record<NavKey, LucideIcon> = {
 };
 
 /** Desktop header links (md and up). */
-export function HeaderNavLinks({ signedIn, extra = [] }: { signedIn: boolean; extra?: { href: string; label: string }[] }) {
+const noopSubscribe = () => () => {};
+
+/**
+ * The current path, but only after hydration. Server HTML (and the service
+ * worker's cached /offline shell, which is served under other URLs) never
+ * carries route-specific "current" markup, so it always hydrates cleanly; the
+ * highlight appears right after hydration.
+ */
+function useHydratedPathname(): string {
   const pathname = usePathname();
+  const hydrated = useSyncExternalStore(noopSubscribe, () => true, () => false);
+  return hydrated ? pathname : "";
+}
+
+export function HeaderNavLinks({ signedIn, extra = [] }: { signedIn: boolean; extra?: { href: string; label: string }[] }) {
+  const pathname = useHydratedPathname();
   const active = activeNavKey(pathname);
   return (
     <ul className="hidden items-center gap-0.5 md:flex">
@@ -58,7 +73,7 @@ export function HeaderNavLinks({ signedIn, extra = [] }: { signedIn: boolean; ex
 
 /** Phone bottom tab bar (below md): fixed, safe-area aware, 56 px targets. */
 export function TabBar({ signedIn }: { signedIn: boolean }) {
-  const active = activeNavKey(usePathname());
+  const active = activeNavKey(useHydratedPathname());
   return (
     <nav
       aria-label="Primary"

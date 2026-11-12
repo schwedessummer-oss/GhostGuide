@@ -128,39 +128,103 @@ const SEEDED = {
 // Landing
 // ---------------------------------------------------------------------------
 
-test("landing page explains the product honestly and its CTAs lead to planning and browsing", { timeout: 90_000 }, async () => {
+test("landing page explains the product honestly; its search, map and demo-region links lead to Explore, /trails and planning", { timeout: 90_000 }, async () => {
   const { context, page, pageErrors } = await openPage({ width: 390, height: 844 });
   try {
     const res = await page.goto("/");
     assert.equal(res.status(), 200);
-    await page.getByRole("heading", { level: 1, name: /Your hike, planned around you/ }).waitFor();
-    // Demo + honesty content
-    assert.match(await page.locator("main").innerText(), /This is a demo: .* fictional\./);
-    for (const t of ["Not an emergency service", "Estimates, not promises", "AI explains, never decides", "Demo data is labeled"]) {
-      assert.equal(await page.getByText(t, { exact: true }).count(), 1, `missing honesty card: ${t}`);
+    await page.getByRole("heading", { level: 1, name: "Find a hike. Plan the day. Get home safely." }).waitFor();
+    // What the product does today, stated honestly.
+    for (const t of ["Real trails, honest numbers", "Plan the day", "Save trails, set a check-in"]) {
+      assert.equal(await page.getByRole("heading", { level: 3, name: t }).count(), 1, `missing value card: ${t}`);
     }
-    // How it works steps
-    assert.equal(await page.getByRole("heading", { level: 3, name: "Discover a hike" }).count(), 1);
-    assert.equal(await page.getByRole("heading", { level: 3, name: "Optional check-ins" }).count(), 1);
-    // Featured trails link to detail pages
-    const featured = page.getByRole("region", { name: "Trails to explore" });
-    const cards = featured.getByRole("article");
-    assert.ok((await cards.count()) >= 1, "expected featured trail cards");
-    const firstHref = await cards.first().getByRole("link").first().getAttribute("href");
-    assert.match(firstHref, /^\/trails\/[a-z0-9-]+$/);
-    assert.equal(await featured.getByRole("link", { name: /See all trails/ }).getAttribute("href"), "/trails");
-    assert.equal(await page.getByRole("link", { name: /Read how it works/ }).getAttribute("href"), "/how-it-works");
+    const main = await page.locator("main").innerText();
+    assert.match(main, /Trails worldwide come from OpenStreetMap/);
+    assert.match(main, /clearly marked as estimates/);
+    assert.match(main, /Ghost Guide is not an emergency service\./);
+    assert.equal(await page.getByRole("link", { name: /How it works & its limits/ }).getAttribute("href"), "/how-it-works");
+    // The site-wide demo banner says what is real and what is simulated.
+    assert.match(await page.locator("body").innerText(), /Demo: trail, map, weather and place data are real; payments, notifications, partner services and AI\s+text are simulated\./);
 
-    // Primary CTA -> /plan
+    // The fictional demo region is a clearly labeled development fixture (SHOW_DEMO_FIXTURES).
+    const demo = page.getByRole("region", { name: /Demo region \(fictional\)/ });
+    assert.match(await demo.innerText(), /Development fixtures/);
+    assert.match(await demo.innerText(), /These trails do not exist\./);
+    const cards = demo.getByRole("article");
+    assert.ok((await cards.count()) >= 1, "expected demo trail cards");
+    assert.match(await cards.first().getByRole("link").first().getAttribute("href"), /^\/trails\/[a-z0-9-]+$/);
+    assert.equal(await demo.getByRole("link", { name: /All demo trails/ }).getAttribute("href"), "/trails");
+
+    // "Explore the map" and "Trails near me" are offered next to the search.
+    assert.equal(await page.getByRole("link", { name: "Explore the map" }).getAttribute("href"), "/explore");
+    assert.ok(await page.getByRole("button", { name: "Trails near me" }).isVisible());
+
+    // The search is a plain GET form to Explore (works without JavaScript).
+    const search = page.getByRole("search");
+    await search.getByLabel("Where do you want to hike?").fill("Table Rock State Park");
+    await Promise.all([
+      page.waitForURL((u) => u.pathname === "/explore" && u.searchParams.get("q") === "Table Rock State Park"),
+      search.getByRole("button", { name: "Find trails" }).click(),
+    ]);
+    await page.getByRole("heading", { level: 1, name: "Explore trails" }).waitFor({ state: "attached" });
+
+    // Demo region list → planning questionnaire.
+    await page.goto("/trails");
+    await page.getByRole("heading", { level: 1, name: "Find a trail" }).waitFor();
     await Promise.all([page.waitForURL("**/plan"), page.getByRole("link", { name: "Plan my hike" }).first().click()]);
     await page.getByRole("heading", { level: 1, name: "Plan your hike" }).waitFor();
-    // Secondary CTA -> /trails
-    await page.goto("/");
-    await Promise.all([page.waitForURL("**/trails"), page.getByRole("link", { name: "Browse trails" }).click()]);
-    await page.getByRole("heading", { level: 1, name: "Find a trail" }).waitFor();
     assert.deepEqual(pageErrors, []);
   } finally {
     await context.close();
+  }
+});
+
+test("navigation: Explore, Trips, Hike, Saved and Profile in the desktop header and the phone tab bar", { timeout: 60_000 }, async () => {
+  const desktop = await openPage();
+  try {
+    const { page } = desktop;
+    await page.goto("/");
+    const header = page.getByRole("navigation", { name: "Main" });
+    const links = header.getByRole("link");
+    const labels = (await links.allInnerTexts()).map((s) => s.trim()).filter(Boolean);
+    assert.deepEqual(labels.slice(0, 7), ["Ghost Guide", "Explore", "Trips", "Hike", "Saved", "Profile", "Sign in"]);
+    const hrefs = await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")));
+    assert.deepEqual(hrefs.slice(0, 7), ["/", "/explore", "/trips", "/hike", "/saved", "/login", "/login"]);
+    // The phone tab bar is hidden on desktop.
+    assert.equal(await page.getByRole("navigation", { name: "Primary" }).isVisible(), false);
+    // The current destination is marked.
+    await page.goto("/trails");
+    assert.equal(await header.getByRole("link", { name: "Explore", exact: true }).getAttribute("aria-current"), "page");
+  } finally {
+    await desktop.context.close();
+  }
+
+  const phone = await openPage({ width: 390, height: 844 });
+  try {
+    const { page } = phone;
+    await page.goto("/how-it-works");
+    const tabs = page.getByRole("navigation", { name: "Primary" });
+    assert.ok(await tabs.isVisible(), "phones get the bottom tab bar");
+    assert.deepEqual((await tabs.getByRole("link").allInnerTexts()).map((s) => s.trim()), ["Explore", "Trips", "Hike", "Saved", "Profile"]);
+    assert.equal(await tabs.getByRole("link", { name: "Explore" }).getAttribute("aria-current"), null, "no tab is current on /how-it-works");
+    const box = await tabs.boundingBox();
+    assert.ok(Math.abs(box.y + box.height - 844) <= 1, `fixed to the bottom of the screen (bottom at ${box.y + box.height})`);
+    for (const link of await tabs.getByRole("link").all()) {
+      const b = await link.boundingBox();
+      assert.ok(b.height >= 44, `tab target ${await link.innerText()} is ${b.height}px tall`);
+    }
+    // Secondary items live in the header's "More" menu.
+    await page.getByRole("navigation", { name: "Main" }).locator("details > summary", { hasText: "More" }).click();
+    assert.ok(await page.getByRole("link", { name: "How it works & limits" }).isVisible());
+    assert.ok(await page.getByRole("link", { name: "Create an account" }).isVisible());
+    // Tabs navigate and mark the destination.
+    await Promise.all([page.waitForURL("**/explore"), tabs.getByRole("link", { name: "Explore" }).click()]);
+    assert.equal(await tabs.getByRole("link", { name: "Explore" }).getAttribute("aria-current"), "page");
+    // Saved needs an account: signed out, it leads to sign-in (part of Profile).
+    await Promise.all([page.waitForURL((u) => u.pathname === "/login" && u.searchParams.get("next") === "/saved"), tabs.getByRole("link", { name: "Saved" }).click()]);
+    assert.equal(await tabs.getByRole("link", { name: "Profile" }).getAttribute("aria-current"), "page");
+  } finally {
+    await phone.context.close();
   }
 });
 
@@ -353,33 +417,45 @@ test("mobile: filters live in a disclosure and still apply", { timeout: 60_000 }
   }
 });
 
-test("?view=map without a Mapbox token shows the schematic SVG overview plus a text list, keeping filters", { timeout: 60_000 }, async () => {
+test("?view=map shows the routes on the MapLibre map (keyless basemap) plus a text list, keeping filters", { timeout: 60_000 }, async () => {
   const { context, page, pageErrors } = await openPage();
   try {
     await page.goto("/trails?dogs=yes");
-    await Promise.all([page.waitForURL(/view=map/), page.getByRole("navigation", { name: "Results view" }).getByRole("link", { name: "Map" }).click()]);
+    await Promise.all([page.waitForURL(/view=map/), page.getByRole("navigation", { name: "Results view" }).getByRole("link", { name: "Map", exact: true }).click()]);
     const url = new URL(page.url());
     assert.equal(url.searchParams.get("view"), "map");
     assert.equal(url.searchParams.get("dogs"), "yes", "toggle must keep filters");
-    assert.equal(await page.getByRole("link", { name: "Map" }).getAttribute("aria-current"), "page");
+    assert.equal(await page.getByRole("navigation", { name: "Results view" }).getByRole("link", { name: "Map", exact: true }).getAttribute("aria-current"), "page");
 
-    const svg = page.locator("figure svg[role=group]");
-    await svg.waitFor();
-    assert.match(await svg.getAttribute("aria-label"), /^Schematic overview of \d+ trail routes/);
-    assert.equal(await page.locator(".mapboxgl-map, canvas.mapboxgl-canvas").count(), 0, "no Mapbox map without a token");
-    assert.match(await page.locator("figure figcaption").innerText(), /no map tiles configured.*Not for navigation/s);
+    // MapLibre (style from the configured URL; in e2e a blank local style), never Mapbox.
+    const count = await resultsCount(page);
+    const map = page.getByRole("region", { name: new RegExp(`^Map of ${count} fictional trail routes in `) });
+    await map.waitFor();
+    await page.locator("canvas.maplibregl-canvas").waitFor();
+    assert.equal(await page.locator(".mapboxgl-map, canvas.mapboxgl-canvas").count(), 0, "no Mapbox map");
+    assert.match(await page.locator("figure figcaption").innerText(), /Demonstration routes drawn on a real basemap: the trails are fictional and not for navigation\./);
+    await page.getByText("Map loaded. Trailhead markers are buttons; the trail list below has the same information.").waitFor({ state: "attached" });
 
     // Text alternative lists the same (filtered) trails with links.
     await page.getByRole("heading", { name: "Trails on the map" }).waitFor();
     const list = page.locator("ol").filter({ has: page.locator('a[href^="/trails/"]') }).last();
     const linkNames = (await list.getByRole("link").allInnerTexts()).map((t) => t.replace(/^\d+\.\s*/, "").trim());
-    const count = await resultsCount(page);
     assert.equal(linkNames.length, count);
     assert.ok(linkNames.includes("Lantern Creek Loop"));
     assert.ok(!linkNames.includes("Echo Basin Traverse"), "filtered-out trail must not be listed");
-    // Numbered SVG routes are keyboard-reachable links with names.
-    assert.equal(await svg.locator("a").count(), count);
-    assert.match(await svg.locator("a").first().getAttribute("aria-label"), /^1\. .+: open trail details$/);
+
+    // Each trailhead is a labeled, keyboard-reachable marker button; its popup links to the trail.
+    const markers = map.getByRole("button", { name: /^\d+\. .+ trailhead( \(closed\))?: show details$/ });
+    assert.equal(await markers.count(), count);
+    const first = markers.first();
+    const label = await first.getAttribute("aria-label");
+    const name = /^1\. (.+?) trailhead/.exec(label)?.[1];
+    assert.ok(name && linkNames.includes(name), `marker 1 (${label}) is in the list`);
+    await first.click();
+    const popup = page.locator(".maplibregl-popup");
+    await popup.waitFor();
+    assert.match(await popup.innerText(), new RegExp(`1\\. ${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`));
+    assert.match(await popup.getByRole("link", { name: "View trail details" }).getAttribute("href"), /^\/trails\/[a-z0-9-]+$/);
 
     // Filters submitted from map view stay on the map view.
     const form = page.getByRole("form", { name: "Filter trails" });
@@ -392,33 +468,28 @@ test("?view=map without a Mapbox token shows the schematic SVG overview plus a t
   }
 });
 
-test("mobile map overview: large marker touch targets, numbers instead of tiny labels, list names each trail", { timeout: 60_000 }, async () => {
-  const { context, page } = await openPage({ width: 390, height: 844 });
+test("mobile map overview: 44 px marker targets, collapsed attribution, no horizontal scroll, list names each trail", { timeout: 60_000 }, async () => {
+  const { context, page, pageErrors } = await openPage({ width: 390, height: 844 });
   try {
     await page.goto("/trails?view=map");
-    const svg = page.locator("figure svg[role=group]");
-    await svg.waitFor();
-    // Name labels are hidden on small screens (they would render at ~7 px); the numbered list names every trail.
-    const visibleLabels = await svg.locator("a text").evaluateAll(
-      (els) => els.filter((t) => getComputedStyle(t).display !== "none" && !/^\d+$/.test(t.textContent.trim())).length,
-    );
-    assert.equal(visibleLabels, 0, "no trail-name labels drawn on the phone-sized map");
-    assert.match(await page.locator("figure figcaption").innerText(), /the list below names each trail/);
-    // Each marker has an invisible touch target (44 px where neighbours allow, never below the 24 px minimum)
-    // that does not overlap its neighbours, and the numbers are readable.
-    const targets = await svg.locator("[data-hit-target]").evaluateAll((els) => els.map((e) => e.getBoundingClientRect()).map((r) => ({ x: r.x + r.width / 2, y: r.y + r.height / 2, d: r.width })));
-    assert.ok(targets.length >= 1);
-    for (const t of targets) assert.ok(t.d >= 24, `marker touch target only ${t.d.toFixed(0)} px across`);
-    assert.ok(Math.max(...targets.map((t) => t.d)) >= 43, "isolated markers get a 44 px target");
-    for (let i = 0; i < targets.length; i++)
-      for (let j = i + 1; j < targets.length; j++) {
-        const dist = Math.hypot(targets[i].x - targets[j].x, targets[i].y - targets[j].y);
-        assert.ok(dist + 1 >= (targets[i].d + targets[j].d) / 2, `touch targets ${i + 1} and ${j + 1} overlap`);
-      }
-    const numberPx = await svg.locator("a text").first().evaluate((t) => t.getBoundingClientRect().height);
-    assert.ok(numberPx >= 10, `marker numbers render at ${numberPx.toFixed(1)} px`);
+    const count = await resultsCount(page);
+    const map = page.getByRole("region", { name: /^Map of \d+ fictional trail routes in / });
+    await map.waitFor();
+    const markers = map.getByRole("button", { name: /trailhead( \(closed\))?: show details$/ });
+    await markers.first().waitFor();
+    assert.equal(await markers.count(), count);
+    for (const box of await markers.evaluateAll((els) => els.map((e) => e.getBoundingClientRect()).map((r) => ({ w: r.width, h: r.height })))) {
+      assert.ok(box.w >= 44 && box.h >= 44, `marker touch target ${box.w}×${box.h}`);
+    }
+    // Phones start with the map attribution collapsed (the page credits sources in text too).
+    const attrib = page.locator(".maplibregl-ctrl-attrib");
+    await attrib.waitFor({ state: "attached" });
+    assert.equal(await attrib.evaluate((el) => el.classList.contains("maplibregl-compact-show")), false, "attribution starts collapsed");
+    const { sw, w } = await page.evaluate(() => ({ sw: document.documentElement.scrollWidth, w: window.innerWidth }));
+    assert.ok(sw <= w, `scrolls horizontally (${sw} > ${w})`);
     // The numbered text list stays the accessible way in.
     assert.equal(await page.getByRole("heading", { name: "Trails on the map" }).count(), 1);
+    assert.deepEqual(pageErrors, []);
   } finally {
     await context.close();
   }
@@ -478,8 +549,11 @@ test("trail detail shows facts, estimate-labeled duration, provenance, sources +
     assert.match(await permits.innerText(), /Demo: this link points to a placeholder page\./);
     assert.match(await permits.innerText(), /don't buy permits or automate permit queues/);
 
-    // Route schematic (no Mapbox token) + narration stops are approved/cited
-    assert.match(await page.getByRole("region", { name: "Route" }).innerText(), /Schematic route drawing without a basemap\. Not for navigation\./);
+    // Route on the MapLibre map, labeled as a fictional demonstration route; narration stops are approved/cited
+    const route = page.getByRole("region", { name: "Route", exact: true });
+    assert.match(await route.innerText(), /Demonstration route drawn on a real basemap: fictional, not for navigation\./);
+    await route.getByRole("region", { name: /^Map of the Echo Basin Traverse route with \d+ stops$/ }).waitFor();
+    await route.getByRole("button", { name: "Start of route" }).waitFor();
     assert.match(await page.getByRole("region", { name: /Audio narration stops/ }).innerText(), /Source: /);
 
     // Personalize CTA carries the slug to /plan

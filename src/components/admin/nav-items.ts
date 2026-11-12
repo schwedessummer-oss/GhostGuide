@@ -57,6 +57,7 @@ export const ADMIN_NAV: { group: string; items: AdminNavItem[] }[] = [
     group: "System",
     items: [
       { href: "/admin/jobs", label: "Jobs & integrations", icon: "jobs", permission: "jobs.manage" },
+      { href: "/admin/data", label: "Trail data", icon: "trails", permission: "integrations.view" },
       { href: "/admin/flags", label: "Feature flags", icon: "flags", permission: "flags.manage" },
       { href: "/admin/staff", label: "Staff roles", icon: "staff", permission: "staff.manage" },
       { href: "/admin/audit", label: "Audit log", icon: "audit", permission: "audit.view" },

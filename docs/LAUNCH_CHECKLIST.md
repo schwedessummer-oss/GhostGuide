@@ -12,7 +12,9 @@ Owners are suggestions; adapt them to your organization.
 - [ ] Vercel production env vars set; `APP_MODE=live`; strong unique `AUTH_SECRET` and `CRON_SECRET`.
 - [ ] Per-minute job trigger (Supabase pg_cron script or Vercel Pro cron) running; alert if `/api/cron/jobs` has not succeeded in 5 minutes.
 - [ ] Stripe: live account activated, business verification complete, live keys + live webhook endpoint/secret, Radar rules reviewed, statement descriptor, refund policy published, test-mode end-to-end run (incl. duplicate webhook replay from the Stripe dashboard).
-- [ ] Mapbox: token URL-restricted; usage alerts; terms reviewed for your use (no offline tile caching in the PWA).
+- [ ] Maps: confirm OpenFreeMap (or your chosen tile provider) terms for your traffic; no offline tile caching in the PWA.
+- [ ] Data providers: set `DATA_PROVIDER_USER_AGENT` with a real contact; review Overpass/Nominatim usage in Admin → Trail data and move to self-hosted or commercial instances before heavy traffic; ODbL attribution present on maps and trail pages.
+- [ ] Emergency-number table (`src/server/safety/emergency-numbers.ts`) re-verified for every launch country.
 - [ ] AI provider: API key in server env only; spend limits; prompt/guard reviewed; `ai_explanations` flag decision.
 - [ ] Notifications: Twilio A2P 10DLC or toll-free verification approved; Resend domain verified (SPF/DKIM/DMARC); STOP/HELP handling; test delivery to real phones/inboxes; failure alerting on `notifications.status = failed`.
 - [ ] Weather: NWS User-Agent with operator contact; fallback behavior reviewed.

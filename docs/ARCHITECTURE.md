@@ -14,7 +14,7 @@ before changing code.
 | Storage | Supabase Storage or local FS with HMAC-signed URLs | `src/integrations/storage` |
 | Payments | Stripe Checkout (stripe-node 23, API `2026-10-28.endive`), or simulated | `PAYMENTS_PROVIDER` |
 | Jobs | Postgres job table + cron-invoked runner (`/api/cron/jobs`) | Vercel Cron or Supabase pg_cron |
-| Maps | Mapbox GL JS 3 when `NEXT_PUBLIC_MAPBOX_TOKEN` set; else offline SVG `RouteView` | Never cache Mapbox tiles offline |
+| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade; offline SVG `RouteView` on the hike screen | Never cache basemap tiles offline |
 | Validation | zod **4** (`z.email()`, `z.uuid()` are top-level) | Validate every server input |
 | Icons | lucide-react 1.x | |
 | Tests | Vitest 5 (`unit` + `integration` projects), Playwright (preinstalled) for e2e | |
@@ -182,7 +182,7 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
   resolved at send time and consent is re-checked.
 - **Service worker** (`public/sw.js`): caches `gg-static-*` / `gg-shell-*` (versioned by
   `SW_VERSION`, bump when caching rules change) and one `gg-trip-v1-<tripId>` cache per downloaded
-  trip. Never caches Mapbox or `/api/*` except the explicit trip bundle and narration audio.
+  trip. Never caches basemap tiles or `/api/*` except the explicit trip bundle and narration audio.
   Not registered under `next dev` unless `NEXT_PUBLIC_ENABLE_SW_IN_DEV=true`.
 - **Hike sessions**: `hike.close_stale_session` (enqueued at session start) marks sessions
   `abandoned` after prolonged silence; trip stays `active`. Simulated-GPS sessions are marked by a

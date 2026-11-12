@@ -7,6 +7,22 @@ Legend: ✅ done and verified in this environment · 🟡 simulated (demo adapte
 "Verified" means: unit and/or integration tests against PostgreSQL 16, plus browser e2e against a
 production build in headless Chromium. Nothing has been field-tested on real phones or trails.
 
+## Platform Phase 1 — Real data (see docs/PLATFORM_PLAN.md)
+- ✅ PostGIS trail catalog (`catalog_trails`, `catalog_pois`), coverage tiles, caches, API usage, saved trails; public-read / owner-only / server-only RLS
+- ✅ Provider architecture (`TrailDataProvider` + registry); one HTTP client with User-Agent, timeouts, retries, global throttle, usage accounting
+- ✅ OpenStreetMap provider (Overpass): route relations, named-way grouping, tag normalization, outdoor + services POIs — verified on recorded real data; 🔶 live public Overpass intermittently refused this build sandbox (verified with mocks in e2e)
+- 🔶 Recreation.gov RIDB provider (US facilities) — built to the documented schema; needs `RIDB_API_KEY` to verify live
+- ✅ Enrichment: DEM elevation (AWS Terrain Tiles, live-verified), linear routes oriented from the trailhead, Tobler duration + out-and-back totals, SAC/effort difficulty, trailhead selection, features/amenities, admin names (Nominatim, live-verified), time zone, stable slugs, cross-tile merge, retire-not-delete
+- ✅ On-demand loading: tile claims with a global Overpass concurrency cap, deduplicated jobs, after-response loading, stale refresh + cache purge jobs on a separate `/api/cron/catalog` runner (safety jobs never wait on downloads)
+- ✅ Geocoded search ("Banff", "trails near Denver"; Nominatim 1 req/s, cached) and PostGIS search with all filters, sorts, honest coverage states
+- ✅ Explore: map-first (MapLibre + OpenFreeMap, clustering, search this area, list/map sync, filters, URL state, no-JS fallback), phone bottom sheet + tab bar
+- ✅ Trail pages `/trail/<country>/<region>/<slug>`: map, elevation profile, stats with labeled estimates, live MET Norway forecast + highlights, NWS alerts (US) / "not available" elsewhere, sunrise/sunset + daylight planning, trailhead amenities, nearby services, emergency numbers, sources + freshness, JSON-LD, canonical, sitemap, robots
+- ✅ Saved trails (owner RLS) + /saved
+- ✅ Admin → Trail data: provider health, API usage + estimated cost, coverage/failures with retry, catalog counts, catalog jobs, audited hide/unhide moderation
+- ✅ Demo region gated as development fixtures (`SHOW_DEMO_FIXTURES`, off in production)
+- ⏭ Ratings / reliable opening hours for services (no free licensed source), global official weather alerts outside the US, photos/reviews (Phase 5)
+- ⏭ Start hike / Plan trip / offline download for catalog trails (Phases 2–4)
+
 ## M0 — Foundation
 - ✅ Next.js 16 + TypeScript + Tailwind 4 project, ESLint flat config, Vitest unit/integration projects, e2e harness
 - ✅ Core schema with RLS and column grants; per-slice additive migrations; security hardening migration

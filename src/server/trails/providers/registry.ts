@@ -3,6 +3,7 @@ import type { Bbox, CatalogLayer } from "@/domain/catalog";
 import { log } from "@/server/log";
 import type { ProviderId, TrailDataProvider } from "@/server/trails/types";
 import { osmProvider } from "./osm";
+import { ridbProvider } from "./ridb";
 
 /**
  * Registry of trail data providers.
@@ -15,7 +16,7 @@ import { osmProvider } from "./osm";
  *
  * Order matters only for display (attribution, status messages).
  */
-export const TRAIL_PROVIDERS: readonly TrailDataProvider[] = [osmProvider];
+export const TRAIL_PROVIDERS: readonly TrailDataProvider[] = [osmProvider, ridbProvider];
 
 /**
  * Most tiles of one provider that may be fetching at the same time across

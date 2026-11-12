@@ -27,6 +27,8 @@ notifications) until you configure real providers.
    npx supabase link --project-ref <your-project-ref>
    npx supabase db push
    ```
+   The Phase 1 migrations (`20261112*`) enable **PostGIS** in the `extensions` schema (available
+   on every Supabase plan) and add the trail catalog. They are additive.
 4. **Auth**: Authentication → URL configuration: set *Site URL* to your Vercel URL and add
    `https://<your-domain>/**` to redirect URLs. Keep email confirmation on for real users.
 5. **API keys**: Project settings → API keys: copy the *publishable* key
@@ -70,7 +72,11 @@ notifications) until you configure real providers.
    | `PAYMENTS_PROVIDER` | `demo`, or `stripe` with keys below |
    | `AI_PROVIDER` | `demo`, or `anthropic` with `ANTHROPIC_API_KEY` |
    | `NOTIFY_PROVIDER` | `demo` (recorded, never delivered) or `live` with Twilio/Resend |
-   | `WEATHER_PROVIDER` | `demo` or `nws` with `WEATHER_USER_AGENT` |
+   | `WEATHER_PROVIDER` | marketing drafts only: `demo` or `nws` (trail pages always use real MET Norway + NWS data) |
+   | `DATA_PROVIDER_USER_AGENT` | `GhostGuide/1.0 (+https://<your-domain>; <contact email>)`. Required by OSM/Nominatim, MET Norway and NWS policies. Without it, the app sends `GhostGuide/0.1 (+<site URL>)` |
+   | `RIDB_API_KEY` | optional, free: US federal facilities (ridb.recreation.gov → Profile → API Keys) |
+   | `OVERPASS_URLS`, `NOMINATIM_URL`, … | optional: only to switch to self-hosted/commercial instances (defaults are the public services) |
+   | `SHOW_DEMO_FIXTURES` | leave unset in production (the fictional demo region stays hidden) |
 
    **If Supabase's Vercel integration is connected**, it adds `POSTGRES_*` and `SUPABASE_*` variables
    (plus `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) but
@@ -83,14 +89,23 @@ notifications) until you configure real providers.
    for Preview (and Production while in demo).
 4. Deploy. Visit `/status` to confirm which integrations are live vs simulated.
 
-## 3. Background jobs (required for check-ins)
+## 3. Background jobs (required for check-ins and trail data)
+- Two runners:
+  - `/api/cron/jobs` (60 s): safety and commerce jobs.
+  - `/api/cron/catalog` (300 s): trail-data downloads, stale refresh and cache purge, kept separate
+    so slow provider downloads never delay a safety notice.
 - `vercel.json` registers a **daily** cron on `/api/cron/jobs` (allowed on every plan; Hobby
   plans reject anything more frequent).
-- Check-in reminders and overdue notices need **minute** precision. Either:
-  - **Supabase pg_cron + pg_net (works on any Vercel plan)**: edit and run
-    `supabase/cron/schedule-job-runner.sql` in the Supabase SQL editor (stores the URL and
-    `CRON_SECRET` in Vault and calls the endpoint every minute), or
-  - **Vercel Pro**: change the schedule in `vercel.json` to `* * * * *`.
+- Check-in reminders, overdue notices and trail refreshes need **minute** precision. Either:
+  - **Supabase pg_cron + pg_net (works on any Vercel plan)**: run `npm run setup:cron` on your
+    computer. It reads `DATABASE_URL` and `CRON_SECRET` from `.env.local`, checks that the deployed
+    site accepts the secret, stores the site URL and secret in Supabase Vault, and schedules both
+    runners every minute. It is safe to re-run. `supabase/cron/schedule-job-runner.sql` documents
+    the same SQL, or
+  - **Vercel Pro**: change the schedule in `vercel.json` to `* * * * *` and add a cron for
+    `/api/cron/catalog`.
+- Without per-minute cron, trails still load on demand right after a search (after-response work),
+  but stale areas are not refreshed and check-in notices wait for the daily run.
 - Verify: `curl -H "Authorization: Bearer $CRON_SECRET" https://<domain>/api/cron/jobs` returns
   `{"ok":true,…}`. Admin → Jobs shows queued/dead jobs.
 - Note: Vercel only runs cron jobs on **Production** deployments.
@@ -107,11 +122,11 @@ notifications) until you configure real providers.
    (the success page just shows status); missed webhooks are recovered by the
    `payments.reconcile` job.
 
-## 5. Mapbox (optional)
-Create a public token restricted to your domains (URL restrictions) and set
-`NEXT_PUBLIC_MAPBOX_TOKEN`. Without it the app uses the offline vector route view. The PWA
-never caches Mapbox tiles for offline use; offline maps would need Mapbox's mobile SDK offline
-features in a native app, subject to Mapbox's terms.
+## 5. Maps
+Maps use MapLibre GL JS with OpenFreeMap vector tiles (free, no key) and AWS terrain hillshade.
+To use another provider (MapTiler, Stadia, self-hosted Protomaps), set
+`NEXT_PUBLIC_MAP_STYLE_URL` to its MapLibre style URL (public value) and rebuild. The PWA never
+stores basemap tiles for offline use.
 
 ## 6. Notifications (live)
 Only after legal/ops review (see `docs/LAUNCH_CHECKLIST.md`):
