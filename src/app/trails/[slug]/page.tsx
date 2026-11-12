@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { ArrowRight, Ban, Car, Dog, ExternalLink, FileText, Headphones, Info, MapPin, TriangleAlert } from "lucide-react";
 import { Alert, Badge, ButtonLink, Card, Container, SimulatedBadge, Stat } from "@/components/ui";
-import { RouteView } from "@/components/map/route-view";
 import { TrailMap } from "@/components/map/trail-map";
 import { DemoBadge, DifficultyBadge, FactKindBadge } from "@/components/discover/badges";
 import { distanceBoth, elevationBoth, humanize } from "@/components/discover/format";
@@ -14,10 +13,13 @@ import { routeTypeLabel } from "@/domain/recommendation";
 import { formatDuration } from "@/domain/geo";
 import { formatDate, formatMoney } from "@/lib/format";
 import { formatInZone } from "@/lib/time";
-import { env } from "@/config/env";
+import { showDemoFixtures } from "@/config/env";
 import type { FactKind } from "@/domain/types";
 
-const loadTrail = cache((slug: string) => (/^[a-z0-9-]{1,80}$/.test(slug) ? getTrailBySlug(slug) : Promise.resolve(null)));
+/** Demo-region trails are development fixtures: without SHOW_DEMO_FIXTURES they do not exist (404). */
+const loadTrail = cache((slug: string) =>
+  showDemoFixtures() && /^[a-z0-9-]{1,80}$/.test(slug) ? getTrailBySlug(slug) : Promise.resolve(null),
+);
 
 export async function generateMetadata({ params }: PageProps<"/trails/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -103,7 +105,6 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
   const region = await getRegionById(trail.regionId);
   const timeZone = region?.timezone ?? "UTC";
   const now = new Date();
-  const token = env().NEXT_PUBLIC_MAPBOX_TOKEN;
   const coords = trail.geometry?.coordinates ?? [];
   const provenance = [...trail.provenance].sort(
     (a, b) => KIND_ORDER.indexOf(a.kind) - KIND_ORDER.indexOf(b.kind) || (FIELD_LABEL[a.field] ?? a.field).localeCompare(FIELD_LABEL[b.field] ?? b.field),
@@ -128,9 +129,10 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
         <Container className="py-8 sm:py-10">
           <nav aria-label="Breadcrumb" className="mb-4 text-sm">
             <Link href="/trails" className="inline-flex min-h-11 items-center font-semibold text-forest-800 underline-offset-2 hover:underline">
-              ← All trails
+              ← All demo trails
             </Link>
           </nav>
+
           <div className="flex flex-wrap items-center gap-2">
             <DifficultyBadge difficulty={trail.difficulty} />
             {trail.isDemo ? <DemoBadge /> : null}
@@ -190,23 +192,16 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
         <section aria-labelledby="route-heading">
           <SectionHeading id="route-heading">Route</SectionHeading>
           {coords.length >= 2 ? (
-            token ? (
+            <figure>
               <TrailMap
-                token={token}
                 coordinates={coords.map((c) => [c[0], c[1]] as [number, number])}
                 pois={numberedPois.map((p) => ({ id: p.id, name: p.name, kind: p.kind, lat: p.lat, lng: p.lng, number: p.number }))}
                 label={`Map of the ${trail.name} route with ${trail.pois.length} stops`}
               />
-            ) : (
-              <figure className="max-w-4xl">
-                <RouteView
-                  coordinates={coords}
-                  pois={trail.pois.map((p) => ({ id: p.id, name: p.name, lat: p.lat, lng: p.lng, triggerRadiusM: p.triggerRadiusM }))}
-                  label={`Schematic of the ${trail.name} route: start marked S${trail.routeType === "point_to_point" ? ", finish marked F" : ""}, with ${trail.pois.length} stops shown as circles. Listed below.`}
-                />
-                <figcaption className="mt-2 text-sm text-muted">Schematic route drawing without a basemap. Not for navigation.</figcaption>
-              </figure>
-            )
+              {trail.isDemo ? (
+                <figcaption className="mt-2 text-sm text-muted">Demonstration route drawn on a real basemap: fictional, not for navigation.</figcaption>
+              ) : null}
+            </figure>
           ) : (
             <Alert tone="amber">Route geometry is not available for this trail yet.</Alert>
           )}

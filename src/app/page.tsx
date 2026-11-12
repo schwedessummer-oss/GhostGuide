@@ -1,182 +1,159 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BellRing, Compass, Download, Headphones, Info, ShieldCheck, SlidersHorizontal, Ticket } from "lucide-react";
-import { ButtonLink, Container } from "@/components/ui";
-import { HeroArt } from "@/components/discover/hero-art";
+import { ArrowRight, BellRing, CloudSun, Map as MapIcon, Route, Search, TriangleAlert } from "lucide-react";
+import { Container } from "@/components/ui";
 import { TrailCard, type TrailCardData } from "@/components/discover/trail-card";
+import { NearMeLink } from "@/components/explore/near-me-link";
+import { showDemoFixtures } from "@/config/env";
 import { getLaunchRegion, listTrails } from "@/server/catalog/trails";
 import { log } from "@/server/log";
 
 export const metadata: Metadata = {
-  title: { absolute: "Ghost Guide — personalized self-guided hikes with an audio companion" },
+  title: { absolute: "Ghost Guide — find a hike, plan the day, get home safely" },
   description:
-    "Discover a hike, get a personalized itinerary, purchase a self-guided experience, download your trip info, and hike with GPS-triggered audio narration and optional check-ins.",
+    "Real trails from OpenStreetMap with honest distance, climb and time estimates, the forecast and daylight for your hike, and optional check-ins on Ghost Guide trips.",
 };
 
-/** Buttons on dark forest backgrounds (the shared variants assume light backgrounds). */
-const LIGHT_BUTTON =
-  "inline-flex min-h-13 items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 text-base font-semibold text-forest-900 transition-colors hover:bg-forest-50 active:bg-forest-100";
-const OUTLINE_BUTTON =
-  "inline-flex min-h-13 items-center justify-center gap-2 rounded-xl px-6 py-3 text-base font-semibold text-white ring-1 ring-white/60 transition-colors hover:bg-white/10";
-
-const STEPS = [
+const VALUES = [
   {
-    icon: Compass,
-    title: "Discover a hike",
-    body: "Browse trails by distance, climbing, terrain, accessibility and dog policy, with sources and freshness shown for every fact.",
+    icon: Route,
+    title: "Real trails, honest numbers",
+    body: "Trails worldwide come from OpenStreetMap. Distance and climb are measured from the mapped route; times and difficulty are clearly marked as estimates.",
   },
   {
-    icon: SlidersHorizontal,
-    title: "Get a personalized itinerary",
-    body: "Tell us your experience, pace, time and needs. Clear rules rank the trails, explain why, and build a timed plan with a turnaround time.",
-  },
-  {
-    icon: Ticket,
-    title: "Purchase a self-guided experience",
-    body: "Book your date with transparent pricing and optional add-ons such as gear lockers or a shuttle.",
-  },
-  {
-    icon: Download,
-    title: "Download your trip",
-    body: "Save the route, stops and narration to your phone before you leave, because signal on trails is unreliable.",
-  },
-  {
-    icon: Headphones,
-    title: "Hike with audio narration",
-    body: "Stories and tips play when your phone's GPS reports you near a stop. Keep the companion open: background GPS and locked-screen audio aren't guaranteed on every phone.",
+    icon: CloudSun,
+    title: "Plan the day",
+    body: "Each trail page shows the forecast, daylight and a sensible start time, official US weather alerts, and fuel, food and services nearby.",
   },
   {
     icon: BellRing,
-    title: "Optional check-ins",
-    body: "Set an expected return time. If we don't receive your confirmation, we notify the contact you chose. That is not an emergency service.",
+    title: "Save trails, set a check-in",
+    body: "Keep a list of trails you want to hike. On Ghost Guide trips, set an expected return time and the contact you choose is told if you don’t check in.",
   },
 ] as const;
 
-async function featuredTrails(): Promise<{ trails: TrailCardData[]; regionName: string | null }> {
+async function demoRegionTrails(): Promise<{ trails: TrailCardData[]; regionName: string } | null> {
+  if (!showDemoFixtures()) return null;
   try {
     const region = await getLaunchRegion();
-    const trails = await listTrails(region.id);
-    const open = trails.filter((t) => t.status === "published" && !t.activeClosures.some((c) => c.severity === "closed"));
-    const order = ["easy", "moderate", "hard", "strenuous"];
-    // One of each difficulty first, for variety.
-    const picked: TrailCardData[] = [];
-    for (const d of order) {
-      const t = open.find((x) => x.difficulty === d && !picked.includes(x));
-      if (t) picked.push(t);
-    }
-    return { trails: picked.slice(0, 3), regionName: region.name };
+    const trails = (await listTrails(region.id)).filter((t) => t.status === "published");
+    return { trails: trails.slice(0, 3), regionName: region.name };
   } catch (err) {
-    log.warn("landing.featured_trails_failed", { error: err instanceof Error ? err.message : String(err) });
-    return { trails: [], regionName: null };
+    log.warn("landing.demo_trails_failed", { error: err instanceof Error ? err.message : String(err) });
+    return null;
   }
 }
 
+/** Decorative ridgelines (solid fills, no images). */
+function Ridges({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 1200 240" preserveAspectRatio="xMidYMax slice" aria-hidden focusable="false" className={className}>
+      <path d="M0 150 L110 95 L210 130 L330 55 L450 120 L560 75 L670 125 L790 45 L910 115 L1020 80 L1120 120 L1200 95 L1200 240 L0 240 Z" fill="#2a5a3e" opacity="0.55" />
+      <path d="M0 190 L95 150 L200 178 L310 130 L430 172 L545 138 L655 182 L770 140 L890 186 L1005 150 L1110 182 L1200 160 L1200 240 L0 240 Z" fill="#1f4630" />
+      <path d="M0 240 L0 214 Q220 186 430 208 T840 202 T1200 196 L1200 240 Z" fill="#173524" />
+      <path d="M150 240 C260 214 330 204 430 206 S600 214 690 200 S860 184 960 190" fill="none" stroke="#e7dfd0" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 13" opacity="0.8" />
+    </svg>
+  );
+}
+
 export default async function HomePage() {
-  const { trails, regionName } = await featuredTrails();
+  const demo = await demoRegionTrails();
   return (
     <>
-      <section className="relative overflow-hidden bg-gradient-to-b from-forest-900 via-forest-800 to-forest-700 text-white">
-        <HeroArt className="pointer-events-none absolute inset-x-0 bottom-0 h-[60%] w-full sm:h-[70%]" />
-        <Container className="relative pt-14 pb-40 sm:pt-20 sm:pb-56">
-          <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-semibold ring-1 ring-white/20">
-            <Headphones aria-hidden className="size-4" /> Self-guided hikes with an audio companion
-          </p>
-          <h1 className="mt-5 max-w-3xl text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
-            Your hike, planned around you. Your guide, in your pocket.
+      <section className="relative overflow-hidden bg-forest-900 text-white">
+        <Ridges className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full sm:h-52" />
+        <Container className="relative pt-12 pb-44 sm:pt-20 sm:pb-60">
+          <h1 className="max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Find a hike. Plan the day. Get home safely.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-forest-100 sm:text-xl">
-            Ghost Guide helps you choose a trail that fits your time, pace and needs, builds a personal itinerary, and narrates the stories of the
-            trail as you walk.
+            Real trails with honest numbers, the forecast and daylight for your hike, and check-ins for the trips that need them.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href="/plan" className={LIGHT_BUTTON}>
-              Plan my hike <ArrowRight aria-hidden className="size-5" />
-            </Link>
-            <Link href="/trails" className={OUTLINE_BUTTON}>
-              Browse trails
+
+          <form action="/explore" method="get" role="search" className="mt-8 flex max-w-xl flex-col gap-2 sm:flex-row">
+            <label htmlFor="home-q" className="sr-only">
+              Where do you want to hike?
+            </label>
+            <div className="flex min-h-13 flex-1 items-center gap-2 rounded-xl bg-white px-4 text-ink focus-within:ring-3 focus-within:ring-forest-500">
+              <Search aria-hidden className="size-5 shrink-0 text-muted" />
+              <input
+                id="home-q"
+                name="q"
+                type="search"
+                required
+                minLength={2}
+                maxLength={120}
+                enterKeyHint="search"
+                autoComplete="off"
+                placeholder="Town, park or mountain"
+                className="min-h-13 w-full bg-transparent text-base placeholder:text-muted/80 focus:outline-none focus-visible:outline-none"
+              />
+            </div>
+            <button type="submit" className="inline-flex min-h-13 items-center justify-center gap-2 rounded-xl bg-[#e7dfd0] px-6 font-semibold text-forest-950 hover:bg-white">
+              Find trails <ArrowRight aria-hidden className="size-5" />
+            </button>
+          </form>
+
+          <div className="mt-4 flex flex-wrap items-start gap-x-2 gap-y-2">
+            <NearMeLink
+              className="min-h-11 rounded-xl px-4 font-semibold text-white ring-1 ring-white/50 hover:bg-white/10 disabled:opacity-70"
+              messageClassName="max-w-sm text-forest-100"
+            />
+            <Link href="/explore" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-4 font-semibold text-white hover:bg-white/10">
+              <MapIcon aria-hidden className="size-5" /> Explore the map
             </Link>
           </div>
-          <p className="mt-6 max-w-2xl text-sm text-forest-100">
-            <Info aria-hidden className="mr-1 inline size-4" />
-            This is a demo: {regionName ?? "the Ghost Ridge demo region"} and every trail in it are fictional.
-          </p>
         </Container>
       </section>
 
-      <section aria-labelledby="how-heading" className="py-16">
+      <section aria-labelledby="values-heading" className="py-14 sm:py-20">
         <Container>
-          <div className="max-w-2xl">
-            <p className="text-sm font-semibold uppercase tracking-wide text-forest-700">How it works</p>
-            <h2 id="how-heading" className="mt-2 text-3xl font-bold">
-              From “where should we go?” to the trailhead
-            </h2>
-          </div>
-          <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {STEPS.map((s, i) => (
-              <li key={s.title} className="relative rounded-[var(--radius-card)] border border-sand-200 bg-surface p-6">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex size-11 items-center justify-center rounded-xl bg-forest-100 text-forest-800">
-                    <s.icon aria-hidden className="size-6" />
-                  </span>
-                  <span className="text-sm font-semibold text-muted">Step {i + 1}</span>
-                </div>
-                <h3 className="mt-4 text-lg font-bold">{s.title}</h3>
-                <p className="mt-2 text-muted">{s.body}</p>
-              </li>
-            ))}
-          </ol>
-        </Container>
-      </section>
-
-      <section aria-labelledby="honest-heading" className="bg-sand-100 py-16">
-        <Container className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-wide text-forest-700">Straight talk</p>
-            <h2 id="honest-heading" className="mt-2 text-3xl font-bold">
-              What Ghost Guide is, and isn&apos;t
-            </h2>
-            <p className="mt-4 text-lg text-muted">
-              We&apos;d rather you know the limits up front. Every suggestion shows its reasons, every fact shows its source and age, and anything
-              simulated is labeled.
-            </p>
-            <ButtonLink href="/how-it-works" variant="secondary" className="mt-6">
-              Read how it works & its limitations
-            </ButtonLink>
-          </div>
-          <ul className="grid gap-4 sm:grid-cols-2">
-            {[
-              ["Not an emergency service", "We don't monitor you continuously and can't contact 911 or Search and Rescue for you. In an emergency, call 911."],
-              ["Estimates, not promises", "Durations, finish and turnaround times are estimates from published rules. Conditions change."],
-              ["AI explains, never decides", "Optional AI text only explains the checks we already ran. It never picks routes, permits or safety calls."],
-              ["Demo data is labeled", "This demo region, its trails and stories are fictional. Payments, partners and notifications are simulated."],
-            ].map(([title, body]) => (
-              <li key={title} className="rounded-[var(--radius-card)] bg-surface p-5">
-                <p className="flex items-center gap-2 font-bold">
-                  <ShieldCheck aria-hidden className="size-5 text-forest-700" /> {title}
-                </p>
-                <p className="mt-2 text-[0.95rem] text-muted">{body}</p>
+          <h2 id="values-heading" className="sr-only">
+            What Ghost Guide does today
+          </h2>
+          <ul className="grid gap-10 sm:grid-cols-3 sm:gap-8">
+            {VALUES.map((v) => (
+              <li key={v.title}>
+                <span className="inline-flex size-11 items-center justify-center rounded-xl bg-forest-100 text-forest-800">
+                  <v.icon aria-hidden className="size-6" />
+                </span>
+                <h3 className="mt-4 text-lg font-bold text-ink">{v.title}</h3>
+                <p className="mt-2 text-muted">{v.body}</p>
               </li>
             ))}
           </ul>
+          <p className="mt-12 border-t border-sand-200 pt-6 text-sm text-muted">
+            Ghost Guide is not an emergency service. Conditions change and mapped data can be incomplete: check with the land manager and official
+            sources before you go.{" "}
+            <Link href="/how-it-works" className="font-semibold text-forest-800 underline underline-offset-2">
+              How it works &amp; its limits
+            </Link>
+          </p>
         </Container>
       </section>
 
-      {trails.length ? (
-        <section aria-labelledby="featured-heading" className="py-16">
+      {demo && demo.trails.length ? (
+        <section aria-labelledby="demo-heading" className="border-t border-sand-200 bg-sand-100 py-14">
           <Container>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-wide text-forest-700">{regionName}</p>
-                <h2 id="featured-heading" className="mt-2 text-3xl font-bold">
-                  Trails to explore
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div className="max-w-2xl">
+                <p className="inline-flex items-center gap-1.5 rounded-full bg-amber-bg px-3 py-1 text-sm font-semibold text-amber-ink ring-1 ring-[#f1d9b0]">
+                  <TriangleAlert aria-hidden className="size-4" /> Development fixtures
+                </p>
+                <h2 id="demo-heading" className="mt-3 text-2xl font-bold">
+                  Demo region (fictional): {demo.regionName}
                 </h2>
+                <p className="mt-2 text-muted">
+                  These trails do not exist. They demonstrate trip planning, booking, offline download and audio narration, and are not for
+                  navigation.
+                </p>
               </div>
               <Link href="/trails" className="inline-flex min-h-11 items-center gap-1 font-semibold text-forest-800 underline-offset-2 hover:underline">
-                See all trails <ArrowRight aria-hidden className="size-4" />
+                All demo trails <ArrowRight aria-hidden className="size-4" />
               </Link>
             </div>
             <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {trails.map((t) => (
+              {demo.trails.map((t) => (
                 <li key={t.slug}>
                   <TrailCard trail={t} />
                 </li>
@@ -185,20 +162,6 @@ export default async function HomePage() {
           </Container>
         </section>
       ) : null}
-
-      <section className="pb-16">
-        <Container>
-          <div className="flex flex-col items-start gap-5 rounded-[var(--radius-card)] bg-forest-800 p-8 text-white sm:flex-row sm:items-center sm:justify-between sm:p-10">
-            <div>
-              <h2 className="text-2xl font-bold">Not sure where to start?</h2>
-              <p className="mt-2 text-forest-100">Answer a few questions and we&apos;ll show you which trails fit, and which don&apos;t, and why.</p>
-            </div>
-            <Link href="/plan" className={`${LIGHT_BUTTON} shrink-0`}>
-              Plan my hike
-            </Link>
-          </div>
-        </Container>
-      </section>
     </>
   );
 }

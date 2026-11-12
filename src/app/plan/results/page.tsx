@@ -18,6 +18,7 @@ import type { ExplainInput } from "@/integrations/ai/types";
 import { formatDate } from "@/lib/format";
 import { localDateInZone } from "@/lib/time";
 import { formatDuration } from "@/domain/geo";
+import { showDemoFixtures } from "@/config/env";
 import { monthName } from "@/domain/recommendation";
 
 /** Stable key for the request's search params (React `cache` compares arguments by identity). */
@@ -44,6 +45,7 @@ const loadResults = cache(async (key: string) => {
 });
 
 export async function generateMetadata({ searchParams }: PageProps<"/plan/results">): Promise<Metadata> {
+  if (!showDemoFixtures()) return { title: "Explore trails", robots: { index: false } };
   const { parsed, errors, plan } = await loadResults(queryKey((await searchParams) as RawParams));
   const title = !parsed.ok && !parsed.hasInput ? "Plan your hike" : errors ? "Error: Check your answers" : plan?.noMatch ? "No matching trails" : "Your hike suggestions";
   return { title, robots: { index: false } };
@@ -79,6 +81,8 @@ function explainInput(s: PlanSuggestion): ExplainInput {
 }
 
 export default async function PlanResultsPage({ searchParams }: PageProps<"/plan/results">) {
+  // Planning runs on the fictional demo region only (a development fixture).
+  if (!showDemoFixtures()) redirect("/explore");
   const [{ raw, parsed, today, errors, plan: planned }, user] = await Promise.all([
     loadResults(queryKey((await searchParams) as RawParams)),
     getCurrentUser(),
@@ -125,7 +129,7 @@ export default async function PlanResultsPage({ searchParams }: PageProps<"/plan
   return (
     <Container className="py-10">
       <PageHeader
-        eyebrow={plan.region.name}
+        eyebrow={/demo/i.test(plan.region.name) ? `${plan.region.name} · fictional` : `${plan.region.name} · demo region (fictional)`}
         title={plan.noMatch ? "No trail fits all of your answers" : "Your hike suggestions"}
         description={<p>{summary.join(" · ")}</p>}
         actions={

@@ -35,6 +35,8 @@ export interface MapViewProps {
 }
 
 const HILLSHADE_SOURCE = "gg-terrain";
+const MAPLIBRE_WORKER_URL =
+  typeof window === "undefined" ? "" : new URL("maplibre-gl/dist/maplibre-gl-worker.mjs", import.meta.url).href;
 
 function addHillshade(map: MlMap) {
   if (MAP_TERRAIN_TILES_URL === "off" || map.getSource(HILLSHADE_SOURCE)) return;
@@ -93,6 +95,9 @@ export function MapView({
         return;
       }
       if (cancelled || !containerRef.current) return;
+      // MapLibre 6 resolves its worker next to its own chunk, which the
+      // bundler does not emit; point it at the emitted worker asset instead.
+      if (!lib.getWorkerUrl()) lib.setWorkerUrl(MAPLIBRE_WORKER_URL);
       try {
         map = new lib.Map({
           container: containerRef.current,
@@ -132,6 +137,13 @@ export function MapView({
             /* hillshade is decorative */
           }
         }
+        // Phones: start with the compact attribution collapsed (its "i" button
+        // opens it) so it does not cover the map; pages also credit sources in text.
+        if (map.getContainer().clientWidth < 640) {
+          const attrib = map.getContainer().querySelector(".maplibregl-ctrl-attrib.maplibregl-compact");
+          attrib?.classList.remove("maplibregl-compact-show");
+          attrib?.removeAttribute("open");
+        }
         cleanup = onReadyRef.current?.(map, lib);
       });
     })();
@@ -147,7 +159,9 @@ export function MapView({
 
   return (
     <div className={`relative overflow-hidden bg-sand-100 ${className ?? ""}`}>
-      <div ref={containerRef} role="region" aria-label={ariaLabel} className="absolute inset-0" />
+      {/* maplibre-gl.css makes the container position:relative (unlayered CSS beats Tailwind's
+          layered utilities), so size it explicitly as well. */}
+      <div ref={containerRef} role="region" aria-label={ariaLabel} className="absolute inset-0 size-full" />
       {failed ? (
         <div className="absolute inset-x-3 top-3 rounded-md bg-surface/95 px-3 py-2 text-sm text-ink shadow" role="status">
           {failed} The list shows the same results.

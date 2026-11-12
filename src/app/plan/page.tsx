@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Alert, Container, PageHeader } from "@/components/ui";
+import { DemoRegionNotice } from "@/components/site/demo-region-notice";
+import { showDemoFixtures } from "@/config/env";
 import { PlanForm } from "@/components/discover/plan-form";
 import { getLaunchRegion, getTrailBySlug } from "@/server/catalog/trails";
 import { defaultPlanValues, hasPlanInput, type RawParams } from "@/server/discover/preferences";
@@ -16,6 +19,8 @@ function firstParam(v: string | string[] | undefined): string | undefined {
 }
 
 export default async function PlanPage({ searchParams }: PageProps<"/plan">) {
+  // Planning runs on the fictional demo region only (a development fixture).
+  if (!showDemoFixtures()) redirect("/explore");
   const raw = (await searchParams) as RawParams;
   const region = await getLaunchRegion();
   const today = localDateInZone(new Date(), region.timezone);
@@ -44,11 +49,7 @@ export default async function PlanPage({ searchParams }: PageProps<"/plan">) {
           We couldn&apos;t find the trail you linked to, so we&apos;ll suggest trails from the whole catalog.
         </Alert>
       ) : null}
-      {region.isDemo ? (
-        <p className="mb-6 text-sm text-muted">
-          Demo region: {region.name}. Trails are fictional; suggestions demonstrate how planning works and are not advice for a real hike.
-        </p>
-      ) : null}
+      {region.isDemo ? <DemoRegionNotice regionName={region.name} className="mb-6" /> : null}
       <PlanForm values={values} errors={{}} today={today} focusTrail={focus ? { slug: focus.slug, name: focus.name } : null} />
     </Container>
   );

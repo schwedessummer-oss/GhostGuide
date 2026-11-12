@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { List, Map as MapIcon } from "lucide-react";
 import clsx from "clsx";
 import { Alert, ButtonLink, Container, EmptyState, PageHeader, SimulatedBadge } from "@/components/ui";
 import { TrailCard } from "@/components/discover/trail-card";
 import { TrailFiltersPanel } from "@/components/discover/trail-filters";
-import { TrailsOverviewSvg, type OverviewRoute } from "@/components/discover/trails-overview-svg";
 import { TrailsOverviewMap, type OverviewMapTrail } from "@/components/map/trails-overview-map";
 import { ClosureBadge } from "@/components/discover/badges";
 import { distanceBoth } from "@/components/discover/format";
 import { getLaunchRegion, listTrails } from "@/server/catalog/trails";
 import { describeFilters, filterTrails, filtersToQuery, parseTrailFilters, worstClosure } from "@/server/discover/browse";
-import { env } from "@/config/env";
+import { showDemoFixtures } from "@/config/env";
 import { TERRAIN_OPTIONS } from "@/domain/types";
 
 export const metadata: Metadata = {
@@ -20,26 +20,17 @@ export const metadata: Metadata = {
 };
 
 export default async function TrailsPage({ searchParams }: PageProps<"/trails">) {
+  // The fictional demo region is a development fixture; real trails live on Explore.
+  if (!showDemoFixtures()) redirect("/explore");
   const filters = parseTrailFilters(await searchParams);
   const region = await getLaunchRegion();
   const all = await listTrails(region.id);
   const trails = filterTrails(all, filters);
   const terrains = TERRAIN_OPTIONS.filter((t) => all.some((tr) => tr.terrain.includes(t)));
-  const token = env().NEXT_PUBLIC_MAPBOX_TOKEN;
   const applied = describeFilters(filters);
   const isMap = filters.view === "map";
 
   const numbered = trails.map((t, i) => ({ trail: t, number: i + 1, closed: t.status === "closed" || worstClosure(t.activeClosures) === "closed" }));
-  const routes: OverviewRoute[] = numbered
-    .filter(({ trail }) => trail.geometry && trail.geometry.coordinates.length >= 2)
-    .map(({ trail, number, closed }) => ({
-      slug: trail.slug,
-      name: trail.name,
-      number,
-      coordinates: trail.geometry!.coordinates,
-      trailhead: { lat: trail.trailheadLat, lng: trail.trailheadLng },
-      closed,
-    }));
   const mapTrails: OverviewMapTrail[] = numbered
     .filter(({ trail }) => trail.geometry && trail.geometry.coordinates.length >= 2)
     .map(({ trail, number, closed }) => ({
@@ -72,7 +63,7 @@ export default async function TrailsPage({ searchParams }: PageProps<"/trails">)
   return (
     <Container className="py-10">
       <PageHeader
-        eyebrow={region.name}
+        eyebrow={/demo/i.test(region.name) ? `${region.name} · fictional` : `${region.name} · demo region (fictional)`}
         title="Find a trail"
         description={
           <>
@@ -118,17 +109,12 @@ export default async function TrailsPage({ searchParams }: PageProps<"/trails">)
             </EmptyState>
           ) : isMap ? (
             <div className="space-y-6">
-              {token ? (
-                <TrailsOverviewMap token={token} trails={mapTrails} label={`Map of ${mapTrails.length} trail routes in ${region.name}`} />
-              ) : (
-                <figure>
-                  <TrailsOverviewSvg routes={routes} label={`Schematic overview of ${routes.length} trail routes in ${region.name}. Each numbered marker is a trailhead; the list below has the same trails.`} />
-                  <figcaption className="mt-2 text-sm text-muted">
-                    Schematic route overview without a basemap (no map tiles configured). Dashed routes are closed. Not for navigation.
-                    <span className="sm:hidden"> On small screens the map shows numbers only: the list below names each trail.</span>
-                  </figcaption>
-                </figure>
-              )}
+              <figure>
+                <TrailsOverviewMap trails={mapTrails} label={`Map of ${mapTrails.length} fictional trail routes in ${region.name}`} />
+                <figcaption className="mt-2 text-sm text-muted">
+                  Demonstration routes drawn on a real basemap: the trails are fictional and not for navigation. Dashed routes are closed.
+                </figcaption>
+              </figure>
               <div>
                 <h3 className="mb-3 text-lg font-bold">Trails on the map</h3>
                 <ol className="divide-y divide-sand-200 rounded-[var(--radius-card)] border border-sand-200 bg-surface">

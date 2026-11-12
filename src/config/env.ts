@@ -40,7 +40,6 @@ const schema = z.object({
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
 
-  NEXT_PUBLIC_MAPBOX_TOKEN: z.string().optional(),
 
   AI_PROVIDER: z.enum(["demo", "anthropic"]).default("demo"),
   ANTHROPIC_API_KEY: z.string().optional(),

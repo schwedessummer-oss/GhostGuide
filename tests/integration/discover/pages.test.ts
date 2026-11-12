@@ -9,6 +9,12 @@ import { renderToReadableStream } from "react-dom/server";
 import { closeDb } from "@/server/db";
 import { daysFromNow } from "../../helpers/db";
 
+vi.mock("next/navigation", async (orig) => ({
+  ...(await orig<typeof import("next/navigation")>()),
+  useRouter: () => ({ push: () => {}, replace: () => {}, prefetch: () => {}, back: () => {}, forward: () => {}, refresh: () => {} }),
+  usePathname: () => "/",
+  useSearchParams: () => new URLSearchParams(),
+}));
 vi.mock("next/headers", () => ({
   cookies: async () => ({ get: () => undefined, getAll: () => [], set: () => {}, delete: () => {} }),
   headers: async () => new Headers(),
@@ -34,12 +40,14 @@ describe("discover pages render", () => {
     const { default: HomePage } = await import("@/app/page");
     const out = await html(await HomePage());
     const t = text(out);
-    expect(t).toMatch(/fictional/);
-    expect(t).toMatch(/Discover a hike.*personalized itinerary.*Purchase.*Download.*audio narration.*check-ins/i);
-    expect(out).toContain('href="/how-it-works"');
-    expect(out).toContain('href="/trails"');
-    expect(out).toContain('href="/plan"');
-    expect(t).not.toMatch(/guaranteed rescue|satellite SOS/i);
+    // Search goes to the real-data Explore page (works without JavaScript).
+    expect(out).toMatch(/<form[^>]*action="\/explore"/);
+    expect(out).toContain('href="/explore"');
+    expect(t).toMatch(/OpenStreetMap/);
+    // No promises about safety capabilities that do not exist.
+    expect(t).not.toMatch(/guaranteed rescue|satellite SOS|contacts? (911|emergency services) for you/i);
+    // Development fixtures (on in tests) stay clearly labeled as fictional.
+    expect(t).toMatch(/fictional/i);
   });
 
   it("trail list shows cards with demo labels, estimates, closure badges and prices", async () => {
@@ -64,13 +72,10 @@ describe("discover pages render", () => {
     expect(single).toMatch(/\b1 trail matches your filters/);
     expect(filtered).not.toContain("Echo Basin Traverse");
     const map = await html(await TrailsPage(props({}, { view: "map" })));
-    expect(map).toContain("<svg");
     expect(map).toMatch(/aria-current="page"[^>]*>.*Map/);
+    // The interactive map (MapLibre, client-side) always has a text alternative.
     expect(text(map)).toMatch(/Trails on the map/);
     expect(map).toContain('href="/trails/echo-basin-traverse"');
-    // touch targets around each marker; names are left to the numbered list on small screens
-    expect(map.match(/data-hit-target=""/g)?.length).toBe(6);
-    expect(text(map)).toMatch(/On small screens the map shows numbers only: the list below names each trail/);
   });
 
   it("trail detail shows facts, provenance, freshness, permits, closures and narration", async () => {
