@@ -57,6 +57,37 @@ const schema = z.object({
   /** api.weather.gov requires an identifying User-Agent (app name + operator contact). */
   WEATHER_USER_AGENT: z.string().optional(),
 
+  // ---- Real-data providers (trail catalog, geocoding, elevation, trail weather).
+  // Base URLs are configurable so tests can point at local mocks and production
+  // can move to self-hosted / commercial instances without code changes.
+  /**
+   * Identifying User-Agent sent to OpenStreetMap services (Overpass, Nominatim),
+   * MET Norway and NWS. Their usage policies require an app name plus a contact
+   * (URL or email), e.g. "GhostGuide/1.0 (+https://ghostguide.app; ops@ghostguide.app)".
+   */
+  DATA_PROVIDER_USER_AGENT: z.string().min(8).optional(),
+  /** Comma-separated Overpass API endpoints, tried in order. */
+  OVERPASS_URLS: z.string().min(8).default("https://overpass-api.de/api/interpreter"),
+  NOMINATIM_URL: z.string().url().default("https://nominatim.openstreetmap.org"),
+  METNO_URL: z.string().url().default("https://api.met.no/weatherapi"),
+  NWS_URL: z.string().url().default("https://api.weather.gov"),
+  /** Terrarium-encoded terrain tiles ({z}/{x}/{y}); default: AWS Open Data Terrain Tiles. */
+  TERRAIN_TILES_URL: z.string().min(8).default("https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png"),
+  RIDB_URL: z.string().url().default("https://ridb.recreation.gov/api/v1"),
+  /** Recreation.gov RIDB API key (free). Enables US facilities/permit enrichment. */
+  RIDB_API_KEY: z.string().optional(),
+  /** Days before a loaded catalog tile is refreshed from its provider. */
+  CATALOG_TILE_TTL_DAYS: z.coerce.number().int().min(1).max(365).default(30),
+  /** Most tiles one search may request to load (bigger areas ask the user to zoom in). */
+  CATALOG_MAX_TILES_PER_SEARCH: z.coerce.number().int().min(1).max(64).default(16),
+  /** Start loading missing tiles right after a search responds (in addition to the job runner). */
+  CATALOG_INLINE_INGEST: bool.default(true),
+  /**
+   * Show the fictional demo region (curated trails, demo bookings) in discovery.
+   * Default: on in development/test, off in production builds.
+   */
+  SHOW_DEMO_FIXTURES: bool.optional(),
+
   CRON_SECRET: z.string().min(16).default("dev-only-cron-secret"),
   LAUNCH_REGION_SLUG: z.string().default("demo-ghost-ridge"),
   LOCATION_RETENTION_DAYS_DEFAULT: z.coerce.number().int().min(1).max(365).default(30),
@@ -115,6 +146,15 @@ export function resetEnvCache() {
 export const isDemoMode = () => env().APP_MODE === "demo";
 
 /**
+ * Whether the fictional demo region (development fixtures) is shown in
+ * discovery. Production experiences use only real provider data.
+ */
+export function showDemoFixtures(): boolean {
+  const e = env();
+  return e.SHOW_DEMO_FIXTURES ?? e.NODE_ENV !== "production";
+}
+
+/**
  * Throw if a simulated integration is about to run in live mode. Simulated
  * adapters call this so a misconfigured production deploy fails loudly rather
  * than pretending to send a notification or take a payment.
@@ -133,7 +173,12 @@ export function integrationStatus() {
     auth: e.AUTH_PROVIDER === "supabase" ? "live" : "simulated",
     storage: e.STORAGE_PROVIDER === "supabase" ? "live" : "local",
     payments: e.PAYMENTS_PROVIDER === "stripe" ? "live (Stripe test/live keys)" : "simulated",
-    maps: e.NEXT_PUBLIC_MAPBOX_TOKEN ? "live (Mapbox)" : "offline vector view (no basemap)",
+    trailData: "live (OpenStreetMap via Overpass, loaded on demand)",
+    usFacilities: e.RIDB_API_KEY ? "live (Recreation.gov RIDB)" : "not configured (needs RIDB_API_KEY)",
+    geocoding: "live (Nominatim, OpenStreetMap)",
+    elevation: "live (AWS Terrain Tiles; estimates)",
+    maps: "live (MapLibre + OpenFreeMap vector tiles)",
+    trailWeather: "live (MET Norway forecasts; NWS alerts in the US)",
     ai: e.AI_PROVIDER === "anthropic" && e.ANTHROPIC_API_KEY ? "live (Anthropic)" : "simulated templates",
     notifications: e.NOTIFY_PROVIDER === "live" ? "live" : "simulated",
     weather: e.WEATHER_PROVIDER === "nws" ? "live (api.weather.gov)" : "simulated",

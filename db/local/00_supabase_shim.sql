@@ -73,3 +73,12 @@ grant execute on function auth.jwt() to anon, authenticated, service_role;
 
 -- Supabase grants public-schema usage to the API roles by default.
 grant usage on schema public to anon, authenticated, service_role;
+
+-- Supabase installs extensions (PostGIS, pg_cron, ...) in the `extensions`
+-- schema and puts it on the postgres role's search_path. Mirror that so the
+-- same queries resolve PostGIS types/functions locally. (Requires the
+-- postgresql-16-postgis-3 package for the PostGIS migration.)
+create schema if not exists extensions;
+grant usage on schema extensions to anon, authenticated, service_role;
+alter role current_user set search_path = "$user", public, extensions;
+set search_path = "$user", public, extensions;

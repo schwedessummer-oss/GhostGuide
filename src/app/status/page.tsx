@@ -11,10 +11,15 @@ const LABELS: Record<string, string> = {
   auth: "Authentication",
   storage: "File storage",
   payments: "Payments",
+  trailData: "Trail data",
+  usFacilities: "US facilities and permits (Recreation.gov)",
+  geocoding: "Place search",
+  elevation: "Elevation",
   maps: "Maps",
+  trailWeather: "Weather on trail pages",
   ai: "AI explanations",
   notifications: "Check-in notifications",
-  weather: "Weather",
+  weather: "Weather in marketing drafts",
   partners: "Partner services (lockers, shuttle, meals, satellite rental)",
 };
 

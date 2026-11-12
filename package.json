@@ -22,12 +22,15 @@
     "vercel:secrets": "tsx scripts/vercel-env.ts --secrets-only"
   },
   "dependencies": {
+    "@photostructure/tz-lookup": "^11.8.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.68.0",
     "mapbox-gl": "^3.34.2",
+    "maplibre-gl": "^6.18.0",
     "next": "16.4.5",
+    "pngjs": "^7.0.0",
     "postgres": "^4.0.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
@@ -39,6 +42,7 @@
     "@tailwindcss/turbopack": "^4",
     "@types/geojson": "^7946.0.16",
     "@types/node": "^22.20.5",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^18.0.9",
