@@ -232,6 +232,12 @@ export const trailSearchQuerySchema = z.object({
     .enum(["1", "0"])
     .optional()
     .transform((v) => v !== "0"),
+}).superRefine((q, ctx) => {
+  if (q.minDistanceKm !== undefined && q.maxDistanceKm !== undefined && q.minDistanceKm > q.maxDistanceKm) {
+    for (const path of ["minDistanceKm", "maxDistanceKm"]) {
+      ctx.addIssue({ code: "custom", message: "minDistanceKm must not exceed maxDistanceKm", path: [path] });
+    }
+  }
 });
 export type TrailSearchQuery = z.infer<typeof trailSearchQuerySchema>;
 
@@ -265,6 +271,8 @@ export interface GeocodeResponse {
   placeQuery: string;
   results: GeocodeResultDto[];
   status: "ok" | "no_results" | "unavailable";
+  /** True for "near me" / "nearby" queries: the client should use the device location. */
+  nearMe?: boolean;
   attribution: AttributionDto[];
 }
 
