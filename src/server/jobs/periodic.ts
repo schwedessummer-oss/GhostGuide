@@ -20,6 +20,10 @@ export const PERIODIC_JOBS: { kind: string; everyMinutes: number }[] = [
   // handler). A second run on the same day is a no-op: reminders are
   // deduplicated per trip/permit/day.
   { kind: "permits.remind", everyMinutes: 60 * 24 },
+  // Trail catalog (run by /api/cron/catalog, never by the safety runner):
+  // enqueue due tile refreshes/retries, and purge expired provider caches.
+  { kind: "catalog.refresh_stale", everyMinutes: 60 },
+  { kind: "catalog.purge_caches", everyMinutes: 60 * 24 },
 ];
 
 export function bucketKey(kind: string, everyMinutes: number, now: Date): string {

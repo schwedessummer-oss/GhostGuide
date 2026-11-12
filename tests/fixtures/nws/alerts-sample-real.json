@@ -1,0 +1,410 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e78aff1c9ddb86dc44d61e8c739027eded780ccb.001.1",
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -85.41,
+                            37.22
+                        ],
+                        [
+                            -84.86,
+                            37.42
+                        ],
+                        [
+                            -84.48,
+                            37.73
+                        ],
+                        [
+                            -84.19,
+                            38.08
+                        ],
+                        [
+                            -84.04,
+                            38.06
+                        ],
+                        [
+                            -83.97,
+                            37.93
+                        ],
+                        [
+                            -84.03,
+                            37.87
+                        ],
+                        [
+                            -84,
+                            37.83
+                        ],
+                        [
+                            -84.08,
+                            37.85
+                        ],
+                        [
+                            -84.12,
+                            37.81
+                        ],
+                        [
+                            -84.07,
+                            37.8
+                        ],
+                        [
+                            -84.13,
+                            37.64
+                        ],
+                        [
+                            -84.09,
+                            37.57
+                        ],
+                        [
+                            -84.2,
+                            37.52
+                        ],
+                        [
+                            -84.35,
+                            37.54
+                        ],
+                        [
+                            -84.37,
+                            37.47
+                        ],
+                        [
+                            -84.45,
+                            37.49
+                        ],
+                        [
+                            -84.5,
+                            37.33
+                        ],
+                        [
+                            -84.56,
+                            37.36
+                        ],
+                        [
+                            -84.88,
+                            37.13
+                        ],
+                        [
+                            -85.41,
+                            37.22
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.e78aff1c9ddb86dc44d61e8c739027eded780ccb.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.e78aff1c9ddb86dc44d61e8c739027eded780ccb.001.1",
+                "areaDesc": "Clark; Garrard; Madison; Taylor; Casey; Lincoln; Adair",
+                "geocode": {
+                    "SAME": [
+                        "021049",
+                        "021079",
+                        "021151",
+                        "021217",
+                        "021045",
+                        "021137",
+                        "021001"
+                    ],
+                    "UGC": [
+                        "KYZ049",
+                        "KYZ056",
+                        "KYZ057",
+                        "KYZ065",
+                        "KYZ066",
+                        "KYZ067",
+                        "KYZ077"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/KYZ049",
+                    "https://api.weather.gov/zones/forecast/KYZ056",
+                    "https://api.weather.gov/zones/forecast/KYZ057",
+                    "https://api.weather.gov/zones/forecast/KYZ065",
+                    "https://api.weather.gov/zones/forecast/KYZ066",
+                    "https://api.weather.gov/zones/forecast/KYZ067",
+                    "https://api.weather.gov/zones/forecast/KYZ077"
+                ],
+                "references": [],
+                "sent": "2026-11-11T22:29:00-05:00",
+                "effective": "2026-11-11T22:29:00-05:00",
+                "onset": "2026-11-11T22:29:00-05:00",
+                "expires": "2026-11-11T23:00:00-05:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Moderate",
+                "certainty": "Observed",
+                "urgency": "Expected",
+                "event": "Special Weather Statement",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Louisville KY",
+                "headline": "Special Weather Statement issued November 11 at 10:29PM EST by NWS Louisville KY",
+                "description": "At 1029 PM EST /929 PM CST/, Doppler radar was tracking a line of\nstrong thunderstorms extending from near Sewell Shop to over\nPellyton, or extending from 13 miles east of Winchester to 12 miles\nnorth of Jamestown, moving east at 50 mph.\n\nHAZARD...Wind gusts up to 40 mph and pea size hail.\n\nSOURCE...Radar indicated.\n\nIMPACT...Gusty winds could knock down tree limbs and blow around\nunsecured objects. Minor damage to outdoor objects is\npossible.\n\nLocations impacted include...\nRichmond, Liberty, Winchester, Stanford, Lancaster, Mccreary,\nBerea, Crab Orchard, Preachersville and Hyattsville.",
+                "instruction": "Monitor the weather situation closely and be alert for threatening\nweather conditions.",
+                "response": "Execute",
+                "note": null,
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "SPSLMK"
+                    ],
+                    "WMOidentifier": [
+                        "WWUS83 KLMK 120329"
+                    ],
+                    "NWSheadline": [
+                        "A LINE OF STRONG THUNDERSTORMS WILL IMPACT SOUTHEASTERN GARRARD... MADISON...SOUTHEASTERN TAYLOR...NORTHEASTERN ADAIR...CASEY...CLARK AND LINCOLN COUNTIES UNTIL 11 PM EST /10 PM CST/"
+                    ],
+                    "eventMotionDescription": [
+                        "2026-11-12T03:28:00-00:00...storm...279DEG...44KT...38.04,-83.95 37.7,-84.16 37.49,-84.36 37.32,-84.63 37.17,-85.07"
+                    ],
+                    "maxWindGust": [
+                        "40 MPH"
+                    ],
+                    "maxHailSize": [
+                        "0.25"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "EAS-ORG": [
+                        "WXR"
+                    ]
+                },
+                "scope": "Public",
+                "code": "IPAWSv1.0",
+                "language": "en-US",
+                "web": "http://www.weather.gov",
+                "eventCode": {
+                    "SAME": [
+                        "SPS"
+                    ],
+                    "NationalWeatherService": [
+                        "SPS"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.dd22d554d240327af1a9f1309bf4630658ee8918.001.1",
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -84.5,
+                            37.33
+                        ],
+                        [
+                            -84.45,
+                            37.49
+                        ],
+                        [
+                            -84.37,
+                            37.47
+                        ],
+                        [
+                            -84.35,
+                            37.54
+                        ],
+                        [
+                            -84.09,
+                            37.57
+                        ],
+                        [
+                            -84.13,
+                            37.64
+                        ],
+                        [
+                            -84.07,
+                            37.8
+                        ],
+                        [
+                            -84.12,
+                            37.81
+                        ],
+                        [
+                            -84.08,
+                            37.85
+                        ],
+                        [
+                            -84,
+                            37.83
+                        ],
+                        [
+                            -84.03,
+                            37.87
+                        ],
+                        [
+                            -83.97,
+                            37.93
+                        ],
+                        [
+                            -84.05,
+                            38.07
+                        ],
+                        [
+                            -83.79,
+                            38.03
+                        ],
+                        [
+                            -83.76,
+                            37.99
+                        ],
+                        [
+                            -83.47,
+                            37.99
+                        ],
+                        [
+                            -84.1,
+                            37.2
+                        ],
+                        [
+                            -84.51,
+                            37.07
+                        ],
+                        [
+                            -84.87,
+                            37.14
+                        ],
+                        [
+                            -84.56,
+                            37.36
+                        ],
+                        [
+                            -84.5,
+                            37.33
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.dd22d554d240327af1a9f1309bf4630658ee8918.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.dd22d554d240327af1a9f1309bf4630658ee8918.001.1",
+                "areaDesc": "Montgomery; Estill; Powell; Menifee; Rockcastle; Jackson; Pulaski; Laurel; Wolfe; Lee; Owsley",
+                "geocode": {
+                    "SAME": [
+                        "021173",
+                        "021065",
+                        "021197",
+                        "021165",
+                        "021203",
+                        "021109",
+                        "021199",
+                        "021125",
+                        "021237",
+                        "021129",
+                        "021189"
+                    ],
+                    "UGC": [
+                        "KYZ050",
+                        "KYZ058",
+                        "KYZ059",
+                        "KYZ060",
+                        "KYZ068",
+                        "KYZ069",
+                        "KYZ079",
+                        "KYZ080",
+                        "KYZ108",
+                        "KYZ111",
+                        "KYZ114"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/KYZ050",
+                    "https://api.weather.gov/zones/forecast/KYZ058",
+                    "https://api.weather.gov/zones/forecast/KYZ059",
+                    "https://api.weather.gov/zones/forecast/KYZ060",
+                    "https://api.weather.gov/zones/forecast/KYZ068",
+                    "https://api.weather.gov/zones/forecast/KYZ069",
+                    "https://api.weather.gov/zones/forecast/KYZ079",
+                    "https://api.weather.gov/zones/forecast/KYZ080",
+                    "https://api.weather.gov/zones/forecast/KYZ108",
+                    "https://api.weather.gov/zones/forecast/KYZ111",
+                    "https://api.weather.gov/zones/forecast/KYZ114"
+                ],
+                "references": [],
+                "sent": "2026-11-11T22:18:00-05:00",
+                "effective": "2026-11-11T22:18:00-05:00",
+                "onset": "2026-11-11T22:18:00-05:00",
+                "expires": "2026-11-11T23:00:00-05:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Moderate",
+                "certainty": "Observed",
+                "urgency": "Expected",
+                "event": "Special Weather Statement",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Jackson KY",
+                "headline": "Special Weather Statement issued November 11 at 10:18PM EST by NWS Jackson KY",
+                "description": "At 1018 PM EST, Doppler radar was tracking an area of strong\nthunderstorms extending from over Wades Mill to 11 miles southwest of\nLiberty, or extending from 6 miles southwest of Mount Sterling to 11\nmiles southwest of Liberty, moving east at 40 mph.\n\nHAZARD...Wind gusts up to 40 mph.\n\nSOURCE...Radar indicated.\n\nIMPACT...Gusty winds could knock down tree limbs and blow around\nunsecured objects.\n\nLocations impacted include...\nSomerset, Mount Sterling, Stanton, Irvine, Mount Vernon, McKee,\nFrenchburg, Boone, Jeffersonville, Camargo, Clay City, Science\nHill, Ravenna, Campsites in the Indian Creek area of the Daniel\nBoone National Forrest, Kerby Knob, Shirley, Hisel, Clover Bottom,\nSandgap and Collingsworth.",
+                "instruction": "Monitor the weather situation closely and be alert for threatening\nweather conditions.",
+                "response": "Execute",
+                "note": null,
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "SPSJKL"
+                    ],
+                    "WMOidentifier": [
+                        "WWUS83 KJKL 120318"
+                    ],
+                    "NWSheadline": [
+                        "AN AREA OF STRONG THUNDERSTORMS WILL IMPACT NORTHWESTERN LAUREL... SOUTHERN MONTGOMERY...CENTRAL MENIFEE...POWELL...WESTERN OWSLEY... ROCKCASTLE...NORTHWESTERN WOLFE...WESTERN LEE...ESTILL...JACKSON AND NORTHERN PULASKI COUNTIES UNTIL 11 PM EST"
+                    ],
+                    "eventMotionDescription": [
+                        "2026-11-12T03:17:00-00:00...storm...289DEG...33KT...38.02,-84.05 37.74,-84.32 37.4,-84.65 37.24,-85.11"
+                    ],
+                    "maxWindGust": [
+                        "40 MPH"
+                    ],
+                    "maxHailSize": [
+                        "0.00"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "EAS-ORG": [
+                        "WXR"
+                    ]
+                },
+                "scope": "Public",
+                "code": "IPAWSv1.0",
+                "language": "en-US",
+                "web": "http://www.weather.gov",
+                "eventCode": {
+                    "SAME": [
+                        "SPS"
+                    ],
+                    "NationalWeatherService": [
+                        "SPS"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Watches, warnings, and advisories",
+    "updated": "2026-11-12T03:41:04+00:00",
+    "pagination": {
+        "next": "https://api.weather.gov/alerts?limit=2&status%5B0%5D=actual&message_type%5B0%5D=alert&cursor=eyJ0IjoxNzk0NDUzNDgwLCJpIjoidXJuOm9pZDoyLjQ5LjAuMS44NDAuMC5kZDIyZDU1NGQyNDAzMjdhZjFhOWYxMzA5YmY0NjMwNjU4ZWU4OTE4LjAwMS4xIn0%3D"
+    }
+}

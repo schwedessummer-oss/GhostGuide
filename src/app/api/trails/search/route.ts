@@ -6,6 +6,9 @@ import { clientIpFrom } from "@/server/request";
 import { ensureCoverage } from "@/server/trails/coverage";
 import { catalogAttribution, searchTrails } from "@/server/trails/read";
 
+/** Allows the post-response tile loading (next/server after()) to finish. */
+export const maxDuration = 300;
+
 export const dynamic = "force-dynamic";
 
 /** Coverage reported when the coverage service itself fails: honest, never "ready". */

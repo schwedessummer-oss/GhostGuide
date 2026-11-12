@@ -5,6 +5,7 @@ import { ensurePeriodicJobs } from "@/server/jobs/periodic";
 import { allJobHandlers } from "@/server/jobs/registry";
 import { log } from "@/server/log";
 import { recordRunnerHeartbeat } from "@/server/jobs/health";
+import { CATALOG_JOB_PREFIX } from "@/server/jobs/handlers/catalog";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -12,6 +13,10 @@ export const maxDuration = 60;
 /**
  * Job runner endpoint. Called every minute by Vercel Cron (GET with
  * `Authorization: Bearer $CRON_SECRET`) or by Supabase pg_cron + pg_net.
+ *
+ * Trail-catalog jobs ("catalog.*": slow provider fetches) are excluded and
+ * run by /api/cron/catalog, so they can never delay check-in reminders or
+ * overdue notices.
  */
 async function handle(request: Request) {
   const auth = request.headers.get("authorization") ?? "";
@@ -24,7 +29,7 @@ async function handle(request: Request) {
   const totals = { claimed: 0, succeeded: 0, noop: 0, retried: 0, dead: 0 };
   // Drain in batches until empty or ~45s elapsed (stay under maxDuration).
   while (Date.now() - started < 45_000) {
-    const s = await runDueJobs(handlers, { limit: 25 });
+    const s = await runDueJobs(handlers, { limit: 25, excludeKindPrefixes: [CATALOG_JOB_PREFIX] });
     for (const k of Object.keys(totals) as (keyof typeof totals)[]) totals[k] += s[k];
     if (s.claimed === 0) break;
   }

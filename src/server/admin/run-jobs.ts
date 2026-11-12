@@ -17,7 +17,8 @@ export async function runDueJobsNow(user: SessionUser, handlers: JobHandlers = a
   if (!isDemoMode()) return fail("Running jobs from the admin is only available in demo mode. In live mode jobs run on the cron schedule.");
   return guarded(async () => {
     await ensurePeriodicJobs();
-    const s = await runDueJobs(handlers, { limit: 50, workerId: `admin-${user.id.slice(0, 8)}` });
+    // Trail-catalog jobs (slow provider downloads) have their own runner (/api/cron/catalog).
+    const s = await runDueJobs(handlers, { limit: 50, workerId: `admin-${user.id.slice(0, 8)}`, excludeKindPrefixes: ["catalog."] });
     await withSystem((tx) => recordAudit(tx, { id: user.id, roles: user.roles }, "jobs.run_now", "job", null, { ...s }));
     return ok(`Ran ${s.claimed} due job(s): ${s.succeeded} done, ${s.noop} no-op, ${s.retried} will retry, ${s.dead} dead.`);
   }, "admin.run_jobs");
