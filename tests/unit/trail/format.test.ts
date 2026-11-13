@@ -10,7 +10,10 @@ import {
   feeLabel,
   formatAltitude,
   formatClimb,
+  dayOf,
+  elevationSourceText,
   formatClock,
+  formatClockWithDay,
   formatDayLabel,
   formatDurationEstimate,
   formatHour,
@@ -18,12 +21,16 @@ import {
   formatRelativeAge,
   formatTemperature,
   formatTrailDistance,
+  formatUtcMoment,
   formatWind,
+  formatZonedMoment,
   hikeFormLabel,
   humanize,
   isPoorVisibility,
   listLabel,
+  localDateKey,
   locationParts,
+  nextDateKey,
   osmFeatureFromUrl,
   permitLabel,
   poiCategoryLabel,
@@ -132,6 +139,29 @@ describe("difficulty", () => {
     expect(difficultyExplanation("hard", "estimated", "mountain_hiking")).toMatch(/T2 \(mountain hiking\)/);
     expect(difficultyExplanation("moderate", "osm_sac_scale", "mountain_hiking")).toMatch(/^OpenStreetMap grades the path T2/);
     expect(difficultyExplanation("unknown", null, null)).toMatch(/isn't enough mapped data/);
+  });
+
+  it("never says the climb was used when there is no elevation data (#7)", () => {
+    expect(difficultyQualifier("estimated", null, false)).toBe("estimated from distance");
+    expect(difficultyQualifier("osm_sac_scale", "mountain_hiking", false)).toBe("SAC T2");
+    const expert = difficultyExplanation("expert", "estimated", null, false);
+    expect(expert).toBe(
+      "Estimated by Ghost Guide from the hike's distance alone: there is no elevation data, but the distance already makes it Expert. It is not an official rating.",
+    );
+    // A rating stored before the climb-less rule (still "moderate") is worded as a possible under-rating.
+    const legacy = difficultyExplanation("moderate", "estimated", null, false);
+    expect(legacy).toMatch(/distance alone.*climb isn't counted.*may be harder/);
+    expect(difficultyExplanation("unknown", null, null, false)).toBe(
+      "There is no elevation data for this trail, so Ghost Guide can't rate its effort.",
+    );
+    expect(difficultyExplanation("unknown", null, "hiking", false)).toMatch(
+      /can't rate its effort\. OpenStreetMap grades the path T1 .*; that grade rates the path, not the effort of the hike\.$/,
+    );
+    // A SAC rating is explained from the SAC grade, which never mentions the climb.
+    expect(difficultyExplanation("moderate", "osm_sac_scale", "mountain_hiking", false)).toMatch(/^OpenStreetMap grades the path T2/);
+    for (const d of ["easy", "moderate", "hard", "expert", "unknown"] as const) {
+      expect(difficultyExplanation(d, "estimated", "hiking", false)).not.toMatch(/distance and climb/);
+    }
   });
 });
 
@@ -281,7 +311,21 @@ describe("weather values", () => {
     expect(formatPrecipitation(1, "imperial")).toBe("0.04 in");
     expect(formatPrecipitation(1.24, "metric")).toBe("1.2 mm");
     expect(formatPrecipitation(0, "imperial")).toBe("0.00 in");
+    expect(formatPrecipitation(0, "metric")).toBe("0.0 mm");
     expect(formatPrecipitation(null, "imperial")).toBeNull();
+  });
+
+  it("never shows a forecast amount above zero as zero (#23)", () => {
+    // MET reports 0.1 mm steps; 0.1 mm is 0.004 in.
+    expect(formatPrecipitation(0.1, "imperial")).toBe("<0.01 in");
+    expect(formatPrecipitation(0.12, "imperial")).toBe("<0.01 in");
+    expect(formatPrecipitation(0.13, "imperial")).toBe("0.01 in");
+    expect(formatPrecipitation(0.1, "metric")).toBe("0.1 mm");
+    expect(formatPrecipitation(0.04, "metric")).toBe("<0.1 mm");
+    expect(formatPrecipitation(0.05, "metric")).toBe("0.1 mm");
+    for (const mm of [0.01, 0.05, 0.1, 0.12, 0.2, 0.5]) {
+      for (const u of ["imperial", "metric"] as const) expect(formatPrecipitation(mm, u)).not.toMatch(/^0\.0+ /);
+    }
   });
 });
 
@@ -300,10 +344,55 @@ describe("times in the trail's zone", () => {
     expect(zoneAbbreviation(null)).toBe("UTC");
   });
 
+  it("finds local dates and names the day of a time that is not today", () => {
+    // 11:30 PM EST on Nov 12 is already Nov 13 in UTC.
+    expect(localDateKey("2026-11-13T04:30:00Z", "America/New_York")).toBe("2026-11-12");
+    expect(localDateKey("2026-11-13T04:30:00Z", null)).toBe("2026-11-13");
+    expect(localDateKey("garbage", null)).toBeNull();
+    expect(nextDateKey("2026-12-31")).toBe("2027-01-01");
+    expect(nextDateKey("bad")).toBeNull();
+    expect(dayOf("2026-11-13T04:30:00Z", "America/New_York", "2026-11-12")).toBe("today");
+    expect(dayOf("2026-11-13T18:19:00Z", "America/New_York", "2026-11-12")).toBe("tomorrow");
+    expect(dayOf("2026-11-14T18:19:00Z", "America/New_York", "2026-11-12")).toBe("other");
+    expect(formatClockWithDay("2026-11-12T18:20:00Z", "America/New_York", "2026-11-12")).toBe("1:20 PM");
+    expect(formatClockWithDay("2026-11-13T18:19:00Z", "America/New_York", "2026-11-12")).toBe("Tomorrow, 1:19 PM");
+    expect(formatClockWithDay("2026-11-14T18:19:00Z", "America/New_York", "2026-11-12")).toBe("Sat, Nov 14, 1:19 PM");
+  });
+
+  it("formats a moment with its day and the zone in force then (#12)", () => {
+    const now = new Date("2026-11-12T21:00:00Z");
+    expect(formatZonedMoment("2026-11-13T01:00:00Z", "America/New_York", now)).toBe("8:00 PM EST today");
+    expect(formatZonedMoment("2026-11-13T15:00:00Z", "America/New_York", now)).toBe("Fri, Nov 13, 10:00 AM EST");
+    expect(formatZonedMoment("2026-07-01T16:00:00Z", "America/New_York", now)).toBe("Wed, Jul 1, 12:00 PM EDT");
+    expect(formatZonedMoment("2026-11-13T15:00:00Z", null, now)).toBe("Fri, Nov 13, 3:00 PM UTC");
+    expect(formatZonedMoment("nope", "America/New_York", now)).toBeNull();
+  });
+
+  it("formats a snapshot moment in UTC (#8)", () => {
+    expect(formatUtcMoment("2026-11-11T04:05:00Z")).toBe("Nov 11, 2026, 04:05 UTC");
+    expect(formatUtcMoment("nope")).toBeNull();
+  });
+
   it("labels days", () => {
     expect(formatDayLabel("2026-11-12", "2026-11-12")).toBe("Today");
     expect(formatDayLabel("2026-11-13", "2026-11-12")).toBe("Fri");
     expect(formatDayLabel("bad", null)).toBe("bad");
+  });
+});
+
+describe("elevationSourceText", () => {
+  it("rewrites labels stored with the old '~N m DEM' wording and keeps current ones (#27)", () => {
+    expect(elevationSourceText("AWS Terrain Tiles, ~27 m DEM (estimate)")).toBe(
+      "AWS Terrain Tiles, sampled on a ~27 m grid; source data resolution varies by region (estimate)",
+    );
+    expect(elevationSourceText("Elevation: AWS Terrain Tiles, ~19 m DEM (estimate)")).toBe(
+      "Elevation: AWS Terrain Tiles, sampled on a ~19 m grid; source data resolution varies by region (estimate)",
+    );
+    expect(elevationSourceText("Terrarium terrain tiles, ~31 m DEM (estimate)")).toBe("Terrarium terrain tiles, sampled on a ~31 m grid (estimate)");
+    const current = "AWS Terrain Tiles, sampled on a ~27 m grid; source data resolution varies by region (estimate)";
+    expect(elevationSourceText(current)).toBe(current);
+    expect(elevationSourceText(null)).toBeNull();
+    expect(elevationSourceText("  ")).toBeNull();
   });
 });
 

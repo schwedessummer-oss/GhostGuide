@@ -2,8 +2,9 @@
  * Display helpers for catalog trails on Explore (pure, isomorphic).
  * Never invent values: unknowns are reported as unknown.
  */
-import type { CoverageDto, Difficulty, DifficultySource, RouteType, TrailFeature, TrailSummaryDto } from "@/domain/catalog";
+import type { CoverageDto, Difficulty, DifficultySource, RouteType, TrailFeature, TrailSearchResponse, TrailSummaryDto } from "@/domain/catalog";
 import { approxDuration, formatClimb, formatLength, type Units } from "@/lib/units";
+import type { SearchStatus } from "./types";
 
 export type Tone = "neutral" | "forest" | "amber" | "red" | "blue";
 
@@ -18,6 +19,25 @@ export const DIFFICULTY_META: Record<Difficulty, { label: string; tone: Tone; co
 export function difficultyText(d: Difficulty, source: DifficultySource | null): { label: string; estimated: boolean } {
   return { label: DIFFICULTY_META[d]?.label ?? DIFFICULTY_META.unknown.label, estimated: d !== "unknown" && source === "estimated" };
 }
+
+/**
+ * Whether the trail's climb is known. Without it, an estimated difficulty
+ * rests on distance alone, and the moving time on a flat-ground pace that
+ * adds nothing for climbing; both must say so.
+ */
+export const climbKnown = (t: Pick<TrailSummaryDto, "elevationGainM" | "hikeGainM">) => t.elevationGainM !== null && t.hikeGainM !== null;
+
+/** Tooltip / explanation for an estimated difficulty (null when not estimated). */
+export function difficultyEstimateNote(d: Difficulty, source: DifficultySource | null, climbIsKnown: boolean): string | null {
+  if (!difficultyText(d, source).estimated) return null;
+  return climbIsKnown
+    ? "Estimated from distance and climb; no official rating is mapped."
+    : "Estimated from distance only: the climb is unknown, so a hilly trail may be harder. No official rating is mapped.";
+}
+
+/** Shown next to a moving time that leaves out climbing (climb unknown). */
+export const DISTANCE_ONLY_LABEL = "distance only";
+export const DISTANCE_ONLY_NOTE = "Based on distance only: the climb is unknown, so no time for climbing is included.";
 
 export const ROUTE_FORM_LABEL: Record<RouteType, string> = {
   loop: "Loop",
@@ -110,13 +130,38 @@ export function coverageSummary(c: CoverageDto): { short: string; tone: Coverage
     case "loading":
       return { short: c.tilesReady > 0 ? "Loading more trails…" : "Loading trails…", tone: "info", progress };
     case "too_large":
-      return { short: "Zoom in to load trails here", tone: "info", progress: null };
+      // Phones see only this pill: it must say that just the middle is listed.
+      return { short: "Showing the middle only · zoom in to load more", tone: "info", progress: null };
     case "partial":
       return { short: "Part of this area couldn’t be loaded", tone: "warn", progress };
     case "failed":
       return { short: "Trails couldn’t be loaded here", tone: "error", progress: null };
     default:
       return null;
+  }
+}
+
+/**
+ * The results heading. An empty list says why when it can: still loading,
+ * too big, failed, or only part of the area loaded ("No trails found" only
+ * when the whole area loaded and nothing matched).
+ */
+export function resultsHeading(status: SearchStatus, results: Pick<TrailSearchResponse, "trails" | "total" | "coverage"> | null): string {
+  if (status === "loading") return "Searching…";
+  if (status === "error") return "Search unavailable";
+  if (status === "idle" || !results) return "Explore trails";
+  if (results.trails.length) return resultCountText(results.trails.length, results.total);
+  switch (results.coverage.state) {
+    case "loading":
+      return "Loading trails…";
+    case "too_large":
+      return "Zoom in to see trails";
+    case "failed":
+      return "Trails unavailable";
+    case "partial":
+      return "Some of this area couldn’t be loaded";
+    default:
+      return "No trails found";
   }
 }
 

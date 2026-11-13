@@ -154,7 +154,11 @@ test("Table Rock Trail: header stats, map, elevation, weather, alerts, daylight,
     const sources = section(page, "Sources");
     const sourcesText = await sources.innerText();
     assert.match(sourcesText, /Trail data © OpenStreetMap contributors \(ODbL 1\.0\)/);
-    assert.match(sourcesText, /last updated in Ghost Guide less than an hour ago/);
+    // Absolute UTC time: the page is cached (ISR), so a relative "… ago" would go stale.
+    assert.match(sourcesText, /last updated in Ghost Guide [A-Z][a-z]{2} \d{1,2}, \d{4}, \d{2}:\d{2} UTC/);
+    // The OSM time is the Overpass snapshot the trail was read from, not an edit time (review #8).
+    assert.match(sourcesText, /OpenStreetMap data as of [A-Z][a-z]{2} \d{1,2}, \d{4}, \d{2}:\d{2} UTC/);
+    assert.ok(!/last edited/i.test(sourcesText), `no edit time is claimed: ${sourcesText}`);
     assert.equal(await sources.getByRole("link", { name: "OpenStreetMap contributors" }).getAttribute("href"), "https://www.openstreetmap.org/copyright");
     assert.match(sourcesText, /Data looks wrong\?/);
     assert.deepEqual(pageErrors, []);

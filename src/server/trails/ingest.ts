@@ -1,7 +1,9 @@
 import "server-only";
+import { revalidatePath } from "next/cache";
 import { env } from "@/config/env";
-import { CATALOG_LAYERS, type CatalogLayer, type LngLat } from "@/domain/catalog";
+import { CATALOG_LAYERS, trailPath, type CatalogLayer, type LngLat } from "@/domain/catalog";
 import { withSystem } from "@/server/db";
+import { countryCodeAt } from "@/server/geo/country";
 import { elevationProfileFor } from "@/server/geo/elevation";
 import { adminCellKey, reverseAdminArea, type AdminArea } from "@/server/geo/geocode";
 import { cleanLines, linesLengthM } from "@/server/geo/geodesy";
@@ -21,6 +23,7 @@ import {
   trailCentroid,
   type ElevationSnapshot,
 } from "./enrich";
+import { UNKNOWN_REGION_SLUG } from "./slug";
 import { assembleRoute } from "./providers/osm/geometry";
 import { nameKey } from "./providers/osm/tags";
 import { fetchConcurrencyFor, providerById } from "./providers/registry";
@@ -48,8 +51,24 @@ import type { Line, NormalizedPoi, NormalizedTrail, ProviderId, TrailDataProvide
  * and features, together with POIs already stored from neighbouring tiles
  * (PostGIS lookup within POI_LOOKUP_RADIUS_M of the route). Each trail is
  * enriched (enrich.ts) and upserted by (provider, provider_id) in its own
- * transaction, under an advisory lock (per provider id, or per normalized
- * name for mergeable pieces) so concurrent tiles never create duplicates.
+ * short transaction, under an advisory lock (per provider id, or per
+ * normalized name for mergeable pieces) so concurrent tiles never create
+ * duplicates. No network request runs while a transaction is open: admin
+ * names are looked up before it; when the geometry to store needs a DEM
+ * profile, the transaction rolls back, terrain tiles are fetched with no
+ * lock or connection held, and the write runs again, using that profile
+ * only if the geometry is still the same (geometry hash). Lock waits are
+ * bounded (TRAIL_LOCK_TIMEOUT_MS).
+ *
+ * PLACE NAMES. The country comes from the trail's exact point (offline
+ * borders, enrich.ts resolvePlace); region and nearest place from Nominatim
+ * reverse geocoding per 0.1° cell, memoized per run for definite answers
+ * only: a failed lookup is retried for the next trail of the cell (at most
+ * ADMIN_ATTEMPTS_PER_CELL times per cell; after ADMIN_FAILURES_BEFORE_PAUSE
+ * consecutive failures the run stops asking). A trail stored with an unknown
+ * region because names were unavailable makes the tile refresh within
+ * NAMES_RETRY_TTL_HOURS instead of the normal TTL, so its region is filled
+ * in soon; when that moves its path, the old path redirects (redirects.ts).
  *
  * CROSS-TILE PIECES. OSM "waygroup/<id>" trails only see the ways of one
  * tile, so a named trail crossing a tile edge arrives once per tile, as
@@ -82,6 +101,16 @@ export const MERGE_RADIUS_M = 25;
  * merged across tiles (OSM way groups). Complete routes (relations) are not.
  */
 export const MERGEABLE_ID_PREFIX: Partial<Record<ProviderId, string>> = { osm: "waygroup/" };
+/** Reverse-geocoding attempts per 0.1° cell per run (a failure is retried for a later trail of the cell). */
+export const ADMIN_ATTEMPTS_PER_CELL = 2;
+/** After this many consecutive failed reverse lookups the run stops asking (the service is down or saturated). */
+export const ADMIN_FAILURES_BEFORE_PAUSE = 3;
+/** A tile that stored trails without place names (lookup unavailable) refreshes within this many hours. */
+export const NAMES_RETRY_TTL_HOURS = 6;
+/** Longest wait for a trail's advisory lock or row locks; a longer wait fails the trail (retried next refresh). */
+export const TRAIL_LOCK_TIMEOUT_MS = 15_000;
+/** Transaction attempts per trail when its geometry changes between the elevation fetch and the write. */
+export const MAX_STORE_ROUNDS = 3;
 
 export type ElevationFn = (lines: Line[], opts: { signal?: AbortSignal }) => Promise<ElevationSnapshot | null>;
 
@@ -91,7 +120,9 @@ export interface IngestDeps {
   /** DEM elevation for a geometry (default: elevationProfileFor). Null when unavailable. */
   elevation?: ElevationFn;
   /** Administrative names at a point (default: reverseAdminArea). Null when unavailable. */
-  reverseAdmin?: (lat: number, lng: number) => Promise<AdminArea | null>;
+  reverseAdmin?: (lat: number, lng: number, opts?: { signal?: AbortSignal }) => Promise<AdminArea | null>;
+  /** Country at an exact point (default: countryCodeAt, offline borders). Null when unknown. */
+  countryAt?: (lat: number, lng: number) => string | null;
   /** IANA time zone at a point (default: timezoneAt). */
   timezone?: (lat: number, lng: number) => string | null;
   /** Clock for the human-readable retirement date (default: new Date()). */
@@ -116,6 +147,8 @@ export interface IngestCounts {
   merged: number;
   skipped: number;
   failedTrails: number;
+  /** Trails stored with an unknown region because reverse geocoding was unavailable (the tile refreshes soon). */
+  namesMissing: number;
   pois: number;
   retired: number;
   poisRemoved: number;
@@ -224,11 +257,74 @@ interface RunContext {
   signal: AbortSignal;
   mergePrefix: string | null;
   elevation: (lines: Line[]) => Promise<ElevationSnapshot | null>;
+  /** Admin names for a point's cell: an AdminArea (all-null for "no address"), or null when unavailable. */
   admin: (p: LngLat) => Promise<AdminArea | null>;
   timezone: (lat: number, lng: number) => string | null;
+  countryAt: (lat: number, lng: number) => string | null;
 }
 
 type TrailOutcome = "inserted" | "updated" | "merged" | "skipped";
+
+interface TrailResult {
+  outcome: TrailOutcome;
+  /** Stored with an unknown region because the admin lookup was unavailable. */
+  namesMissing: boolean;
+  /** The trail's page path changed (old path now redirects); set after the write committed. */
+  moved?: TrailMove;
+}
+
+interface TrailMove {
+  from: string;
+  to: string;
+}
+
+/** Above this many moved trails in one tile, every cached trail page is expired at once. */
+const MAX_MOVES_PURGED_ONE_BY_ONE = 25;
+
+/**
+ * Trail pages are cached (ISR, src/app/trail/[country]/[region]/[slug]).
+ * After a tile commits, expire the pages it changed the meaning of: for each
+ * moved trail its old path (a cached page that must now redirect) and its new
+ * path (which may hold a cached redirect or 404 from before). Retired trails
+ * are not tracked by path, so retirement expires every trail page; so do many
+ * moves. Content changes of trails that keep their path wait for the page's
+ * normal hourly revalidation.
+ *
+ * Outside a Next.js request (local scripts, tests) revalidatePath throws:
+ * there is no page cache to purge there, so that is ignored.
+ */
+function purgeTrailPages(moves: TrailMove[], retired: number): void {
+  if (moves.length === 0 && retired === 0) return;
+  try {
+    if (retired > 0 || moves.length > MAX_MOVES_PURGED_ONE_BY_ONE) {
+      revalidatePath("/trail/[country]/[region]/[slug]", "page");
+      return;
+    }
+    for (const m of moves) {
+      revalidatePath(m.from);
+      revalidatePath(m.to);
+    }
+  } catch {
+    /* not inside a Next.js request: no page cache */
+  }
+}
+
+/** Thrown inside a trail's transaction (rolling it back) when the geometry to store needs a DEM profile. */
+class ElevationNeeded extends Error {
+  constructor(
+    readonly lines: Line[],
+    readonly hash: string,
+  ) {
+    super("elevation needed");
+    this.name = "ElevationNeeded";
+  }
+}
+
+/** A DEM profile fetched outside any transaction for the geometry with this hash. */
+interface PlannedElevation {
+  hash: string;
+  elevation: ElevationSnapshot | null;
+}
 
 /** Thrown inside a trail's transaction to roll it back and count the trail as skipped. */
 class SkipTrail extends Error {
@@ -253,14 +349,13 @@ function validTrail(t: NormalizedTrail, providerId: string): boolean {
 }
 
 /**
- * Enrich and store one trail (see the module header). Network-bound admin
- * lookups (Nominatim, globally throttled) happen before the transaction;
- * terrain tiles (cached in-process) are sampled inside it, because merged
- * geometry is only known once the parts are locked.
+ * Enrich and store one trail (see the module header). The network-bound
+ * admin lookup (Nominatim, globally throttled) happens before any
+ * transaction; terrain tiles are fetched between transactions (storeTrail).
  */
-async function processTrail(ctx: RunContext, t: NormalizedTrail): Promise<TrailOutcome> {
+async function processTrail(ctx: RunContext, t: NormalizedTrail): Promise<TrailResult> {
   const piece = cleanLines(t.lines);
-  if (piece.length === 0 || !(linesLengthM(piece) >= 1)) return "skipped";
+  if (piece.length === 0 || !(linesLengthM(piece) >= 1)) return { outcome: "skipped", namesMissing: false };
   const pieceCentroid = trailCentroid(piece)!;
   const admin = await ctx.admin(pieceCentroid);
   const mergeable = ctx.mergePrefix !== null && t.providerId.startsWith(ctx.mergePrefix);
@@ -269,11 +364,20 @@ async function processTrail(ctx: RunContext, t: NormalizedTrail): Promise<TrailO
   try {
     return await storeTrail(ctx, t, piece, pieceCentroid, admin, mergeable, lockKey);
   } catch (err) {
-    if (err instanceof SkipTrail) return "skipped";
+    if (err instanceof SkipTrail) return { outcome: "skipped", namesMissing: false };
     throw err;
   }
 }
 
+/**
+ * Write one trail, fetching its DEM profile with no transaction open: the
+ * first write attempt rolls back with ElevationNeeded when the geometry it
+ * would store has no usable profile yet (new or changed geometry); the
+ * profile is fetched, and the write runs again and uses it only if the
+ * geometry it computes then is the same (a concurrent tile can change a
+ * merged trail in between; then the profile is fetched again, at most
+ * MAX_STORE_ROUNDS attempts in all).
+ */
 async function storeTrail(
   ctx: RunContext,
   t: NormalizedTrail,
@@ -282,9 +386,36 @@ async function storeTrail(
   admin: AdminArea | null,
   mergeable: boolean,
   lockKey: string,
-): Promise<TrailOutcome> {
+): Promise<TrailResult> {
+  let planned: PlannedElevation | null = null;
+  for (let round = 1; ; round++) {
+    try {
+      return await writeTrail(ctx, t, piece, pieceCentroid, admin, mergeable, lockKey, planned);
+    } catch (err) {
+      if (!(err instanceof ElevationNeeded)) throw err;
+      if (round >= MAX_STORE_ROUNDS) {
+        throw new Error("The trail changed while its elevation was being computed; it will be retried on the next refresh.");
+      }
+      // No transaction, lock or pooled connection is held while terrain tiles are fetched.
+      planned = { hash: err.hash, elevation: await ctx.elevation(err.lines) };
+    }
+  }
+}
+
+async function writeTrail(
+  ctx: RunContext,
+  t: NormalizedTrail,
+  piece: Line[],
+  pieceCentroid: LngLat,
+  admin: AdminArea | null,
+  mergeable: boolean,
+  lockKey: string,
+  planned: PlannedElevation | null,
+): Promise<TrailResult> {
   const pieceAttributes = attributesOf(t);
   return withSystem(async (tx) => {
+    // Bounded waits: a stuck holder fails this trail (retried next refresh) instead of the whole run.
+    await tx`select set_config('lock_timeout', ${`${TRAIL_LOCK_TIMEOUT_MS}ms`}, true)`;
     await tx`select pg_advisory_xact_lock(hashtext(${lockKey}))`;
     let stored = await repo.findTrailForUpdate(tx, t.provider, t.providerId);
     let alias: string | null = null;
@@ -324,8 +455,12 @@ async function storeTrail(
     const pois = await repo.nearbyOutdoorPois(tx, lines, POI_LOOKUP_RADIUS_M, ENRICHMENT_POI_CATEGORIES);
     // Measure linear routes from their trailhead (gain, one-way duration).
     if (routeType === "linear") lines = orientFromTrailhead(lines, selectTrailhead(lines, pois)?.point ?? null);
-    const sameGeometry = stored !== null && stored.geomHash === geometryHash(lines);
-    const elevation = sameGeometry && stored!.elevation ? stored!.elevation : await ctx.elevation(lines);
+    const hash = geometryHash(lines);
+    let elevation: ElevationSnapshot | null;
+    if (stored !== null && stored.geomHash === hash && stored.elevation) elevation = stored.elevation;
+    else if (planned !== null && planned.hash === hash) elevation = planned.elevation;
+    // Rolls back everything written above; storeTrail fetches the profile and calls again.
+    else throw new ElevationNeeded(lines, hash);
     const centroid = trailCentroid(lines) ?? pieceCentroid;
     const keepIdentity = stored !== null && stored.providerId !== t.providerId;
     const record = buildTrailRecord({
@@ -342,25 +477,31 @@ async function storeTrail(
       pois,
       admin,
       timezone: ctx.timezone(centroid.lat, centroid.lng),
+      countryAt: ctx.countryAt,
     });
     // Unusable after all (e.g. no storable name): roll back any part written above.
     if (!record) throw new SkipTrail();
+    /** Region of the stored row after the write: unknown because names were unavailable? */
+    const namesMissing = (row: repo.StoredTrail | null) =>
+      admin === null && (row === null || repo.identityMoves(row, record) ? record.regionSlug : row.regionSlug) === UNKNOWN_REGION_SLUG;
 
+    const moveOf = (u: { slug: string; movedFrom: string | null }): TrailMove | undefined =>
+      u.movedFrom ? { from: u.movedFrom, to: trailPath({ countryCode: record.countryCode, regionSlug: record.regionSlug, slug: u.slug }) } : undefined;
     if (stored) {
-      await repo.updateTrail(tx, stored, record, { alias });
-      return alias ? "merged" : "updated";
+      const u = await repo.updateTrail(tx, stored, record, { alias });
+      return { outcome: alias ? "merged" : "updated", namesMissing: namesMissing(stored), moved: moveOf(u) };
     }
     const inserted = await repo.insertTrail(tx, record);
     if (inserted) {
       if (mergeable) await repo.upsertPart(tx, inserted.id, t.provider, t.providerId, ctx.tile.key, piece, pieceAttributes);
-      return "inserted";
+      return { outcome: "inserted", namesMissing: namesMissing(null) };
     }
     // Inserted concurrently by a writer that did not take our lock: update that row.
     const again = await repo.findTrailForUpdate(tx, t.provider, t.providerId);
     if (!again) throw new Error("trail row vanished after a concurrent insert");
-    await repo.updateTrail(tx, again, record, { alias: null });
+    const u = await repo.updateTrail(tx, again, record, { alias: null });
     if (mergeable) await repo.upsertPart(tx, again.id, t.provider, t.providerId, ctx.tile.key, piece, pieceAttributes);
-    return "updated";
+    return { outcome: "updated", namesMissing: namesMissing(again), moved: moveOf(u) };
   });
 }
 
@@ -409,9 +550,13 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
   const totalMs = positiveInt(deps.budgetMs, INGEST_BUDGET_MS);
   const budget = startBudget(totalMs, positiveInt(deps.fetchBudgetMs, FETCH_BUDGET_MS), deps.signal);
   const reverse = deps.reverseAdmin ?? reverseAdminArea;
+  /** Definite answers (and lookups in flight) per 0.1° cell; failures are not kept. */
   const adminMemo = new Map<string, Promise<AdminArea | null>>();
+  const adminFailures = new Map<string, number>();
+  let adminFailuresInARow = 0;
   const elevationFn = deps.elevation ?? defaultElevation;
   const timezoneFn = deps.timezone ?? timezoneAt;
+  const countryFn = deps.countryAt ?? countryCodeAt;
   const ctx: RunContext = {
     layer,
     provider,
@@ -430,16 +575,33 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
     },
     admin(p) {
       const cell = adminCellKey(p.lat, p.lng);
-      let pending = adminMemo.get(cell);
-      if (!pending) {
-        pending = Promise.resolve()
-          .then(() => reverse(p.lat, p.lng))
-          .catch((err: unknown) => {
-            log.warn("catalog.admin_lookup_failed", { tileKey: key, error: errorText(err) });
-            return null;
-          });
-        adminMemo.set(cell, pending);
+      const known = adminMemo.get(cell);
+      if (known) return known;
+      // Unavailable for this run: this cell failed too often, or the service keeps failing.
+      if ((adminFailures.get(cell) ?? 0) >= ADMIN_ATTEMPTS_PER_CELL || adminFailuresInARow >= ADMIN_FAILURES_BEFORE_PAUSE) {
+        return Promise.resolve(null);
       }
+      const pending = Promise.resolve()
+        .then(() => reverse(p.lat, p.lng, { signal: budget.total }))
+        .catch((err: unknown) => {
+          log.warn("catalog.admin_lookup_failed", { tileKey: key, error: errorText(err) });
+          return null;
+        })
+        .then((area) => {
+          if (area) {
+            adminFailuresInARow = 0;
+            return area;
+          }
+          // A failure is not an answer: forget it, so the next trail of this cell asks again.
+          adminMemo.delete(cell);
+          adminFailures.set(cell, (adminFailures.get(cell) ?? 0) + 1);
+          adminFailuresInARow++;
+          if (adminFailuresInARow === ADMIN_FAILURES_BEFORE_PAUSE) {
+            log.warn("catalog.admin_lookups_paused", { tileKey: key, failuresInARow: adminFailuresInARow });
+          }
+          return null;
+        });
+      adminMemo.set(cell, pending);
       return pending;
     },
     timezone(lat, lng) {
@@ -449,9 +611,16 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
         return null;
       }
     },
+    countryAt(lat, lng) {
+      try {
+        return countryFn(lat, lng);
+      } catch {
+        return null;
+      }
+    },
   };
 
-  const counts: IngestCounts = { trails: 0, inserted: 0, updated: 0, merged: 0, skipped: 0, failedTrails: 0, pois: 0, retired: 0, poisRemoved: 0 };
+  const counts: IngestCounts = { trails: 0, inserted: 0, updated: 0, merged: 0, skipped: 0, failedTrails: 0, namesMissing: 0, pois: 0, retired: 0, poisRemoved: 0 };
   let stage: "fetch" | "store" = "fetch";
   try {
     const result = await provider.fetchArea(layer, tile.bbox, { signal: budget.fetch });
@@ -475,12 +644,15 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
     const trailsCapped = trails.length > maxTrails;
     if (trailsCapped) log.warn("catalog.tile_trails_capped", { tileKey: key, provider: provider.id, returned: trails.length, kept: maxTrails });
     let firstError: string | null = null;
+    const moves: TrailMove[] = [];
     for (const t of trails.slice(0, maxTrails)) {
       if (budget.total.aborted) throw new BudgetExceeded();
       try {
-        const outcome = await processTrail(ctx, t);
+        const { outcome, namesMissing, moved } = await processTrail(ctx, t);
         counts[outcome]++;
         if (outcome !== "skipped") counts.trails++;
+        if (namesMissing) counts.namesMissing++;
+        if (moved) moves.push(moved);
       } catch (err) {
         if (budget.total.aborted || err instanceof BudgetExceeded) throw new BudgetExceeded();
         counts.failedTrails++;
@@ -491,14 +663,23 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
     if (counts.failedTrails > 0 && counts.trails === 0) {
       throw new Error(`None of the ${counts.failedTrails} trail(s) could be saved: ${firstError}`);
     }
-    const note = counts.failedTrails > 0 ? `${counts.failedTrails} of ${counts.failedTrails + counts.trails} trail(s) could not be saved; they will be retried on the next refresh.` : null;
+    const notes: string[] = [];
+    if (counts.failedTrails > 0) {
+      notes.push(`${counts.failedTrails} of ${counts.failedTrails + counts.trails} trail(s) could not be saved; they will be retried on the next refresh.`);
+    }
+    if (counts.namesMissing > 0) {
+      notes.push(`Place names were unavailable for ${counts.namesMissing} trail(s); the tile refreshes within ${NAMES_RETRY_TTL_HOURS} h to fill them in.`);
+    }
+    const note = notes.length > 0 ? notes.join(" ") : null;
 
     // Retire + mark ready, fenced by the claim.
     const today = (deps.now?.() ?? new Date()).toISOString().slice(0, 10);
     const reason = `Not found in ${provider.label} on ${today}`;
     const ttlDays = positiveInt(deps.ttlDays, env().CATALOG_TILE_TTL_DAYS);
     // ±10 % jitter so tiles loaded together do not all refresh at once.
-    const ttlSeconds = ttlDays * 86_400 * (0.9 + Math.random() * 0.2);
+    const jitter = 0.9 + Math.random() * 0.2;
+    // Trails stored without place names: refresh soon (names fill in, the path moves with a redirect).
+    const ttlSeconds = Math.min(ttlDays * 86_400, counts.namesMissing > 0 ? NAMES_RETRY_TTL_HOURS * 3_600 : Infinity) * jitter;
     const held = await withSystem(async (tx) => {
       if (!(await repo.lockHeldTile(tx, layer, provider.id, tile.key, claim.token))) return false;
       if (layer === "outdoor" && !trailsCapped && counts.failedTrails === 0) {
@@ -508,6 +689,8 @@ export async function ingestTile(layer: CatalogLayer, providerId: string, tileKe
       if (!poisCapped) counts.poisRemoved = await repo.deleteStalePois(tx, provider.id, layer, tile, claim.syncStart);
       return repo.markTileReady(tx, layer, provider.id, tile.key, claim.token, { trailCount: counts.trails, poiCount: counts.pois, ttlSeconds, note });
     });
+    // Trail writes and retirements are committed: expire the cached pages they changed.
+    purgeTrailPages(moves, counts.retired);
     if (!held) {
       log.warn("catalog.tile_claim_lost", { layer, provider: provider.id, tileKey: key });
       return { outcome: "failed", tileKey: key, error: "Another worker took over this tile before the sync finished.", retryable: false, attempts: null, nextRefreshAt: null };

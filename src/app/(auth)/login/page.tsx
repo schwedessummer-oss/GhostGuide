@@ -10,7 +10,13 @@ function returnsToTrailCard(next: string | undefined): boolean {
   return safe.startsWith("/plan/results?") && /#trail-[0-9a-f-]{36}$/.test(safe);
 }
 
-export const metadata: Metadata = { title: "Sign in" };
+/**
+ * Not indexed: every trail page links here with its own ?next=… (the Save
+ * button for signed-out visitors), and each of those URLs is the same page.
+ * Links on it are still followed. (robots.txt deliberately does not disallow
+ * /login: a crawler must fetch the page to see this noindex.)
+ */
+export const metadata: Metadata = { title: "Sign in", robots: { index: false, follow: true } };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const { next } = await searchParams;

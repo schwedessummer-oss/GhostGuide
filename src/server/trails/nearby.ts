@@ -17,7 +17,7 @@ import { catalogAttribution, toPoiDto, type PoiRow } from "@/server/trails/read"
  *   groups    at most NEARBY_GROUP_LIMIT items each; empty groups omitted
  *
  * Loading: services are loaded on demand per tile. ensureCoverage('services',
- * bbox of the radius, { request: true, inlineTiles: 1 }) reports whether the
+ * bbox of the radius, { request: true, inlineTiles: 1, client }) reports whether the
  * area is loaded and requests the missing tiles; what is already stored is
  * returned meanwhile, with an honest note. If the coverage service fails,
  * stored results are still returned with coverage state "failed".
@@ -174,6 +174,8 @@ const errorMessage = (err: unknown) => (err instanceof Error ? err.message : Str
 export interface NearbyOptions {
   /** Search radius for services, metres (clamped to 1–25 km; default 15 km). */
   radiusM?: number;
+  /** Rate-limit subject of the requesting client: new tile loads are charged to its budget (coverage.ts). */
+  client?: string;
 }
 
 /**
@@ -201,7 +203,13 @@ export async function getNearbyServices(trailId: string, opts: NearbyOptions = {
     : { lng: trail.centroidLng, lat: trail.centroidLat };
 
   const coveragePromise = Promise.resolve()
-    .then(() => ensureCoverage("services", bboxAround(origin, radiusM), { request: true, inlineTiles: 1 }))
+    .then(() =>
+      ensureCoverage("services", bboxAround(origin, radiusM), {
+        request: true,
+        inlineTiles: 1,
+        ...(opts.client ? { client: opts.client } : {}),
+      }),
+    )
     .catch((err: unknown): CoverageDto => {
       log.error("nearby.coverage_failed", { error: errorMessage(err) });
       return { ...NEARBY_COVERAGE_FAILED };

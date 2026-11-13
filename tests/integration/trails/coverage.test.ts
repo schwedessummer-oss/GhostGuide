@@ -6,12 +6,25 @@
  *
  * Tiles live around lng 145–160, lat −37.5 (row iy = 210 of the 0.25° grid).
  */
+import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { env } from "@/config/env";
 import type { Bbox } from "@/domain/catalog";
 import { closeDb, sql } from "@/server/db";
 import { tileFromKey } from "@/server/geo/tiles";
-import { ensureCoverage, getCoverage, summarizeCoverage, rowState, combineTileStates } from "@/server/trails/coverage";
-import { ingestJobKey } from "@/server/trails/repository";
+import { consumeRateBudget } from "@/server/rate-limit";
+import {
+  CLIENT_LOAD_BUDGET,
+  CLIENT_LOAD_WINDOW_SEC,
+  MAX_NEW_TILES_PER_REQUEST,
+  MAX_QUEUED_TILE_LOADS,
+  combineTileStates,
+  ensureCoverage,
+  getCoverage,
+  rowState,
+  summarizeCoverage,
+} from "@/server/trails/coverage";
+import { ABANDONED_REQUEST_MS, dropAbandonedIngestJobs, ingestJobKey } from "@/server/trails/repository";
 
 beforeAll(() => {
   vi.stubGlobal("fetch", async () => {
@@ -113,7 +126,9 @@ describe("ensureCoverage: requesting tiles", () => {
     expect(jobs).toHaveLength(4);
     for (const j of jobs) {
       expect(j.status).toBe("queued");
-      expect(j.payload).toEqual({ layer: "outdoor", provider: "osm", tileKey: j.payload.tileKey });
+      // requestedAt: when someone asked (the runner serves recent requests first and drops abandoned ones).
+      expect(j.payload).toEqual({ layer: "outdoor", provider: "osm", tileKey: j.payload.tileKey, requestedAt: expect.any(Number) });
+      expect(Math.abs(Date.now() - (j.payload as unknown as { requestedAt: number }).requestedAt)).toBeLessThan(60_000);
       const gen = rows.find((r) => r.tileKey === j.payload.tileKey)!.requestGen;
       expect(j.dedupKey).toBe(ingestJobKey("outdoor", "osm", j.payload.tileKey, gen));
     }
@@ -125,13 +140,33 @@ describe("ensureCoverage: requesting tiles", () => {
     expect((await tiles(keys)).map((r) => r.status)).toEqual(["pending", "pending", "pending", "pending"]);
   });
 
-  it("enqueues one job per tile when many searches arrive at once", async () => {
+  it("enqueues one job per tile when many searches arrive at once — only the few tiles nearest the centre per request", async () => {
     const { bbox, keys } = freshArea(3);
     const results = await Promise.all(Array.from({ length: 8 }, () => ensureCoverage("outdoor", bbox)));
     for (const r of results) expect(r.state).toBe("loading");
     const jobs = await jobsFor(keys);
-    expect(jobs).toHaveLength(9);
-    expect(new Set(jobs.map((j) => j.payload.tileKey)).size).toBe(9);
+    expect(jobs).toHaveLength(MAX_NEW_TILES_PER_REQUEST);
+    expect(new Set(jobs.map((j) => j.payload.tileKey)).size).toBe(MAX_NEW_TILES_PER_REQUEST);
+    // The centre tile of the 3 × 3 block is among them; the rest of the area is not even created yet.
+    expect(jobs.map((j) => j.payload.tileKey)).toContain(keys[4]);
+    expect(await tiles(keys)).toHaveLength(MAX_NEW_TILES_PER_REQUEST);
+  });
+
+  it("loads a large area progressively: the next tiles are queued once the first ones finished", async () => {
+    const { bbox, keys } = freshArea(4);
+    const first = await ensureCoverage("outdoor", bbox);
+    expect(first).toMatchObject({ state: "loading", tilesTotal: 16, tilesLoading: 4, tilesReady: 0 });
+    // While those load, polling queues nothing more (the area already has its share in flight).
+    await ensureCoverage("outdoor", bbox);
+    let queuedKeys = (await jobsFor(keys)).map((j) => j.payload.tileKey);
+    expect(queuedKeys).toHaveLength(4);
+    // They finish: the next poll queues the next four nearest tiles.
+    await finishJobs(queuedKeys);
+    await setTiles(queuedKeys, "ready");
+    const second = await ensureCoverage("outdoor", bbox);
+    expect(second).toMatchObject({ state: "loading", tilesReady: 4, tilesLoading: 4 });
+    queuedKeys = (await jobsFor(keys)).map((j) => j.payload.tileKey);
+    expect(new Set(queuedKeys).size).toBe(8);
   });
 
   it("re-requests a pending tile whose job is gone (finished or dead), once", async () => {
@@ -160,7 +195,7 @@ describe("ensureCoverage: requesting tiles", () => {
     expect(cov.tilesTotal).toBe(25);
     expect(cov.tilesReady).toBe(2);
     expect(cov.tilesLoading).toBe(0);
-    expect(cov.message).toBe("Zoom in to load trails for this area. Showing trails already loaded.");
+    expect(cov.message).toBe("Zoom in to load trails for this area. Showing trails already loaded near the middle of this area.");
     expect(cov.oldestSyncAt).not.toBeNull();
     expect(await tiles(keys)).toHaveLength(2);
     expect((await jobsFor(keys)).length).toBe(before);
@@ -316,5 +351,154 @@ describe("summarizeCoverage / rowState (pure)", () => {
     expect(combineTileStates(["ready", "failed", "loading"])).toBe("loading");
     expect(combineTileStates(["ready", "missing"])).toBe("missing");
     expect(combineTileStates([])).toBe("ready");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Work bounds (abuse resistance): per request, per client, global; live first.
+// ---------------------------------------------------------------------------
+
+/** Cancel every queued catalog job (as afterAll does) so the global count starts from zero. */
+async function clearCatalogQueue() {
+  await sql()`update public.jobs set status = 'cancelled', finished_at = now()
+               where kind like 'catalog.%' and status in ('queued', 'running')`;
+}
+
+/** Set the queued jobs' requestedAt (epoch ms) for these tiles. */
+async function setRequestedAt(keys: string[], ms: number) {
+  await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${ms}::bigint))
+               where kind = 'catalog.ingest_tile' and payload->>'tileKey' = any(${keys}::text[]) and status = 'queued'`;
+}
+
+async function requestedAtOf(key: string): Promise<number> {
+  const [row] = await sql()<{ r: number }[]>`
+    select (payload->>'requestedAt')::float8 as r from public.jobs
+     where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${key} and status = 'queued'`;
+  return row.r;
+}
+
+/** Wait out the last seconds of a fixed rate-limit window so a test does not straddle two windows. */
+async function awayFromWindowEdge(windowSec: number) {
+  const ms = windowSec * 1000;
+  const left = ms - (Date.now() % ms);
+  if (left < 3_000) await new Promise((r) => setTimeout(r, left + 50));
+}
+
+describe("ensureCoverage: work bounds", () => {
+  it("charges new loads to the client's budget; over budget it queues nothing and says so honestly", async () => {
+    await awayFromWindowEdge(CLIENT_LOAD_WINDOW_SEC);
+    const client = `test-client-${randomUUID()}`;
+    const limit = CLIENT_LOAD_BUDGET * env().RATE_LIMIT_SCALE;
+    // Earlier searches spent all but two loads of this window.
+    expect((await consumeRateBudget(null, `catalog:loads:${client}`, limit - 2, CLIENT_LOAD_BUDGET, CLIENT_LOAD_WINDOW_SEC)).granted).toBe(limit - 2);
+
+    const a = freshArea(2);
+    const partly = await ensureCoverage("outdoor", a.bbox, { client });
+    expect(partly).toMatchObject({ state: "loading", tilesLoading: 2 });
+    expect(await jobsFor(a.keys)).toHaveLength(2);
+
+    const b = freshArea(2);
+    const refused = await ensureCoverage("outdoor", b.bbox, { client });
+    expect(refused).toMatchObject({ state: "failed", tilesReady: 0, tilesLoading: 0, tilesFailed: 0 });
+    expect(refused.message).toBe(
+      "Many new areas were requested from your network in the last few minutes, so this one was not queued. Please try again in a few minutes.",
+    );
+    expect(await jobsFor(b.keys)).toHaveLength(0);
+    expect(await tiles(b.keys)).toHaveLength(0);
+
+    // Another client is not affected; trusted callers without a client are not charged.
+    expect((await ensureCoverage("outdoor", b.bbox, { client: `test-client-${randomUUID()}` })).state).toBe("loading");
+    expect(await jobsFor(b.keys)).toHaveLength(4);
+  });
+
+  it("queues nothing above the global ceiling and says the service is busy; abandoned and background loads do not count", async () => {
+    await clearCatalogQueue();
+    const tag = randomUUID();
+    await sql()`
+      insert into public.jobs (kind, payload, run_at, dedup_key, max_attempts)
+      select 'catalog.ingest_tile',
+             jsonb_build_object('layer', 'outdoor', 'provider', 'osm', 'tileKey', '0.25/0/' || i, 'requestedAt', ${Date.now()}::bigint),
+             now() + interval '1 day', ${`test:ceiling:${tag}:`} || i, 4
+        from generate_series(1, ${MAX_QUEUED_TILE_LOADS}) as i`;
+    try {
+      const a = freshArea(1);
+      const busy = await ensureCoverage("outdoor", a.bbox);
+      expect(busy.state).toBe("failed");
+      expect(busy.message).toBe("Many areas are waiting to be loaded right now, so this one was not queued. Please try again in a few minutes.");
+      expect(await jobsFor(a.keys)).toHaveLength(0);
+      expect(await tiles(a.keys)).toHaveLength(0);
+
+      // Nobody has asked about those loads for longer than ABANDONED_REQUEST_MS: they no longer block anyone.
+      await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${Date.now() - ABANDONED_REQUEST_MS - 60_000}::bigint))
+                   where dedup_key like ${`test:ceiling:${tag}:%`}`;
+      expect((await ensureCoverage("outdoor", a.bbox)).state).toBe("loading");
+      expect(await jobsFor(a.keys)).toHaveLength(1);
+
+      // Background refreshes (requestedAt 0) never hold back a live search either.
+      await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', '0'::jsonb) where dedup_key like ${`test:ceiling:${tag}:%`}`;
+      const b = freshArea(1);
+      expect((await ensureCoverage("outdoor", b.bbox)).state).toBe("loading");
+    } finally {
+      await sql()`update public.jobs set status = 'cancelled', finished_at = now() where dedup_key like ${`test:ceiling:${tag}:%`}`;
+    }
+  });
+
+  it("an area searched again keeps its queued loads live (requestedAt refreshed, at most once a minute)", async () => {
+    const { bbox, keys } = freshArea(1);
+    await ensureCoverage("outdoor", bbox);
+    const old = Date.now() - 10 * 60_000;
+    await setRequestedAt(keys, old);
+    await ensureCoverage("outdoor", bbox);
+    expect(Math.abs(Date.now() - (await requestedAtOf(keys[0])))).toBeLessThan(10_000);
+
+    // Polling every few seconds does not rewrite the job every time.
+    const recent = Date.now() - 30_000;
+    await setRequestedAt(keys, recent);
+    await ensureCoverage("outdoor", bbox);
+    expect(await requestedAtOf(keys[0])).toBe(recent);
+  });
+
+  it("drops loads nobody asked about for 20 minutes and forgets their never-loaded tiles; loaded tiles and background work are kept", async () => {
+    const abandoned = freshArea(1);
+    const refresh = freshArea(1);
+    const background = freshArea(1);
+    for (const a of [abandoned, refresh, background]) await ensureCoverage("outdoor", a.bbox);
+    await setTiles(refresh.keys, "ready_due");
+    const longAgo = Date.now() - ABANDONED_REQUEST_MS - 60_000;
+    await setRequestedAt([...abandoned.keys, ...refresh.keys], longAgo);
+    await setRequestedAt(background.keys, 0);
+
+    const r = await dropAbandonedIngestJobs(Date.now());
+    expect(r.jobs).toBeGreaterThanOrEqual(2);
+    expect((await jobsFor(abandoned.keys)).map((j) => j.status)).toEqual(["cancelled"]);
+    expect((await jobsFor(refresh.keys)).map((j) => j.status)).toEqual(["cancelled"]);
+    expect((await jobsFor(background.keys)).map((j) => j.status)).toEqual(["queued"]);
+    expect(await tiles(abandoned.keys)).toHaveLength(0); // never loaded: forgotten
+    expect((await tiles(refresh.keys)).map((t) => t.status)).toEqual(["ready"]); // has data: kept
+
+    // Nothing reads as loading any more; searching again queues it afresh.
+    expect((await getCoverage("outdoor", abandoned.bbox)).state).toBe("partial");
+    expect((await ensureCoverage("outdoor", abandoned.bbox)).state).toBe("loading");
+    expect((await jobsFor(abandoned.keys)).map((j) => j.status)).toEqual(["cancelled", "queued"]);
+  });
+
+  it("a pending tile whose load was cancelled is not reported as loading", async () => {
+    const { bbox, keys } = freshArea(1);
+    await ensureCoverage("outdoor", bbox);
+    await sql()`update public.jobs set status = 'cancelled', finished_at = now()
+                 where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${keys[0]} and status = 'queued'`;
+    const cov = await getCoverage("outdoor", bbox);
+    expect(cov).toMatchObject({ state: "partial", tilesLoading: 0 });
+    expect(cov.message).toBe("Trails for this area have not been loaded yet.");
+  });
+
+  it("a world-sized area is answered as too large at once, without scanning every tile or queueing anything", async () => {
+    const before = (await sql()<{ n: number }[]>`select count(*)::int as n from public.jobs where kind = 'catalog.ingest_tile'`)[0].n;
+    const started = Date.now();
+    const cov = await ensureCoverage("outdoor", [-180, -90, 180, 90]);
+    expect(Date.now() - started).toBeLessThan(2_000);
+    expect(cov).toMatchObject({ state: "too_large", tilesTotal: 1440 * 720, tilesReady: 0, tilesLoading: 0, tilesFailed: 0 });
+    const after = (await sql()<{ n: number }[]>`select count(*)::int as n from public.jobs where kind = 'catalog.ingest_tile'`)[0].n;
+    expect(after).toBe(before);
   });
 });

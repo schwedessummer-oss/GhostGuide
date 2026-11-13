@@ -23,7 +23,9 @@ import {
   type WheelchairAccess,
 } from "@/domain/catalog";
 import type { Fragment } from "postgres";
+import { env } from "@/config/env";
 import { withAnon, type Tx } from "@/server/db";
+import { TILE_DEG, tilesForBbox } from "@/server/geo/tiles";
 
 /**
  * Trail catalog read model: public search and detail reads over
@@ -63,8 +65,8 @@ export const POI_LIMIT = 150;
 /** Most ids getTrailSummariesByIds looks up at once. */
 export const MAX_SUMMARY_IDS = 500;
 /**
- * Upper bound for one search query. A very large area (the UI shows "zoom in")
- * still runs a full count; this keeps a pathological request from holding a
+ * Upper bound for one search query (defence in depth: searchWindow already
+ * bounds the area a search scans), so a pathological request cannot hold a
  * connection: it fails (500) instead.
  */
 export const SEARCH_STATEMENT_TIMEOUT_MS = 8_000;
@@ -489,27 +491,58 @@ function searchOrder(tx: Tx, q: TrailSearchQuery) {
 // ---------------------------------------------------------------------------
 
 /**
- * Trails intersecting q.bbox with every filter of trailSearchQuerySchema
- * applied in SQL (see the module header for out-and-back semantics).
+ * The area a search actually scans. Within the coverage limit (no more than
+ * `maxTiles` tiles of the outdoor grid, env CATALOG_MAX_TILES_PER_SEARCH —
+ * the size coverage loads; larger areas are "too_large") it is the bbox
+ * itself. A larger bbox is cut to a window of the same AREA as `maxTiles`
+ * tiles around its centre (keeping the bbox's shape where it is narrow), so
+ * a world-sized box costs no more than an ordinary search: the coverage
+ * status tells the user to zoom in and that only trails near the middle are
+ * shown.
+ */
+export function searchWindow(bbox: Bbox, maxTiles?: number): { bbox: Bbox; limited: boolean } {
+  const max = Math.max(1, Math.floor(maxTiles ?? env().CATALOG_MAX_TILES_PER_SEARCH));
+  if (!tilesForBbox("outdoor", bbox, max).truncated) return { bbox, limited: false };
+  const [w, s, e, n] = bbox;
+  const deg = TILE_DEG.outdoor;
+  const maxArea = max * deg * deg;
+  const width = Math.min(e - w, Math.max(Math.sqrt(maxArea), maxArea / (n - s)));
+  const height = Math.min(n - s, maxArea / width);
+  const cx = (w + e) / 2;
+  const cy = (s + n) / 2;
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+  return {
+    bbox: [clamp(cx - width / 2, w, e), clamp(cy - height / 2, s, n), clamp(cx + width / 2, w, e), clamp(cy + height / 2, s, n)],
+    limited: true,
+  };
+}
+
+/**
+ * Trails intersecting the search area with every filter of
+ * trailSearchQuerySchema applied in SQL (see the module header for
+ * out-and-back semantics). The search area is q.bbox, or for an area larger
+ * than the coverage limit its middle (searchWindow), so the work per search
+ * is bounded whatever bbox is asked for.
  *
  * Sorts: relevance (name matches first when q is set, then quality_score
  * desc, then great-circle distance of the centroid from the bbox centre),
  * length (hike distance asc),
  * gain (hike climb asc, unknown last), name (case-insensitive).
- * `total` counts every match before `limit`.
+ * `total` counts every match in the search area before `limit`.
  */
-export async function searchTrails(q: TrailSearchQuery): Promise<{ trails: TrailSummaryDto[]; total: number }> {
+export async function searchTrails(q: TrailSearchQuery, opts: { maxTiles?: number } = {}): Promise<{ trails: TrailSummaryDto[]; total: number }> {
   if (!Array.isArray(q.bbox) || q.bbox.length !== 4 || !q.bbox.every((v) => Number.isFinite(v))) {
     return { trails: [], total: 0 };
   }
   const limit = Math.min(200, Math.max(1, Math.floor(Number.isFinite(q.limit) ? q.limit : 100)));
+  const area: TrailSearchQuery = { ...q, bbox: searchWindow(q.bbox, opts.maxTiles).bbox };
   const rows = await withAnon(async (tx) => {
     await tx`select set_config('statement_timeout', ${String(SEARCH_STATEMENT_TIMEOUT_MS)}, true)`;
     return tx<(TrailSummaryRow & { total: number })[]>`
       select ${summaryColumns(tx)}, count(*) over()::int as total
         from public.catalog_trails t
-       where ${searchConditions(tx, q)}
-       ${searchOrder(tx, q)}
+       where ${searchConditions(tx, area)}
+       ${searchOrder(tx, area)}
        limit ${limit}::int`;
   });
   return { trails: rows.map(toSummaryDto), total: rows[0]?.total ?? 0 };

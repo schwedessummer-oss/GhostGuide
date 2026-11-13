@@ -1,4 +1,4 @@
-import type { GeocodeResultDto, TrailSearchResponse } from "@/domain/catalog";
+import type { GeocodeResultDto, TrailDetailDto, TrailSearchResponse } from "@/domain/catalog";
 import type { Units } from "@/lib/units";
 import type { ExploreUrlState } from "./url-state";
 
@@ -21,3 +21,20 @@ export interface ExploreInitial {
   place: PlaceSearchState | null;
   units: Units;
 }
+
+export type SearchStatus = "idle" | "loading" | "ready" | "error";
+
+/**
+ * GET /api/trails/:id/geometry: the route line for Explore's map preview,
+ * simplified for display (a few metres at most; the trail page has the full
+ * route). Distances and climbs are never computed from it.
+ */
+export interface TrailRoutePreviewDto {
+  id: string;
+  geometry: TrailDetailDto["geometry"];
+  /** True when vertices were dropped for display. */
+  simplified: boolean;
+}
+
+/** Where Explore fetches a trail's preview line. */
+export const trailRoutePreviewUrl = (id: string) => `/api/trails/${encodeURIComponent(id)}/geometry`;

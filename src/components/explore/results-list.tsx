@@ -7,14 +7,20 @@ import type { CoverageDto, TrailSummaryDto } from "@/domain/catalog";
 import { MAP_ATTRIBUTION } from "@/config/public";
 import type { Units } from "@/lib/units";
 import { FeatureIcons, Spinner, TrailDifficulty } from "./bits";
-import { climbText, durationText, englishName, formatAgo, hikeDistanceText, placeLine } from "./format";
+import { DISTANCE_ONLY_LABEL, DISTANCE_ONLY_NOTE, climbKnown, climbText, durationText, englishName, formatAgo, hikeDistanceText, placeLine } from "./format";
+import type { SearchStatus } from "./types";
 
-export type SearchStatus = "idle" | "loading" | "ready" | "error";
+export type { SearchStatus } from "./types";
 
-/** Hike numbers in one line: distance + route form · climb · moving time. */
+/**
+ * Hike numbers in one line: distance + route form · climb · moving time.
+ * When the climb is unknown the time is a flat-ground pace (no time for
+ * climbing), and says "distance only".
+ */
 export function TrailStats({ trail, units, className }: { trail: TrailSummaryDto; units: Units; className?: string }) {
   const climb = climbText(trail, units);
   const time = durationText(trail);
+  const flatTime = time !== null && !climbKnown(trail);
   return (
     <p className={clsx("flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.95rem] text-ink", className)}>
       <span className="inline-flex items-center gap-1.5">
@@ -31,6 +37,12 @@ export function TrailStats({ trail, units, className }: { trail: TrailSummaryDto
         <Clock aria-hidden className="size-4 text-muted" />
         <span className="sr-only">Estimated moving time: </span>
         {time ?? <span className="text-muted">Time unknown</span>}
+        {flatTime ? (
+          <span className="text-sm text-muted" title={DISTANCE_ONLY_NOTE}>
+            <span aria-hidden>· {DISTANCE_ONLY_LABEL}</span>
+            <span className="sr-only">({DISTANCE_ONLY_NOTE})</span>
+          </span>
+        ) : null}
       </span>
     </p>
   );
@@ -69,7 +81,7 @@ function ResultItem({
             {en ? <p className="text-sm text-muted">{en}</p> : null}
             {place ? <p className="text-sm text-muted">{place}</p> : null}
           </div>
-          <TrailDifficulty difficulty={trail.difficulty} source={trail.difficultySource} className="mt-0.5" />
+          <TrailDifficulty difficulty={trail.difficulty} source={trail.difficultySource} climbKnown={climbKnown(trail)} className="mt-0.5" />
         </div>
         <div className="mt-2 flex items-end justify-between gap-3">
           <TrailStats trail={trail} units={units} />
@@ -165,6 +177,33 @@ export function ResultsList({ status, error, trails, coverage, units, selectedId
         </Notice>
       );
     }
+    if (coverage?.state === "partial") {
+      // Never "no trails here": most of the area may simply not have loaded.
+      return (
+        <Notice
+          icon={<MapPinOff aria-hidden className="size-5" />}
+          title="Part of this area couldn’t be loaded"
+          action={
+            <>
+              <button type="button" onClick={onRetry} className={secondaryButton}>
+                <RotateCw aria-hidden className="size-4" /> Try again
+              </button>
+              {filtersActive ? (
+                <button type="button" onClick={onClearFilters} className={secondaryButton}>
+                  Clear filters
+                </button>
+              ) : null}
+            </>
+          }
+        >
+          <p>{coverage.message}</p>
+          <p className="mt-1">
+            {filtersActive ? "No trails matched your filters in the parts that did load." : "No trails were found in the parts that did load."} The rest of
+            the area may have trails.
+          </p>
+        </Notice>
+      );
+    }
     if (coverage?.state === "failed") {
       return (
         <Notice
@@ -183,7 +222,8 @@ export function ResultsList({ status, error, trails, coverage, units, selectedId
     return (
       <Notice
         icon={<MapPinOff aria-hidden className="size-5" />}
-        title="No mapped trails in this area yet"
+        // With filters on, the area may well have trails: only these filters found none.
+        title={filtersActive ? "No trails here match your filters" : "No mapped trails in this area yet"}
         action={
           filtersActive ? (
             <button type="button" onClick={onClearFilters} className={secondaryButton}>
@@ -193,8 +233,8 @@ export function ResultsList({ status, error, trails, coverage, units, selectedId
         }
       >
         <ul className="mt-1 space-y-1 text-left sm:text-center">
+          {filtersActive ? <li>Clear some filters: many trails have no fee, permit, activity, dog or facility data yet, and are left out.</li> : null}
           <li>Zoom out or move the map, then search this area.</li>
-          {filtersActive ? <li>Clear some filters: many trails have no fee, dog or facility data yet.</li> : null}
           <li>Try a nearby town, park or mountain by name.</li>
         </ul>
       </Notice>
@@ -216,6 +256,7 @@ export function ListFooter({ coverage, capped }: { coverage: CoverageDto | null;
   return (
     <div className="space-y-1.5 border-t border-sand-200 px-4 py-4 text-xs text-muted sm:px-5">
       {capped ? <p className="text-sm font-medium text-ink">Zoom in to see more trails in this area.</p> : null}
+      {coverage?.state === "partial" ? <p className="text-sm font-medium text-ink">Part of this area couldn’t be loaded, so some trails may be missing.</p> : null}
       <p>
         Trail data{" "}
         <a href={MAP_ATTRIBUTION.osm.url} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-ink">
@@ -223,7 +264,10 @@ export function ListFooter({ coverage, capped }: { coverage: CoverageDto | null;
         </a>
         {updated ? ` · updated ${updated}` : ""}
       </p>
-      <p>Times are moving-time estimates. Distances and climbs come from mapped routes and elevation data; check conditions before you go.</p>
+      <p>
+        Times are moving-time estimates. Distances and climbs come from mapped routes and elevation data; where the climb is unknown, the time is
+        based on distance only and leaves out climbing. Check conditions before you go.
+      </p>
     </div>
   );
 }

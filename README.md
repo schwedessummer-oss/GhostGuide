@@ -54,7 +54,7 @@ hardening.
 | Trail data | `TrailDataProvider` interface (`src/server/trails/providers/**`): OSM via Overpass, RIDB. Normalized → enriched → `catalog_trails` / `catalog_pois` |
 | On-demand loading | 0.25° tile grid (`catalog_tiles`). A search requests missing tiles → deduplicated jobs plus immediate after-response loading. Global cap of 2 concurrent Overpass downloads |
 | Enrichment | AWS Terrain Tiles elevation (smoothed gain/loss, measured from the trailhead), Tobler duration incl. out-and-back totals, SAC/effort difficulty, trailhead (OSM trailhead → parking → route start), features and amenities from nearby POIs, admin names (Nominatim reverse), time zone, stable SEO slugs, cross-tile merging |
-| Maps | MapLibre GL JS + OpenFreeMap vector tiles + terrain hillshade (no API key) |
+| Maps | MapLibre GL JS + OpenFreeMap vector tiles (no API key); terrain hillshade on wide maps only |
 | Weather | MET Norway Locationforecast (cached, honoring `Expires`/`If-Modified-Since`), NWS alerts (US); sun times computed locally |
 | Jobs | Postgres queue. `/api/cron/jobs` runs fast safety/commerce jobs; `/api/cron/catalog` runs slow trail downloads. Both are triggered every minute by Supabase pg_cron (`npm run setup:cron`) |
 | Provider calls | One client (`src/server/providers/http.ts`): identifying User-Agent, timeouts, retries, global throttles, daily usage accounting |

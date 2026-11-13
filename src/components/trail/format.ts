@@ -191,9 +191,13 @@ export function sacGrade(sac: string | null | undefined): SacGrade | null {
   return best < 0 ? null : { ...SAC_GRADES[SAC_ORDER[best]], rank: best };
 }
 
-/** Small qualifier after the difficulty ("estimated", "SAC T2", "official"); null when none applies. */
-export function difficultyQualifier(source: DifficultySource | null, sacScale: string | null): string | null {
-  if (source === "estimated") return "estimated";
+/**
+ * Small qualifier after the difficulty ("estimated", "SAC T2", "official");
+ * null when none applies. `climbKnown` false (no elevation data): an
+ * estimated rating rests on distance alone and says so.
+ */
+export function difficultyQualifier(source: DifficultySource | null, sacScale: string | null, climbKnown = true): string | null {
+  if (source === "estimated") return climbKnown ? "estimated" : "estimated from distance";
   if (source === "official") return "official";
   if (source === "osm_sac_scale") {
     const g = sacGrade(sacScale);
@@ -202,18 +206,39 @@ export function difficultyQualifier(source: DifficultySource | null, sacScale: s
   return null;
 }
 
-/** One or two plain sentences on where the difficulty comes from. */
-export function difficultyExplanation(d: Difficulty, source: DifficultySource | null, sacScale: string | null): string {
+/**
+ * One or two plain sentences on where the difficulty comes from.
+ * `climbKnown` false means the trail has no elevation data: nothing then says
+ * the climb was used. (Since the climb-less rule in estimate.ts
+ * classifyDifficulty, an estimated rating without a climb is always Expert,
+ * by distance alone; ratings stored before that rule may still be easier,
+ * and are worded as a possible under-rating.)
+ */
+export function difficultyExplanation(d: Difficulty, source: DifficultySource | null, sacScale: string | null, climbKnown = true): string {
   const g = sacGrade(sacScale);
   const sacSentence = g
     ? `OpenStreetMap grades the path ${g.grade} (${g.name.toLowerCase()}) on the SAC hiking scale: ${g.summary}.`
     : null;
-  if (d === "unknown") return "There isn't enough mapped data to rate this trail.";
+  if (d === "unknown") {
+    if (climbKnown) return "There isn't enough mapped data to rate this trail.";
+    const base = "There is no elevation data for this trail, so Ghost Guide can't rate its effort.";
+    return sacSentence ? `${base} ${sacSentence.replace(/\.$/, "")}; that grade rates the path, not the effort of the hike.` : base;
+  }
   if (source === "osm_sac_scale" && sacSentence) return sacSentence;
   if (source === "official") return "Rating published by the land manager.";
-  const base = "Estimated by Ghost Guide from the hike's distance and climb. It is not an official rating.";
+  const base = climbKnown
+    ? "Estimated by Ghost Guide from the hike's distance and climb. It is not an official rating."
+    : d === "expert"
+      ? "Estimated by Ghost Guide from the hike's distance alone: there is no elevation data, but the distance already makes it Expert. It is not an official rating."
+      : "Estimated by Ghost Guide from the hike's distance alone: there is no elevation data, so the climb isn't counted and a hilly route may be harder than this. It is not an official rating.";
   return sacSentence ? `${base} ${sacSentence}` : base;
 }
+
+/** Flat-ground pace (km/h) of a moving time without elevation data; mirrors FLAT_SPEED_NO_PROFILE_KMH in src/server/trails/estimate.ts. */
+export const FLAT_PACE_KMH = 4.5;
+
+/** How a moving time is qualified when it rests on distance alone (no elevation data). */
+export const DISTANCE_ONLY_TIME = "from distance only (climb not counted)";
 
 // ---------------------------------------------------------------------------
 // Trail facts
@@ -398,6 +423,21 @@ export function formatRelativeAge(from: string | Date, now: Date = new Date()): 
   return plural(Math.floor(days / 365), "year");
 }
 
+/**
+ * An elevation source label as it should read today. Labels stored before
+ * src/server/geo/elevation.ts elevationSourceLabel changed say
+ * "AWS Terrain Tiles, ~27 m DEM (estimate)", as if 27 m were the elevation
+ * model's resolution; it is only the spacing of the grid that was sampled.
+ * Those are rewritten to the current wording ("sampled on a ~27 m grid; source
+ * data resolution varies by region"); current labels pass through unchanged.
+ */
+export function elevationSourceText(source: string | null | undefined): string | null {
+  if (typeof source !== "string" || !source.trim()) return null;
+  const s = source.trim();
+  const aws = /^aws terrain tiles\b/i.test(s) || /^elevation:\s*aws terrain tiles\b/i.test(s);
+  return s.replace(/~(\d+) m DEM\b/, (_, m: string) => `sampled on a ~${m} m grid${aws ? "; source data resolution varies by region" : ""}`);
+}
+
 export interface OsmFeatureRef {
   type: "node" | "way" | "relation";
   id: string;
@@ -487,10 +527,20 @@ export function formatWind(ms: number | null | undefined, units: Units): string 
   return units === "metric" ? `${Math.round(ms * 3.6)} km/h` : `${Math.round(ms * 2.236936)} mph`;
 }
 
+/**
+ * "1.2 mm" / "0.04 in". An amount above zero that would round to zero is
+ * shown as "<0.1 mm" / "<0.01 in" (MET reports 0.1 mm steps, and 0.1 mm is
+ * 0.004 in), so a forecast of some rain never reads as "0.00 in". Exactly 0
+ * stays "0.0 mm" / "0.00 in".
+ */
 export function formatPrecipitation(mm: number | null | undefined, units: Units): string | null {
   if (!finite(mm) || mm < 0) return null;
-  if (units === "metric") return `${fmt(mm, mm >= 10 ? 0 : 1)} mm`;
+  if (units === "metric") {
+    if (mm > 0 && mm < 0.05) return "<0.1 mm";
+    return `${fmt(mm, mm >= 10 ? 0 : 1)} mm`;
+  }
   const inches = mm / 25.4;
+  if (inches > 0 && inches < 0.005) return "<0.01 in";
   return `${fmt(inches, inches >= 10 ? 1 : 2)} in`;
 }
 
@@ -526,6 +576,77 @@ export function zoneAbbreviation(tz: string | null, at: Date = new Date()): stri
     .formatToParts(at)
     .find((p) => p.type === "timeZoneName");
   return part?.value ?? zone;
+}
+
+/** Local calendar date (YYYY-MM-DD) of an instant in the zone (UTC when unknown); null for an invalid instant. */
+export function localDateKey(at: string | Date, tz: string | null): string | null {
+  const d = typeof at === "string" ? new Date(at) : at;
+  if (Number.isNaN(d.getTime())) return null;
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: validZone(tz), year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(d);
+  const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("year").padStart(4, "0")}-${get("month")}-${get("day")}`;
+}
+
+/** The YYYY-MM-DD date after `date`; null when `date` is not a valid date key. */
+export function nextDateKey(date: string): string | null {
+  const d = new Date(`${date}T12:00:00Z`);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || Number.isNaN(d.getTime())) return null;
+  return new Date(d.getTime() + 86_400_000).toISOString().slice(0, 10);
+}
+
+/** Which local day an instant falls on, relative to `today` (YYYY-MM-DD in the zone). */
+export function dayOf(iso: string, tz: string | null, today: string | null): "today" | "tomorrow" | "other" | null {
+  const day = localDateKey(iso, tz);
+  if (!day || !today) return null;
+  if (day === today) return "today";
+  return day === nextDateKey(today) ? "tomorrow" : "other";
+}
+
+/**
+ * A clock time that names its day whenever it isn't `today` in the zone:
+ * "4:58 PM", "Tomorrow, 1:29 PM", "Sat, Nov 14, 1:29 PM". (With no `today`
+ * known, the weekday and date are always given.)
+ */
+export function formatClockWithDay(iso: string, tz: string | null, today: string | null): string {
+  const clock = formatClock(iso, tz);
+  const day = dayOf(iso, tz, today);
+  if (day === "today") return clock;
+  if (day === "tomorrow") return `Tomorrow, ${clock}`;
+  const date = new Intl.DateTimeFormat("en-US", { timeZone: validZone(tz), weekday: "short", month: "short", day: "numeric" }).format(new Date(iso));
+  return `${date}, ${clock}`;
+}
+
+/**
+ * A moment in a time window (e.g. an alert's onset or end), with the zone
+ * name in force AT that moment (right across a DST change): "8:00 PM EST
+ * today", or with weekday and date on any other day: "Thu, Nov 13, 8:00 PM
+ * EST". "Today" is the local date of `now` in the zone. Null for an invalid
+ * instant.
+ */
+export function formatZonedMoment(iso: string, tz: string | null, now: Date): string | null {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime()) || Number.isNaN(now.getTime())) return null;
+  const zone = validZone(tz);
+  const clock = new Intl.DateTimeFormat("en-US", { timeZone: zone, hour: "numeric", minute: "2-digit", timeZoneName: "short" }).format(d);
+  if (localDateKey(d, zone) === localDateKey(now, zone)) return `${clock} today`;
+  const date = new Intl.DateTimeFormat("en-US", { timeZone: zone, weekday: "short", month: "short", day: "numeric" }).format(d);
+  return `${date}, ${clock}`;
+}
+
+/** "Nov 11, 2026, 14:05 UTC": an absolute moment for a data snapshot; null for an invalid instant. */
+export function formatUtcMoment(iso: string): string | null {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+    timeZoneName: "short",
+  }).format(d);
 }
 
 /** "Today" / "Thu" for a YYYY-MM-DD date (already in the trail's zone). */

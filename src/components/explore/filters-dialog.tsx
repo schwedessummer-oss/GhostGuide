@@ -3,24 +3,25 @@
 import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from "react";
 import clsx from "clsx";
 import { X } from "lucide-react";
-import { ACTIVITIES, type Activity } from "@/domain/catalog";
 import { climbMToInput, climbUnit, inputToClimbM, inputToKm, kmToInput, lengthUnit, type Units } from "@/lib/units";
 import {
+  FILTER_ACTIVITIES,
   FILTER_DIFFICULTIES,
   FILTER_FEATURES,
   FILTER_ROUTE_TYPES,
   clearedFilters,
   type ExploreFilters,
+  type FilterActivity,
   type FilterDifficulty,
   type FilterFeature,
   type FilterRouteType,
 } from "./url-state";
 import { DIFFICULTY_META, FEATURE_LABEL, ROUTE_FORM_LABEL } from "./format";
 
-const ACTIVITY_LABEL: Record<Activity, string> = {
+/** Only activities some trail can match (see FILTER_ACTIVITIES). */
+const ACTIVITY_LABEL: Record<FilterActivity, string> = {
   hiking: "Hiking",
   walking: "Walking",
-  running: "Trail running",
   biking: "Biking",
   horse_riding: "Horse riding",
 };
@@ -39,7 +40,7 @@ interface Draft {
   difficulty: FilterDifficulty[];
   routeType: FilterRouteType[];
   features: FilterFeature[];
-  activity: Activity | null;
+  activity: FilterActivity | null;
   minLength: string;
   maxLength: string;
   maxClimb: string;
@@ -194,7 +195,7 @@ export function FiltersDialog({
         </div>
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-5">
-          <Section legend="Difficulty" hint="Where no rating is mapped, difficulty is estimated from distance and climb.">
+          <Section legend="Difficulty" hint="Where no rating is mapped, difficulty is estimated from distance and climb. Unrated trails are left out when you pick one.">
             <div className="flex flex-wrap gap-2">
               {FILTER_DIFFICULTIES.map((d) => (
                 <ChipCheck key={d} label={DIFFICULTY_META[d].label} dot={DIFFICULTY_META[d].color} checked={draft.difficulty.includes(d)} onChange={() => set("difficulty", toggle(draft.difficulty, d))} />
@@ -318,15 +319,15 @@ export function FiltersDialog({
             </div>
           </Section>
 
-          <Section legend="Permit">
+          {/* No "Not required" choice: no data source says a permit is not needed (unknown is not "not required"). */}
+          <Section legend="Permit" hint="“Required” shows only trails whose mapped data says a permit is needed. Most trails have no permit data, so check with the land manager.">
             <div className="flex flex-wrap gap-2">
               <ChipRadio name={`${id}-permit`} label="Any" checked={draft.permit === null} onChange={() => set("permit", null)} />
-              <ChipRadio name={`${id}-permit`} label="Not required" checked={draft.permit === "not_required"} onChange={() => set("permit", "not_required")} />
               <ChipRadio name={`${id}-permit`} label="Required" checked={draft.permit === "required"} onChange={() => set("permit", "required")} />
             </div>
           </Section>
 
-          <Section legend="Activity">
+          <Section legend="Activity" hint="Only trails whose mapped data lists the activity. Many paths have no activity data yet, so they are left out.">
             <label htmlFor={`${id}-activity`} className="sr-only">
               Activity
             </label>
@@ -334,10 +335,10 @@ export function FiltersDialog({
               id={`${id}-activity`}
               className={clsx(fieldInput, "pr-8 sm:max-w-xs")}
               value={draft.activity ?? ""}
-              onChange={(e) => set("activity", (e.target.value || null) as Activity | null)}
+              onChange={(e) => set("activity", (e.target.value || null) as FilterActivity | null)}
             >
               <option value="">Any activity</option>
-              {ACTIVITIES.map((a) => (
+              {FILTER_ACTIVITIES.map((a) => (
                 <option key={a} value={a}>
                   {ACTIVITY_LABEL[a]}
                 </option>

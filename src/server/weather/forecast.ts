@@ -137,10 +137,11 @@ export function forecastPeriods(steps: readonly MetnoStep[], fromMs = -Infinity)
  */
 export function symbolSeverity(code: string | null | undefined): number {
   if (typeof code !== "string") return -1;
-  const base = code.replace(/_(day|night|polartwilight)$/, "");
+  // MET Norway spells two light codes with a double "s" (lightssleet…, lightssnow…).
+  const base = code.replace(/_(day|night|polartwilight)$/, "").replace(/^lights(sleet|snow)/, "light$1");
   const simple: Record<string, number> = { clearsky: 0, fair: 1, partlycloudy: 2, cloudy: 3, fog: 4 };
   if (base in simple) return simple[base];
-  const m = /^(light|heavy)?s?(rain|sleet|snow)(showers)?(andthunder)?$/.exec(base);
+  const m = /^(light|heavy)?(rain|sleet|snow)(showers)?(andthunder)?$/.exec(base);
   if (!m) return -1;
   const intensity = m[1] === "light" ? 10 : m[1] === "heavy" ? 30 : 20;
   const kind = m[2] === "snow" ? 2 : m[2] === "sleet" ? 1 : 0;

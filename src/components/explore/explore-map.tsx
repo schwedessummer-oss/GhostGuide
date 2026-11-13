@@ -340,6 +340,8 @@ export function ExploreMap({
       initialCenter={initialBbox ? undefined : { lng: -50, lat: 32 }}
       initialZoom={initialBbox ? undefined : 1.3}
       navigationControl={false}
+      // No terrain shading on Explore: ~1 MB of DEM tiles per view, more with every pan.
+      hillshade={false}
       onReady={onReady}
     >
       {children}

@@ -6,6 +6,7 @@ import { useSyncExternalStore } from "react";
 import clsx from "clsx";
 import { Bookmark, CalendarDays, CircleUserRound, Compass, Footprints, type LucideIcon } from "lucide-react";
 import { activeNavKey, primaryNav, type NavKey } from "./nav";
+import { useSession } from "./session";
 
 const ICONS: Record<NavKey, LucideIcon> = {
   explore: Compass,
@@ -71,8 +72,13 @@ export function HeaderNavLinks({ signedIn, extra = [] }: { signedIn: boolean; ex
   );
 }
 
-/** Phone bottom tab bar (below md): fixed, safe-area aware, 56 px targets. */
-export function TabBar({ signedIn }: { signedIn: boolean }) {
+/**
+ * Phone bottom tab bar (below md): fixed, safe-area aware, 56 px targets.
+ * Profile follows the visitor's session after hydration (useSession); the
+ * server HTML is the signed-out version, the same for every visitor.
+ */
+export function TabBar() {
+  const { signedIn } = useSession();
   const active = activeNavKey(useHydratedPathname());
   return (
     <nav

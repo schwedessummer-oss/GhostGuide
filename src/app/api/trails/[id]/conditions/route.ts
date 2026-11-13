@@ -2,7 +2,7 @@ import { z } from "zod";
 import { log } from "@/server/log";
 import { checkRateLimit } from "@/server/rate-limit";
 import { clientIpFrom } from "@/server/request";
-import { getTrailConditions } from "@/server/weather/conditions";
+import { conditionsCacheControl, loadTrailConditions } from "@/server/weather/conditions";
 
 export const dynamic = "force-dynamic";
 
@@ -19,8 +19,12 @@ const NO_STORE = { "Cache-Control": "no-store" } as const;
  * Public and read-only; 60 requests/min per client IP. 404 for ids that are
  * not UUIDs, unknown trails and hidden trails alike. A failing weather or
  * alerts provider is NOT an error: the body says "unavailable" (200).
- * Cache-Control: "public, s-maxage=300, stale-while-revalidate=600" when the
- * forecast is available; "no-store" otherwise, so the next request retries.
+ * Cache-Control (conditionsCacheControl): the body is built for the moment of
+ * the request (daylight left, "finish if you start now", the current hour,
+ * active alerts), so a complete response is shared for at most 60 s with no
+ * stale-while-revalidate ("public, max-age=0, s-maxage=60"). Any degraded
+ * response (forecast unavailable or served from the stale-if-error fallback,
+ * alerts unavailable) is "no-store", so the next request retries.
  * Errors are JSON ({ error }) without internals.
  *
  * The context type is written out (not the generated RouteContext) so
@@ -42,13 +46,9 @@ export async function GET(request: Request, ctx: { params: Promise<{ id: string 
       );
     }
 
-    const conditions = await getTrailConditions(id);
-    if (!conditions) return notFound();
-    return Response.json(conditions, {
-      headers: {
-        "Cache-Control": conditions.forecastStatus === "ok" ? "public, s-maxage=300, stale-while-revalidate=600" : "no-store",
-      },
-    });
+    const result = await loadTrailConditions(id);
+    if (!result) return notFound();
+    return Response.json(result.conditions, { headers: { "Cache-Control": conditionsCacheControl(result) } });
   } catch (err) {
     log.error("api.trail_conditions_failed", { error: err instanceof Error ? err.message : String(err) });
     return Response.json({ error: "Could not load trail conditions. Please try again." }, { status: 500, headers: NO_STORE });

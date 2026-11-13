@@ -7,7 +7,11 @@ import { log } from "@/server/log";
  * One HTTP client for every external data provider:
  *  - identifying User-Agent (required by OSM, Nominatim, MET Norway, NWS policies)
  *  - per-attempt timeout, bounded retries with backoff for retryable failures
- *  - optional global request spacing across all server instances (DB-backed)
+ *  - optional global request spacing across all server instances (DB-backed;
+ *    a slot is reserved only when the caller will wait for it, and an
+ *    unused slot is given back when the caller aborts before sending)
+ *  - `signal` aborts every wait (retry backoff, throttle slot) as well as
+ *    the request itself
  *  - usage accounting per provider per UTC day (public.external_api_usage),
  *    shown in the admin "Data providers" view for cost control
  *
@@ -54,10 +58,15 @@ export interface ProviderFetchOptions {
   retries?: number;
   /** Minimum spacing between requests to this provider across all instances. */
   minIntervalMs?: number;
-  /** Give up instead of waiting longer than this for a throttle slot (default 10 s). */
+  /**
+   * Give up ("Provider is busy", retryable) instead of waiting longer than
+   * this for a throttle slot (default 10 s, at most MAX_THROTTLE_WAIT_MS).
+   * A request that gives up does not take a slot.
+   */
   maxThrottleWaitMs?: number;
   /** Treat these HTTP statuses as successful responses (e.g. 304, 404). */
   okStatuses?: number[];
+  /** Cancels waits and the request; throws a non-retryable "Request aborted" ProviderError. */
   signal?: AbortSignal;
 }
 
@@ -69,19 +78,99 @@ export interface ProviderResponse {
   text(): string;
 }
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+class AbortedWait extends Error {
+  constructor() {
+    super("aborted");
+    this.name = "AbortedWait";
+  }
+}
 
-/** Reserve the next request slot for a provider; returns how long to wait. */
-async function reserveSlot(provider: ProviderKey, minIntervalMs: number): Promise<number> {
+/** Sleep `ms`; rejects with AbortedWait as soon as `signal` aborts. */
+function sleep(ms: number, signal?: AbortSignal): Promise<void> {
+  if (signal?.aborted) return Promise.reject(new AbortedWait());
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      clearTimeout(timer);
+      reject(new AbortedWait());
+    };
+    const timer = setTimeout(() => {
+      signal?.removeEventListener("abort", onAbort);
+      resolve();
+    }, Math.max(0, ms));
+    signal?.addEventListener("abort", onAbort, { once: true });
+  });
+}
+
+/** Longest wait any caller may accept for a throttle slot (caps maxThrottleWaitMs). */
+export const MAX_THROTTLE_WAIT_MS = 120_000;
+/** Default for maxThrottleWaitMs. */
+export const DEFAULT_THROTTLE_WAIT_MS = 10_000;
+
+export interface ThrottleSlot {
+  /** How long to wait before sending (ms). */
+  waitMs: number;
+  /** next_allowed_at after this reservation (DB text form), to give the slot back. */
+  reservedUntil: string;
+}
+
+/**
+ * Reserve the next request slot for a provider, but ONLY when it starts
+ * within `maxWaitMs`: a caller that would give up anyway never moves the
+ * shared clock, so a burst above the provider's rate sheds only the excess
+ * instead of pushing next_allowed_at ever further ahead (which would reject
+ * every later request for as long as the backlog takes to drain). Returns
+ * null when the slot would be too far away.
+ *
+ * A backlog longer than any caller may wait (left by an older version of
+ * this function) is clamped first, so it can never lock the provider out.
+ */
+export async function reserveThrottleSlot(provider: ProviderKey, minIntervalMs: number, maxWaitMs: number): Promise<ThrottleSlot | null> {
+  const intervalSec = Math.max(0, minIntervalMs) / 1000;
+  const maxWaitSec = Math.min(MAX_THROTTLE_WAIT_MS, Math.max(0, maxWaitMs)) / 1000;
+  const capSec = MAX_THROTTLE_WAIT_MS / 1000 + intervalSec;
   return withSystem(async (tx) => {
     await tx`insert into public.provider_throttle (provider) values (${provider}) on conflict (provider) do nothing`;
-    const [row] = await tx<{ waitMs: number }[]>`
-      update public.provider_throttle
-         set next_allowed_at = greatest(next_allowed_at, now()) + make_interval(secs => ${minIntervalMs / 1000})
-       where provider = ${provider}
-       returning greatest(0, extract(epoch from (next_allowed_at - make_interval(secs => ${minIntervalMs / 1000}) - now())) * 1000)::float8 as "waitMs"`;
-    return row?.waitMs ?? 0;
+    const [row] = await tx<{ waitMs: number; reservedUntil: string }[]>`
+      with cur as (
+        select least(greatest(next_allowed_at, now()), now() + make_interval(secs => ${capSec}::float8)) as slot
+          from public.provider_throttle
+         where provider = ${provider}
+           for update)
+      update public.provider_throttle p
+         set next_allowed_at = cur.slot + make_interval(secs => ${intervalSec}::float8)
+        from cur
+       where p.provider = ${provider}
+         and cur.slot <= now() + make_interval(secs => ${maxWaitSec}::float8)
+      returning greatest(0, extract(epoch from (cur.slot - now())) * 1000)::float8 as "waitMs",
+                p.next_allowed_at::text as "reservedUntil"`;
+    if (row) return { waitMs: row.waitMs, reservedUntil: row.reservedUntil };
+    // Rejected: heal a legacy backlog beyond what any caller may wait (no-op otherwise).
+    await tx`
+      update public.provider_throttle set next_allowed_at = now() + make_interval(secs => ${capSec}::float8)
+       where provider = ${provider} and next_allowed_at > now() + make_interval(secs => ${capSec}::float8)`;
+    return null;
   });
+}
+
+/**
+ * Give an unused slot back (the caller gave up before sending), but only
+ * when nobody reserved after it: then the clock returns to where this slot
+ * began. Never throws.
+ */
+export async function releaseThrottleSlot(provider: ProviderKey, minIntervalMs: number, slot: ThrottleSlot): Promise<boolean> {
+  try {
+    const rows = await withSystem(
+      (tx) => tx`
+        update public.provider_throttle
+           set next_allowed_at = greatest(now(), next_allowed_at - make_interval(secs => ${Math.max(0, minIntervalMs) / 1000}::float8))
+         where provider = ${provider} and next_allowed_at = ${slot.reservedUntil}::timestamptz
+        returning 1`,
+    );
+    return rows.length > 0;
+  } catch (err) {
+    log.warn("provider.throttle_release_failed", { provider, error: err instanceof Error ? err.message : String(err) });
+    return false;
+  }
 }
 
 /** Record one request outcome; never throws. */
@@ -132,14 +221,26 @@ export async function providerFetch(opts: ProviderFetchOptions): Promise<Provide
   const timeoutMs = opts.timeoutMs ?? 20_000;
   let lastError: ProviderError | null = null;
 
+  const abortedError = () => new ProviderError(opts.provider, "Request aborted", null, false);
+
   for (let attempt = 0; attempt < attempts; attempt++) {
-    if (attempt > 0) await sleep(Math.min(8_000, 750 * 2 ** (attempt - 1)) + Math.floor(Math.random() * 250));
-    if (opts.minIntervalMs) {
-      const wait = await reserveSlot(opts.provider, opts.minIntervalMs);
-      if (wait > (opts.maxThrottleWaitMs ?? 10_000)) {
-        throw new ProviderError(opts.provider, "Provider is busy (rate limit queue full)", null, true);
+    if (opts.signal?.aborted) throw abortedError();
+    let slot: ThrottleSlot | null = null;
+    try {
+      if (attempt > 0) await sleep(Math.min(8_000, 750 * 2 ** (attempt - 1)) + Math.floor(Math.random() * 250), opts.signal);
+      if (opts.minIntervalMs) {
+        slot = await reserveThrottleSlot(opts.provider, opts.minIntervalMs, opts.maxThrottleWaitMs ?? DEFAULT_THROTTLE_WAIT_MS);
+        if (!slot) throw new ProviderError(opts.provider, "Provider is busy (rate limit queue full)", null, true);
+        if (slot.waitMs > 0) await sleep(slot.waitMs, opts.signal);
       }
-      if (wait > 0) await sleep(wait);
+      if (opts.signal?.aborted) throw new AbortedWait();
+    } catch (err) {
+      if (err instanceof AbortedWait) {
+        // Gave up before sending: give the slot back so it is not wasted.
+        if (slot && opts.minIntervalMs) await releaseThrottleSlot(opts.provider, opts.minIntervalMs, slot);
+        throw abortedError();
+      }
+      throw err;
     }
 
     const controller = new AbortController();

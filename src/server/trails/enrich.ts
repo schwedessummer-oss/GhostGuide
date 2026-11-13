@@ -15,6 +15,7 @@ import {
 } from "@/domain/catalog";
 import { haversineM } from "@/domain/geo";
 import type { ElevationResult } from "@/server/geo/elevation";
+import { countryCodeAt, sameCountry } from "@/server/geo/country";
 import type { AdminArea } from "@/server/geo/geocode";
 import { boundsOfLines, cleanLines, distancePointToLinesM, lengthWeightedCentroid, lineEndpoints, linesLengthM } from "@/server/geo/geodesy";
 import { highestSacScale, worstTrailVisibility } from "@/server/trails/providers/osm/tags";
@@ -32,8 +33,10 @@ import type { Line, NormalizedTrail, ProviderId } from "./types";
  * never a guess. Distances are great-circle metres (src/server/geo/geodesy).
  *
  * TRAILHEAD (first rule that matches)
- *   1. "osm_trailhead": a mapped trailhead POI (highway=trailhead) within
- *      150 m of a route endpoint (the start or end of any line) — nearest wins;
+ *   1. a trailhead POI within 150 m of a route endpoint (the start or end of
+ *      any line) — nearest wins. Labelled by its source: "osm_trailhead" for
+ *      an OpenStreetMap highway=trailhead, "official" for a trailhead from an
+ *      official dataset (e.g. a Recreation.gov RIDB facility);
  *   2. "parking": a public parking POI within 300 m of an endpoint; the
  *      trailhead point is the parking location;
  *   3. "route_start": the first vertex of the route.
@@ -44,6 +47,13 @@ import type { Line, NormalizedTrail, ProviderId } from "./types";
  *   has_toilets         500 m of the trailhead
  *   has_drinking_water  200 m of the route (mapped drinking water only; springs are not)
  *   has_camping         500 m of the route (campsites)
+ *
+ * PLACE (country, region, nearest place)
+ *   The country is the one at the trailhead (exact point, offline borders:
+ *   src/server/geo/country.ts). Region and nearest place come from reverse
+ *   geocoding a 0.1° cell (approximate) and are kept only when that cell's
+ *   country is the same country; otherwise they are dropped (unknown), never
+ *   allowed to contradict the country.
  */
 
 export const TRAILHEAD_POI_RADIUS_M = 150;
@@ -71,13 +81,15 @@ export const ENRICHMENT_POI_CATEGORIES: readonly PoiCategory[] = [
 
 /** An outdoor POI near a trail (from this tile's response or already stored). */
 export interface NearbyPoi {
+  /** Data provider of the POI ("osm", "ridb", ...): decides how a trailhead is attributed. */
+  provider: string;
   providerId: string;
   category: PoiCategory;
   lng: number;
   lat: number;
 }
 
-export type DerivedTrailheadSource = "osm_trailhead" | "parking" | "route_start";
+export type DerivedTrailheadSource = "osm_trailhead" | "official" | "parking" | "route_start";
 
 export interface TrailheadChoice {
   point: LngLat;
@@ -188,6 +200,8 @@ export function geometryHash(lines: Line[]): string {
 const isValidPoi = (p: NearbyPoi) =>
   p !== null &&
   typeof p === "object" &&
+  typeof p.provider === "string" &&
+  p.provider.length > 0 &&
   Number.isFinite(p.lng) &&
   Number.isFinite(p.lat) &&
   Math.abs(p.lat) <= 90 &&
@@ -218,7 +232,11 @@ export function selectTrailhead(lines: Line[], pois: readonly NearbyPoi[]): Trai
   const list = Array.isArray(pois) ? pois : [];
 
   const trailhead = nearestTo(ends, list, "trailhead", TRAILHEAD_POI_RADIUS_M);
-  if (trailhead) return { point: { lng: trailhead.poi.lng, lat: trailhead.poi.lat }, source: "osm_trailhead", poiId: trailhead.poi.providerId };
+  if (trailhead) {
+    // Attribute the trailhead to where it came from: OSM mapping, or an official dataset (RIDB, ...).
+    const source = trailhead.poi.provider === "osm" ? "osm_trailhead" : "official";
+    return { point: { lng: trailhead.poi.lng, lat: trailhead.poi.lat }, source, poiId: trailhead.poi.providerId };
+  }
 
   const parking = nearestTo(ends, list, "parking", TRAILHEAD_PARKING_RADIUS_M);
   if (parking) return { point: { lng: parking.poi.lng, lat: parking.poi.lat }, source: "parking", poiId: parking.poi.providerId };
@@ -357,19 +375,65 @@ const firstKnown = <T>(values: readonly T[], unknown: T): T => values.find((v) =
 const unique = <T>(values: readonly T[]): T[] => [...new Set(values)];
 
 /**
- * Attributes of a trail merged from several pieces. `primary` (the piece
- * just fetched) wins wherever a single value is needed; otherwise:
- * the hardest sac_scale and the worst trail_visibility of any piece (the
- * whole trail is at least that demanding), the union of surfaces and
- * activities, a fee/permit requirement if any piece states one (an explicit
- * "no fee" only when no piece says yes), the most recent source timestamp,
- * and for text fields the first value any piece has. Provenance tags of the
- * primary piece win per key.
+ * A policy over several pieces, as tags.ts aggregates the ways of one tile:
+ * any restrictive value wins (most restrictive first in `restrictive`); the
+ * permissive value only when EVERY piece states it; otherwise unknown. So
+ * a piece that allows something can never hide a piece that forbids it, and
+ * the result does not depend on which piece was fetched last.
+ */
+export function combinePolicy<T extends string>(values: readonly T[], restrictive: readonly T[], permissive: T, unknown: T): T {
+  for (const r of restrictive) if (values.includes(r)) return r;
+  return values.length > 0 && values.every((v) => v === permissive) ? permissive : unknown;
+}
+
+/** A requirement (fee, permit): true when any piece requires it, false only when every piece says no, else unknown. */
+export function combineRequirement(values: readonly (boolean | null)[]): boolean | null {
+  if (values.includes(true)) return true;
+  return values.length > 0 && values.every((v) => v === false) ? false : null;
+}
+
+/** OSM access values that restrict who may use a way, most restrictive first. */
+const RESTRICTIVE_ACCESS = ["no", "private", "customers", "destination", "permit", "permissive"] as const;
+/** OSM access values meaning open to the public. */
+const PUBLIC_ACCESS: ReadonlySet<string> = new Set(["yes", "designated", "public"]);
+
+/**
+ * The access value of several pieces. Any restrictive value wins (the most
+ * restrictive one, or an unrecognized value, which is treated as a
+ * restriction: two different unrecognized values conflict → null). "Open to
+ * the public" only when EVERY piece states a public value; a piece without
+ * an access tag leaves it unknown (null).
+ */
+export function combineAccess(values: readonly (string | null)[]): string | null {
+  const norm = (v: string) => v.trim().toLowerCase();
+  const stated = values.filter((v): v is string => typeof v === "string" && v.trim().length > 0);
+  if (stated.length === 0) return null;
+  for (const r of RESTRICTIVE_ACCESS) {
+    const hit = stated.find((v) => norm(v) === r);
+    if (hit !== undefined) return hit;
+  }
+  const other = stated.filter((v) => !PUBLIC_ACCESS.has(norm(v)));
+  if (other.length > 0) return new Set(other.map(norm)).size === 1 ? other[0] : null;
+  return stated.length === values.length ? stated[0] : null;
+}
+
+/**
+ * Attributes of a trail merged from several pieces (`primary` is the piece
+ * just fetched, `others` the parts stored from other tiles). Safety- and
+ * access-relevant fields are combined conservatively and independently of
+ * piece order (the same rules tags.ts applies to the ways of one tile):
+ *   dog policy      not_allowed > leashed > allowed only if every piece allows
+ *   wheelchair      no > limited > yes only if every piece says yes
+ *   access          restrictive wins; public only if every piece says so
+ *   fee / permit    required if any piece requires it; "no fee" / "no
+ *                   permit" only when every piece says so; otherwise unknown
+ *   sac_scale       the hardest of any piece; trail_visibility the worst
+ * plus the union of surfaces and activities, the most recent source
+ * timestamp, the primary's name, and for descriptive text fields the first
+ * value any piece has. Provenance tags of the primary piece win per key.
  */
 export function combineAttributes(primary: TrailAttributes, others: readonly TrailAttributes[]): TrailAttributes {
   const all = [primary, ...others];
-  const fee = all.some((a) => a.feeRequired === true) ? true : all.some((a) => a.feeRequired === false) ? false : null;
-  const permit = all.some((a) => a.permitRequired === true) ? true : all.some((a) => a.permitRequired === false) ? false : null;
   const timestamps = all.map((a) => a.sourceUpdatedAt?.getTime()).filter((t): t is number => typeof t === "number" && Number.isFinite(t));
   const tags: Record<string, string> = {};
   for (const a of [...others].reverse()) Object.assign(tags, a.tags);
@@ -382,11 +446,11 @@ export function combineAttributes(primary: TrailAttributes, others: readonly Tra
     surfaces: unique(all.flatMap((a) => a.surfaces)),
     activities: unique(all.flatMap((a) => a.activities)),
     description: firstKnown(all.map((a) => a.description), null),
-    dogPolicy: firstKnown<DogPolicy>(all.map((a) => a.dogPolicy), "unknown"),
-    wheelchair: firstKnown<WheelchairAccess>(all.map((a) => a.wheelchair), "unknown"),
-    feeRequired: fee,
-    permitRequired: permit,
-    access: firstKnown(all.map((a) => a.access), null),
+    dogPolicy: combinePolicy<DogPolicy>(all.map((a) => a.dogPolicy), ["not_allowed", "leashed"], "allowed", "unknown"),
+    wheelchair: combinePolicy<WheelchairAccess>(all.map((a) => a.wheelchair), ["no", "limited"], "yes", "unknown"),
+    feeRequired: combineRequirement(all.map((a) => a.feeRequired)),
+    permitRequired: combineRequirement(all.map((a) => a.permitRequired)),
+    access: combineAccess(all.map((a) => a.access)),
     seasonality: firstKnown(all.map((a) => a.seasonality), null),
     operator: firstKnown(all.map((a) => a.operator), null),
     website: firstKnown(all.map((a) => a.website), null),
@@ -412,9 +476,50 @@ export interface TrailRecordInput {
   elevation: ElevationSnapshot | null;
   /** Outdoor POIs near the route (see POI_LOOKUP_RADIUS_M). */
   pois: readonly NearbyPoi[];
-  /** Reverse-geocoded names at the centroid, or null when unavailable. */
+  /**
+   * Reverse-geocoded names for the route's 0.1° cell (approximate), or null
+   * when unavailable. Kept only where they agree with the exact country.
+   */
   admin: AdminArea | null;
   timezone: string | null;
+  /** Country at an exact point (default: countryCodeAt, offline borders). Null when unknown. */
+  countryAt?: (lat: number, lng: number) => string | null;
+}
+
+export interface TrailPlace {
+  /** ISO 3166-1 alpha-2 (lower case) at the point, or null when unknown. */
+  countryCode: string | null;
+  regionName: string | null;
+  nearestPlace: string | null;
+  /**
+   * False when reverse-geocoded names were available but dropped because
+   * their cell lies in another country (or the point's country is unknown).
+   */
+  namesConsistent: boolean;
+}
+
+/**
+ * Country, region and nearest place of a trail at `point` (see PLACE in the
+ * module header): the country from the exact point; the cell's names only
+ * when the cell is in that same country (sovereign-level comparison, so
+ * "pr" and "us" agree), never a neighbour's region next to our country.
+ */
+export function resolvePlace(point: LngLat, admin: AdminArea | null, countryAt: (lat: number, lng: number) => string | null = countryCodeAt): TrailPlace {
+  let exact: string | null = null;
+  try {
+    const c = countryAt(point.lat, point.lng);
+    exact = typeof c === "string" && /^[a-z]{2}$/i.test(c.trim()) ? c.trim().toLowerCase() : null;
+  } catch {
+    exact = null;
+  }
+  const hasNames = !!admin && (admin.regionName !== null || admin.nearestPlace !== null);
+  const consistent = !!admin && exact !== null && sameCountry(admin.countryCode, exact);
+  return {
+    countryCode: exact,
+    regionName: consistent ? admin!.regionName : null,
+    nearestPlace: consistent ? admin!.nearestPlace : null,
+    namesConsistent: consistent || !hasNames,
+  };
 }
 
 const finiteOrNull = (v: unknown): number | null => (typeof v === "number" && Number.isFinite(v) ? Math.round(v) : null);
@@ -470,7 +575,8 @@ export function buildTrailRecord(input: TrailRecordInput): TrailRecord | null {
   const difficultySource = classified.difficulty === "unknown" ? null : classified.source;
   const familyFriendly = isFamilyFriendly({ difficulty: classified.difficulty, sacScale, distanceM, gainM, lossM, routeType });
 
-  const regionName = cleanText(input.admin?.regionName ?? null, 200);
+  const place = resolvePlace(trailhead.point, input.admin ?? null, input.countryAt);
+  const regionName = cleanText(place.regionName, 200);
   const nameEn = cleanText(a.nameEn, 300);
   const description = a.description ?? null;
   const website = a.website ?? null;
@@ -482,10 +588,10 @@ export function buildTrailRecord(input: TrailRecordInput): TrailRecord | null {
     name,
     nameEn,
     baseSlug: slugify(name, nameEn, input.providerId),
-    countryCode: countryCodeOrUnknown(input.admin?.countryCode),
+    countryCode: countryCodeOrUnknown(place.countryCode),
     regionName,
     regionSlug: regionSlugFor(regionName),
-    nearestPlace: cleanText(input.admin?.nearestPlace ?? null, 200),
+    nearestPlace: cleanText(place.nearestPlace, 200),
     timezone: cleanText(input.timezone, 64),
     centroid,
     trailhead: trailhead.point,

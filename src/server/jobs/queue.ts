@@ -71,7 +71,24 @@ export interface RunJobsOptions {
   excludeKindPrefixes?: string[];
   /** Passed to handlers as ctx.deadline. */
   deadline?: Date;
+  /** Claim order (default "run_at"); see ClaimOrder. */
+  order?: ClaimOrder;
 }
+
+/**
+ * Which due jobs are claimed first.
+ *   run_at          oldest due first (FIFO): the default.
+ *   recent_request  for on-demand work that users wait for (catalog tile
+ *                   loads): jobs whose payload carries a numeric
+ *                   `requestedAt` (epoch ms of the latest user request for
+ *                   it) run newest request first, so a backlog of areas
+ *                   nobody is looking at any more never delays the area a
+ *                   user is looking at now. Jobs without `requestedAt`
+ *                   (maintenance, small) come before them, and background
+ *                   work (`requestedAt` 0) after them; ties run oldest due
+ *                   first.
+ */
+export type ClaimOrder = "run_at" | "recent_request";
 
 const LOCK_TIMEOUT_SEC = 300;
 
@@ -112,8 +129,19 @@ function prefixPatterns(prefixes: string[] | undefined): string[] {
   return (prefixes ?? []).filter((p) => typeof p === "string" && p.length > 0).map((p) => p.replace(/[\\%_]/g, "\\$&") + "%");
 }
 
-export async function claimDueJobs(limit: number, workerId: string, kinds?: string[], excludeKindPrefixes?: string[]): Promise<Job[]> {
+export async function claimDueJobs(
+  limit: number,
+  workerId: string,
+  kinds?: string[],
+  excludeKindPrefixes?: string[],
+  order: ClaimOrder = "run_at",
+): Promise<Job[]> {
   const excluded = prefixPatterns(excludeKindPrefixes);
+  const orderBy =
+    order === "recent_request"
+      ? sql()`order by (case when jsonb_typeof(payload->'requestedAt') = 'number' then (payload->>'requestedAt')::float8 end) desc nulls first,
+                run_at asc, id asc`
+      : sql()`order by run_at`;
   return sql()<Job[]>`
     update public.jobs j
     set status = 'running', locked_at = now(), locked_by = ${workerId}, attempts = j.attempts + 1
@@ -125,7 +153,7 @@ export async function claimDueJobs(limit: number, workerId: string, kinds?: stri
       )
       ${kinds?.length ? sql()`and kind = any(${kinds}::text[])` : sql()``}
       ${excluded.length ? sql()`and not (kind like any(${excluded}::text[]))` : sql()``}
-      order by run_at
+      ${orderBy}
       for update skip locked
       limit ${limit}
     )
@@ -176,7 +204,7 @@ export interface RunSummary {
 
 export async function runDueJobs(handlers: JobHandlers, opts: RunJobsOptions = {}): Promise<RunSummary> {
   const workerId = opts.workerId ?? `worker-${process.pid}-${Math.random().toString(36).slice(2, 8)}`;
-  const jobs = await claimDueJobs(opts.limit ?? 25, workerId, opts.kinds, opts.excludeKindPrefixes);
+  const jobs = await claimDueJobs(opts.limit ?? 25, workerId, opts.kinds, opts.excludeKindPrefixes, opts.order);
   const summary: RunSummary = { claimed: jobs.length, succeeded: 0, noop: 0, retried: 0, dead: 0, deferred: 0 };
   for (const job of jobs) {
     const handler = handlers[job.kind];

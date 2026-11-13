@@ -33,7 +33,7 @@ function RemoveForm({ trailId, trailName }: { trailId: string; trailName: string
 
 function SavedTrailRow({ saved, trail }: { saved: SavedTrailRef; trail: TrailSummaryDto }) {
   const duration = formatDurationEstimate(trail.hikeDurationMin);
-  const qualifier = difficultyQualifier(trail.difficultySource, null);
+  const qualifier = difficultyQualifier(trail.difficultySource, null, trail.hikeGainM !== null);
   const location = locationParts(trail);
   return (
     <li className="flex items-start justify-between gap-2 py-4 pl-4 pr-2 sm:gap-4 sm:px-5">
@@ -58,7 +58,12 @@ function SavedTrailRow({ saved, trail }: { saved: SavedTrailRef; trail: TrailSum
               <Measure value={trail.hikeGainM} kind="climb" /> <span className="text-muted">climb</span>
             </span>
           ) : null}
-          {duration ? <span>≈ {duration}</span> : null}
+          {duration ? (
+            <span>
+              ≈ {duration}
+              {trail.hikeGainM === null ? <span className="text-muted"> · distance only</span> : null}
+            </span>
+          ) : null}
           {trail.difficulty !== "unknown" ? (
             <span>
               {difficultyLabel(trail.difficulty)}

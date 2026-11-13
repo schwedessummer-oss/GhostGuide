@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Binoculars, Droplets, Flame, House, LoaderCircle, Mountain, Sprout, Waves, type LucideIcon } from "lucide-react";
 import type { Difficulty, DifficultySource, TrailFeature } from "@/domain/catalog";
-import { DIFFICULTY_META, FEATURE_LABEL, difficultyText, topFeatures } from "./format";
+import { DIFFICULTY_META, FEATURE_LABEL, difficultyEstimateNote, difficultyText, topFeatures } from "./format";
 
 /*
  * Small presentational pieces shared by the Explore list, preview card and
@@ -16,18 +16,33 @@ const TONE_CLASS = {
   blue: "bg-blue-bg text-blue-ink border-[#c9daf8]",
 } as const;
 
-/** "Hard · estimated": the estimate is stated in words, never by color alone. */
-export function TrailDifficulty({ difficulty, source, className }: { difficulty: Difficulty; source: DifficultySource | null; className?: string }) {
+/**
+ * "Hard · estimated": the estimate is stated in words, never by color alone.
+ * `climbKnown` false (no elevation data): an estimate rests on distance only,
+ * which the badge says ("from distance only").
+ */
+export function TrailDifficulty({
+  difficulty,
+  source,
+  climbKnown = true,
+  className,
+}: {
+  difficulty: Difficulty;
+  source: DifficultySource | null;
+  climbKnown?: boolean;
+  className?: string;
+}) {
   const meta = DIFFICULTY_META[difficulty] ?? DIFFICULTY_META.unknown;
   const { label, estimated } = difficultyText(difficulty, source);
+  const note = difficultyEstimateNote(difficulty, source, climbKnown);
   return (
     <span
       className={clsx("inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold whitespace-nowrap", TONE_CLASS[meta.tone], className)}
-      title={estimated ? "Estimated from distance and climb; no official rating is mapped." : undefined}
+      title={note ?? undefined}
     >
       <span aria-hidden className="size-2 rounded-full" style={{ background: meta.color }} />
       {label}
-      {estimated ? <span className="font-normal opacity-80">· estimated</span> : null}
+      {estimated ? <span className="font-normal opacity-80">{climbKnown ? "· estimated" : "· estimated from distance only"}</span> : null}
     </span>
   );
 }

@@ -4,7 +4,19 @@ import { useEffect, useState } from "react";
 import { ExternalLink, RefreshCw, Sunrise, Sunset, TriangleAlert } from "lucide-react";
 import type { TrailConditionsDto, WeatherAlertDto } from "@/domain/catalog";
 import { Button } from "@/components/ui";
-import { formatClock, formatDayLabel, formatDurationEstimate, formatHour, formatRelativeAge, zoneAbbreviation } from "./format";
+import {
+  DISTANCE_ONLY_TIME,
+  dayOf,
+  formatClock,
+  formatClockWithDay,
+  formatDayLabel,
+  formatDurationEstimate,
+  formatHour,
+  formatRelativeAge,
+  formatZonedMoment,
+  localDateKey,
+  zoneAbbreviation,
+} from "./format";
 import { Measure } from "./measure";
 import { weatherSymbol } from "./weather";
 import { WeatherIcon } from "./weather-icon";
@@ -23,6 +35,11 @@ function errorMessage(status: number): string {
  * from GET /api/trails/:id/conditions. Loaded in the browser so the trail
  * page itself can be cached. Every value comes from the response; missing
  * values are shown as missing, never estimated here.
+ *
+ * When the response's planning.durationBasis is "distance_only" (no
+ * elevation data: distance at a flat pace, climb not counted), the planning
+ * explanation says so next to the duration. It comes from the live response,
+ * not the cached page, so the label always matches the time it describes.
  */
 export function ConditionsPanel({ trailId }: { trailId: string }) {
   const [load, setLoad] = useState<Load>({ status: "loading" });
@@ -93,7 +110,8 @@ function SubHeading({ children }: { children: React.ReactNode }) {
   return <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted">{children}</h3>;
 }
 
-function Conditions({ data, onRetry }: { data: TrailConditionsDto; onRetry: () => void }) {
+/** The loaded conditions (exported for tests). */
+export function Conditions({ data, onRetry }: { data: TrailConditionsDto; onRetry: () => void }) {
   const tz = data.timezone;
   const zone = zoneAbbreviation(tz, new Date(data.generatedAt));
   const today = data.sun[0]?.date ?? data.daily[0]?.date ?? null;
@@ -133,13 +151,7 @@ function Conditions({ data, onRetry }: { data: TrailConditionsDto; onRetry: () =
                       <Measure value={h.temperatureC} kind="temperature" />
                     </span>
                     <span className="text-[0.7rem] tabular-nums text-blue-ink">
-                      {h.precipitationMm && h.precipitationMm > 0 ? (
-                        <Measure value={h.precipitationMm} kind="precipitation" />
-                      ) : (
-                        <span className="text-muted">
-                          —<span className="sr-only">no precipitation</span>
-                        </span>
-                      )}
+                      <Precipitation mm={h.precipitationMm} none={<>—<span className="sr-only">no precipitation</span></>} />
                     </span>
                   </li>
                 ))}
@@ -164,13 +176,7 @@ function Conditions({ data, onRetry }: { data: TrailConditionsDto; onRetry: () =
                       </span>
                     </span>
                     <span className="w-16 text-right text-xs tabular-nums text-blue-ink sm:w-auto sm:text-center">
-                      {d.precipitationMm && d.precipitationMm > 0 ? (
-                        <Measure value={d.precipitationMm} kind="precipitation" />
-                      ) : (
-                        <span className="text-muted">
-                          Dry<span className="sr-only"> (no precipitation forecast)</span>
-                        </span>
-                      )}
+                      <Precipitation mm={d.precipitationMm} none={<>Dry<span className="sr-only"> (no precipitation forecast)</span></>} />
                     </span>
                   </li>
                 ))}
@@ -209,6 +215,23 @@ function Conditions({ data, onRetry }: { data: TrailConditionsDto; onRetry: () =
       </p>
     </div>
   );
+}
+
+/**
+ * A forecast precipitation amount: the amount when above zero, `none` when
+ * the forecast says zero, and "Unknown" when the forecast has no amount
+ * (null is never shown as dry).
+ */
+function Precipitation({ mm, none }: { mm: number | null; none: React.ReactNode }) {
+  if (typeof mm !== "number" || !Number.isFinite(mm) || mm < 0) {
+    return (
+      <span className="text-muted">
+        Unknown<span className="sr-only"> precipitation</span>
+      </span>
+    );
+  }
+  if (mm === 0) return <span className="text-muted">{none}</span>;
+  return <Measure value={mm} kind="precipitation" />;
 }
 
 function Current({ data }: { data: TrailConditionsDto }) {
@@ -259,6 +282,7 @@ const SEVERITY_TONE: Record<string, string> = {
 
 function Alerts({ data }: { data: TrailConditionsDto }) {
   const tz = data.timezone;
+  const now = new Date(data.generatedAt);
   return (
     <section>
       <SubHeading>Official alerts</SubHeading>
@@ -271,7 +295,7 @@ function Alerts({ data }: { data: TrailConditionsDto }) {
       ) : (
         <ul className="space-y-3">
           {data.alerts.map((a) => (
-            <AlertItem key={a.id} alert={a} tz={tz} />
+            <AlertItem key={a.id} alert={a} tz={tz} now={now} />
           ))}
         </ul>
       )}
@@ -279,11 +303,23 @@ function Alerts({ data }: { data: TrailConditionsDto }) {
   );
 }
 
-function AlertItem({ alert: a, tz }: { alert: WeatherAlertDto; tz: string | null }) {
+/**
+ * "From 10:00 AM EST today until Thu, Nov 13, 8:00 PM EST": each end names
+ * its day unless it is today in the trail's zone (so a multi-day warning never
+ * reads as ending tonight), with the zone name in force at that moment.
+ */
+export function alertWindowText(a: Pick<WeatherAlertDto, "onset" | "ends">, tz: string | null, now: Date): string | null {
+  const from = a.onset ? formatZonedMoment(a.onset, tz, now) : null;
+  const until = a.ends ? formatZonedMoment(a.ends, tz, now) : null;
+  if (from && until) return `From ${from} until ${until}`;
+  if (from) return `From ${from}`;
+  if (until) return `Until ${until}`;
+  return null;
+}
+
+function AlertItem({ alert: a, tz, now }: { alert: WeatherAlertDto; tz: string | null; now: Date }) {
   const tone = SEVERITY_TONE[a.severity.toLowerCase()] ?? "border-[#c9daf8] bg-blue-bg text-blue-ink";
-  const when = [a.onset ? `from ${formatClock(a.onset, tz)}` : null, a.ends ? `until ${formatClock(a.ends, tz)}` : null]
-    .filter(Boolean)
-    .join(" ");
+  const when = alertWindowText(a, tz, now);
   return (
     <li className={`rounded-xl border p-4 ${tone}`}>
       <p className="flex items-start gap-2 font-semibold">
@@ -294,11 +330,7 @@ function AlertItem({ alert: a, tz }: { alert: WeatherAlertDto; tz: string | null
         </span>
       </p>
       {a.headline ? <p className="mt-1.5 text-[0.95rem]">{a.headline}</p> : null}
-      {when ? (
-        <p className="mt-1 text-sm opacity-90">
-          {when} ({zoneAbbreviation(tz)})
-        </p>
-      ) : null}
+      {when ? <p className="mt-1 text-sm opacity-90">{when}</p> : null}
       {a.description || a.instruction ? (
         <details className="mt-2 text-sm">
           <summary className="min-h-11 cursor-pointer py-2 font-semibold underline underline-offset-2">Full alert text</summary>
@@ -327,12 +359,39 @@ function AlertItem({ alert: a, tz }: { alert: WeatherAlertDto; tz: string | null
   );
 }
 
+/**
+ * How to show the latest recommended start. The server gives today's when it
+ * is still ahead, else TOMORROW's (never a time already past), so the day is
+ * named whenever it is not today in the trail's zone (the zone the server
+ * used: UTC when unknown), and a start before that day's sunrise (a hike
+ * longer than the daylight) is flagged next to the value.
+ */
+export function latestStartView(data: Pick<TrailConditionsDto, "timezone" | "sun" | "planning" | "generatedAt">): {
+  text: string;
+  tooLateToday: boolean;
+  beforeSunrise: boolean;
+} | null {
+  const iso = data.planning.latestRecommendedStart;
+  if (!iso || Number.isNaN(new Date(iso).getTime())) return null;
+  const tz = data.timezone;
+  const today = data.sun[0]?.date ?? localDateKey(data.generatedAt, tz);
+  const day = dayOf(iso, tz, today);
+  const startDate = localDateKey(iso, tz);
+  const sunThatDay = data.sun.find((s) => s.date === startDate) ?? null;
+  const sunrise = sunThatDay && sunThatDay.polar === null && sunThatDay.sunrise ? new Date(sunThatDay.sunrise).getTime() : null;
+  return {
+    text: formatClockWithDay(iso, tz, today),
+    tooLateToday: day === "tomorrow" || day === "other",
+    beforeSunrise: sunrise !== null && new Date(iso).getTime() < sunrise,
+  };
+}
+
 function Daylight({ data, zone }: { data: TrailConditionsDto; zone: string }) {
   const tz = data.timezone;
   const sun = data.sun[0] ?? null;
   const p = data.planning;
-  const now = new Date(data.generatedAt).getTime();
-  const pastLatestStart = p.latestRecommendedStart ? new Date(p.latestRecommendedStart).getTime() < now : false;
+  const today = sun?.date ?? localDateKey(data.generatedAt, tz);
+  const latest = latestStartView(data);
   const finishAfterSunset =
     p.finishIfStartNow && sun?.sunset ? new Date(p.finishIfStartNow).getTime() > new Date(sun.sunset).getTime() : false;
   const duration = formatDurationEstimate(p.outAndBackDurationMin ?? p.estimatedDurationMin);
@@ -363,10 +422,13 @@ function Daylight({ data, zone }: { data: TrailConditionsDto; zone: string }) {
 
       <dl className="mt-4 divide-y divide-sand-200 rounded-xl bg-sand-100 sm:grid sm:grid-cols-3 sm:gap-2 sm:divide-y-0 sm:bg-transparent">
         <PlanStat label="Latest recommended start">
-          {p.latestRecommendedStart ? (
+          {latest ? (
             <>
-              <span className={pastLatestStart ? "text-amber-ink" : undefined}>{formatClock(p.latestRecommendedStart, tz)}</span>
-              {pastLatestStart ? <span className="block text-xs font-normal text-amber-ink">Already passed today</span> : null}
+              {latest.text}
+              {latest.tooLateToday ? <span className="block text-xs font-normal text-amber-ink">Too late to start today</span> : null}
+              {latest.beforeSunrise ? (
+                <span className="block text-xs font-normal text-amber-ink">Before sunrise: part of the hike would be in the dark</span>
+              ) : null}
             </>
           ) : (
             <span className="text-base font-normal text-muted">Not available</span>
@@ -375,7 +437,7 @@ function Daylight({ data, zone }: { data: TrailConditionsDto; zone: string }) {
         <PlanStat label="Finish if you start now">
           {p.finishIfStartNow ? (
             <>
-              <span className={finishAfterSunset ? "text-amber-ink" : undefined}>≈ {formatClock(p.finishIfStartNow, tz)}</span>
+              <span className={finishAfterSunset ? "text-amber-ink" : undefined}>≈ {formatClockWithDay(p.finishIfStartNow, tz, today)}</span>
               {finishAfterSunset ? <span className="block text-xs font-normal text-amber-ink">After sunset</span> : null}
             </>
           ) : (
@@ -398,7 +460,11 @@ function Daylight({ data, zone }: { data: TrailConditionsDto; zone: string }) {
             How these times are worked out
           </summary>
           <ul className="mt-1 space-y-1 text-xs">
-            {duration ? <li>Based on ≈ {duration} moving time.</li> : null}
+            {duration ? (
+              <li>
+                Based on ≈ {duration} moving time{data.planning.durationBasis === "distance_only" ? ` ${DISTANCE_ONLY_TIME}` : ""}.
+              </li>
+            ) : null}
             {p.notes.map((n) => (
               <li key={n}>{n}</li>
             ))}

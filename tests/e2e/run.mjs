@@ -104,13 +104,20 @@ async function startMock() {
 /**
  * Catalog trail pages are ISR pages generated on first request. Their cached
  * HTML embeds trail ids from the database of an earlier run, so a run that
- * reuses a build (--no-build) with a fresh database drops them first.
+ * reuses a build (--no-build) with a fresh database drops them first. Next.js
+ * 16.4 keeps runtime ISR entries in .next/server/route-cache/APP_PAGE/<route
+ * hash>/$/<path> (earlier versions: next to the build output in server/app).
  */
 function dropRuntimeTrailPages() {
   const dir = path.join(root, ".next", "server", "app", "trail");
-  if (!existsSync(dir)) return;
-  for (const entry of readdirSync(dir)) {
-    if (!entry.startsWith("[")) rmSync(path.join(dir, entry), { recursive: true, force: true });
+  if (existsSync(dir)) {
+    for (const entry of readdirSync(dir)) {
+      if (!entry.startsWith("[")) rmSync(path.join(dir, entry), { recursive: true, force: true });
+    }
+  }
+  const routeCache = path.join(root, ".next", "server", "route-cache", "APP_PAGE");
+  if (existsSync(routeCache)) {
+    for (const route of readdirSync(routeCache)) rmSync(path.join(routeCache, route, "$", "trail"), { recursive: true, force: true });
   }
 }
 

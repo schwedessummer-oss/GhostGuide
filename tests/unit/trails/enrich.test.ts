@@ -32,9 +32,9 @@ const at = (east: number, north: number): [number, number] => {
   const p = offsetMeters(ORIGIN, east, north);
   return [p.lng, p.lat];
 };
-const poi = (category: PoiCategory, east: number, north: number, id = `${category}/${east}/${north}`): NearbyPoi => {
+const poi = (category: PoiCategory, east: number, north: number, id = `${category}/${east}/${north}`, provider = "osm"): NearbyPoi => {
   const [lng, lat] = at(east, north);
-  return { providerId: id, category, lng, lat };
+  return { provider, providerId: id, category, lng, lat };
 };
 
 /** A straight 2 km trail from (0,0) to (2000,0). */
@@ -111,7 +111,7 @@ describe("selectTrailhead", () => {
 
   it("returns null without geometry and ignores invalid POIs", () => {
     expect(selectTrailhead([], [])).toBeNull();
-    const bad = { providerId: "bad", category: "trailhead" as const, lng: Number.NaN, lat: 0 };
+    const bad = { provider: "osm", providerId: "bad", category: "trailhead" as const, lng: Number.NaN, lat: 0 };
     expect(selectTrailhead(LINE, [bad])!.source).toBe("route_start");
   });
 });
@@ -186,15 +186,20 @@ describe("buildTrailRecord", () => {
     expect(r.maxElevationM).toBeNull();
     // No profile: flat-pace estimate for ONE traversal.
     expect(r.estimatedDurationMin).toBe(estimateDurationMin({ distanceM: r.distanceM, profile: null }));
-    // Linear 2 km → 4 km out and back, unknown climb → easy (estimated); never family friendly without climb data.
-    expect(r.difficulty).toBe("easy");
-    expect(r.difficultySource).toBe("estimated");
+    // Linear 2 km → 4 km out and back, unknown climb and no SAC grade: the
+    // rating would rest on the missing climb, so it is unknown (no source),
+    // never "estimated from distance and climb"; never family friendly without climb data.
+    expect(r.difficulty).toBe("unknown");
+    expect(r.difficultySource).toBeNull();
     expect(r.familyFriendly).toBe(false);
-    expect(r.countryCode).toBe("xx");
+    // The country comes from the exact point (offline borders), even without reverse geocoding.
+    expect(r.countryCode).toBe("ch");
     expect(r.regionSlug).toBe("unknown");
     expect(r.regionName).toBeNull();
     expect(r.nearestPlace).toBeNull();
     expect(r.timezone).toBe("Europe/Zurich");
+    // Nowhere (no country at the point): "xx", never guessed.
+    expect(buildTrailRecord(input({ countryAt: () => null }))!.countryCode).toBe("xx");
     expect(r.trailheadSource).toBe("route_start");
     expect(r.trailhead).toEqual({ lng: LINE[0][0][0], lat: LINE[0][0][1] });
     expect(r.baseSlug).toBe("ridge-trail");

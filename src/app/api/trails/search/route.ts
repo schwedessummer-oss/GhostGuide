@@ -26,15 +26,18 @@ const COVERAGE_FAILED: Omit<CoverageDto, "layer"> = {
  * GET /api/trails/search?bbox=w,s,e,n&... — trails in a map area
  * (query schema: trailSearchQuerySchema in src/domain/catalog.ts).
  *
- * Public and read-only; 60 requests/min per client IP. Asks the coverage
- * service to load missing/stale OpenStreetMap tiles for the area (unless
- * load=0) and returns the trails already stored, with the area's loading
- * status so the UI can say "loading", "partial", "zoom in", ... If the
- * coverage service fails, stored trails are still returned with coverage
- * state "failed".
+ * Public and read-only; 60 requests/min per client (IPv6 by /64). Asks the
+ * coverage service to load missing/stale OpenStreetMap tiles for the area
+ * (unless load=0; the work is bounded per client and globally, see
+ * coverage.ts) and returns the trails already stored, with the area's
+ * loading status so the UI can say "loading", "partial", "zoom in", ... If
+ * the coverage service fails, stored trails are still returned with
+ * coverage state "failed". For an area larger than the coverage limit
+ * (too_large) only the middle of the area is searched (read.ts
+ * searchWindow), so a world-sized box costs no more than a normal search.
  *
  * Errors: 400 { error, fields } for an invalid query · 429 · 500.
- * Cache-Control: shared caching (60 s, SWR 5 min) only once the area is
+ * Cache-Control: shared caching (60 s, SWR 60 s, so a moderated trail leaves results within ~2 min) only once the area is
  * fully loaded; "no-store" while loading/partial/failed so polling sees
  * new trails.
  */
@@ -54,7 +57,8 @@ export async function GET(request: Request) {
       );
     }
 
-    const rl = await checkRateLimit(`trails:search:ip:${clientIpFrom(request.headers)}`, 60, 60);
+    const client = clientIpFrom(request.headers);
+    const rl = await checkRateLimit(`trails:search:ip:${client}`, 60, 60);
     if (!rl.allowed) {
       return Response.json(
         { error: "Too many searches. Please wait a moment and try again." },
@@ -62,7 +66,8 @@ export async function GET(request: Request) {
       );
     }
 
-    const coveragePromise = ensureCoverage("outdoor", q.bbox, { request: q.load, inlineTiles: q.load ? 2 : 0 }).catch(
+    // `client` charges new tile loads to this client's budget (shared with /explore and nearby).
+    const coveragePromise = ensureCoverage("outdoor", q.bbox, { request: q.load, inlineTiles: q.load ? 2 : 0, client }).catch(
       (err: unknown): CoverageDto => {
         log.error("api.trails_search.coverage_failed", { error: err instanceof Error ? err.message : String(err) });
         return { layer: "outdoor", ...COVERAGE_FAILED };
@@ -80,7 +85,7 @@ export async function GET(request: Request) {
     };
     return Response.json(body, {
       headers: {
-        "Cache-Control": coverage.state === "ready" ? "public, s-maxage=60, stale-while-revalidate=300" : "no-store",
+        "Cache-Control": coverage.state === "ready" ? "public, s-maxage=60, stale-while-revalidate=60" : "no-store",
       },
     });
   } catch (err) {

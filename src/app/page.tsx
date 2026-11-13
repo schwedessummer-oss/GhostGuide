@@ -8,6 +8,9 @@ import { showDemoFixtures } from "@/config/env";
 import { getLaunchRegion, listTrails } from "@/server/catalog/trails";
 import { log } from "@/server/log";
 
+// Static, regenerated hourly (it can list demo-region trails from the database).
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: { absolute: "Ghost Guide — find a hike, plan the day, get home safely" },
   description:

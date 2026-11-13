@@ -339,6 +339,11 @@ export interface PlanningDto {
   finishIfStartNow: string | null;
   /** Daylight left from now until sunset, minutes (0 after sunset); null when unknown. */
   daylightRemainingMin: number | null;
+  /**
+   * What the hiking time rests on: the elevation profile, or distance alone at
+   * a flat pace (no elevation data, climb not counted). Null when the time is unknown.
+   */
+  durationBasis: "elevation_profile" | "distance_only" | null;
   notes: string[];
 }
 

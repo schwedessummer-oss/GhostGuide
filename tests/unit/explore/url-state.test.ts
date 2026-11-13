@@ -29,7 +29,7 @@ const FULL: ExploreFilters = {
   toilets: true,
   camping: true,
   fee: "free",
-  permit: "not_required",
+  permit: "required",
   sort: "length",
 };
 
@@ -77,6 +77,16 @@ describe("explore URL state", () => {
     expect(s.filters.maxDistanceKm).toBe(3);
   });
 
+  it("drops filter values no trail can match (finding #13): permit=not_required, activity=running", () => {
+    // No source ever says a permit is NOT needed, and "running" is never derived: old links must not return 0 trails forever.
+    const s = parseFilters(new URLSearchParams("permit=not_required&activity=running"));
+    expect(s.permit).toBeNull();
+    expect(s.activity).toBeNull();
+    expect(countActiveFilters(s)).toBe(0);
+    expect(parseFilters(new URLSearchParams("permit=required&activity=walking"))).toMatchObject({ permit: "required", activity: "walking" });
+    expect(serializeExploreParams(parseExploreParams(new URLSearchParams("q=Banff&permit=not_required")))).toBe("q=Banff");
+  });
+
   it("cleans the search text", () => {
     expect(cleanQuery("  trails   near\tDenver ")).toBe("trails near Denver");
     expect(cleanQuery("x".repeat(300))).toHaveLength(120);
@@ -99,7 +109,7 @@ describe("search API query", () => {
     expect(parsed.maxDurationMin).toBe(240);
     expect(parsed.dogFriendly && parsed.familyFriendly && parsed.parking && parsed.toilets && parsed.camping).toBe(true);
     expect(parsed.fee).toBe("free");
-    expect(parsed.permit).toBe("not_required");
+    expect(parsed.permit).toBe("required");
     expect(parsed.sort).toBe("length");
     expect(parsed.q).toBeUndefined();
   });

@@ -9,12 +9,13 @@ import type { Units } from "@/lib/units";
 import { UnitsToggle } from "@/components/site/units-toggle";
 import { ExploreMap, type ExploreMapHandle, type MapViewChange } from "./explore-map";
 import { FiltersDialog } from "./filters-dialog";
-import { ListFooter, ResultsList, TrailStats, type SearchStatus } from "./results-list";
+import { ListFooter, ResultsList, TrailStats } from "./results-list";
 import { FeatureIcons, Spinner, TrailDifficulty } from "./bits";
-import { coverageSummary, englishName, hikeDistanceText, placeLine, resultCountText } from "./format";
+import { climbKnown, coverageSummary, englishName, hikeDistanceText, placeLine, resultsHeading } from "./format";
 import { NEAR_ME_RADIUS_KM, bboxAroundPoint, bboxForPlace, bboxWithin } from "./geometry";
 import { useNearMe } from "./use-near-me";
-import type { ExploreInitial, PlaceSearchState } from "./types";
+import { createAreaClaims } from "./area-claims";
+import { trailRoutePreviewUrl, type ExploreInitial, type PlaceSearchState, type SearchStatus, type TrailRoutePreviewDto } from "./types";
 import {
   cleanQuery,
   clearedFilters,
@@ -103,7 +104,10 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   const searchSeq = useRef(0);
   const pollTimer = useRef<number | undefined>(undefined);
   const pollStarted = useRef(0);
-  const placeAbort = useRef<AbortController | null>(null);
+  /** Area choices (place lookup, Near me, map view, back/forward): the newest wins (see area-claims.ts). */
+  const [areaClaims] = useState(createAreaClaims);
+  /** The filters as of the last render, for area changes that complete later (a slow place lookup). */
+  const filtersRef = useRef(filters);
   const routeAbort = useRef<AbortController | null>(null);
   const routeCache = useRef(new Map<string, TrailDetailDto["geometry"]>());
   const lastUrl = useRef(serializeExploreParams(initial.state));
@@ -209,14 +213,15 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
     setRoute({ id, status: "loading", geometry: null });
     const ctrl = new AbortController();
     routeAbort.current = ctrl;
-    fetch(`/api/trails/${id}`, { signal: ctrl.signal, headers: { accept: "application/json" } })
+    // Only the line (display-simplified), not the whole trail detail.
+    fetch(trailRoutePreviewUrl(id), { signal: ctrl.signal, headers: { accept: "application/json" } })
       .then(async (res) => {
         if (!res.ok) throw new Error(String(res.status));
-        const detail = (await res.json()) as TrailDetailDto;
+        const preview = (await res.json()) as TrailRoutePreviewDto;
         const cache = routeCache.current;
-        cache.set(id, detail.geometry);
+        cache.set(id, preview.geometry);
         if (cache.size > ROUTE_CACHE_SIZE) cache.delete(cache.keys().next().value as string);
-        setRoute({ id, status: "ready", geometry: detail.geometry });
+        setRoute({ id, status: "ready", geometry: preview.geometry });
       })
       .catch(() => {
         if (!ctrl.signal.aborted) setRoute({ id, status: "error", geometry: null });
@@ -232,7 +237,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   // ---------------------------------------------------------------------------
   // Areas: a chosen place, near me, or the current map view
   // ---------------------------------------------------------------------------
-  function goToArea(bbox: Bbox, q: string, mode: "push" | "replace", f: ExploreFilters = filters) {
+  function goToArea(bbox: Bbox, q: string, mode: "push" | "replace", f: ExploreFilters = filtersRef.current) {
     setArea(bbox);
     setAreaQuery(q);
     setView((v) => ({ ...v, moved: false }));
@@ -244,6 +249,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   }
 
   function choosePlace(result: GeocodeResultDto, q: string, mode: "push" | "replace" = "push") {
+    claimArea();
     setPlace((p) => (p ? { ...p, chosenId: result.id } : p));
     setPlacesOpen(false);
     goToArea(bboxForPlace(result), q, mode);
@@ -255,27 +261,36 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
     goToArea(bboxAroundPoint(point, NEAR_ME_RADIUS_KM), "", "push");
   });
 
+  /**
+   * A new area choice: a place lookup or location request still in flight can
+   * no longer move the map (it is aborted, and its "Looking up…" cleared).
+   */
+  function claimArea() {
+    nearMe.reset();
+    setPlace((p) => (p?.status === "searching" ? null : p));
+    return areaClaims.claim();
+  }
+
   async function searchPlace(text: string, mode: "push" | "replace" = "push") {
     const q = cleanQuery(text);
-    placeAbort.current?.abort();
-    nearMe.reset();
+    const claim = claimArea();
     setPlacesOpen(false);
     if (q.length < 2) {
       setPlace({ query: q, status: "no_results", results: [], chosenId: null, message: "Type at least two letters of a place name." });
       return;
     }
-    const ctrl = new AbortController();
-    placeAbort.current = ctrl;
     setPlace({ query: q, status: "searching", results: [], chosenId: null });
     try {
-      const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`, { signal: ctrl.signal, headers: { accept: "application/json" } });
+      const res = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`, { signal: claim.signal, headers: { accept: "application/json" } });
+      if (!claim.isCurrent()) return;
       if (res.status === 429) {
         setPlace({ query: q, status: "unavailable", results: [], chosenId: null, message: "Too many place searches in a short time. Wait a minute, then try again." });
         return;
       }
       if (!res.ok) throw new Error(String(res.status));
       const data = (await res.json()) as GeocodeResponse;
-      if (ctrl.signal.aborted) return;
+      // The person chose another area meanwhile (searched the map, Near me, Back…): that choice stands.
+      if (!claim.isCurrent()) return;
       if (data.nearMe) {
         setPlace(null);
         nearMe.locate();
@@ -293,13 +308,19 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
       setPlace({ query: q, status: "ok", results: data.results, chosenId: first.id });
       goToArea(bboxForPlace(first), q, mode);
     } catch {
-      if (!ctrl.signal.aborted) setPlace({ query: q, status: "unavailable", results: [], chosenId: null });
+      if (claim.isCurrent()) setPlace({ query: q, status: "unavailable", results: [], chosenId: null });
     }
+  }
+
+  function locateMe() {
+    claimArea();
+    nearMe.locate();
   }
 
   function searchThisArea() {
     const bbox = mapHandle.current?.getBbox();
     if (!bbox) return;
+    claimArea();
     setQuery("");
     setPlace(null);
     setArea(bbox);
@@ -330,8 +351,19 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   // ---------------------------------------------------------------------------
   const resumeInitial = useEffectEvent(() => {
     const qs = serializeExploreParams(initial.state);
-    if (window.location.search.replace(/^\?/, "") !== qs) window.history.replaceState(null, "", qs ? `/explore?${qs}` : "/explore");
     lastUrl.current = qs;
+    if (window.location.search.replace(/^\?/, "") !== qs) {
+      // Not synchronously: on the first page load this effect runs before the App Router's own mount
+      // effect (React runs a child's effects before its parent's), and it is that effect which makes
+      // history.replaceState keep the router's state on the entry (__NA and its tree) and update the
+      // router's URL. Replaced now, the entry would be left with no router state, and Next.js ignores
+      // a popstate to such an entry: Back from a trail page would change the URL but not the page
+      // (next/dist/client/components/app-router.js, handlePopState). A microtask runs after the whole
+      // effect flush, so the router is listening by then.
+      queueMicrotask(() => {
+        if (lastUrl.current === qs) window.history.replaceState(null, "", qs ? `/explore?${qs}` : "/explore");
+      });
+    }
     const bbox = initial.state.bbox;
     if (bbox && initial.results?.coverage.state === "loading") {
       pollStarted.current = clock();
@@ -340,7 +372,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   });
   const stopOnUnmount = useEffectEvent(() => {
     stopSearch();
-    placeAbort.current?.abort();
+    areaClaims.release();
     routeAbort.current?.abort();
   });
   useEffect(() => {
@@ -357,6 +389,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
     setFilters(s.filters);
     setFiltersKey((k) => k + 1);
     if (s.bbox) {
+      claimArea();
       const bbox = s.bbox;
       setArea(bbox);
       setAreaQuery(s.q);
@@ -368,6 +401,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
     } else if (s.q) {
       void searchPlace(s.q, "replace");
     } else {
+      claimArea();
       stopSearch();
       select(null);
       setArea(null);
@@ -395,6 +429,10 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   }, []);
 
   useEffect(() => {
+    filtersRef.current = filters;
+  }, [filters]);
+
+  useEffect(() => {
     const el = topRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(() => setTopHeight(el.offsetHeight));
@@ -416,24 +454,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
   const summary = coverage ? coverageSummary(coverage) : null;
   const chosenPlace = place?.status === "ok" ? (place.results.find((r) => r.id === place.chosenId) ?? place.results[0]) : null;
 
-  const heading =
-    status === "loading"
-      ? "Searching…"
-      : status === "error"
-        ? "Search unavailable"
-        : status === "idle"
-          ? "Explore trails"
-          : !results
-            ? "Explore trails"
-            : trails.length
-              ? resultCountText(trails.length, results.total)
-              : results.coverage.state === "loading"
-                ? "Loading trails…"
-                : results.coverage.state === "too_large"
-                  ? "Zoom in to see trails"
-                  : results.coverage.state === "failed"
-                    ? "Trails unavailable"
-                    : "No trails found";
+  const heading = resultsHeading(status, results);
   const areaLabel = status === "idle" ? null : chosenPlace ? `near ${chosenPlace.label}` : area ? "in this map area" : null;
 
   const sheetStyle = {
@@ -515,7 +536,7 @@ export function ExploreApp({ initial }: { initial: ExploreInitial }) {
         </form>
 
         <div className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
-          <button type="button" onClick={nearMe.locate} disabled={nearMe.status === "locating"} className={chipButton}>
+          <button type="button" onClick={locateMe} disabled={nearMe.status === "locating"} className={chipButton}>
             {nearMe.status === "locating" ? <Spinner /> : <LocateFixed aria-hidden className="size-4" />}
             Near me
           </button>
@@ -832,7 +853,7 @@ function TrailGroupPreview({
                 <span className="block truncate font-semibold text-ink">{t.name}</span>
                 <span className="block text-sm text-muted">{hikeDistanceText(t, units)}</span>
               </span>
-              <TrailDifficulty difficulty={t.difficulty} source={t.difficultySource} />
+              <TrailDifficulty difficulty={t.difficulty} source={t.difficultySource} climbKnown={climbKnown(t)} />
             </button>
           </li>
         ))}
@@ -872,7 +893,7 @@ function TrailPreview({
       <TrailStats trail={trail} units={units} className="mt-2" />
       <div className="mt-3 flex items-center justify-between gap-3">
         <div className="flex min-w-0 flex-wrap items-center gap-2">
-          <TrailDifficulty difficulty={trail.difficulty} source={trail.difficultySource} />
+          <TrailDifficulty difficulty={trail.difficulty} source={trail.difficultySource} climbKnown={climbKnown(trail)} />
           <FeatureIcons features={trail.features} />
         </div>
         <Link href={trail.path} className="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-xl bg-forest-700 px-4 font-semibold text-white hover:bg-forest-800">

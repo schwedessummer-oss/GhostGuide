@@ -82,7 +82,16 @@ export function trailMetaDescription(t: DescriptionInput): string {
   }
   parts.push(`${first}.`);
   if (t.difficulty !== "unknown") {
-    const q = t.difficultySource === "estimated" ? " (estimated)" : t.difficultySource === "osm_sac_scale" ? " (SAC scale)" : "";
+    // Without climb data an estimated rating rests on distance alone (see format.ts difficultyExplanation).
+    const climbKnown = typeof t.hikeGainM === "number" && Number.isFinite(t.hikeGainM);
+    const q =
+      t.difficultySource === "estimated"
+        ? climbKnown
+          ? " (estimated)"
+          : " (estimated from distance)"
+        : t.difficultySource === "osm_sac_scale"
+          ? " (SAC scale)"
+          : "";
     parts.push(`Difficulty: ${difficultyLabel(t.difficulty).toLowerCase()}${q}.`);
   }
   parts.push("Map, elevation profile, conditions and trailhead directions.");

@@ -20,7 +20,8 @@ const NO_STORE = { "Cache-Control": "no-store" } as const;
  * (OpenStreetMap), plus parking and restrooms within 1 km, nearest first,
  * at most 3 per group, with the area's loading status.
  *
- * Public and read-only; 60 requests/min per client IP. 404 for ids that are
+ * Public and read-only; 60 requests/min per client (IPv6 by /64); new
+ * tile loads share the client's budget with trail searches. 404 for ids that are
  * not UUIDs, unknown trails and hidden trails alike.
  * Cache-Control: "public, s-maxage=600, stale-while-revalidate=3600" once
  * the area is fully loaded; "no-store" while loading/partial/failed so the
@@ -31,7 +32,8 @@ export async function GET(request: Request, ctx: { params: Promise<{ id: string 
     const { id } = await ctx.params;
     if (!z.uuid().safeParse(id).success) return notFound();
 
-    const rl = await checkRateLimit(`trails:nearby:ip:${clientIpFrom(request.headers)}`, NEARBY_RATE_LIMIT_PER_MIN, 60);
+    const client = clientIpFrom(request.headers);
+    const rl = await checkRateLimit(`trails:nearby:ip:${client}`, NEARBY_RATE_LIMIT_PER_MIN, 60);
     if (!rl.allowed) {
       return Response.json(
         { error: "Too many requests. Please wait a moment and try again." },
@@ -42,7 +44,8 @@ export async function GET(request: Request, ctx: { params: Promise<{ id: string 
       );
     }
 
-    const nearby = await getNearbyServices(id);
+    // `client` charges new services-tile loads to the same per-client budget as trail searches.
+    const nearby = await getNearbyServices(id, { client });
     if (!nearby) return notFound();
     return Response.json(nearby, {
       headers: {

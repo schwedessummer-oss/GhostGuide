@@ -123,7 +123,7 @@ notifications) until you configure real providers.
    `payments.reconcile` job.
 
 ## 5. Maps
-Maps use MapLibre GL JS with OpenFreeMap vector tiles (free, no key) and AWS terrain hillshade.
+Maps use MapLibre GL JS with OpenFreeMap vector tiles (free, no key) and AWS terrain hillshade on wide maps (set `NEXT_PUBLIC_MAP_TERRAIN_TILES_URL=off` to disable it).
 To use another provider (MapTiler, Stadia, self-hosted Protomaps), set
 `NEXT_PUBLIC_MAP_STYLE_URL` to its MapLibre style URL (public value) and rebuild. The PWA never
 stores basemap tiles for offline use.

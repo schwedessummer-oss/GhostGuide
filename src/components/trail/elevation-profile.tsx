@@ -1,11 +1,13 @@
 import type { RouteType } from "@/domain/catalog";
 import { VIEW_H, VIEW_W, buildElevationChart, type Tick } from "./elevation";
-import { formatAltitude, formatTrailDistance } from "./format";
+import { elevationSourceText, formatAltitude, formatTrailDistance } from "./format";
 import { Measure } from "./measure";
 
-function cleanSource(source: string | null): string | null {
-  if (!source) return null;
-  return source.replace(/\s*\((?:estimate|estimated)\)\s*$/i, "").trim() || null;
+/** The source label for the caption (which already says "Estimated"): current wording, no trailing "(estimate)". */
+export function cleanSource(source: string | null): string | null {
+  const text = elevationSourceText(source);
+  if (!text) return null;
+  return text.replace(/\s*\((?:estimate|estimated)\)\s*$/i, "").trim() || null;
 }
 
 function XTicks({ ticks }: { ticks: Tick[] }) {

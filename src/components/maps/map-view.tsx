@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Map as MlMap, StyleSpecification } from "maplibre-gl";
 import type { Bbox, LngLat } from "@/domain/catalog";
 import { MAP_ATTRIBUTION, MAP_STYLE_URL, MAP_TERRAIN_TILES_URL } from "@/config/public";
+import { HILLSHADE_MIN_ZOOM, browserSavesData, wantsHillshade, type HillshadeMode } from "./hillshade";
 
 export type MapLibreModule = typeof import("maplibre-gl");
 
@@ -13,6 +14,11 @@ export type MapLibreModule = typeof import("maplibre-gl");
  * optional terrain hillshade). No API key, no tracking. Loaded lazily on the
  * client. Callers add their own sources/layers in `onReady` and may return a
  * cleanup function.
+ *
+ * Hillshade downloads ~1 MB of terrain tiles per view, so it is opt-in and
+ * conditional (see hillshade.ts): the default "wide" draws it only on wide
+ * maps (e.g. a trail page on a desktop), never on phones or when the browser
+ * asks to save data, and only from zoom 10. Explore turns it off.
  *
  * Tiles are never prefetched or stored for offline use. Pages must always
  * offer a text alternative (list) for what the map shows.
@@ -25,7 +31,8 @@ export interface MapViewProps {
   initialZoom?: number;
   /** Padding (px) when fitting initialBounds. */
   boundsPadding?: number;
-  hillshade?: boolean;
+  /** Terrain shading: false, true (where the device allows) or "wide" (default: wide maps only). */
+  hillshade?: HillshadeMode;
   /** Show the zoom/compass control (default true). */
   navigationControl?: boolean;
   /** Called once the style has loaded. May return a cleanup function. */
@@ -40,6 +47,7 @@ const MAPLIBRE_WORKER_URL =
 
 function addHillshade(map: MlMap) {
   if (MAP_TERRAIN_TILES_URL === "off" || map.getSource(HILLSHADE_SOURCE)) return;
+  // Below HILLSHADE_MIN_ZOOM the layer is hidden, so MapLibre requests no DEM tiles at all.
   map.addSource(HILLSHADE_SOURCE, {
     type: "raster-dem",
     tiles: [MAP_TERRAIN_TILES_URL],
@@ -55,6 +63,7 @@ function addHillshade(map: MlMap) {
       id: "gg-hillshade",
       type: "hillshade",
       source: HILLSHADE_SOURCE,
+      minzoom: HILLSHADE_MIN_ZOOM,
       paint: { "hillshade-exaggeration": 0.3, "hillshade-shadow-color": "#3d4a3a" },
     },
     firstSymbol,
@@ -68,7 +77,7 @@ export function MapView({
   initialCenter,
   initialZoom,
   boundsPadding = 40,
-  hillshade = true,
+  hillshade = "wide",
   navigationControl = true,
   onReady,
   children,
@@ -98,6 +107,11 @@ export function MapView({
       // MapLibre 6 resolves its worker next to its own chunk, which the
       // bundler does not emit; point it at the emitted worker asset instead.
       if (!lib.getWorkerUrl()) lib.setWorkerUrl(MAPLIBRE_WORKER_URL);
+      const shade = wantsHillshade(hillshade, {
+        width: containerRef.current.clientWidth,
+        saveData: browserSavesData(),
+        tilesUrl: MAP_TERRAIN_TILES_URL,
+      });
       try {
         map = new lib.Map({
           container: containerRef.current,
@@ -110,7 +124,7 @@ export function MapView({
             customAttribution: [
               `<a href="${MAP_ATTRIBUTION.osm.url}" target="_blank" rel="noopener">${MAP_ATTRIBUTION.osm.label}</a>`,
               `<a href="${MAP_ATTRIBUTION.openFreeMap.url}" target="_blank" rel="noopener">${MAP_ATTRIBUTION.openFreeMap.label}</a>`,
-              ...(hillshade && MAP_TERRAIN_TILES_URL !== "off"
+              ...(shade
                 ? [`<a href="${MAP_ATTRIBUTION.terrain.url}" target="_blank" rel="noopener">${MAP_ATTRIBUTION.terrain.label}</a>`]
                 : []),
             ],
@@ -130,7 +144,7 @@ export function MapView({
       });
       map.once("load", () => {
         if (cancelled || !map) return;
-        if (hillshade) {
+        if (shade) {
           try {
             addHillshade(map);
           } catch {

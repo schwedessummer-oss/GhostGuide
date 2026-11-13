@@ -8,6 +8,7 @@ import {
   decodeTerrariumPng,
   downsampleProfile,
   elevationProfileFor,
+  elevationSourceLabel,
   elevationsAt,
   gainLossWithHysteresis,
   lngLatToWorldPixel,
@@ -148,6 +149,19 @@ describe("Web Mercator", () => {
     expect(metersPerPixel(45, 12)).toBeCloseTo(27.02, 2);
   });
 
+  it("labels the source by the grid it was sampled on, never as a DEM resolution", () => {
+    const aws = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
+    // ~27 m is the zoom-12 pixel spacing at 45°; the DEM behind it can be 10 m or 90 m.
+    expect(elevationSourceLabel(45, 12, aws)).toBe("AWS Terrain Tiles, sampled on a ~27 m grid; source data resolution varies by region (estimate)");
+    expect(elevationSourceLabel(45, 10, aws)).toContain("sampled on a ~108 m grid");
+    // A custom tile server: nothing is claimed about the data behind it.
+    expect(elevationSourceLabel(0, 12, "https://t.example/{z}/{x}/{y}.png")).toBe("Terrarium terrain tiles, sampled on a ~38 m grid (estimate)");
+    for (const label of [elevationSourceLabel(45, 12, aws), elevationSourceLabel(60, 11, "https://t.example/{z}/{x}/{y}.png")]) {
+      expect(label).not.toMatch(/\bDEM\b/);
+      expect(label).toMatch(/\(estimate\)$/);
+    }
+  });
+
   it("builds tile URLs from the template", () => {
     expect(terrainTileUrl("https://t.example/{z}/{x}/{y}.png", 12, 3, 4)).toBe("https://t.example/12/3/4.png");
     expect(() => terrainTileUrl("https://t.example/{z}/{x}.png", 1, 2, 3)).toThrow();
@@ -277,7 +291,7 @@ describe("elevationProfileFor (synthetic DEM)", () => {
     expect(r.profile[0][1]).toBeCloseTo(1000, 0);
     expect(r.profile.at(-1)![0]).toBeCloseTo(3000, -1);
     expect(r.profile.at(-1)![1]).toBeCloseTo(1300, 0);
-    expect(r.source).toBe("AWS Terrain Tiles, ~26 m DEM (estimate)");
+    expect(r.source).toBe("AWS Terrain Tiles, sampled on a ~26 m grid; source data resolution varies by region (estimate)");
   });
 
   it("does not let DEM noise inflate gain on flat ground", async () => {
@@ -547,6 +561,6 @@ describe("real AWS Terrain Tiles fixtures", () => {
     expect(lake).toBeCloseTo(1897.6, 1);
     const r = (await elevationProfileFor([[[-120.03, 39.09], [-120.01, 39.09]]], { fetchTile }))!;
     expect(r).toMatchObject({ gainM: 0, lossM: 0, maxM: 1898, minM: 1898 });
-    expect(r.source).toBe("AWS Terrain Tiles, ~30 m DEM (estimate)");
+    expect(r.source).toBe("AWS Terrain Tiles, sampled on a ~30 m grid; source data resolution varies by region (estimate)");
   });
 });

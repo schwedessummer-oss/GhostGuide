@@ -14,7 +14,7 @@ before changing code.
 | Storage | Supabase Storage or local FS with HMAC-signed URLs | `src/integrations/storage` |
 | Payments | Stripe Checkout (stripe-node 23, API `2026-10-28.endive`), or simulated | `PAYMENTS_PROVIDER` |
 | Jobs | Postgres job table + cron-invoked runner (`/api/cron/jobs`) | Vercel Cron or Supabase pg_cron |
-| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade; offline SVG `RouteView` on the hike screen | Never cache basemap tiles offline |
+| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade on wide maps only (≥ 768 px, zoom ≥ 10, never on Explore or with Save-Data); offline SVG `RouteView` on the hike screen | Never cache basemap tiles offline |
 | Validation | zod **4** (`z.email()`, `z.uuid()` are top-level) | Validate every server input |
 | Icons | lucide-react 1.x | |
 | Tests | Vitest 5 (`unit` + `integration` projects), Playwright (preinstalled) for e2e | |

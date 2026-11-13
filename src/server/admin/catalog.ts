@@ -570,7 +570,10 @@ export async function requestTileRetry(user: SessionUser, input: unknown): Promi
       if (row.jobStatus === "queued") {
         const key = repo.ingestJobKey(layer, providerId, tileKey, row.requestGen);
         const [job] = await tx<{ id: number }[]>`
-          update public.jobs set run_at = now()
+          update public.jobs
+             set run_at = now(),
+                 -- Catalog jobs are claimed most recent request first: count this as a new request.
+                 payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${Date.now()}::bigint))
            where dedup_key = ${key} and status = 'queued'
           returning id`;
         if (!job) return fail("This tile's load is no longer queued; reload the page and try again.");
@@ -646,7 +649,7 @@ async function lockTrail(tx: Tx, ref: TrailRef): Promise<TrailDbRow | null> {
  * search, trail pages and saved lists; nothing is deleted. A moderation hide
  * clears retired_at, so ingestion never un-hides it when the source has it.
  */
-export async function hideCatalogTrail(user: SessionUser, input: unknown): Promise<ActionResult<{ id: string }>> {
+export async function hideCatalogTrail(user: SessionUser, input: unknown): Promise<ActionResult<{ id: string; path: string }>> {
   assertCan(user, MANAGE);
   const parsed = moderationSchema.safeParse(input);
   if (!parsed.success) return zodFail(parsed.error);
@@ -671,9 +674,10 @@ export async function hideCatalogTrail(user: SessionUser, input: unknown): Promi
         previousState: trailState(t),
         previousReason: t.hiddenReason,
       });
-      return ok(`“${t.name}” is hidden. It no longer appears in search, on its trail page or in saved lists, and refreshes keep it hidden.`, {
-        data: { id: t.id },
-      });
+      return ok(
+        `“${t.name}” is hidden. It no longer appears in search, on its trail page or in saved lists, and refreshes keep it hidden. Copies already cached by browsers or the CDN can still show for a few minutes.`,
+        { data: { id: t.id, path: trailPath(t) } },
+      );
     }),
   );
 }
@@ -683,7 +687,7 @@ export async function hideCatalogTrail(user: SessionUser, input: unknown): Promi
  * source no longer has it) cannot be unhidden by hand: it comes back by
  * itself if the source has it again.
  */
-export async function unhideCatalogTrail(user: SessionUser, input: unknown): Promise<ActionResult<{ id: string }>> {
+export async function unhideCatalogTrail(user: SessionUser, input: unknown): Promise<ActionResult<{ id: string; path: string }>> {
   assertCan(user, MANAGE);
   const parsed = moderationSchema.safeParse(input);
   if (!parsed.success) return zodFail(parsed.error);
@@ -709,7 +713,7 @@ export async function unhideCatalogTrail(user: SessionUser, input: unknown): Pro
         providerId: t.providerId,
         previousReason: t.hiddenReason,
       });
-      return ok(`“${t.name}” is visible again.`, { data: { id: t.id } });
+      return ok(`“${t.name}” is visible again.`, { data: { id: t.id, path: trailPath(t) } });
     }),
   );
 }

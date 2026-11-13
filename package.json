@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@photostructure/tz-lookup": "^11.8.0",
+    "@rapideditor/country-coder": "^5.6.1",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
     "clsx": "^2.1.1",

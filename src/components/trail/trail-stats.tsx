@@ -1,5 +1,7 @@
 import type { TrailDetailDto } from "@/domain/catalog";
 import {
+  DISTANCE_ONLY_TIME,
+  FLAT_PACE_KMH,
   difficultyExplanation,
   difficultyLabel,
   difficultyQualifier,
@@ -27,14 +29,23 @@ function Stat({ label, value, sub }: { label: string; value: React.ReactNode; su
   );
 }
 
+/** 4.5 km/h → "2.8 mph". */
+const FLAT_PACE_MPH = (FLAT_PACE_KMH / 1.609344).toFixed(1);
+
 /**
  * Key numbers for the hike as usually walked (hikeDistanceM / hikeGainM /
  * hikeDurationMin: out-and-back for linear routes), the route form, and the
  * difficulty with where it comes from.
+ *
+ * Without elevation data (elevationGainM null) the moving time is distance
+ * at a flat-ground pace with no time for climbing (estimate.ts), and an
+ * estimated difficulty rests on distance alone: both labels say so, and
+ * nothing claims the climb was counted.
  */
 export function TrailStats({ trail, aside }: { trail: TrailDetailDto; aside?: React.ReactNode }) {
   const duration = formatDurationEstimate(trail.hikeDurationMin);
-  const qualifier = difficultyQualifier(trail.difficultySource, trail.sacScale);
+  const climbKnown = trail.elevationGainM !== null;
+  const qualifier = difficultyQualifier(trail.difficultySource, trail.sacScale, climbKnown);
   const note = (u: "imperial" | "metric") => routeFormNote(trail.routeType, trail.distanceM, u);
   const imperialNote = note("imperial");
   const metricNote = note("metric");
@@ -57,7 +68,7 @@ export function TrailStats({ trail, aside }: { trail: TrailDetailDto; aside?: Re
         <Stat
           label="Moving time"
           value={duration ? `≈ ${duration}` : <span className="text-base font-semibold text-muted">Not available</span>}
-          sub="moving time, estimated"
+          sub={duration && !climbKnown ? `moving time ${DISTANCE_ONLY_TIME}` : "moving time, estimated"}
         />
         <Stat
           label="Difficulty"
@@ -82,11 +93,20 @@ export function TrailStats({ trail, aside }: { trail: TrailDetailDto; aside?: Re
               How difficulty and time are estimated
             </summary>
             <div className="mt-1 max-w-prose space-y-1.5 rounded-xl bg-sand-100 px-4 py-3 text-ink">
-              <p>{difficultyExplanation(trail.difficulty, trail.difficultySource, trail.sacScale)}</p>
-              <p>
-                Moving time assumes an average hiking pace with extra time for climbing, without long breaks. Your own pace, the weather and
-                the trail surface change it.
-              </p>
+              <p>{difficultyExplanation(trail.difficulty, trail.difficultySource, trail.sacScale, climbKnown)}</p>
+              {climbKnown ? (
+                <p>
+                  Moving time assumes an average hiking pace with extra time for climbing, without long breaks. Your own pace, the weather
+                  and the trail surface change it.
+                </p>
+              ) : (
+                <p>
+                  There is no elevation data for this trail, so moving time is based on distance only, at a flat-ground pace (
+                  <Dual imperial={`${FLAT_PACE_MPH} mph`} metric={`${FLAT_PACE_KMH} km/h`} />
+                  ), with no extra time for climbing. On a hilly trail it takes longer. Long breaks are not included; your own pace, the
+                  weather and the trail surface change it.
+                </p>
+              )}
             </div>
           </details>
         </div>

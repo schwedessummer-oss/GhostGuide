@@ -14,8 +14,9 @@ import { catalogAttribution, searchTrails } from "@/server/trails/read";
 /**
  * Server render of /explore: the first results for ?bbox= (or for ?q=, via
  * the first place found), so the page works and is shareable without
- * JavaScript. Uses the same query schema and rate-limit buckets as
- * GET /api/trails/search and GET /api/geocode.
+ * JavaScript. Uses the same query schema, rate-limit buckets and tile-load
+ * budget (ensureCoverage `client`) as GET /api/trails/search and
+ * GET /api/geocode.
  */
 
 const COVERAGE_FAILED: Omit<CoverageDto, "layer"> = {
@@ -37,7 +38,7 @@ async function search(bbox: Bbox, filters: ExploreFilters, ip: string): Promise<
     const rl = await checkRateLimit(`trails:search:ip:${ip}`, 60, 60);
     if (!rl.allowed) return { results: null, error: "You’ve searched a lot in a short time. Wait a minute, then try again." };
     const q = parsed.data;
-    const coveragePromise = ensureCoverage("outdoor", q.bbox, { request: true, inlineTiles: 0 }).catch((err: unknown): CoverageDto => {
+    const coveragePromise = ensureCoverage("outdoor", q.bbox, { request: true, inlineTiles: 0, client: ip }).catch((err: unknown): CoverageDto => {
       log.error("explore.coverage_failed", { error: errorMessage(err) });
       return { layer: "outdoor", ...COVERAGE_FAILED };
     });

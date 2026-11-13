@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import type { PoiDto } from "@/domain/catalog";
 import { groupPoisByCategory, mapViewBounds, poiGroupOf } from "@/components/trail/poi";
 import { knownHazards } from "@/components/trail/safety-section";
-import { weatherSymbol } from "@/components/trail/weather";
+import { MET_SYMBOL_CODES, weatherSymbol } from "@/components/trail/weather";
+import { symbolSeverity } from "@/server/weather/forecast";
 
 const poi = (category: PoiDto["category"], name: string | null = null): PoiDto => ({
   id: `${category}-${name ?? "x"}-${Math.random()}`,
@@ -41,6 +42,46 @@ describe("weatherSymbol", () => {
     expect(weatherSymbol("sandstorm_day")).toBeNull();
     expect(weatherSymbol("")).toBeNull();
     expect(weatherSymbol(null)).toBeNull();
+    expect(weatherSymbol("clearsky_noon")).toBeNull();
+    expect(weatherSymbol("ssnow")).toBeNull();
+  });
+
+  it("recognises MET's 'lights…' spellings of light sleet / snow showers and thunder (#24)", () => {
+    expect(weatherSymbol("lightssleetshowersandthunder_day")).toEqual({
+      kind: "thunder",
+      label: "Light sleet showers and thunder",
+      night: false,
+    });
+    expect(weatherSymbol("lightssnowshowersandthunder_night")).toEqual({
+      kind: "thunder",
+      label: "Light snow showers and thunder",
+      night: true,
+    });
+    expect(weatherSymbol("lightssnowshowersandthunder_polartwilight")).toMatchObject({ kind: "thunder", night: true });
+  });
+
+  it("gives an icon kind and a label for every code in MET's official symbol legend (#24)", () => {
+    expect(MET_SYMBOL_CODES).toHaveLength(41);
+    expect(new Set(MET_SYMBOL_CODES.map((c) => c.code)).size).toBe(41);
+    for (const { code, variants } of MET_SYMBOL_CODES) {
+      const codes = variants ? [`${code}_day`, `${code}_night`, `${code}_polartwilight`] : [code];
+      for (const c of codes) {
+        const s = weatherSymbol(c);
+        expect(s, c).not.toBeNull();
+        expect(s?.label, c).toMatch(/^[A-Z][a-z ]+$/);
+        expect(s?.night, c).toBe(c.endsWith("_night") || c.endsWith("_polartwilight"));
+        // Thunder codes always show the thunder icon and say so; the label never drops the precipitation type.
+        if (code.includes("thunder")) {
+          expect(s?.kind, c).toBe("thunder");
+          expect(s?.label, c).toMatch(/and thunder$/);
+        } else {
+          expect(s?.kind, c).not.toBe("thunder");
+        }
+        for (const p of ["rain", "sleet", "snow"]) if (code.includes(p)) expect(s?.label.toLowerCase(), c).toContain(p);
+        // The server ranks the same code (so a day's symbol picked there always has an icon here).
+        expect(symbolSeverity(c), c).toBeGreaterThanOrEqual(0);
+      }
+    }
   });
 });
 

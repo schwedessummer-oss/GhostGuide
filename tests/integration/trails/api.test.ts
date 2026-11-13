@@ -195,7 +195,7 @@ describe("GET /api/trails/search", () => {
     await insertTrail(a.lng + 0.02, a.lat, { hidden: true });
     const res = await searchGET(get(`/api/trails/search?bbox=${a.q}`));
     expect(res.status).toBe(200);
-    expect(res.headers.get("cache-control")).toBe("public, s-maxage=60, stale-while-revalidate=300");
+    expect(res.headers.get("cache-control")).toBe("public, s-maxage=60, stale-while-revalidate=60");
     const body = (await res.json()) as TrailSearchResponse;
     expect(body.total).toBe(1);
     expect(body.bbox).toEqual(a.bbox);
@@ -206,7 +206,8 @@ describe("GET /api/trails/search", () => {
     expect(body.trails).toHaveLength(1);
     expect(body.trails[0]).toMatchObject({ id, name: "Coastal Walk", routeType: "linear", countryCode: "au" });
     expect(body.trails[0].path).toMatch(/^\/trail\/au\/new-south-wales\/api-/);
-    expect(coverage.ensureCoverage).toHaveBeenCalledWith("outdoor", a.bbox, { request: true, inlineTiles: 2 });
+    // The client key charges new tile loads to this client's budget.
+    expect(coverage.ensureCoverage).toHaveBeenCalledWith("outdoor", a.bbox, { request: true, inlineTiles: 2, client: expect.any(String) });
   });
 
   it("passes load=0 through and applies filters", async () => {
@@ -216,7 +217,7 @@ describe("GET /api/trails/search", () => {
     const res = await searchGET(get(`/api/trails/search?bbox=${a.q}&load=0&difficulty=hard`));
     const body = (await res.json()) as TrailSearchResponse;
     expect(body.trails.map((t) => t.id)).toEqual([hard]);
-    expect(coverage.ensureCoverage).toHaveBeenCalledWith("outdoor", a.bbox, { request: false, inlineTiles: 0 });
+    expect(coverage.ensureCoverage).toHaveBeenCalledWith("outdoor", a.bbox, { request: false, inlineTiles: 0, client: expect.any(String) });
   });
 
   it("is not cached while the area is still loading", async () => {
@@ -242,6 +243,16 @@ describe("GET /api/trails/search", () => {
     expect(JSON.stringify(body)).not.toMatch(/queue down/);
   });
 
+  it("keys an IPv6 client by its /64: rotating addresses in the prefix share one rate limit and one load budget", async () => {
+    const a = newArea();
+    const net = `2001:db8:${Math.floor(Math.random() * 0xffff).toString(16)}:${Math.floor(Math.random() * 0xffff).toString(16)}`;
+    for (const host of ["::1", "::dead:beef", ":1:2:3:4"]) await searchGET(get(`/api/trails/search?bbox=${a.q}`, `${net}${host}`));
+    const keys = vi.mocked(checkRateLimit).mock.calls.map(([key]) => key);
+    expect(keys).toEqual(Array(3).fill(`trails:search:ip:${net}::/64`));
+    const clients = coverage.ensureCoverage.mock.calls.map((c) => (c[2] as { client?: string }).client);
+    expect(clients).toEqual(Array(3).fill(`${net}::/64`));
+  });
+
   it("429 when the client is over its limit (60/min per IP)", async () => {
     const a = newArea();
     const ip = newIp();
@@ -257,12 +268,12 @@ describe("GET /api/trails/search", () => {
 
 // ---------------------------------------------------------------------------
 describe("GET /api/trails/[id]", () => {
-  it("returns the detail DTO with a long shared cache", async () => {
+  it("returns the detail DTO with a short shared cache", async () => {
     const a = newArea();
     const id = await insertTrail(a.lng, a.lat, { name: "Detail Trail" });
     const res = await detailGET(get(`/api/trails/${id}`), ctx(id));
     expect(res.status).toBe(200);
-    expect(res.headers.get("cache-control")).toBe("public, s-maxage=3600, stale-while-revalidate=86400");
+    expect(res.headers.get("cache-control")).toBe("public, s-maxage=300, stale-while-revalidate=60");
     const body = (await res.json()) as TrailDetailDto;
     expect(body).toMatchObject({ id, name: "Detail Trail", regionSlug: "new-south-wales", trailheadSource: "route_start" });
     expect(body.geometry.type).toBe("MultiLineString");
@@ -288,6 +299,26 @@ describe("GET /api/trails/[id]", () => {
     limiter.forceLimited = true;
     const res = await detailGET(get(`/api/trails/${id}`, ip), ctx(id));
     expect(res.status).toBe(429);
+    expect(res.headers.get("cache-control")).toBe("no-store");
     expect(vi.mocked(checkRateLimit)).toHaveBeenCalledWith(`trails:detail:ip:${ip}`, 120, 60);
+  });
+
+  it("a trail hidden by staff is 404 at once, and shared caches may keep an earlier copy for minutes at most", async () => {
+    const a = newArea();
+    const id = await insertTrail(a.lng, a.lat, { name: "Soon Hidden" });
+    const before = await detailGET(get(`/api/trails/${id}`), ctx(id));
+    expect(before.status).toBe(200);
+    // A CDN cannot be purged from the app, so the cached copy's lifetime bounds the takedown delay:
+    // s-maxage + stale-while-revalidate must stay within ~6 minutes (it used to be 1 h + 24 h).
+    const cc = before.headers.get("cache-control") ?? "";
+    const seconds = (name: string) => Number(new RegExp(`\\b${name}=(\\d+)`).exec(cc)?.[1] ?? 0);
+    expect(seconds("s-maxage")).toBeGreaterThan(0);
+    expect(seconds("s-maxage") + seconds("stale-while-revalidate")).toBeLessThanOrEqual(360);
+
+    await withSystem((tx) => tx`update public.catalog_trails set hidden = true where id = ${id}::uuid`);
+    const after = await detailGET(get(`/api/trails/${id}`), ctx(id));
+    expect(after.status).toBe(404);
+    expect(after.headers.get("cache-control")).toBe("no-store");
+    expect(await after.json()).toEqual({ error: "Trail not found" });
   });
 });

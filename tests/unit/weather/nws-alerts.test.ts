@@ -218,10 +218,13 @@ describe("getNwsAlerts control flow (mocked db and provider)", () => {
 
   it("serves the cache, dropping alerts that ended since", async () => {
     const alerts = mapNwsAlerts(fixtureJson("nws/alerts-active-synthetic.json"), NOW)!;
-    db.respond = (text) => (text.startsWith("select") ? [{ payload: { v: 1, kind: "alerts", alerts } }] : []);
+    const fetchedAt = new Date("2026-11-12T17:56:00Z");
+    db.respond = (text) => (text.startsWith("select") ? [{ payload: { v: 1, kind: "alerts", alerts }, fetchedAt }] : []);
     const later = new Date("2026-11-12T18:00:00Z"); // after the flash flood ends (17:45Z)
     const r = await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: later });
     expect(r.status).toBe("ok");
+    // The age of a cached answer is reported, never refreshed to "now".
+    expect(r).toMatchObject({ fromCache: true, checkedAt: fetchedAt });
     expect(r.alerts.map((a) => a.event)).toEqual(["Winter Storm Warning", "Wind Advisory", "Frost Advisory"]);
     expect(http.providerFetch).not.toHaveBeenCalled();
     expect(http.recordProviderCacheHit).toHaveBeenCalledWith("nws");
@@ -230,13 +233,13 @@ describe("getNwsAlerts control flow (mocked db and provider)", () => {
   it("a malformed cached payload is a miss", async () => {
     db.respond = (text) => (text.startsWith("select") ? [{ payload: { v: 1, kind: "alerts", alerts: [{ id: 1 }] } }] : []);
     http.providerFetch.mockResolvedValue(response(200, fixtureText("nws/alerts-active-table-rock-sc.json")));
-    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: false });
+    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: false, checkedAt: expect.any(Date) });
   });
 
   it("cache read and write failures do not fail the request", async () => {
     db.respond = () => new Error("db down");
     http.providerFetch.mockResolvedValue(response(200, fixtureText("nws/alerts-active-table-rock-sc.json")));
-    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: false });
+    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: false, checkedAt: expect.any(Date) });
   });
 
   it("400 out of bounds → not_supported, cached for a week", async () => {

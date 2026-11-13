@@ -16,6 +16,9 @@ import { formatInZone } from "@/lib/time";
 import { showDemoFixtures } from "@/config/env";
 import type { FactKind } from "@/domain/types";
 
+// Closures, permits and review dates are safety-relevant: always render fresh.
+export const dynamic = "force-dynamic";
+
 /** Demo-region trails are development fixtures: without SHOW_DEMO_FIXTURES they do not exist (404). */
 const loadTrail = cache((slug: string) =>
   showDemoFixtures() && /^[a-z0-9-]{1,80}$/.test(slug) ? getTrailBySlug(slug) : Promise.resolve(null),

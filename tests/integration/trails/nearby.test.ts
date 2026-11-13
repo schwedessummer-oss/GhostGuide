@@ -301,6 +301,8 @@ describe("GET /api/trails/:id/nearby", () => {
     const body = (await ready.json()) as NearbyResponse;
     expect(body.groups[0]).toMatchObject({ category: "fuel", label: "Gas" });
     expect(checkRateLimit).toHaveBeenCalledWith(`trails:nearby:ip:${ip}`, 60, 60);
+    // New services-tile loads are charged to the same per-client budget as trail searches.
+    expect(coverage.ensureCoverage).toHaveBeenCalledWith("services", expect.any(Array), { request: true, inlineTiles: 1, client: ip });
 
     coverage.ensureCoverage.mockResolvedValue(coverageOf("loading"));
     const loading = await get(id);

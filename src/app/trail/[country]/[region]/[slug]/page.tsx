@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
@@ -23,6 +24,7 @@ import { env } from "@/config/env";
 import type { TrailDetailDto } from "@/domain/catalog";
 import { GENERAL_NOTES, emergencyNumbersFor } from "@/server/safety/emergency-numbers";
 import { getTrailDetailByPath } from "@/server/trails/read";
+import { findTrailRedirect } from "@/server/trails/redirects";
 
 /**
  * Catalog trail page: /trail/<country>/<region>/<slug>.
@@ -36,17 +38,52 @@ export const revalidate = 3600;
 
 type Params = { country: string; region: string; slug: string };
 
-const loadTrail = cache((country: string, region: string, slug: string) => getTrailDetailByPath(country, region, slug));
+/**
+ * No trail is pre-rendered at build time (the catalog loads on demand), but
+ * returning a list (even empty) makes each trail page static on its first
+ * visit and then cached for `revalidate`. Without it Next.js renders this
+ * dynamic route on every request (Cache-Control: private, no-store).
+ */
+export async function generateStaticParams(): Promise<Params[]> {
+  return [];
+}
 
-/** Mixed-case paths redirect to the canonical lower-case path. */
+/**
+ * How long a path with no trail (a 404, or an old path's redirect) stays
+ * cached. Trails load on demand, so a path that 404s now can belong to a
+ * trail minutes later; the page's hour would keep serving the 404. Without
+ * Cache Components a render is cached for the SHORTEST revalidate of the
+ * data it read (unstable_cache included), so only these renders, which read
+ * the redirect table, get the short lifetime; trail pages keep the hour.
+ */
+const NO_TRAIL_REVALIDATE_S = 60;
+
+const loadTrail = cache((country: string, region: string, slug: string) => getTrailDetailByPath(country, region, slug));
+const loadRedirect = cache(
+  unstable_cache((country: string, region: string, slug: string) => findTrailRedirect(country, region, slug), ["trail-page-redirect"], {
+    revalidate: NO_TRAIL_REVALIDATE_S,
+  }),
+);
+
+/**
+ * A path the trail has left (its region was filled in later, its country
+ * corrected) redirects permanently to the trail's current path
+ * (redirects.ts). Mixed-case paths redirect to the lower-case path; over
+ * HTTP the proxy already does that before this page (src/proxy.ts: a
+ * redirect from here is sent with a duplicated Location on the first,
+ * uncached render), so this is the fallback for anything that reaches the
+ * page directly.
+ */
 async function resolve(params: Promise<Params>): Promise<{ trail: TrailDetailDto | null; redirectTo: string | null }> {
   const { country, region, slug } = await params;
   const trail = await loadTrail(country, region, slug);
   if (trail) return { trail, redirectTo: null };
   const lower = [country, region, slug].map((s) => s.toLowerCase());
-  if (lower.join("/") === [country, region, slug].join("/")) return { trail: null, redirectTo: null };
-  const found = await loadTrail(lower[0], lower[1], lower[2]);
-  return { trail: null, redirectTo: found ? found.path : null };
+  if (lower.join("/") !== [country, region, slug].join("/")) {
+    const found = await loadTrail(lower[0], lower[1], lower[2]);
+    if (found) return { trail: null, redirectTo: found.path };
+  }
+  return { trail: null, redirectTo: await loadRedirect(lower[0], lower[1], lower[2]) };
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {

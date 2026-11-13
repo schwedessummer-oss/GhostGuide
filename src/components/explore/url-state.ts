@@ -8,7 +8,6 @@
  * (stable key order, defaults omitted) so URLs are shareable and comparable.
  */
 import {
-  ACTIVITIES,
   formatBbox,
   parseBbox,
   type Activity,
@@ -21,18 +20,32 @@ import {
 export const FILTER_DIFFICULTIES = ["easy", "moderate", "hard", "expert"] as const satisfies readonly Difficulty[];
 export const FILTER_ROUTE_TYPES = ["loop", "linear", "network"] as const satisfies readonly RouteType[];
 export const FILTER_FEATURES = ["waterfall", "lake", "viewpoint", "peak"] as const satisfies readonly TrailFeature[];
+/**
+ * Activities offered as filters: those a provider actually derives. ("running"
+ * is never derived from OpenStreetMap tags, so filtering by it could only
+ * ever return nothing.)
+ */
+export const FILTER_ACTIVITIES = ["hiking", "walking", "biking", "horse_riding"] as const satisfies readonly Activity[];
+/**
+ * Permit choices offered as filters. Only "required": no source says a
+ * permit is NOT needed (unknown is not "not required"), so a "not required"
+ * filter could only ever return nothing.
+ */
+export const FILTER_PERMITS = ["required"] as const;
 export const SORTS = ["relevance", "length", "gain", "name"] as const;
 export type Sort = (typeof SORTS)[number];
 
 export type FilterDifficulty = (typeof FILTER_DIFFICULTIES)[number];
 export type FilterRouteType = (typeof FILTER_ROUTE_TYPES)[number];
 export type FilterFeature = (typeof FILTER_FEATURES)[number];
+export type FilterActivity = (typeof FILTER_ACTIVITIES)[number];
+export type FilterPermit = (typeof FILTER_PERMITS)[number];
 
 export interface ExploreFilters {
   difficulty: FilterDifficulty[];
   routeType: FilterRouteType[];
   features: FilterFeature[];
-  activity: Activity | null;
+  activity: FilterActivity | null;
   minDistanceKm: number | null;
   maxDistanceKm: number | null;
   maxGainM: number | null;
@@ -43,7 +56,7 @@ export interface ExploreFilters {
   toilets: boolean;
   camping: boolean;
   fee: "free" | "paid" | null;
-  permit: "required" | "not_required" | null;
+  permit: FilterPermit | null;
   sort: Sort;
 }
 
@@ -135,7 +148,8 @@ export function parseFilters(src: ParamSource): ExploreFilters {
     difficulty: list(r.all("difficulty"), FILTER_DIFFICULTIES),
     routeType: list(r.all("routeType"), FILTER_ROUTE_TYPES),
     features: list(r.all("features"), FILTER_FEATURES),
-    activity: oneOf(r.one("activity"), ACTIVITIES),
+    // Values no trail can match (e.g. an old link with activity=running) are dropped like any unknown value.
+    activity: oneOf(r.one("activity"), FILTER_ACTIVITIES),
     minDistanceKm,
     maxDistanceKm,
     maxGainM: number(r.one("maxGainM"), 0, 10_000),
@@ -146,7 +160,7 @@ export function parseFilters(src: ParamSource): ExploreFilters {
     toilets: flag(r.one("toilets")),
     camping: flag(r.one("camping")),
     fee: oneOf(r.one("fee"), ["free", "paid"] as const),
-    permit: oneOf(r.one("permit"), ["required", "not_required"] as const),
+    permit: oneOf(r.one("permit"), FILTER_PERMITS),
     sort: oneOf(r.one("sort"), SORTS) ?? "relevance",
   };
 }

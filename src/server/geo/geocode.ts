@@ -471,10 +471,16 @@ function adminAddressPayload(raw: unknown): Record<string, string> {
  * The provider is asked about the CENTRE of the point's 0.1° cell (≈ 11 km),
  * so every point in a cell shares one cacheable answer (180 days). Names are
  * therefore approximate near borders: they label trails, they are not
- * addresses. A point with no address (open sea) yields an all-null AdminArea,
- * which is cached; provider failures yield null and are not cached.
+ * addresses. The answer's countryCode is the CELL CENTRE's country and can be
+ * the neighbouring country for a point within a few km of a border: never use
+ * it as the country of the point itself. The catalog takes a trail's country
+ * from its exact point (src/server/geo/country.ts countryCodeAt) and keeps
+ * these names only when the cell is in that same country (enrich.ts
+ * resolvePlace). A point with no address (open sea) yields an all-null
+ * AdminArea, which is cached; provider failures yield null and are not cached
+ * (callers must not keep a null as an answer either: ingest.ts retries it).
  */
-export async function reverseAdminArea(lat: number, lng: number): Promise<AdminArea | null> {
+export async function reverseAdminArea(lat: number, lng: number, opts: { signal?: AbortSignal } = {}): Promise<AdminArea | null> {
   if (typeof lat !== "number" || typeof lng !== "number" || !Number.isFinite(lat) || !Number.isFinite(lng)) return null;
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
   const cellKey = adminCellKey(lat, lng);
@@ -510,6 +516,7 @@ export async function reverseAdminArea(lat: number, lng: number): Promise<AdminA
       minIntervalMs: NOMINATIM_MIN_INTERVAL_MS,
       timeoutMs: NOMINATIM_TIMEOUT_MS,
       retries: 1,
+      signal: opts.signal,
     });
     raw = res.json();
   } catch (err) {

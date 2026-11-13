@@ -68,6 +68,12 @@ describe("trailMetaDescription", () => {
     expect(d).not.toMatch(/climbing|Difficulty/);
   });
 
+  it("says an estimated rating without climb data rests on distance alone (#7)", () => {
+    const d = trailMetaDescription({ ...tableRock, hikeGainM: null, difficulty: "expert", difficultySource: "estimated" });
+    expect(d).toContain("Difficulty: expert (estimated from distance).");
+    expect(d).not.toMatch(/climbing/);
+  });
+
   it("credits unknown providers by their source name", () => {
     expect(trailMetaDescription({ ...tableRock, provider: "parks_ca", sourceName: "Parks Canada" })).toMatch(/Trail data: Parks Canada\.$/);
   });

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Card, Container } from "@/components/ui";
 import { AuthForm } from "../auth-form";
 
-export const metadata: Metadata = { title: "Create account" };
+// Not a search result of its own (see /login); links on it are still followed.
+export const metadata: Metadata = { title: "Create account", robots: { index: false, follow: true } };
 
 export default async function SignupPage({ searchParams }: PageProps<"/signup">) {
   const { next } = await searchParams;

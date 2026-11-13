@@ -13,6 +13,7 @@ import { forecastAltitude, whenLocal } from "@/server/weather/conditions";
 import {
   DAYLIGHT_BUFFER_MIN,
   buildPlanning,
+  dayWord,
   formatDuration,
   outAndBackMinutes,
   sunDays,
@@ -27,6 +28,15 @@ const SUNSET_TODAY = Date.parse("2026-11-12T22:27:01.711Z");
 const SUNRISE_TODAY = Date.parse("2026-11-12T12:02:27.793Z");
 const SUNSET_TOMORROW = Date.parse("2026-11-13T22:26:20.386Z");
 const MIN = 60_000;
+/** A stored DEM profile for the 6 km loop: its stored duration allowed for climbs. */
+const LOOP_PROFILE: [number, number][] = [
+  [0, 300],
+  [3000, 420],
+  [6000, 300],
+];
+const DISTANCE_ONLY_NOTE =
+  "There is no elevation data for this trail, so its hiking time is based on distance only, at a flat-ground pace, " +
+  "with no extra time for climbing. On a hilly trail the hike takes longer than shown: allow extra time and start earlier.";
 
 function plan(nowIso: string, o: Partial<PlanningInput> = {}) {
   const now = new Date(nowIso);
@@ -37,11 +47,14 @@ function plan(nowIso: string, o: Partial<PlanningInput> = {}) {
     routeType: "loop",
     distanceM: 6_000,
     estimatedDurationMin: 120,
-    profile: null,
+    profile: LOOP_PROFILE,
     sun: sunDays(LAT, LNG, NY, now),
     ...o,
   });
 }
+
+/** Local calendar date of an ISO instant in New York. */
+const nyDate = (iso: string) => new Date(iso).toLocaleDateString("en-CA", { timeZone: NY });
 
 describe("sunDays / toSunTimesDto", () => {
   it("returns today and the next two local days as ISO strings", () => {
@@ -102,12 +115,57 @@ describe("buildPlanning: loop", () => {
     expect(p.notes).toContain("Starting now, you would finish around 5:30 PM, after sunset (5:27 PM). Bring a headlamp or choose a shorter hike.");
   });
 
-  it("moves the latest start to tomorrow when today's has passed, and says so", () => {
+  it("moves the latest start to tomorrow when today's has passed, and says so first", () => {
     const p = plan("2026-11-12T21:00:00Z");
     const latest = new Date(SUNSET_TOMORROW - 180 * MIN);
     expect(p.latestRecommendedStart).toBe(latest.toISOString());
-    expect(p.notes[0]).toBe("It is too late today to finish an hour before sunset. Tomorrow, start by 2:26 PM at the latest.");
+    expect(p.notes[0]).toBe(
+      "It is too late today to finish an hour before sunset. The latest recommended start shown is for tomorrow's sunset (5:26 PM): " +
+        "start by 2:26 PM tomorrow at the latest.",
+    );
+    // The instant itself is on tomorrow's local date (= sun[1].date), so a client can label it "Tomorrow".
+    expect(nyDate(p.latestRecommendedStart!)).toBe("2026-11-13");
     expect(p.daylightRemainingMin).toBe(Math.round((SUNSET_TODAY - Date.parse("2026-11-12T21:00:00Z")) / MIN));
+  });
+
+  it("names tomorrow first even ahead of the out-and-back note of a linear route", () => {
+    const p = plan("2026-11-12T21:00:00Z", { routeType: "linear", distanceM: 4500, estimatedDurationMin: 60, profile: null });
+    expect(p.notes[0]).toMatch(/^It is too late today to finish an hour before sunset\. The latest recommended start shown is for tomorrow's sunset/);
+    expect(p.notes[1]).toMatch(/^This is a one-way route\./);
+  });
+
+  it("never returns a latest start that has already passed (so 'already passed today' cannot be needed)", () => {
+    for (let h = 0; h < 24; h += 0.5) {
+      const now = Date.parse("2026-11-12T05:00:00Z") + h * 3_600_000; // midnight → midnight local
+      for (const minutes of [30, 120, 300, 700, 1200]) {
+        const p = plan(new Date(now).toISOString(), { estimatedDurationMin: minutes });
+        if (p.latestRecommendedStart) expect(Date.parse(p.latestRecommendedStart), `${h} h, ${minutes} min`).toBeGreaterThanOrEqual(now);
+      }
+    }
+  });
+
+  it("a start for tomorrow's sunset that falls tonight is called 'today', with the dark-start warning", () => {
+    // 4 PM, a 20 h hike: tomorrow's sunset − 21 h is 8:26 PM tonight.
+    const p = plan("2026-11-12T21:00:00Z", { estimatedDurationMin: 1200 });
+    expect(p.latestRecommendedStart).toBe(new Date(SUNSET_TOMORROW - 1260 * MIN).toISOString());
+    expect(p.notes[0]).toBe(
+      "It is too late today to finish an hour before sunset. The latest recommended start shown is for tomorrow's sunset (5:26 PM): " +
+        "start by 8:26 PM today at the latest.",
+    );
+    expect(p.notes[1]).toBe(
+      "That start is before sunrise (7:03 AM tomorrow): this hike takes longer than the daylight available, so part of it would be in the dark.",
+    );
+  });
+
+  it("gives no latest start when even tomorrow's has passed", () => {
+    const p = plan("2026-11-12T21:00:00Z", { estimatedDurationMin: 1500 });
+    expect(p.latestRecommendedStart).toBeNull();
+    expect(p.notes[0]).toBe(
+      "It is too late today to finish an hour before sunset, and from now this hike cannot finish an hour before tomorrow's sunset either, " +
+        "so Ghost Guide cannot suggest a latest start time.",
+    );
+    expect(p.notes).not.toContain("The latest recommended start leaves an hour of daylight to spare before sunset.");
+    expect(p.finishIfStartNow).toBe(new Date(Date.parse("2026-11-12T21:00:00Z") + 1500 * MIN).toISOString());
   });
 
   it("after sunset: no daylight left, latest start tomorrow", () => {
@@ -120,12 +178,13 @@ describe("buildPlanning: loop", () => {
   it("flags a hike longer than the daylight (start before sunrise)", () => {
     const early = plan("2026-11-12T05:00:00Z", { estimatedDurationMin: 700 });
     expect(early.latestRecommendedStart).toBe(new Date(SUNSET_TODAY - 760 * MIN).toISOString());
-    expect(early.notes).toContain(
-      "That start is before sunrise (7:02 AM): this hike takes longer than the daylight available, so part of it would be in the dark.",
+    expect(early.notes[0]).toBe(
+      "That start is before sunrise (7:02 AM today): this hike takes longer than the daylight available, so part of it would be in the dark.",
     );
     const later = plan("2026-11-12T15:00:00Z", { estimatedDurationMin: 700 });
     expect(later.latestRecommendedStart).toBe(new Date(SUNSET_TOMORROW - 760 * MIN).toISOString());
-    expect(later.notes.some((n) => n.startsWith("That start is before sunrise (7:03 AM)"))).toBe(true);
+    expect(later.notes[0]).toMatch(/start by 4:46 AM tomorrow at the latest\.$/);
+    expect(later.notes[1]).toMatch(/^That start is before sunrise \(7:03 AM tomorrow\)/);
   });
 
   it("without a duration: no start or finish times, and an honest note", () => {
@@ -134,6 +193,23 @@ describe("buildPlanning: loop", () => {
     expect(p.daylightRemainingMin).toBeGreaterThan(0);
     expect(p.notes[0]).toBe("The hiking time for this trail is not known, so Ghost Guide cannot suggest a latest start time.");
     expect(p.notes).not.toContain("Estimates assume an average pace and do not include long breaks.");
+  });
+
+  it("says the time is based on distance only when there is no elevation profile, and never claims climbs were counted", () => {
+    const flat = plan("2026-11-12T15:00:00Z", { profile: null });
+    // Same numbers as with a profile (the stored estimate is kept)…
+    expect(flat.latestRecommendedStart).toBe(plan("2026-11-12T15:00:00Z").latestRecommendedStart);
+    // …but the basis is stated, ahead of the general notes.
+    expect(flat.notes[0]).toBe(DISTANCE_ONLY_NOTE);
+    expect(flat.notes.join(" ")).not.toMatch(/time for climb(ing|s) (is|are) (included|counted)|allow(s|ing)? for climb/i);
+    // A profile without measurable length is no profile either.
+    expect(plan("2026-11-12T15:00:00Z", { profile: [[0, 300]] }).notes).toContain(DISTANCE_ONLY_NOTE);
+    // With a profile, or with no duration at all, there is no such note.
+    expect(plan("2026-11-12T15:00:00Z").notes).not.toContain(DISTANCE_ONLY_NOTE);
+    expect(plan("2026-11-12T15:00:00Z", { profile: null, estimatedDurationMin: null }).notes).not.toContain(DISTANCE_ONLY_NOTE);
+    // The basis is also sent as data, so the client labels the time from the live response.
+    expect(flat.durationBasis).toBe("distance_only");
+    expect(plan("2026-11-12T15:00:00Z").durationBasis).toBe("elevation_profile");
   });
 
   it("ignores invalid stored durations", () => {
@@ -176,11 +252,17 @@ describe("buildPlanning: linear (out and back)", () => {
     );
   });
 
-  it("estimates out and back on flat pace without a profile, even when the one-way time is unknown", () => {
+  it("estimates out and back on flat pace without a profile, even when the one-way time is unknown, and says climbs are not counted", () => {
     const p = plan("2026-11-12T15:00:00Z", { routeType: "linear", distanceM: 4500, estimatedDurationMin: null, profile: null });
     expect(p.outAndBackDurationMin).toBe(120); // 9 km at 4.5 km/h
     expect(p.finishIfStartNow).toBe("2026-11-12T17:00:00.000Z");
     expect(p.notes[0]).toBe("This is a one-way route. Times assume you hike out and back (about 2 h).");
+    expect(p.notes[1]).toBe(DISTANCE_ONLY_NOTE);
+  });
+
+  it("has no distance-only note when the out-and-back time comes from the stored profile", () => {
+    const p = plan("2026-11-12T15:00:00Z", { routeType: "linear", distanceM: 2900, estimatedDurationMin: 95, profile });
+    expect(p.notes).not.toContain(DISTANCE_ONLY_NOTE);
   });
 
   it("outAndBackMinutes is null for other route types and unusable distances", () => {
@@ -236,6 +318,15 @@ describe("buildPlanning: polar day and night (Longyearbyen, Svalbard)", () => {
     expect(p.daylightRemainingMin).toBeNull();
     expect(p.latestRecommendedStart).toBeNull();
     expect(p.finishIfStartNow).toBe("2026-11-12T16:40:00.000Z");
+  });
+});
+
+describe("dayWord", () => {
+  const now = new Date("2026-11-12T21:00:00Z"); // 4 PM EST
+  it("names the trail-local day of an instant", () => {
+    expect(dayWord(new Date("2026-11-13T04:59:00Z"), now, NY)).toBe("today"); // 11:59 PM
+    expect(dayWord(new Date("2026-11-13T05:00:00Z"), now, NY)).toBe("tomorrow"); // midnight
+    expect(dayWord(new Date("2026-11-14T15:00:00Z"), now, NY)).toBe("on 2026-11-14");
   });
 });
 

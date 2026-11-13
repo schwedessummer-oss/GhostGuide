@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   classifyDifficulty,
   difficultyFromSacScale,
+  durationBasis,
   effortDifficulty,
   effortScore,
   estimateDurationMin,
@@ -109,6 +110,23 @@ describe("estimateDurationMin", () => {
   it("rejects invalid distances", () => {
     expect(() => estimateDurationMin({ distanceM: NaN, profile: null })).toThrow(RangeError);
     expect(() => estimateDurationMin({ distanceM: -1, profile: null })).toThrow(RangeError);
+  });
+});
+
+describe("durationBasis", () => {
+  it("says when a time is distance-only (no climbing counted), mirroring the estimators", () => {
+    const climb = slopeProfile(4000, 0.2);
+    expect(durationBasis(climb)).toBe("elevation_profile");
+    for (const none of [null, undefined, [], [[0, 100]], [[NaN, 1]]] as const) {
+      expect(durationBasis(none as never)).toBe("distance_only");
+    }
+    // Distance-only times ignore the climb entirely: 4 km one way is 107 min
+    // out and back whatever the terrain, while with 800 m of climb the
+    // profile-based estimate is close to an hour longer. That is why such a
+    // time must never be presented as allowing for climbs.
+    const flat = estimateOutAndBackMin(4000, null);
+    expect(flat).toBe(107);
+    expect(estimateOutAndBackMin(4000, climb) - flat).toBeGreaterThan(45);
   });
 });
 
@@ -223,14 +241,42 @@ describe("classifyDifficulty", () => {
     });
   });
 
-  it("estimates when no usable SAC grade exists", () => {
-    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: null, routeType: "loop" })).toEqual({ difficulty: "easy", source: "estimated" });
+  it("estimates from distance and climb when no usable SAC grade exists", () => {
+    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: 0, routeType: "loop" })).toEqual({ difficulty: "easy", source: "estimated" });
     // Same 4 km as a linear route is an 8 km out-and-back → moderate
-    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: null, routeType: "linear" })).toEqual({ difficulty: "moderate", source: "estimated" });
+    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: 0, routeType: "linear" })).toEqual({ difficulty: "moderate", source: "estimated" });
     expect(classifyDifficulty({ sacScale: "weird", distanceM: 4000, gainM: 0, routeType: "network" })).toEqual({ difficulty: "easy", source: "estimated" });
     expect(classifyDifficulty({ sacScale: null, distanceM: NaN, gainM: null, routeType: "loop" }).difficulty).toBe("unknown");
     expect(classifyDifficulty({ sacScale: "mountain_hiking", distanceM: NaN, gainM: null, routeType: "loop" })).toEqual({
       difficulty: "moderate",
+      source: "osm_sac_scale",
+    });
+  });
+
+  it("never scores an unknown climb as 0 m: no 'estimated' rating that the missing climb could change", () => {
+    // 4 km one way, climb unknown (DEM unavailable). With 800 m up and back
+    // this hike is Hard; scoring the unknown climb as 0 m used to say "Moderate · estimated".
+    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: null, lossM: null, routeType: "linear" })).toEqual({
+      difficulty: "unknown",
+      source: "estimated",
+    });
+    expect(classifyDifficulty({ sacScale: null, distanceM: 4000, gainM: 800, lossM: 20, routeType: "linear" }).difficulty).toBe("hard");
+    for (const gainM of [null, Number.NaN, -10]) {
+      expect(classifyDifficulty({ sacScale: null, distanceM: 2000, gainM, routeType: "loop" }).difficulty).toBe("unknown");
+      expect(classifyDifficulty({ sacScale: "weird", distanceM: 12_000, gainM, routeType: "network" }).difficulty).toBe("unknown");
+    }
+    // A mapped SAC grade at least as hard as distance alone: the SAC grade, credited to SAC (its explanation names the grade, not the climb).
+    expect(classifyDifficulty({ sacScale: "mountain_hiking", distanceM: 2000, gainM: null, routeType: "linear" })).toEqual({
+      difficulty: "moderate",
+      source: "osm_sac_scale",
+    });
+    // A SAC grade easier than distance alone already implies: the rating would rest on the missing climb → unknown.
+    expect(classifyDifficulty({ sacScale: "hiking", distanceM: 4000, gainM: null, routeType: "linear" }).difficulty).toBe("unknown");
+    // Distance alone already makes it Expert: no climb could lower that.
+    expect(classifyDifficulty({ sacScale: null, distanceM: 12_000, gainM: null, routeType: "linear" })).toEqual({ difficulty: "expert", source: "estimated" });
+    expect(classifyDifficulty({ sacScale: "hiking", distanceM: 22_000, gainM: null, routeType: "loop" })).toEqual({ difficulty: "expert", source: "estimated" });
+    expect(classifyDifficulty({ sacScale: "alpine_hiking", distanceM: 30_000, gainM: null, routeType: "loop" })).toEqual({
+      difficulty: "expert",
       source: "osm_sac_scale",
     });
   });

@@ -16,6 +16,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { offsetMeters } from "@/domain/geo";
 import type { Bbox } from "@/domain/catalog";
 import { closeDb, sql, withSystem } from "@/server/db";
+import { countryCodeAt } from "@/server/geo/country";
 import { linesLengthM } from "@/server/geo/geodesy";
 import { tileForPoint, tileFromKey, type Tile } from "@/server/geo/tiles";
 import { ProviderError } from "@/server/providers/http";
@@ -152,6 +153,9 @@ function deps(respond: Responder | ProviderAreaResult, over: Partial<IngestDeps>
       return { profile: [[0, 100], [len, 160]], gainM: 60, lossM: 0, maxM: 160, minM: 100, source: "Test DEM (estimate)" };
     },
     reverseAdmin: async () => ADMIN,
+    // The test tiles lie at sea off Australia; pretend they are in New Zealand like ADMIN
+    // (the country comes from the exact point, and names must agree with it).
+    countryAt: () => "nz",
     timezone: () => "Pacific/Auckland",
     now: () => new Date("2026-11-12T10:00:00Z"),
     concurrencyCap: 1000,
@@ -337,7 +341,10 @@ describe("ingestTile: creating trails and POIs", () => {
   it("stores unknown admin names as xx/unknown and nothing invented when elevation is unavailable", async () => {
     const [tile] = freshTiles();
     const rid = id("relation");
-    const r = await ingest(tile, deps(area([trail(rid, "Quiet Path", [eastLine(tile, 0, 1500)])]), { reverseAdmin: async () => null, elevation: async () => null, timezone: () => null }));
+    const r = await ingest(
+      tile,
+      deps(area([trail(rid, "Quiet Path", [eastLine(tile, 0, 1500)])]), { reverseAdmin: async () => null, countryAt: () => null, elevation: async () => null, timezone: () => null }),
+    );
     expect(r.outcome).toBe("done");
     const t = (await trailByProviderId(rid))!;
     expect(t.countryCode).toBe("xx");
@@ -349,7 +356,10 @@ describe("ingestTile: creating trails and POIs", () => {
     expect(t.elevationProfile).toBeNull();
     expect(t.familyFriendly).toBe(false);
     expect(t.trailheadSource).toBe("route_start");
-    expect(t.difficultySource).toBe("estimated");
+    // No climb data and no SAC grade: the rating would rest on the missing climb, so it is
+    // unknown rather than a distance-only guess labelled "estimated from distance and climb".
+    expect(t.difficulty).toBe("unknown");
+    expect(t.difficultySource).toBeNull();
   });
 
   it("skips trails without usable geometry and handles a services tile as POIs only", async () => {
@@ -412,7 +422,8 @@ describe("ingestTile: refresh", () => {
     expect(after.slug).toBe("original-name-track");
     expect(after.countryCode).toBe("nz");
     expect(after.regionSlug).toBe("canterbury");
-    expect(after.nearestPlace).toBe("Hobart"); // display name only; not part of the path
+    // The cell's names belong to another country than the trail's exact point: dropped, never mixed in.
+    expect(after.nearestPlace).toBe("Arthur's Pass");
     expect(after.name).toBe("Renamed Track");
     expect(after.distanceM).toBeGreaterThan(2490);
     expect(after.lastSyncedAt.getTime()).toBeGreaterThan(before.lastSyncedAt.getTime());
@@ -432,7 +443,8 @@ describe("ingestTile: refresh", () => {
     const [tile] = freshTiles();
     const rid = id("relation");
     await ingest(tile, deps(area([trail(rid, "Late Region Walk", [eastLine(tile, 0, 1200)])]), { reverseAdmin: async () => null }));
-    expect(await trailByProviderId(rid)).toMatchObject({ countryCode: "xx", regionSlug: "unknown", slug: "late-region-walk" });
+    // The country is known from the exact point even while reverse geocoding is unavailable.
+    expect(await trailByProviderId(rid)).toMatchObject({ countryCode: "nz", regionSlug: "unknown", slug: "late-region-walk" });
 
     await makeDue(tile);
     await ingest(tile, deps(area([trail(rid, "Late Region Walk", [eastLine(tile, 0, 1200)])])));
@@ -716,13 +728,21 @@ describe("tile status, backoff and concurrency", () => {
     expect(row.retryInMinutes).toBeGreaterThan(4.9);
     expect(row.retryInMinutes).toBeLessThan(5.1);
 
-    // Failed tiles are claimable before their backoff (the job queue's retries).
+    // Failed tiles are claimable before their backoff (the job queue's quick retries). A failure
+    // inside the backoff window records the error but does not escalate the backoff.
+    expect(await ingest(tile, boom)).toMatchObject({ attempts: 1 });
+    row = (await tileRow(tile))!;
+    expect(row.retryInMinutes).toBeGreaterThan(4.8);
+    expect(row.retryInMinutes).toBeLessThan(5.1);
+
+    // Once the backoff has run out, the next failure escalates it.
+    await sql()`update public.catalog_tiles set next_refresh_at = now() - interval '1 second' where tile_key = ${tile.key} and layer = 'outdoor'`;
     expect(await ingest(tile, boom)).toMatchObject({ attempts: 2 });
     row = (await tileRow(tile))!;
     expect(row.retryInMinutes).toBeGreaterThan(9.9);
     expect(row.retryInMinutes).toBeLessThan(10.1);
 
-    await sql()`update public.catalog_tiles set attempts = 12 where tile_key = ${tile.key} and layer = 'outdoor'`;
+    await sql()`update public.catalog_tiles set attempts = 12, next_refresh_at = now() - interval '1 second' where tile_key = ${tile.key} and layer = 'outdoor'`;
     await ingest(tile, boom);
     row = (await tileRow(tile))!;
     expect(row.attempts).toBe(13);
@@ -844,7 +864,8 @@ describe("real OpenStreetMap data (Table Rock fixture, see tests/fixtures/osm/RE
 
   it("stores every parsed trail and POI with sane derived fields; an unchanged refresh changes nothing", async () => {
     expect(tile.key).toBe("0.25/389/500");
-    const d1 = deps(parsed, { reverseAdmin: async () => sc, timezone: () => "America/New_York" });
+    // Real borders for the real data (the country comes from each trail's exact point).
+    const d1 = deps(parsed, { reverseAdmin: async () => sc, countryAt: countryCodeAt, timezone: () => "America/New_York" });
     const r1 = await ingest(tile, d1);
     expect(r1).toMatchObject({ outcome: "done", trails: parsed.trails.length, inserted: parsed.trails.length, failedTrails: 0, skipped: 0, pois: parsed.pois.length });
 
@@ -873,7 +894,7 @@ describe("real OpenStreetMap data (Table Rock fixture, see tests/fixtures/osm/RE
 
     // Unchanged refresh: same rows and slugs, nothing retired, stored elevation reused (no DEM calls).
     await makeDue(tile);
-    const d2 = deps(parsed, { reverseAdmin: async () => sc, timezone: () => "America/New_York" });
+    const d2 = deps(parsed, { reverseAdmin: async () => sc, countryAt: countryCodeAt, timezone: () => "America/New_York" });
     const r2 = await ingest(tile, d2);
     expect(r2).toMatchObject({ outcome: "done", inserted: 0, updated: parsed.trails.length, retired: 0, poisRemoved: 0 });
     expect(d2.elevationCalls).toHaveLength(0);

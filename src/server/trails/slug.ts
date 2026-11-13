@@ -18,6 +18,8 @@ import { createHash } from "node:crypto";
  *    close (the DB allows 120, leaving room for a "-<n>" suffix).
  *  - Uniqueness within (country, region) is the caller's job: pickFreeSlug
  *    appends "-2", "-3", ... (see repository.ts for the race-safe insert).
+ *    Old paths of trails that moved (catalog_trail_redirects, redirects.ts)
+ *    count as taken, so a path never passes from one trail to another.
  *
  * Region slugs follow the same rules with "unknown" as the fallback, and
  * country codes are ISO 3166-1 alpha-2 lower case with "xx" for unknown.

@@ -12,7 +12,11 @@ import type { Difficulty, DogPolicy, RouteType } from "@/domain/catalog";
 // Duration
 // ---------------------------------------------------------------------------
 
-/** Walking speed used when no elevation profile exists (km/h, flat-ground assumption). */
+/**
+ * Walking speed used when no elevation profile exists (km/h). This is a
+ * FLAT-GROUND pace: it adds no time for climbing, so on a hilly route the
+ * real moving time is longer (see durationBasis).
+ */
 export const FLAT_SPEED_NO_PROFILE_KMH = 4.5;
 /** Shortest duration ever reported, minutes. */
 export const MIN_DURATION_MIN = 5;
@@ -126,6 +130,21 @@ function assertDistance(distanceM: number): void {
   }
 }
 
+/**
+ * What a duration estimate over `profile` is based on:
+ *   "elevation_profile"  the profile's climbs and descents (Tobler);
+ *   "distance_only"      distance alone at FLAT_SPEED_NO_PROFILE_KMH, because
+ *                        there is no usable profile. Climbing is NOT included,
+ *                        so callers must never present such a time as
+ *                        allowing for climbs (say "based on distance only").
+ * Mirrors the choice made by estimateDurationMin / estimateOutAndBackMin.
+ */
+export type DurationBasis = "elevation_profile" | "distance_only";
+
+export function durationBasis(profile: Profile | null | undefined): DurationBasis {
+  return profile && toblerMinutes(profile) ? "elevation_profile" : "distance_only";
+}
+
 /** Unrounded moving minutes for one traversal (see estimateDurationMin). */
 function rawDurationMin(distanceM: number, profile: Profile | null): number {
   const tobler = profile ? toblerMinutes(profile) : null;
@@ -142,8 +161,11 @@ function rawDurationMin(distanceM: number, profile: Profile | null): number {
  * With a profile: the elevations are smoothed (centred ±50 m window, so DEM
  * noise does not turn into phantom slopes) and Tobler's hiking function is
  * applied per profile segment; the resulting time is scaled to `distanceM`.
- * Without a usable profile: distance at a flat 4.5 km/h, a deliberately
- * conservative pace for unknown terrain (Tobler's flat speed is ~5 km/h).
+ * Without a usable profile: distance at a flat 4.5 km/h (Tobler's flat speed
+ * is ~5 km/h). That is only slower than reality on flat ground: climbing is
+ * NOT counted, so on a hilly route it UNDER-estimates, by about an hour on
+ * 800 m of climb. Such a time must be presented as based on distance only
+ * (durationBasis() === "distance_only"), never as allowing for climbs.
  * Breaks are not included. Rounded to whole minutes, at least 5.
  * Throws RangeError for a negative or non-finite distance.
  */
@@ -250,8 +272,10 @@ export const EFFORT_THRESHOLDS = { easy: 6, moderate: 13, hard: 22 } as const;
 
 /**
  * Physical-effort difficulty from distance and climb (see effortScore). When
- * gain is unknown, distance alone is scored with the same thresholds, which
- * can only under-rate a hilly route. "unknown" only for an invalid distance.
+ * gain is unknown, distance alone is scored with the same thresholds: that is
+ * only a LOWER BOUND (it can only under-rate a hilly route), which is why
+ * classifyDifficulty does not publish it as a rating unless it is already
+ * "expert". "unknown" only for an invalid distance.
  */
 export function effortDifficulty(input: EffortInput): Difficulty {
   const score = effortScore(input);
@@ -303,15 +327,31 @@ export interface ClassifiedDifficulty {
  * Overall difficulty = the harder of the technical grade (OSM sac_scale) and
  * the effort grade (effortDifficulty over the out-and-back hike for linear
  * routes, one traversal otherwise). On a tie the SAC grade is credited, since
- * mapped data alone supports the result. Without a usable SAC grade the
- * source is "estimated". (Only an invalid distance with no SAC grade yields
- * "unknown"; callers should store a null source in that case.)
+ * mapped data alone supports the result. Otherwise the source is "estimated",
+ * which the UI words as "estimated from distance and climb".
+ *
+ * Unknown climb (no elevation data): unknown climb is never scored as 0 m.
+ * Distance alone gives only a lower bound L on the effort grade, so
+ *  - L is "expert": "expert" whatever the climb (or the SAC grade if it is
+ *    also expert, credited as usual);
+ *  - else a SAC grade at least as hard as L: the SAC grade (source
+ *    "osm_sac_scale"; the UI explains it from the SAC grade, not the climb);
+ *  - else "unknown": the rating would depend on the missing climb, and a
+ *    distance-only guess would be shown as "estimated from distance and
+ *    climb" and match the easy/moderate filters for a possibly steep trail.
+ * "unknown" is also returned for an invalid distance with no SAC grade;
+ * callers store a null source whenever the difficulty is "unknown".
  */
 export function classifyDifficulty(input: ClassifyInput): ClassifiedDifficulty {
-  const effort = effortDifficulty(hikeEffortOf(input));
+  const hike = hikeEffortOf(input);
+  const effort = effortDifficulty(hike);
   const technical = difficultyFromSacScale(input.sacScale);
   if (technical !== null && DIFFICULTY_RANK[technical] >= DIFFICULTY_RANK[effort]) {
     return { difficulty: technical, source: "osm_sac_scale" };
+  }
+  if (hike.gainM === null && effort !== "expert") {
+    // The effort grade would rest on a climb we do not know.
+    return { difficulty: "unknown", source: "estimated" };
   }
   return { difficulty: effort, source: "estimated" };
 }

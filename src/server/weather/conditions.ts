@@ -26,8 +26,16 @@ import { buildPlanning, sunDays, toSunTimesDto } from "./planning";
  * (hourly/daily/highlights empty, current null) or alertsStatus
  * "unavailable" / "not_supported", each with an honest note; sun times and
  * planning are computed locally and always present. Nothing is invented.
- * planning.notes also carries the data-availability notes, since the DTO
- * has no other free-text field.
+ * planning.notes also carries the data-availability notes (and when official
+ * alerts were last checked), since the DTO has no other free-text field.
+ *
+ * Caching (conditionsCacheControl): the body holds values relative to the
+ * moment it was built (daylight left, "finish if you start now", the current
+ * hour, which alerts are still active), so a complete response may be shared
+ * for at most CONDITIONS_SHARED_MAX_AGE_S seconds, with no
+ * stale-while-revalidate. A degraded one (forecast unavailable or the
+ * stale-if-error fallback, alerts unavailable) is never stored, so the next
+ * request retries the provider.
  */
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -130,12 +138,40 @@ export function whenLocal(instant: Date, now: Date, timeZone: string): string {
   return `on ${day} at ${time}`;
 }
 
+/** Longest time (s) a shared cache may serve a complete conditions response. */
+export const CONDITIONS_SHARED_MAX_AGE_S = 60;
+
+export interface TrailConditionsResult {
+  conditions: TrailConditionsDto;
+  /**
+   * True only when every provider part is current: the forecast was served
+   * fresh (not unavailable, not the stale-if-error fallback) and alerts are
+   * "ok" or "not_supported". Only a complete response may be shared by caches.
+   */
+  complete: boolean;
+}
+
+/**
+ * Cache-Control for a conditions response: shared caches may keep a complete
+ * one for CONDITIONS_SHARED_MAX_AGE_S (no stale-while-revalidate; browsers
+ * always refetch); anything degraded is "no-store" so the next request
+ * retries the failed provider instead of everyone seeing the failure.
+ */
+export function conditionsCacheControl(result: Pick<TrailConditionsResult, "complete">): string {
+  return result.complete ? `public, max-age=0, s-maxage=${CONDITIONS_SHARED_MAX_AGE_S}` : "no-store";
+}
+
 /**
  * Conditions for a catalog trail at `now`. Null when the trail does not
  * exist or is hidden. Provider failures are reported in the DTO, never
  * thrown; a database failure while loading the trail does throw.
  */
 export async function getTrailConditions(trailId: string, now: Date = new Date()): Promise<TrailConditionsDto | null> {
+  return (await loadTrailConditions(trailId, now))?.conditions ?? null;
+}
+
+/** getTrailConditions plus whether the response is complete enough to be cached (see TrailConditionsResult). */
+export async function loadTrailConditions(trailId: string, now: Date = new Date()): Promise<TrailConditionsResult | null> {
   const trail = await loadConditionsTrail(trailId);
   if (!trail) return null;
 
@@ -184,6 +220,8 @@ export async function getTrailConditions(trailId: string, now: Date = new Date()
     notes.push("Official weather alerts are not available for this region in Ghost Guide. Check local warnings before you go.");
   } else if (alerts.status === "unavailable") {
     notes.push("Official weather alerts could not be loaded right now. Check weather.gov before you go.");
+  } else if (alerts.status === "ok" && alerts.checkedAt) {
+    notes.push(`Official weather alerts were last checked ${whenLocal(alerts.checkedAt, now, tz)}.`);
   }
 
   const sun = sunDays(point.lat, point.lng, tz, now);
@@ -203,7 +241,7 @@ export async function getTrailConditions(trailId: string, now: Date = new Date()
   if (forecast.status === "ok") attribution.push({ ...METNO_ATTRIBUTION });
   if (alerts.status === "ok") attribution.push({ ...NWS_ATTRIBUTION });
 
-  return {
+  const conditions: TrailConditionsDto = {
     trailId: trail.id,
     generatedAt: now.toISOString(),
     timezone: zone,
@@ -220,4 +258,6 @@ export async function getTrailConditions(trailId: string, now: Date = new Date()
     forecastUpdatedAt,
     attribution,
   };
+  const complete = forecast.status === "ok" && forecast.source !== "stale" && alerts.status !== "unavailable";
+  return { conditions, complete };
 }

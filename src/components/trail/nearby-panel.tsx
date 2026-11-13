@@ -91,10 +91,49 @@ export function NearbyPanel({ trailId }: { trailId: string }) {
     );
   }
 
-  const { data, polling, gaveUp } = load;
+  return <NearbyView data={load.data} polling={load.polling} gaveUp={load.gaveUp} onRetry={retry} />;
+}
+
+/** The services text when no service is listed: a "none mapped" claim only once the whole area was checked. */
+export function emptyServicesText(state: NearbyResponse["coverage"]["state"], radiusM: number): string {
+  const km = Math.round(radiusM / 1000);
+  switch (state) {
+    case "ready":
+      return `No gas, food, lodging or medical care is mapped within ${km} km.`;
+    case "loading":
+      return "Gas, food, lodging and medical care will appear here once the area has loaded.";
+    case "partial":
+      return (
+        `None is mapped in the part of this area that loaded, but the rest within ${km} km couldn't be checked right now, ` +
+        "so there may be gas, food, lodging or medical care nearby that isn't shown."
+      );
+    case "too_large":
+      return `Gas, food, lodging and medical care within ${km} km couldn't all be checked, so there may be places nearby that aren't shown.`;
+    default:
+      return `Gas, food, lodging and medical care within ${km} km couldn't be checked right now, so there may be places nearby that aren't shown.`;
+  }
+}
+
+/**
+ * The loaded nearby places (exported for tests). Only coverage "ready" lets
+ * the panel say nothing is mapped; after a failed, partial or too-large load
+ * it says what couldn't be checked and offers to check again.
+ */
+export function NearbyView({
+  data,
+  polling,
+  gaveUp,
+  onRetry,
+}: {
+  data: NearbyResponse;
+  polling: boolean;
+  gaveUp: boolean;
+  onRetry: () => void;
+}) {
   const atTrailhead = data.groups.filter((g) => TRAILHEAD_GROUPS.has(g.category));
   const services = data.groups.filter((g) => !TRAILHEAD_GROUPS.has(g.category));
   const state = data.coverage.state;
+  const canRetry = gaveUp || state === "failed" || state === "partial";
 
   return (
     <div className="space-y-6">
@@ -110,9 +149,14 @@ export function NearbyPanel({ trailId }: { trailId: string }) {
           </p>
         ) : state === "failed" || state === "partial" ? (
           <p className="rounded-xl bg-amber-bg px-3 py-2.5 text-sm text-amber-ink">{data.coverage.message}</p>
+        ) : state === "too_large" ? (
+          // (coverage.message says "zoom in", which means nothing on a trail page.)
+          <p className="rounded-xl bg-amber-bg px-3 py-2.5 text-sm text-amber-ink">
+            The area around this trailhead is too large to load at once, so nearby services may be missing.
+          </p>
         ) : null}
-        {gaveUp ? (
-          <Button variant="ghost" onClick={retry} className="mt-2">
+        {canRetry ? (
+          <Button variant="ghost" onClick={onRetry} className="mt-2">
             <RefreshCw aria-hidden className="size-4" /> Check again
           </Button>
         ) : null}
@@ -129,13 +173,7 @@ export function NearbyPanel({ trailId }: { trailId: string }) {
 
       <div>
         <h3 className="mb-2 text-base font-bold text-ink">Nearby services</h3>
-        {services.length ? (
-          <GroupGrid groups={services} />
-        ) : state === "loading" ? (
-          <p className="text-sm text-muted">Gas, food, lodging and medical care will appear here once the area has loaded.</p>
-        ) : (
-          <p className="text-sm text-muted">No gas, food, lodging or medical care is mapped within {Math.round(data.radiusM / 1000)} km.</p>
-        )}
+        {services.length ? <GroupGrid groups={services} /> : <p className="text-sm text-muted">{emptyServicesText(state, data.radiusM)}</p>}
       </div>
 
       {data.notes.length ? (

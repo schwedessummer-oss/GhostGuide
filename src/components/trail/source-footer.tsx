@@ -1,18 +1,29 @@
 import { ExternalLink } from "lucide-react";
 import type { TrailDetailDto } from "@/domain/catalog";
-import { formatRelativeAge, osmFeatureFromUrl } from "./format";
+import { elevationSourceText, formatUtcMoment, osmFeatureFromUrl } from "./format";
 
 const link = "font-medium text-forest-800 underline underline-offset-2 hover:text-forest-900";
 
 /**
  * Source, licence and freshness for the trail page, plus how to correct the
  * data at its source (OpenStreetMap edits flow back on the next refresh).
+ *
+ * sourceUpdatedAt is shown as the time the source's data is "as of", never
+ * as an edit time: for OpenStreetMap it is the Overpass database snapshot
+ * the trail was read from (osm3s.timestamp_osm_base), close to the sync
+ * time, not when anyone last edited the trail.
+ *
+ * Both times are absolute (UTC), never "… ago": the trail page is cached
+ * (ISR), so a relative age computed at render time would go stale and could
+ * claim fresh data for a page rendered days earlier.
  */
-export function SourceFooter({ trail, now = new Date() }: { trail: TrailDetailDto; now?: Date }) {
+export function SourceFooter({ trail }: { trail: TrailDetailDto }) {
   const osm = osmFeatureFromUrl(trail.sourceUrl);
   const elevation = trail.attribution.find((a) => a.name.startsWith("Elevation:"));
+  const elevationName = elevation ? (elevationSourceText(elevation.name) ?? elevation.name) : null;
   const isOsm = trail.provider === "osm";
-  const synced = formatRelativeAge(trail.lastSyncedAt, now);
+  const synced = formatUtcMoment(trail.lastSyncedAt) ?? "at an unknown time";
+  const asOf = trail.sourceUpdatedAt ? formatUtcMoment(trail.sourceUpdatedAt) : null;
 
   return (
     <div className="space-y-3 text-sm text-muted">
@@ -32,10 +43,10 @@ export function SourceFooter({ trail, now = new Date() }: { trail: TrailDetailDt
         )}
         {" · "}
         <time dateTime={trail.lastSyncedAt}>last updated in Ghost Guide {synced}</time>
-        {trail.sourceUpdatedAt ? (
+        {trail.sourceUpdatedAt && asOf ? (
           <>
             {" · "}
-            <time dateTime={trail.sourceUpdatedAt}>source last edited {formatRelativeAge(trail.sourceUpdatedAt, now)}</time>
+            {isOsm ? "OpenStreetMap" : trail.sourceName} data as of <time dateTime={trail.sourceUpdatedAt}>{asOf}</time>
           </>
         ) : null}
         {trail.sourceUrl ? (
@@ -51,10 +62,10 @@ export function SourceFooter({ trail, now = new Date() }: { trail: TrailDetailDt
         <p>
           {elevation.url ? (
             <a href={elevation.url} target="_blank" rel="noopener noreferrer" className={link}>
-              {elevation.name}
+              {elevationName}
             </a>
           ) : (
-            elevation.name
+            elevationName
           )}
           . Elevation, climb, moving time and estimated difficulty are calculated by Ghost Guide.
         </p>

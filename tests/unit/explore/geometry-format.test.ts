@@ -142,7 +142,7 @@ describe("explore formatting", () => {
       tone: "info",
       progress: "1 of 2 areas ready",
     });
-    expect(coverageSummary({ ...base, state: "too_large" })?.short).toBe("Zoom in to load trails here");
+    expect(coverageSummary({ ...base, state: "too_large" })?.short).toBe("Showing the middle only · zoom in to load more");
     expect(coverageSummary({ ...base, state: "failed" })?.tone).toBe("error");
     expect(coverageSummary({ ...base, state: "partial" })?.tone).toBe("warn");
   });

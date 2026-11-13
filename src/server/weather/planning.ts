@@ -2,7 +2,7 @@ import "server-only";
 import type { PlanningDto, RouteType, SunTimesDto } from "@/domain/catalog";
 import { sunTimes, type SunTimes } from "@/server/geo/sun";
 import { addDaysToKey, localDateKey } from "@/server/geo/timezone";
-import { estimateOutAndBackMin, type Profile } from "@/server/trails/estimate";
+import { durationBasis, estimateOutAndBackMin, type Profile } from "@/server/trails/estimate";
 import { clockTime } from "./highlights";
 
 /**
@@ -16,9 +16,18 @@ import { clockTime } from "./highlights";
  *                         the stored profile; flat pace without one), since
  *                         that is the hike most people do (see read.ts)
  *   latestRecommendedStart  today's sunset − hike duration − 60 min; when that
- *                         is already past, the same for tomorrow (and a note
- *                         says so); null when the duration or a sunset is unknown
- *                         (polar day / night)
+ *                         is already past, the same for TOMORROW's sunset, and
+ *                         the FIRST note says so in words ("…for tomorrow's
+ *                         sunset…: start by 2:26 PM tomorrow…"); never in the
+ *                         past (null when tomorrow's is past too); null when the
+ *                         duration or a sunset is unknown (polar day / night).
+ *                         Clients label the day from the instant's local date
+ *                         in the trail's zone (compare sun[0].date /
+ *                         sun[1].date), not from "today's" heading
+ *   duration basis        when the trail has no usable elevation profile, the
+ *                         duration is distance at a flat pace with NO time for
+ *                         climbing (estimate.ts durationBasis); a note says so
+ *                         near the top, and nothing claims climbs were counted
  *   finishIfStartNow      now + hike duration
  *   daylightRemainingMin  minutes of daylight left today: sunset − max(now, sunrise);
  *                         0 after sunset and on polar nights; null on polar days
@@ -111,15 +120,69 @@ export function outAndBackMinutes(routeType: RouteType, distanceM: number | null
   }
 }
 
+/** "today", "tomorrow" or "on 2026-11-14": the local day of `instant` relative to `now` in `timeZone`. */
+export function dayWord(instant: Date, now: Date, timeZone: string): string {
+  const day = localDateKey(instant, timeZone);
+  const today = localDateKey(now, timeZone);
+  if (day === today) return "today";
+  if (day === addDaysToKey(today, 1)) return "tomorrow";
+  return `on ${day}`;
+}
+
 /** Planning numbers and plain-language notes (see the module header). */
 export function buildPlanning(input: PlanningInput): PlanningDto {
   const { now, timeZone } = input;
   const at = (d: Date) => clockTime(d, timeZone);
+  /** "2:26 PM tomorrow" — the day is always named. */
+  const atDay = (d: Date) => `${at(d)} ${dayWord(d, now, timeZone)}`;
+  /** "5:30 PM", or "4:10 AM tomorrow" when the instant is not today. */
+  const atOrDay = (d: Date) => {
+    const day = dayWord(d, now, timeZone);
+    return day === "today" ? at(d) : `${at(d)} ${day}`;
+  };
   const notes: string[] = [];
 
   const oneWay = validMinutes(input.estimatedDurationMin);
   const outAndBack = outAndBackMinutes(input.routeType, input.distanceM, input.profile);
   const hikeMin = input.routeType === "linear" ? (outAndBack ?? oneWay) : oneWay;
+
+  const today = input.sun[0]?.times ?? null;
+  const tomorrow = input.sun[1]?.times ?? null;
+  const n = now.getTime();
+
+  // Latest recommended start: today, else tomorrow; never a time already past.
+  // Its notes come FIRST: they change what the headline time means.
+  let latestRecommendedStart: Date | null = null;
+  let latestDay: SunTimes | null = null;
+  if (hikeMin !== null && today && today.polar === null && today.sunset) {
+    const startFor = (sunset: Date) => new Date(sunset.getTime() - (hikeMin + DAYLIGHT_BUFFER_MIN) * MIN_MS);
+    const candidate = startFor(today.sunset);
+    const tomorrowSunset = tomorrow && tomorrow.polar === null ? tomorrow.sunset : null;
+    const next = tomorrowSunset ? startFor(tomorrowSunset) : null;
+    if (candidate.getTime() >= n) {
+      latestRecommendedStart = candidate;
+      latestDay = today;
+    } else if (tomorrowSunset && next && next.getTime() >= n) {
+      latestRecommendedStart = next;
+      latestDay = tomorrow;
+      notes.push(
+        `It is too late today to finish an hour before sunset. The latest recommended start shown is for tomorrow's sunset ` +
+          `(${at(tomorrowSunset)}): start by ${atDay(next)} at the latest.`,
+      );
+    } else if (next) {
+      notes.push(
+        "It is too late today to finish an hour before sunset, and from now this hike cannot finish an hour before tomorrow's sunset either, " +
+          "so Ghost Guide cannot suggest a latest start time.",
+      );
+    } else {
+      notes.push("It is too late today to finish an hour before sunset.");
+    }
+  }
+  if (latestRecommendedStart && latestDay?.sunrise && latestRecommendedStart.getTime() < latestDay.sunrise.getTime()) {
+    notes.push(
+      `That start is before sunrise (${atDay(latestDay.sunrise)}): this hike takes longer than the daylight available, so part of it would be in the dark.`,
+    );
+  }
 
   if (input.routeType === "linear" && outAndBack !== null) {
     notes.push(
@@ -127,13 +190,15 @@ export function buildPlanning(input: PlanningInput): PlanningDto {
         (oneWay !== null ? `; one way takes about ${formatDuration(oneWay)}.` : "."),
     );
   }
+  if (hikeMin !== null && durationBasis(input.profile) === "distance_only") {
+    notes.push(
+      "There is no elevation data for this trail, so its hiking time is based on distance only, at a flat-ground pace, " +
+        "with no extra time for climbing. On a hilly trail the hike takes longer than shown: allow extra time and start earlier.",
+    );
+  }
   if (hikeMin === null) {
     notes.push("The hiking time for this trail is not known, so Ghost Guide cannot suggest a latest start time.");
   }
-
-  const today = input.sun[0]?.times ?? null;
-  const tomorrow = input.sun[1]?.times ?? null;
-  const n = now.getTime();
 
   // Daylight left today.
   let daylightRemainingMin: number | null = null;
@@ -153,35 +218,11 @@ export function buildPlanning(input: PlanningInput): PlanningDto {
     }
   }
 
-  // Latest recommended start: today, else tomorrow.
-  let latestRecommendedStart: Date | null = null;
-  let latestDay: SunTimes | null = null;
-  if (hikeMin !== null && today && today.polar === null && today.sunset) {
-    const candidate = new Date(today.sunset.getTime() - (hikeMin + DAYLIGHT_BUFFER_MIN) * MIN_MS);
-    if (candidate.getTime() >= n) {
-      latestRecommendedStart = candidate;
-      latestDay = today;
-    } else if (tomorrow && tomorrow.polar === null && tomorrow.sunset) {
-      latestRecommendedStart = new Date(tomorrow.sunset.getTime() - (hikeMin + DAYLIGHT_BUFFER_MIN) * MIN_MS);
-      latestDay = tomorrow;
-      notes.push(
-        `It is too late today to finish an hour before sunset. Tomorrow, start by ${at(latestRecommendedStart)} at the latest.`,
-      );
-    } else {
-      notes.push("It is too late today to finish an hour before sunset.");
-    }
-  }
-  if (latestRecommendedStart && latestDay?.sunrise && latestRecommendedStart.getTime() < latestDay.sunrise.getTime()) {
-    notes.push(
-      `That start is before sunrise (${at(latestDay.sunrise)}): this hike takes longer than the daylight available, so part of it would be in the dark.`,
-    );
-  }
-
   // Starting now.
   const finishIfStartNow = hikeMin !== null ? new Date(n + hikeMin * MIN_MS) : null;
   if (finishIfStartNow && today?.polar === null && today.sunset && n < today.sunset.getTime() && finishIfStartNow > today.sunset) {
     notes.push(
-      `Starting now, you would finish around ${at(finishIfStartNow)}, after sunset (${at(today.sunset)}). Bring a headlamp or choose a shorter hike.`,
+      `Starting now, you would finish around ${atOrDay(finishIfStartNow)}, after sunset (${at(today.sunset)}). Bring a headlamp or choose a shorter hike.`,
     );
   }
 
@@ -196,6 +237,7 @@ export function buildPlanning(input: PlanningInput): PlanningDto {
     latestRecommendedStart: isoOrNull(latestRecommendedStart),
     finishIfStartNow: isoOrNull(finishIfStartNow),
     daylightRemainingMin,
+    durationBasis: hikeMin === null ? null : durationBasis(input.profile),
     notes,
   };
 }

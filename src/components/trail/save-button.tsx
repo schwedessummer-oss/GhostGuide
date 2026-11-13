@@ -52,8 +52,9 @@ export function SaveTrailButton({
   const base = buttonClass("secondary", "md", className);
 
   if (!state || !state.signedIn) {
+    // rel=nofollow: each trail page has its own /login?next=… URL; crawlers should not queue them (the login page is noindex too).
     return (
-      <Link href={loginHref} className={base} aria-busy={!state || undefined}>
+      <Link href={loginHref} rel="nofollow" className={base} aria-busy={!state || undefined}>
         <Bookmark aria-hidden className="size-5" />
         Save
         <span className="sr-only"> {trailName} (sign in to save trails)</span>

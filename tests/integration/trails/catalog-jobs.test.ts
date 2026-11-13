@@ -15,7 +15,7 @@ import type { Bbox } from "@/domain/catalog";
 import { offsetMeters } from "@/domain/geo";
 import { closeDb, sql } from "@/server/db";
 import { tileFromKey, type Tile } from "@/server/geo/tiles";
-import { createCatalogHandlers, purgeCatalogCaches, refreshStaleTiles, CATALOG_JOB_KINDS } from "@/server/jobs/handlers/catalog";
+import { createCatalogHandlers, purgeCatalogCaches, refreshStaleTiles, CATALOG_JOB_KINDS, MIN_INGEST_BUDGET_MS } from "@/server/jobs/handlers/catalog";
 import { PERIODIC_JOBS } from "@/server/jobs/periodic";
 import { enqueueJob, runDueJobs } from "@/server/jobs/queue";
 import { ProviderError } from "@/server/providers/http";
@@ -227,6 +227,87 @@ describe("catalog.ingest_tile handler", () => {
     expect(await tileState(t)).toMatchObject({ status: "pending" });
   });
 
+  it("never starts a fetch that a full Overpass attempt could not finish before the deadline (100 s left)", async () => {
+    const t = freshTile();
+    await ensureCoverage("outdoor", inner(t));
+    await onlyJobsOf(t);
+    expect(MIN_INGEST_BUDGET_MS).toBeGreaterThan(100_000);
+    const s = await runIngest(createCatalogHandlers(), new Date(Date.now() + 100_000));
+    expect(s).toMatchObject({ claimed: 1, deferred: 1 });
+    expect(fake.calls).toHaveLength(0);
+    expect(await tileState(t)).toMatchObject({ status: "pending", attempts: 0 });
+    // With enough time it runs.
+    await sql()`update public.jobs set run_at = now() where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${t.key} and status = 'queued'`;
+    expect(await runIngest(createCatalogHandlers(), new Date(Date.now() + 200_000))).toMatchObject({ claimed: 1, succeeded: 1 });
+  });
+
+  it("quick job retries during a short provider outage do not inflate the tile's backoff", async () => {
+    const t = freshTile();
+    respondFor(t, () => {
+      throw new ProviderError("overpass", "HTTP 504", 504, true);
+    });
+    await ensureCoverage("outdoor", inner(t));
+    await onlyJobsOf(t);
+    // All four job attempts, 30 s – 2 min apart in production; here back to back.
+    for (let i = 0; i < 4; i++) {
+      await sql()`update public.jobs set run_at = now() where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${t.key} and status = 'queued'`;
+      await runIngest();
+    }
+    expect(fake.calls).toHaveLength(4);
+    expect((await ingestJobs(t)).map((j) => j.status)).toEqual(["dead"]);
+    const [row] = await sql()<{ attempts: number; retryInMinutes: number }[]>`
+      select attempts, extract(epoch from (next_refresh_at - now())) / 60 as retry_in_minutes
+        from public.catalog_tiles where layer = 'outdoor' and provider = 'osm' and tile_key = ${t.key}`;
+    // One escalation step (5 min), not five (80 min).
+    expect(row.attempts).toBe(1);
+    expect(row.retryInMinutes).toBeLessThanOrEqual(5.01);
+    expect((await ensureCoverage("outdoor", inner(t))).state).toBe("failed");
+
+    // Once that short backoff is over, a new search queues a new load.
+    await sql()`update public.catalog_tiles set next_refresh_at = now() - interval '1 second' where layer = 'outdoor' and provider = 'osm' and tile_key = ${t.key}`;
+    expect((await ensureCoverage("outdoor", inner(t))).state).toBe("loading");
+    expect((await ingestJobs(t)).map((j) => j.status)).toEqual(["dead", "queued"]);
+  });
+
+  it("drops a load nobody asked about for 20 minutes (no fetch) and forgets its never-loaded tile", async () => {
+    const t = freshTile();
+    await ensureCoverage("outdoor", inner(t));
+    await onlyJobsOf(t);
+    await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${Date.now() - repo.ABANDONED_REQUEST_MS - 1_000}::bigint))
+                 where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${t.key}`;
+    expect(await runIngest()).toMatchObject({ claimed: 1, noop: 1 });
+    expect(fake.calls).toHaveLength(0);
+    const [job] = await ingestJobs(t);
+    expect(job.status).toBe("succeeded");
+    expect(job.lastError).toMatch(/^skipped: nobody asked for this area in the last 20 minutes/);
+    expect(await tileState(t)).toBeUndefined();
+
+    // Background refreshes (requestedAt 0) are never dropped, however old.
+    const bg = freshTile();
+    respondFor(bg, () => ({ trails: [], pois: [], dataTimestamp: null }));
+    await ensureCoverage("outdoor", inner(bg));
+    await onlyJobsOf(bg);
+    await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', '0'::jsonb), created_at = now() - interval '2 days'
+                 where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${bg.key}`;
+    expect(await runIngest()).toMatchObject({ claimed: 1, succeeded: 1 });
+    expect(await tileState(bg)).toMatchObject({ status: "ready" });
+  });
+
+  it("serves the most recently requested area first; background refreshes last", async () => {
+    const [older, newer, background] = [freshTile(), freshTile(), freshTile()];
+    for (const t of [older, newer, background]) await ensureCoverage("outdoor", inner(t));
+    await sql()`update public.jobs set status = 'cancelled', finished_at = now()
+                 where kind like 'catalog.%' and status = 'queued' and payload->>'tileKey' not in (${older.key}, ${newer.key}, ${background.key})`;
+    const set = (t: Tile, ms: number) =>
+      sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${ms}::bigint)) where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${t.key}`;
+    await set(older, Date.now() - 5 * 60_000);
+    await set(newer, Date.now());
+    await set(background, 0);
+    const handlers = createCatalogHandlers({ concurrencyCap: 1000 });
+    for (let i = 0; i < 3; i++) await runDueJobs(handlers, { kinds: [repo.INGEST_JOB_KIND], limit: 1, order: "recent_request" });
+    expect(fake.calls).toEqual([newer, older, background].map((t) => `${t.bbox[0]},${t.bbox[1]}`));
+  });
+
   it("marks the tile failed and lets the queue retry a retryable failure", async () => {
     const t = freshTile();
     respondFor(t, () => {
@@ -298,6 +379,12 @@ describe("catalog.refresh_stale", () => {
 
     await refreshStaleTiles(10_000);
     for (const t of [due, retry, crashed, orphan, waiting]) expect(await queued(t)).toBe(1);
+
+    // Background work: it runs after every live request and is never dropped as abandoned.
+    const [bg] = await sql()<{ requestedAt: number }[]>`
+      select (payload->>'requestedAt')::float8 as requested_at from public.jobs
+       where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${due.key} and status = 'queued'`;
+    expect(bg.requestedAt).toBe(0);
   });
 
   it("runs as a job and reports what it did", async () => {
@@ -362,6 +449,21 @@ describe("cron runners", () => {
       expect((await call(route, "Bearer wrong-secret-0123456789")).status).toBe(401);
       expect((await call(route, CRON_SECRET)).status).toBe(401);
     }
+  });
+
+  it("the catalog runner first drops loads nobody asked about for 20 minutes", async () => {
+    const t = freshTile();
+    await ensureCoverage("outdoor", inner(t));
+    await onlyJobsOf(t);
+    await sql()`update public.jobs set payload = jsonb_set(payload, '{requestedAt}', to_jsonb(${Date.now() - repo.ABANDONED_REQUEST_MS - 60_000}::bigint)),
+                       run_at = now() + interval '1 hour'
+                 where kind = 'catalog.ingest_tile' and payload->>'tileKey' = ${t.key}`;
+    const res = await call(catalogCron, `Bearer ${CRON_SECRET}`);
+    expect(res.status).toBe(200);
+    expect(((await res.json()) as { abandoned: number }).abandoned).toBeGreaterThanOrEqual(1);
+    expect(await ingestJobs(t)).toMatchObject([{ status: "cancelled" }]);
+    expect(await tileState(t)).toBeUndefined();
+    expect(fake.calls).toHaveLength(0);
   });
 
   it("the safety runner never runs catalog jobs; the catalog runner does", async () => {

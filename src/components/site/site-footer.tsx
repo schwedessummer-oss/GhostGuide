@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { MAP_ATTRIBUTION } from "@/config/public";
 import { HiddenOnFullscreen } from "./route-visibility";
-import { UnitsToggle } from "./units-toggle";
-import { getUnitsPreference } from "./units-server";
+import { SiteUnitsToggle } from "./units-toggle";
 
 const linkClass = "inline-flex min-h-11 items-center underline underline-offset-2 hover:text-ink";
 
-export async function SiteFooter() {
-  const units = await getUnitsPreference();
+/**
+ * Site footer. Rendered by the root layout, so it reads no cookies or
+ * headers (that would make every page dynamic): the units switch picks up
+ * the visitor's choice in the browser.
+ */
+export function SiteFooter() {
   return (
     <HiddenOnFullscreen>
       <footer className="mt-16 border-t border-sand-200 bg-sand-100 print:hidden">
@@ -17,7 +20,7 @@ export async function SiteFooter() {
             <p className="mt-2">Find a hike, plan the day, and get home safely.</p>
             <div className="mt-4 flex items-center gap-3">
               <span className="font-medium text-ink">Units</span>
-              <UnitsToggle value={units} size="sm" />
+              <SiteUnitsToggle size="sm" />
             </div>
           </div>
           <div>

@@ -12,7 +12,7 @@ import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { closeDb, sql, withSystem, type JsonValue } from "@/server/db";
-import { getTrailConditions } from "@/server/weather/conditions";
+import { getTrailConditions, loadTrailConditions } from "@/server/weather/conditions";
 import { sunTimes } from "@/server/geo/sun";
 import { estimateOutAndBackMin } from "@/server/trails/estimate";
 import { METNO_ATTRIBUTION, getMetnoForecast } from "@/server/weather/metno";
@@ -305,7 +305,12 @@ describe("NWS alerts cache and coverage", () => {
   it("caches an empty US answer for 5 minutes and counts cache hits", async () => {
     const before = await usage("nws");
     queues.nws = [nwsOk(fixture("nws/alerts-active-table-rock-sc.json"))];
-    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: false });
+    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({
+      status: "ok",
+      alerts: [],
+      fromCache: false,
+      checkedAt: expect.any(Date),
+    });
     expect(requests[0].url).toBe("https://api.weather.gov/alerts/active?point=35.033,-82.7");
     expect(requests[0].headers.get("accept")).toBe("application/geo+json");
     const row = (await cacheRow("nws_alerts", "35.033,-82.700"))!;
@@ -313,7 +318,13 @@ describe("NWS alerts cache and coverage", () => {
     expect(row.ttlSec).toBeGreaterThan(290);
     expect(row.ttlSec).toBeLessThanOrEqual(300);
 
-    expect(await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW })).toEqual({ status: "ok", alerts: [], fromCache: true });
+    // A cache hit reports when NWS actually answered (the row's fetched_at), not "now".
+    await sql()`update public.weather_cache set fetched_at = now() - interval '4 minutes' where provider = 'nws_alerts' and cache_key = '35.033,-82.700'`;
+    const hit = await getNwsAlerts(35.033, -82.7, { countryCode: "us", now: NOW });
+    expect(hit).toMatchObject({ status: "ok", alerts: [], fromCache: true });
+    const age = Date.now() - (hit.status === "ok" && hit.checkedAt ? hit.checkedAt.getTime() : 0);
+    expect(age).toBeGreaterThan(3.9 * MIN);
+    expect(age).toBeLessThan(4.5 * MIN);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const after = await usage("nws");
     expect(after.requests - before.requests).toBe(1);
@@ -392,10 +403,37 @@ describe("getTrailConditions", () => {
       finishIfStartNow: new Date(NOW.getTime() + outAndBack * MIN).toISOString(),
       latestRecommendedStart: new Date(sunset.getTime() - (outAndBack + 60) * MIN).toISOString(),
       daylightRemainingMin: Math.round((sunset.getTime() - NOW.getTime()) / MIN),
+      durationBasis: "elevation_profile",
     });
     expect(c.planning.notes).toContain("Today's daily figures cover only the rest of the day.");
     expect(c.planning.notes).toContain("Estimates assume an average pace and do not include long breaks.");
+    // The stored profile was used: nothing says the time is distance-only.
+    expect(c.planning.notes.some((n) => n.includes("based on distance only"))).toBe(false);
+    expect(c.planning.notes.some((n) => /^Official weather alerts were last checked (at|yesterday at|on) /.test(n))).toBe(true);
     expect(c.attribution).toEqual([METNO_ATTRIBUTION, NWS_ATTRIBUTION]);
+  });
+
+  it("reports which responses are complete enough to be cached", async () => {
+    const id = await tableRockTrail();
+    queues.metno = [metOk()];
+    queues.nws = [nwsOk(fixture("nws/alerts-active-table-rock-sc.json"))];
+    expect((await loadTrailConditions(id, NOW))!.complete).toBe(true);
+
+    // NWS fails while MET is cached and fresh: alerts unavailable → not complete.
+    queues.nws = [{ status: 503, body: "" }];
+    await sql()`delete from public.weather_cache where provider = 'nws_alerts' and cache_key = '35.033,-82.700'`;
+    const noAlerts = (await loadTrailConditions(id, NOW))!;
+    expect(noAlerts.conditions).toMatchObject({ forecastStatus: "ok", alertsStatus: "unavailable" });
+    expect(noAlerts.complete).toBe(false);
+
+    // MET refresh fails and the stale-if-error forecast is served → not complete.
+    queues.nws = [nwsOk(fixture("nws/alerts-active-table-rock-sc.json"))];
+    await sql()`update public.weather_cache set expires_at = now() - interval '1 minute', fetched_at = now() - interval '50 minutes'
+                 where provider = 'metno' and cache_key = '35.033,-82.700,340'`;
+    queues.metno = [{ status: 503, body: "" }];
+    const stale = (await loadTrailConditions(id, NOW))!;
+    expect(stale.conditions).toMatchObject({ forecastStatus: "ok", alertsStatus: "ok" });
+    expect(stale.complete).toBe(false);
   });
 
   it("MET Norway down: forecast unavailable, everything else still works", async () => {
@@ -446,7 +484,10 @@ describe("getTrailConditions", () => {
     });
     queues.metno = [metOk(BANFF)];
 
-    const c = (await getTrailConditions(id, NOW))!;
+    const r = (await loadTrailConditions(id, NOW))!;
+    // Outside NWS coverage is a stable answer, not a failure: still cacheable.
+    expect(r.complete).toBe(true);
+    const c = r.conditions;
     expect(c.point.lng).toBeCloseTo(-115.563, 6);
     expect(c.point.lat).toBeCloseTo(51.176, 6);
     // No trailhead → no altitude: MET uses its own terrain model.
@@ -460,6 +501,11 @@ describe("getTrailConditions", () => {
     );
     expect(c.highlights[0]).toMatch(/^Below freezing overnight \(down to −3 °C around \d{1,2} AM\)$/);
     expect(c.attribution).toEqual([METNO_ATTRIBUTION]);
+    // No stored elevation profile: the planning says the time ignores climbing.
+    expect(c.planning.notes).toContain(
+      "There is no elevation data for this trail, so its hiking time is based on distance only, at a flat-ground pace, " +
+        "with no extra time for climbing. On a hilly trail the hike takes longer than shown: allow extra time and start earlier.",
+    );
   });
 
   it("serves a slightly stale forecast with a note when MET cannot be refreshed", async () => {

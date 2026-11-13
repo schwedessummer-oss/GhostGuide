@@ -492,10 +492,19 @@ export function downsampleProfile(points: readonly [number, number][], maxPoints
   return out.map((p) => [p[0], p[1]] as [number, number]);
 }
 
-function sourceLabel(lat: number, z: number): string {
-  const custom = env().TERRAIN_TILES_URL;
-  const name = custom.includes("elevation-tiles-prod") ? "AWS Terrain Tiles" : "Terrarium terrain tiles";
-  return `${name}, ~${Math.max(1, Math.round(metersPerPixel(lat, z)))} m DEM (estimate)`;
+/**
+ * Human-readable source of an elevation result. The metres figure is the
+ * spacing of the tile grid we sampled (Web Mercator pixel size at this
+ * latitude and zoom), NOT the resolution of the elevation model behind the
+ * tiles: AWS Terrain Tiles merge DEMs from ~10 m (USGS 3DEP) to ~90 m (SRTM)
+ * and coarser, by region, so a fine grid can carry upsampled coarse data.
+ * The label says exactly that, and nothing about a custom tile server's data.
+ */
+export function elevationSourceLabel(lat: number, z: number, tilesUrl: string = env().TERRAIN_TILES_URL): string {
+  const grid = `sampled on a ~${Math.max(1, Math.round(metersPerPixel(lat, z)))} m grid`;
+  return tilesUrl.includes("elevation-tiles-prod")
+    ? `AWS Terrain Tiles, ${grid}; source data resolution varies by region (estimate)`
+    : `Terrarium terrain tiles, ${grid} (estimate)`;
 }
 
 // ---------------------------------------------------------------------------
@@ -609,7 +618,7 @@ export async function elevationProfileFor(lines: Line[], opts: ElevationProfileO
     maxM: Math.round(maxM),
     minM: Math.round(minM),
     samples: points.length,
-    source: sourceLabel(midLat, zoom),
+    source: elevationSourceLabel(midLat, zoom),
   };
 }
 

@@ -213,7 +213,9 @@ test("filters update the list and the URL; back and forward restore each state",
     await page.waitForURL((u) => u.searchParams.get("features") === "waterfall,lake");
     const none = await searchTrailsApi({ bbox, features: "waterfall,lake", difficulty: "hard" });
     if (none.body.trails.length === 0) {
-      await page.getByText("No mapped trails in this area yet").waitFor();
+      // Filters are on, so the page must not claim the area has no mapped trails.
+      await page.getByText("No trails here match your filters").waitFor();
+      assert.equal(await page.getByText("No mapped trails in this area yet").count(), 0);
       assert.equal((await heading(page).innerText()).trim(), "No trails found");
     }
 

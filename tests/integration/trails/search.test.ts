@@ -184,6 +184,34 @@ describe("searchTrails: area", () => {
   });
 });
 
+describe("searchTrails: very large areas", () => {
+  it("scans only the middle of an area larger than the coverage limit (bounded work), with an exact total there", async () => {
+    const name = `Window ${randomUUID().slice(0, 8)}`;
+    const cx = -61.3;
+    const cy = -11.2;
+    const near = await insertTrail({ name, lines: [[[cx + 0.05, cy], [cx + 0.06, cy]]] });
+    const far = await insertTrail({ name, lines: [[[cx + 8, cy + 5], [cx + 8.01, cy + 5]]] });
+    const big: Bbox = [cx - 10, cy - 10, cx + 10, cy + 10];
+    const q = trailSearchQuerySchema.parse({ bbox: formatBbox(big), q: name });
+
+    const r = await searchTrails(q, { maxTiles: 16 });
+    expect(idsOf(r)).toEqual([near]);
+    expect(r.total).toBe(1);
+
+    // Within the limit (here raised to cover the whole box), the whole box is searched.
+    const all = await searchTrails(q, { maxTiles: 80 * 80 });
+    expect(sorted(idsOf(all))).toEqual(sorted([near, far]));
+    expect(all.total).toBe(2);
+  });
+
+  it("a world-sized box is answered quickly (the window, not the whole catalog)", async () => {
+    const started = Date.now();
+    const r = await search([-180, -90, 180, 90], { q: "e" });
+    expect(Date.now() - started).toBeLessThan(3_000);
+    expect(Array.isArray(r.trails)).toBe(true);
+  });
+});
+
 describe("searchTrails: filters", () => {
   it("difficulty and routeType lists", async () => {
     const a = newArea();

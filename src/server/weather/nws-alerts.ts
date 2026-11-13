@@ -20,7 +20,9 @@ import { ProviderError, providerFetch, recordProviderCacheHit } from "@/server/p
  * Results (including "no active alerts") are cached 5 minutes in
  * public.weather_cache (provider 'nws_alerts', key "lat,lng" at 3 decimals);
  * cache hits are counted for the 'nws' provider. Failures (network, 5xx,
- * 429, unexpected bodies) yield "unavailable" and are never cached.
+ * 429, unexpected bodies) yield "unavailable" and are never cached (and the
+ * conditions API sends such a response with no-store). An "ok" result says
+ * when NWS gave the answer (checkedAt), so the age of alerts can be stated.
  *
  * Nothing is invented: alerts come only from the NWS document. Test and
  * draft messages, cancellations and alerts already expired are dropped.
@@ -240,7 +242,13 @@ function parseCachePayload(v: unknown): NwsCachePayload | null {
 // ---------------------------------------------------------------------------
 
 export type NwsAlertsResult =
-  | { status: "ok"; alerts: WeatherAlertDto[]; fromCache: boolean }
+  | {
+      status: "ok";
+      alerts: WeatherAlertDto[];
+      fromCache: boolean;
+      /** When NWS gave this answer: the cache row's fetched_at, or the time of the request just made; null if unknown. */
+      checkedAt: Date | null;
+    }
   | { status: "unavailable" | "not_supported"; alerts: []; message: string };
 
 export const NWS_NOT_SUPPORTED_MESSAGE = "Official weather alerts are not available for this region in Ghost Guide.";
@@ -301,17 +309,18 @@ export async function getNwsAlerts(lat: number, lng: number, opts: NwsAlertsOpti
 
   try {
     const [row] = await withSystem(
-      (tx) => tx<{ payload: unknown }[]>`
-        select payload from public.weather_cache
+      (tx) => tx<{ payload: unknown; fetchedAt: Date }[]>`
+        select payload, fetched_at from public.weather_cache
          where provider = ${NWS_ALERTS_CACHE_PROVIDER} and cache_key = ${key} and expires_at > now()`,
     );
     const cached = row ? parseCachePayload(row.payload) : null;
-    if (cached) {
+    if (row && cached) {
       await recordProviderCacheHit(USAGE_PROVIDER);
       if (cached.kind === "out_of_bounds") return { status: "not_supported", alerts: [], message: NWS_NOT_SUPPORTED_MESSAGE };
       // Re-apply the expiry filter: the entry may be up to 5 minutes old.
       const alerts = cached.alerts.filter((a) => !a.ends || Date.parse(a.ends) > now.getTime());
-      return { status: "ok", alerts, fromCache: true };
+      const fetched = row.fetchedAt ? new Date(row.fetchedAt) : null;
+      return { status: "ok", alerts, fromCache: true, checkedAt: fetched && Number.isFinite(fetched.getTime()) ? fetched : null };
     }
   } catch (err) {
     log.warn("nws_alerts.cache_read_failed", { error: errorMessage(err) });
@@ -348,11 +357,12 @@ export async function getNwsAlerts(lat: number, lng: number, opts: NwsAlertsOpti
     return { status: "unavailable", alerts: [], message: NWS_UNAVAILABLE_MESSAGE };
   }
 
+  const checkedAt = new Date();
   const alerts = mapNwsAlerts(raw, now);
   if (!alerts) {
     log.warn("nws_alerts.unexpected_response", { status });
     return { status: "unavailable", alerts: [], message: NWS_UNAVAILABLE_MESSAGE };
   }
   await writeCache(key, { v: NWS_PAYLOAD_VERSION, kind: "alerts", alerts }, NWS_ALERTS_TTL_MS);
-  return { status: "ok", alerts, fromCache: false };
+  return { status: "ok", alerts, fromCache: false, checkedAt };
 }

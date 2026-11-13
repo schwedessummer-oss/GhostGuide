@@ -1,11 +1,12 @@
 import "server-only";
 import type { Fragment } from "postgres";
-import { OUTDOOR_POI_CATEGORIES, SERVICE_POI_CATEGORIES, type Bbox, type CatalogLayer } from "@/domain/catalog";
+import { OUTDOOR_POI_CATEGORIES, SERVICE_POI_CATEGORIES, trailPath, type Bbox, type CatalogLayer } from "@/domain/catalog";
 import { isUniqueViolation, withSystem, type JsonValue, type Tx } from "@/server/db";
 import type { Tile } from "@/server/geo/tiles";
 import { log } from "@/server/log";
 import { attributesFromJson, attributesToJson, type ElevationSnapshot, type NearbyPoi, type TrailAttributes, type TrailRecord } from "./enrich";
 import { escapeLike } from "./read";
+import { recordTrailRedirect, releaseOwnRedirect } from "./redirects";
 import { UNKNOWN_COUNTRY_CODE, UNKNOWN_REGION_SLUG, pickFreeSlug } from "./slug";
 import type { Line, NormalizedPoi } from "./types";
 
@@ -146,8 +147,10 @@ export async function readTiles(tx: Tx, layer: CatalogLayer, pairs: readonly { p
  * Per-tile coverage counts over every tile row whose bounds overlap the
  * interior of `bbox` (tiles that only touch its edge are excluded). Used for
  * areas too large to enumerate. A tile is "ready" when every provider row it
- * has holds data, "loading" when any row is pending/fetching without data (or
- * failed with a retry queued), else "failed" when any row failed.
+ * has holds data, "loading" when any row without data is fetching or has its
+ * load queued/running (pending or failed), else "failed" when any row
+ * failed; a pending row whose load is gone counts as not loaded (neither).
+ * Pass only the providers that decide coverage (coverage.ts primaryOf).
  */
 export async function coverageCountsInBbox(
   tx: Tx,
@@ -161,8 +164,8 @@ export async function coverageCountsInBbox(
   const [row] = await tx<{ ready: number; loading: number; failed: number; oldestSyncAt: Date | null }[]>`
     with per_tile as (
       select t.tile_key,
-             bool_or(t.last_synced_at is null and (t.status in ('pending', 'fetching')
-                     or (t.status = 'failed' and j.status::text in ('queued', 'running')))) as loading,
+             bool_or(t.last_synced_at is null and (t.status = 'fetching'
+                     or (t.status in ('pending', 'failed') and j.status::text in ('queued', 'running')))) as loading,
              bool_or(t.last_synced_at is null and t.status = 'failed'
                      and coalesce(j.status::text, '') not in ('queued', 'running')) as failed,
              bool_and(t.status = 'ready' or t.last_synced_at is not null) as ready,
@@ -185,6 +188,14 @@ export async function coverageCountsInBbox(
  * `oldGen` was read (compare-and-set), and enqueue its ingest job in the
  * same transaction. Returns the new generation, or null when another
  * request won the race (its job covers this one).
+ *
+ * The job's payload carries `requestedAt` (epoch ms): when someone asked
+ * for this tile. The catalog runner claims jobs most recent request first
+ * (queue ClaimOrder "recent_request"), skips jobs nobody asked about for
+ * ABANDONED_REQUEST_MS, and counts live ones against the global ceiling.
+ * Default: now (a user or an operator asked). Background work
+ * (refresh_stale) passes BACKGROUND_REQUESTED_AT, which runs after every
+ * live request and is never abandoned.
  */
 export async function requestTileIngest(
   tx: Tx,
@@ -192,7 +203,7 @@ export async function requestTileIngest(
   provider: string,
   tileKey: string,
   oldGen: string,
-  opts: { runAt?: Date; maxAttempts?: number } = {},
+  opts: { runAt?: Date; maxAttempts?: number; requestedAtMs?: number } = {},
 ): Promise<string | null> {
   const [bumped] = await tx<{ requestGen: string }[]>`
     update public.catalog_tiles t
@@ -200,13 +211,135 @@ export async function requestTileIngest(
      where t.layer = ${layer} and t.provider = ${provider} and t.tile_key = ${tileKey} and ${genOf(tx)} = ${oldGen}
      returning ${genOf(tx)} as request_gen`;
   if (!bumped) return null;
-  const payload = { layer, provider, tileKey };
+  const requestedAt =
+    typeof opts.requestedAtMs === "number" && Number.isFinite(opts.requestedAtMs) && opts.requestedAtMs >= 0 ? Math.floor(opts.requestedAtMs) : Date.now();
+  const payload = { layer, provider, tileKey, requestedAt };
   await tx`
     insert into public.jobs (kind, payload, run_at, dedup_key, max_attempts)
     values (${INGEST_JOB_KIND}, ${tx.json(payload as JsonValue)}, coalesce(${opts.runAt ?? null}::timestamptz, now()),
             ${ingestJobKey(layer, provider, tileKey, bumped.requestGen)}, ${opts.maxAttempts ?? 4})
     on conflict (dedup_key) where dedup_key is not null do nothing`;
   return bumped.requestGen;
+}
+
+/** `requestedAt` of background work (refresh_stale): runs after every live request, never abandoned. */
+export const BACKGROUND_REQUESTED_AT = 0;
+/** A queued tile load nobody has asked about for this long is dropped instead of fetched. */
+export const ABANDONED_REQUEST_MS = 20 * 60_000;
+/**
+ * Global ceiling on outstanding live tile loads (catalog.ingest_tile jobs
+ * queued or running for a recent request). Searches queue nothing above it
+ * and say so; refresh_stale fills only what is left. About an hour of work
+ * for the public Overpass instance at its two-slot limit.
+ */
+export const MAX_QUEUED_TILE_LOADS = 150;
+/** A search re-asking for a queued tile refreshes its `requestedAt` at most this often. */
+export const REQUEST_TOUCH_INTERVAL_MS = 60_000;
+
+/** SQL: a jobs row's (alias `j`) latest request time in epoch ms (payload.requestedAt, else when it was created). */
+const jobRequestedAtMs = (tx: Tx) =>
+  tx`coalesce(case when jsonb_typeof(j.payload->'requestedAt') = 'number' then (j.payload->>'requestedAt')::float8 end,
+              extract(epoch from j.created_at) * 1000)`;
+
+/**
+ * Outstanding (queued or running) tile loads, counting at most `limit`:
+ * `live` ones were requested by someone within ABANDONED_REQUEST_MS of
+ * `nowMs`; `background` ones are refresh_stale work. Abandoned loads are
+ * not counted (they are skipped when claimed).
+ */
+export async function countOutstandingIngestJobs(tx: Tx, nowMs: number, limit: number): Promise<{ live: number; background: number }> {
+  const cap = Math.max(0, Math.floor(limit));
+  // Each count is capped on its own, so many background refreshes can never
+  // hide live loads from the ceiling check (or the other way round).
+  const [row] = await tx<{ live: number; background: number }[]>`
+    select
+      (select count(*)::int from (
+         select 1 from public.jobs j
+          where j.status in ('queued', 'running') and j.kind = ${INGEST_JOB_KIND}
+            and ${jobRequestedAtMs(tx)} > 0 and ${jobRequestedAtMs(tx)} >= ${nowMs - ABANDONED_REQUEST_MS}::float8
+          limit ${cap + 1}::int) l) as live,
+      (select count(*)::int from (
+         select 1 from public.jobs j
+          where j.status in ('queued', 'running') and j.kind = ${INGEST_JOB_KIND}
+            and ${jobRequestedAtMs(tx)} = 0
+          limit ${cap + 1}::int) b) as background`;
+  return { live: row?.live ?? 0, background: row?.background ?? 0 };
+}
+
+/**
+ * Someone asked again for tiles whose load is still queued: set the jobs'
+ * `requestedAt` to `nowMs` (at most once per REQUEST_TOUCH_INTERVAL_MS per
+ * job, so polling does not write on every request). Keeps a live area ahead
+ * of abandoned ones and from being dropped. Returns the jobs touched.
+ */
+export async function touchIngestRequests(tx: Tx, layer: CatalogLayer, rows: readonly Pick<TileRow, "provider" | "tileKey" | "requestGen">[], nowMs: number): Promise<number> {
+  if (rows.length === 0) return 0;
+  const keys = [...new Set(rows.map((r) => ingestJobKey(layer, r.provider, r.tileKey, r.requestGen)))].sort();
+  const now = Math.floor(nowMs);
+  const touched = await tx`
+    update public.jobs j
+       set payload = jsonb_set(j.payload, '{requestedAt}', to_jsonb(${now}::bigint), true)
+     where j.dedup_key = any(${keys}::text[]) and j.status = 'queued'
+       and ${jobRequestedAtMs(tx)} < ${now - REQUEST_TOUCH_INTERVAL_MS}::float8
+    returning 1`;
+  return touched.length;
+}
+
+/**
+ * The load of a tile was dropped because nobody asked about it for
+ * ABANDONED_REQUEST_MS (see the ingest job handler). A tile that never
+ * loaded and is still waiting for exactly that request (same generation) is
+ * removed, so it reads as "not loaded yet" (never as loading) and is only
+ * loaded again when someone searches the area again. Tiles with data, or
+ * re-requested meanwhile, are left alone. Returns whether a row was removed.
+ */
+export async function forgetAbandonedTile(layer: CatalogLayer, provider: string, tileKey: string, jobDedupKey: string | null): Promise<boolean> {
+  if (!jobDedupKey) return false;
+  const rows = await withSystem(
+    (tx) => tx`
+      delete from public.catalog_tiles t
+       where t.layer = ${layer} and t.provider = ${provider} and t.tile_key = ${tileKey}
+         and t.status = 'pending' and t.last_synced_at is null and t.trail_count = 0 and t.poi_count = 0
+         and ${jobKeyOf(tx)} = ${jobDedupKey}
+      returning 1`,
+  );
+  return rows.length > 0;
+}
+
+/**
+ * Cancel up to `limit` queued tile loads nobody has asked about for
+ * ABANDONED_REQUEST_MS (background work is never dropped) and forget their
+ * never-loaded tiles (as forgetAbandonedTile). Run by the catalog runner so
+ * an abandoned backlog (e.g. after a flood of searches over areas nobody is
+ * looking at) neither occupies the queue nor slows its scans.
+ */
+export async function dropAbandonedIngestJobs(nowMs: number, limit = 500): Promise<{ jobs: number; tiles: number }> {
+  return withSystem(async (tx) => {
+    const dropped = await tx<{ dedupKey: string | null; layer: string; provider: string; tileKey: string }[]>`
+      update public.jobs j
+         set status = 'cancelled', finished_at = now(), locked_at = null,
+             last_error = ${`cancelled: nobody asked for this area in the last ${Math.round(ABANDONED_REQUEST_MS / 60_000)} minutes`}
+       where j.id in (
+         select j.id from public.jobs j
+          where j.status = 'queued' and j.kind = ${INGEST_JOB_KIND}
+            and ${jobRequestedAtMs(tx)} > 0 and ${jobRequestedAtMs(tx)} < ${nowMs - ABANDONED_REQUEST_MS}::float8
+          order by j.id
+          limit ${Math.max(1, Math.floor(limit))}::int
+            for update skip locked)
+      returning j.dedup_key, j.payload->>'layer' as layer, j.payload->>'provider' as provider, j.payload->>'tileKey' as tile_key`;
+    if (dropped.length === 0) return { jobs: 0, tiles: 0 };
+    const keyed = dropped.filter((d) => d.dedupKey && d.layer && d.provider && d.tileKey);
+    if (keyed.length === 0) return { jobs: dropped.length, tiles: 0 };
+    const forgotten = await tx`
+      delete from public.catalog_tiles t
+       using unnest(${keyed.map((d) => d.layer)}::text[], ${keyed.map((d) => d.provider)}::text[],
+                    ${keyed.map((d) => d.tileKey)}::text[], ${keyed.map((d) => d.dedupKey as string)}::text[]) as d(layer, provider, tile_key, dedup_key)
+       where t.layer = d.layer and t.provider = d.provider and t.tile_key = d.tile_key
+         and t.status = 'pending' and t.last_synced_at is null and t.trail_count = 0 and t.poi_count = 0
+         and ${jobKeyOf(tx)} = d.dedup_key
+      returning 1`;
+    return { jobs: dropped.length, tiles: forgotten.length };
+  });
 }
 
 /**
@@ -321,10 +454,17 @@ export async function markTileReady(
 }
 
 /**
- * Record a failed fetch of a held tile: attempts + 1, last_error, backoff
+ * Record a failed fetch of a held tile: last_error and a backoff
  * (failureBackoffMinutes). A tile that already held data stays 'ready' (its
  * data is still served and still correct as of its last sync); a tile that
  * never loaded becomes 'failed'. Returns null when the claim was lost.
+ *
+ * The backoff escalates (attempts + 1, next delay doubled) only when the
+ * tile was due, i.e. this failure came after the previous backoff ran out.
+ * A failure INSIDE the backoff window (the job queue's own quick retries,
+ * 30 s – 2 min apart, which may claim a failed tile early) records the error
+ * but keeps the current schedule: a few minutes of provider trouble cost a
+ * few minutes, not an escalated hour-long lockout.
  */
 export async function markTileFailed(
   layer: CatalogLayer,
@@ -334,14 +474,18 @@ export async function markTileFailed(
   error: string,
 ): Promise<{ status: TileStatus; attempts: number; nextRefreshAt: Date } | null> {
   return withSystem(async (tx) => {
+    const due = tx`(t.next_refresh_at is null or t.next_refresh_at <= now())`;
+    /** now() + failureBackoffMinutes(n) for an SQL integer expression n ≥ 1. */
+    const backoff = (n: Fragment) => tx`now() + least(
+               make_interval(mins => ${FAILURE_BACKOFF_MAX_MINUTES}),
+               make_interval(mins => ${FAILURE_BACKOFF_BASE_MINUTES}) * power(2, least(${n} - 1, 20)))`;
     const [row] = await tx<{ status: TileStatus; attempts: number; nextRefreshAt: Date }[]>`
       update public.catalog_tiles t
          set status = case when t.last_synced_at is null then 'failed' else 'ready' end,
-             attempts = t.attempts + 1,
+             attempts = case when ${due} then t.attempts + 1 else greatest(t.attempts, 1) end,
              last_error = ${error.slice(0, 300)},
-             next_refresh_at = now() + least(
-               make_interval(mins => ${FAILURE_BACKOFF_MAX_MINUTES}),
-               make_interval(mins => ${FAILURE_BACKOFF_BASE_MINUTES}) * power(2, least(t.attempts, 20)))
+             next_refresh_at = case when ${due} then ${backoff(tx`(t.attempts + 1)`)}
+                                    else least(t.next_refresh_at, ${backoff(tx`greatest(t.attempts, 1)`)}) end
        where ${heldBy(tx, layer, provider, tileKey, token)}
        returning t.status, t.attempts, t.next_refresh_at`;
     return row ?? null;
@@ -456,16 +600,16 @@ export async function deleteStalePois(tx: Tx, provider: string, layer: CatalogLa
   return row?.n ?? 0;
 }
 
-/** Outdoor POIs within `radiusM` of a route (any tile), for enrichment. */
+/** Outdoor POIs within `radiusM` of a route (any tile and provider, each with its provider), for enrichment. */
 export async function nearbyOutdoorPois(tx: Tx, lines: Line[], radiusM: number, categories: readonly string[], limit = 20_000): Promise<NearbyPoi[]> {
   if (lines.length === 0) return [];
   return tx<NearbyPoi[]>`
     with route as (select st_setsrid(st_geomfromgeojson(${geoJson(lines)}), 4326)::geography as g)
-    select p.provider_id, p.category, st_x(p.location::geometry) as lng, st_y(p.location::geometry) as lat
+    select p.provider, p.provider_id, p.category, st_x(p.location::geometry) as lng, st_y(p.location::geometry) as lat
       from public.catalog_pois p, route
      where p.layer = 'outdoor' and p.category = any(${categories as string[]}::text[])
        and st_dwithin(p.location, route.g, ${radiusM}::float8)
-     order by p.provider_id
+     order by p.provider_id, p.provider
      limit ${limit}::int`;
 }
 
@@ -722,13 +866,25 @@ const constraintOf = (err: unknown): string | null =>
     : null;
 const isSlugConflict = (err: unknown) => isUniqueViolation(err) && constraintOf(err) === SLUG_CONSTRAINT;
 
-/** First free slug for `base` in (country, region), ignoring the row `excludeId`. */
+/**
+ * First free slug for `base` in (country, region), ignoring the row
+ * `excludeId`. Taken: slugs of current trails AND old paths that redirect
+ * to another trail (catalog_trail_redirects; see redirects.ts), so a path
+ * that ever belonged to one trail never opens a different one. A trail may
+ * get one of its own old paths back.
+ */
 export async function allocateSlug(tx: Tx, countryCode: string, regionSlug: string, base: string, excludeId: string | null): Promise<string> {
+  const like = `${escapeLike(base)}-%`;
   const rows = await tx<{ slug: string }[]>`
     select slug from public.catalog_trails
      where country_code = ${countryCode} and region_slug = ${regionSlug}
-       and (slug = ${base} or slug like ${`${escapeLike(base)}-%`})
-       and (${excludeId}::uuid is null or id <> ${excludeId}::uuid)`;
+       and (slug = ${base} or slug like ${like})
+       and (${excludeId}::uuid is null or id <> ${excludeId}::uuid)
+    union
+    select slug from public.catalog_trail_redirects
+     where country_code = ${countryCode} and region_slug = ${regionSlug}
+       and (slug = ${base} or slug like ${like})
+       and (${excludeId}::uuid is null or trail_id <> ${excludeId}::uuid)`;
   return pickFreeSlug(base, new Set(rows.map((r) => r.slug)));
 }
 
@@ -789,8 +945,9 @@ const valueList = (tx: Tx, cols: [string, Fragment][]) => tx`,`.join(cols.map(([
 const assignments = (tx: Tx, cols: [string, Fragment][]) => tx`,`.join(cols.map(([c, v]) => tx`${tx(c)} = ${v}`));
 
 /**
- * Insert a new trail with a slug that is unique in its (country, region).
- * Slug races are retried in a savepoint with the next free suffix. Returns
+ * Insert a new trail with a slug that is unique in its (country, region)
+ * and is no other trail's old path (allocateSlug). Slug races are retried
+ * in a savepoint with the next free suffix. Returns
  * null when a row with the same (provider, provider_id) appeared
  * concurrently (the caller then updates that row instead).
  */
@@ -829,26 +986,44 @@ export interface UpdateTrailOptions {
 }
 
 /**
+ * Whether a refresh moves a stored trail to the record's (country, region):
+ *  - the record knows the country and it differs from the stored one: the
+ *    country now comes from the trail's exact point, so it wins over a
+ *    stored country taken from a 0.1° cell centre across a border (and
+ *    follows a trailhead that moved across one);
+ *  - the stored region is "unknown" and the record knows it (same country).
+ * Never otherwise: a known region is not replaced by another name of the
+ * same country (identity is stable), and nothing moves to "unknown"/"xx"
+ * because a lookup was unavailable.
+ */
+export function identityMoves(
+  stored: Pick<StoredTrail, "countryCode" | "regionSlug">,
+  r: Pick<TrailRecord, "countryCode" | "regionSlug">,
+): boolean {
+  if (r.countryCode !== UNKNOWN_COUNTRY_CODE && r.countryCode !== stored.countryCode) return true;
+  return stored.regionSlug === UNKNOWN_REGION_SLUG && r.regionSlug !== UNKNOWN_REGION_SLUG && r.countryCode === stored.countryCode;
+}
+
+/**
  * Refresh an existing trail in place: geometry, derived fields and
  * last_synced_at. Identity stays stable:
- *  - provider_id, id and slug are kept; once the row has a known region,
- *    country/region/slug never change (saved links and SEO);
- *  - a row whose region is still "unknown" moves to the new country/region
- *    when the new data knows more, with a slug allocated there;
- *  - nearest_place / timezone are only overwritten with known values;
+ *  - provider_id and id are kept; the path (country/region/slug) changes
+ *    only as identityMoves says, with a slug allocated in the new place.
+ *    The old path is then recorded in catalog_trail_redirects in the same
+ *    transaction: the trail page permanently redirects it to the new path,
+ *    and it is never given to another trail (redirects.ts);
+ *  - nearest_place / timezone are only overwritten with known values (on a
+ *    country change the old nearest place, from the other country, goes);
  *  - a trail retired by ingestion is un-hidden (it is back in the source);
  *    a trail hidden by moderation stays hidden.
  */
-export async function updateTrail(tx: Tx, stored: StoredTrail, r: TrailRecord, opts: UpdateTrailOptions): Promise<{ slug: string }> {
-  const regionKnown = stored.regionSlug !== UNKNOWN_REGION_SLUG;
-  const upgrade =
-    !regionKnown &&
-    (r.countryCode !== stored.countryCode || r.regionSlug !== stored.regionSlug) &&
-    (r.regionSlug !== UNKNOWN_REGION_SLUG || (stored.countryCode === UNKNOWN_COUNTRY_CODE && r.countryCode !== UNKNOWN_COUNTRY_CODE));
+export async function updateTrail(tx: Tx, stored: StoredTrail, r: TrailRecord, opts: UpdateTrailOptions): Promise<{ slug: string; movedFrom: string | null }> {
+  const moves = identityMoves(stored, r);
+  const countryChanges = moves && r.countryCode !== stored.countryCode;
   const alias = opts.alias && opts.alias !== stored.providerId && !stored.aliasIds.includes(opts.alias) ? opts.alias : null;
 
   for (let attempt = 1; ; attempt++) {
-    const identity: [string, Fragment][] = upgrade
+    const identity: [string, Fragment][] = moves
       ? [
           ["slug", tx`${await allocateSlug(tx, r.countryCode, r.regionSlug, r.baseSlug, stored.id)}::text`],
           ["country_code", tx`${r.countryCode}::text`],
@@ -858,7 +1033,7 @@ export async function updateTrail(tx: Tx, stored: StoredTrail, r: TrailRecord, o
       : [];
     const cols: [string, Fragment][] = [
       ...identity,
-      ["nearest_place", tx`coalesce(${r.nearestPlace}::text, t.nearest_place)`],
+      ["nearest_place", countryChanges ? tx`${r.nearestPlace}::text` : tx`coalesce(${r.nearestPlace}::text, t.nearest_place)`],
       ["timezone", tx`coalesce(${r.timezone}::text, t.timezone)`],
       ...derivedColumns(tx, r),
       ["alias_ids", alias ? tx`array_append(t.alias_ids, ${alias}::text)` : tx`t.alias_ids`],
@@ -868,15 +1043,20 @@ export async function updateTrail(tx: Tx, stored: StoredTrail, r: TrailRecord, o
     ];
     try {
       const [row] = await tx.savepoint(
-        (sp) => sp<{ slug: string }[]>`
+        (sp) => sp<{ slug: string; countryCode: string; regionSlug: string }[]>`
           update public.catalog_trails t set ${assignments(sp, cols)}
            where t.id = ${stored.id}::uuid
-          returning t.slug`,
+          returning t.slug, t.country_code, t.region_slug`,
       );
       if (!row) throw new Error(`catalog trail ${stored.id} disappeared during update`);
-      return { slug: row.slug };
+      if (!moves) return { slug: row.slug, movedFrom: null };
+      const from = { countryCode: stored.countryCode, regionSlug: stored.regionSlug, slug: stored.slug };
+      await recordTrailRedirect(tx, from, stored.id);
+      await releaseOwnRedirect(tx, row, stored.id);
+      log.info("catalog.trail_moved", { trailId: stored.id, from: trailPath(from), to: trailPath(row) });
+      return { slug: row.slug, movedFrom: trailPath(from) };
     } catch (err) {
-      if (isSlugConflict(err) && upgrade && attempt < MAX_SLUG_ATTEMPTS) continue;
+      if (isSlugConflict(err) && moves && attempt < MAX_SLUG_ATTEMPTS) continue;
       throw err;
     }
   }

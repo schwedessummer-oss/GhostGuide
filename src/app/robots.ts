@@ -5,6 +5,11 @@ import { generateSitemaps } from "./sitemap";
 /**
  * robots.txt: everything public may be crawled; private, per-user and
  * transactional areas may not. Lists every sitemap file (see sitemap.ts).
+ *
+ * /login and /signup are deliberately NOT disallowed: they are noindex
+ * pages, and a crawler has to fetch a page to see its noindex (a disallowed
+ * URL can still be indexed from links alone). Links to them from trail pages
+ * are rel=nofollow.
  */
 export const revalidate = 3600;
 
