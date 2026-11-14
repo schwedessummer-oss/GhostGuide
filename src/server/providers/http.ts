@@ -68,6 +68,31 @@ export interface ProviderFetchOptions {
   okStatuses?: number[];
   /** Cancels waits and the request; throws a non-retryable "Request aborted" ProviderError. */
   signal?: AbortSignal;
+  /**
+   * On an error status, append up to this many characters of the response
+   * body (tags stripped, whitespace collapsed) to the error message, so logs
+   * and the admin usage view say WHY a provider refused (e.g. a rate-limit
+   * or block page). Default 0: status only.
+   */
+  errorBodyChars?: number;
+}
+
+/** A short, single-line excerpt of an error response body (HTML tags stripped). */
+export function errorBodyExcerpt(bytes: ArrayBuffer, maxChars: number): string {
+  if (!(maxChars > 0) || bytes.byteLength === 0) return "";
+  let text: string;
+  try {
+    text = new TextDecoder().decode(bytes.byteLength > 65_536 ? bytes.slice(0, 65_536) : bytes);
+  } catch {
+    return "";
+  }
+  return text
+    .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, Math.floor(maxChars));
 }
 
 export interface ProviderResponse {
@@ -257,7 +282,9 @@ export async function providerFetch(opts: ProviderFetchOptions): Promise<Provide
       });
       const bytes = await res.arrayBuffer();
       const ok = res.ok || (opts.okStatuses ?? []).includes(res.status);
-      await recordProviderUsage(opts.provider, { ok, status: res.status, bytes: bytes.byteLength, error: ok ? undefined : `HTTP ${res.status}` });
+      const excerpt = ok ? "" : errorBodyExcerpt(bytes, opts.errorBodyChars ?? 0);
+      const failure = excerpt ? `HTTP ${res.status}: ${excerpt}` : `HTTP ${res.status}`;
+      await recordProviderUsage(opts.provider, { ok, status: res.status, bytes: bytes.byteLength, error: ok ? undefined : failure });
       if (ok) {
         const decoded = () => new TextDecoder().decode(bytes);
         return {
@@ -268,7 +295,7 @@ export async function providerFetch(opts: ProviderFetchOptions): Promise<Provide
           json: <T,>() => JSON.parse(decoded()) as T,
         };
       }
-      lastError = new ProviderError(opts.provider, `HTTP ${res.status}`, res.status, RETRYABLE_STATUS.has(res.status));
+      lastError = new ProviderError(opts.provider, failure, res.status, RETRYABLE_STATUS.has(res.status));
       if (!lastError.retryable) throw lastError;
     } catch (err) {
       if (err instanceof ProviderError && !err.retryable) throw err;

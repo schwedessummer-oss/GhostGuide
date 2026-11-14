@@ -103,6 +103,42 @@ describe("osm provider: fetchArea", () => {
     expect(result.pois.map((p) => p.category)).toEqual(["fuel"]);
   });
 
+  it("sends a broad Accept header and a Referer naming this site, and asks for error-body excerpts", async () => {
+    process.env.NEXT_PUBLIC_APP_URL = "https://trails.example.org/";
+    resetEnvCache();
+    fetchMock.mockResolvedValueOnce(ok(SAMPLE));
+    await osmProvider.fetchArea("outdoor", BBOX);
+    const opts = fetchMock.mock.calls[0][0] as ProviderFetchOptions;
+    expect(opts.headers).toEqual({ Accept: "*/*", Referer: "https://trails.example.org/" });
+    expect(opts.errorBodyChars).toBeGreaterThan(0);
+  });
+
+  it.each([403, 406])("moves on to the next endpoint when an instance refuses the client (HTTP %i)", async (status) => {
+    fetchMock.mockRejectedValueOnce(new ProviderError("overpass", `HTTP ${status}: blocked`, status, false)).mockResolvedValueOnce(ok(SAMPLE));
+    const result = await osmProvider.fetchArea("outdoor", BBOX);
+    expect(fetchMock.mock.calls.map((c) => (c[0] as ProviderFetchOptions).url)).toEqual([A, B]);
+    expect(result.trails).toHaveLength(1);
+  });
+
+  it("when every instance refuses, the error keeps the status and reason and stays retryable (the tile backs off)", async () => {
+    fetchMock
+      .mockRejectedValueOnce(new ProviderError("overpass", "HTTP 406: Not Acceptable", 406, false))
+      .mockRejectedValueOnce(new ProviderError("overpass", "HTTP 403: Forbidden", 403, false));
+    const err = (await osmProvider.fetchArea("outdoor", BBOX).catch((e: unknown) => e)) as ProviderError;
+    expect(err).toBeInstanceOf(ProviderError);
+    expect(err.retryable).toBe(true);
+    expect(err.status).toBe(403);
+    expect(err.message).toBe("HTTP 403: Forbidden");
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("a bad query (HTTP 400) is still thrown at once, without trying other instances", async () => {
+    fetchMock.mockRejectedValueOnce(new ProviderError("overpass", "HTTP 400", 400, false));
+    const err = (await osmProvider.fetchArea("outdoor", BBOX).catch((e: unknown) => e)) as ProviderError;
+    expect(err.retryable).toBe(false);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("falls through to the next endpoint on a retryable HTTP error (429)", async () => {
     fetchMock.mockRejectedValueOnce(new ProviderError("overpass", "HTTP 429", 429, true)).mockResolvedValueOnce(ok(SAMPLE));
     const result = await osmProvider.fetchArea("outdoor", BBOX);

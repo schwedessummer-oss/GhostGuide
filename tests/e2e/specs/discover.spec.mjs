@@ -192,8 +192,13 @@ test("navigation: Explore, Trips, Hike, Saved and Profile in the desktop header 
     assert.deepEqual(hrefs.slice(0, 7), ["/", "/explore", "/trips", "/hike", "/saved", "/login", "/login"]);
     // The phone tab bar is hidden on desktop.
     assert.equal(await page.getByRole("navigation", { name: "Primary" }).isVisible(), false);
-    // The current destination is marked.
+    // The current destination is marked (client-side, once the page has hydrated).
     await page.goto("/trails");
+    await page.waitForFunction(
+      () => document.querySelector('nav[aria-label="Main"] a[href="/explore"]')?.getAttribute("aria-current") === "page",
+      null,
+      { timeout: 10_000 },
+    );
     assert.equal(await header.getByRole("link", { name: "Explore", exact: true }).getAttribute("aria-current"), "page");
   } finally {
     await desktop.context.close();

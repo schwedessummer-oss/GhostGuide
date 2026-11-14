@@ -145,3 +145,29 @@ describe("providerFetch with a throttle", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("providerFetch error bodies", () => {
+  const refusal = () =>
+    new Response("<html><head><style>p{}</style><title>406 Not Acceptable</title></head><body><h1>Not Acceptable</h1><p>Please set a  User-Agent.</p></body></html>", {
+      status: 406,
+      headers: { "content-type": "text/html" },
+    });
+
+  it("by default reports only the status", async () => {
+    fetchMock.mockImplementationOnce(async () => refusal());
+    const err = (await providerFetch({ provider: "overpass", url: "https://x.test/api", retries: 0 }).catch((e: unknown) => e)) as ProviderError;
+    expect(err).toBeInstanceOf(ProviderError);
+    expect(err.message).toBe("HTTP 406");
+    expect(err.status).toBe(406);
+    expect(err.retryable).toBe(false);
+  });
+
+  it("with errorBodyChars, appends a short tag-free excerpt so logs say why the provider refused", async () => {
+    fetchMock.mockImplementationOnce(async () => refusal());
+    const err = (await providerFetch({ provider: "overpass", url: "https://x.test/api", retries: 0, errorBodyChars: 60 }).catch(
+      (e: unknown) => e,
+    )) as ProviderError;
+    expect(err.message).toBe("HTTP 406: 406 Not Acceptable Not Acceptable Please set a User-Agent.");
+    expect(err.message.length).toBeLessThanOrEqual("HTTP 406: ".length + 60);
+  });
+});

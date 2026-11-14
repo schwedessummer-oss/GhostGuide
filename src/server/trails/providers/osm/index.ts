@@ -14,7 +14,8 @@ import { DEFAULT_OVERPASS_TIMEOUT_SEC, buildOverpassQuery } from "./query";
  * separated, tried in order). Failure handling:
  *
  *   - retryable failures move on to the next endpoint: network errors,
- *     timeouts, HTTP 429/5xx, invalid JSON, a response without `elements`,
+ *     timeouts, HTTP 429/5xx, HTTP 403/406 (that instance refuses this
+ *     client, e.g. a usage-policy block), invalid JSON, a response without `elements`,
  *     and HTTP 200 responses whose `remark` reports a runtime error (Overpass
  *     reports query timeouts and out-of-memory that way, with incomplete
  *     elements that must never be ingested);
@@ -27,6 +28,14 @@ import { DEFAULT_OVERPASS_TIMEOUT_SEC, buildOverpassQuery } from "./query";
  *   - when every endpoint fails, the last error is thrown, still marked
  *     retryable, so the job queue can try again later. Nothing is ever
  *     substituted for the missing data.
+ *
+ * Headers: the identifying User-Agent (providerFetch), a Referer naming
+ * this site, and an Accept header that takes any type. Overpass serves JSON
+ * for `[out:json]` whatever Accept says. Production requests with
+ * `Accept: application/json` and no Referer got a bare "406 Not
+ * Acceptable" (Nov 2026); reports from other Overpass users tie 406 to
+ * these headers. Error bodies are excerpted into the error message, so a
+ * refusal's reason shows in the logs and the admin usage view.
  *
  * Timeouts: Overpass gets `[timeout:90]`; the client waits that long plus a
  * margin for queueing and transfer (105 s per attempt). Callers with a
@@ -83,18 +92,32 @@ function pause(ms: number, signal?: AbortSignal): Promise<void> {
   });
 }
 
+/** HTTP statuses with which an Overpass instance refuses this client: try the next instance. */
+const REFUSED_STATUS = new Set([403, 406]);
+
 /** One request to one endpoint; every failure is a ProviderError (or a caller abort). */
 async function requestOnce(url: string, layer: CatalogLayer, query: string, timeoutSec: number, signal?: AbortSignal) {
-  const res = await providerFetch({
-    provider: "overpass",
-    url,
-    method: "POST",
-    body: new URLSearchParams({ data: query }),
-    timeoutMs: (timeoutSec + CLIENT_TIMEOUT_MARGIN_SEC) * 1000,
-    // Retries are decided by fetchArea (see the module comment), not by the HTTP client.
-    retries: 0,
-    signal,
-  });
+  let res: Awaited<ReturnType<typeof providerFetch>>;
+  try {
+    res = await providerFetch({
+      provider: "overpass",
+      url,
+      method: "POST",
+      headers: { Accept: "*/*", Referer: `${env().NEXT_PUBLIC_APP_URL.replace(/\/+$/, "")}/` },
+      body: new URLSearchParams({ data: query }),
+      timeoutMs: (timeoutSec + CLIENT_TIMEOUT_MARGIN_SEC) * 1000,
+      // Retries are decided by fetchArea (see the module comment), not by the HTTP client.
+      retries: 0,
+      errorBodyChars: 160,
+      signal,
+    });
+  } catch (err) {
+    // This instance refuses us (policy block): another instance may not.
+    if (err instanceof ProviderError && err.status !== null && REFUSED_STATUS.has(err.status)) {
+      throw new ProviderError("overpass", err.message, err.status, true);
+    }
+    throw err;
+  }
   let json: unknown;
   try {
     json = res.json();

@@ -65,8 +65,16 @@ const schema = z.object({
    * (URL or email), e.g. "GhostGuide/1.0 (+https://ghostguide.app; ops@ghostguide.app)".
    */
   DATA_PROVIDER_USER_AGENT: z.string().min(8).optional(),
-  /** Comma-separated Overpass API endpoints, tried in order. */
-  OVERPASS_URLS: z.string().min(8).default("https://overpass-api.de/api/interpreter"),
+  /**
+   * Comma-separated Overpass API endpoints, tried in order: the main public
+   * instance first, then public mirrors when it is busy or refuses a request.
+   */
+  OVERPASS_URLS: z
+    .string()
+    .min(8)
+    .default(
+      "https://overpass-api.de/api/interpreter,https://overpass.private.coffee/api/interpreter,https://overpass.kumi.systems/api/interpreter",
+    ),
   NOMINATIM_URL: z.string().url().default("https://nominatim.openstreetmap.org"),
   METNO_URL: z.string().url().default("https://api.met.no/weatherapi"),
   NWS_URL: z.string().url().default("https://api.weather.gov"),
