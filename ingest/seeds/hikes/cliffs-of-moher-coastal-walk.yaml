@@ -1,0 +1,33 @@
+seed_no: 53
+slug: cliffs-of-moher-coastal-walk
+name: Cliffs of Moher Coastal Walk
+region_group: europe
+countries:
+- IE
+subdivisions: []
+area:
+  name: Clare
+  wikidata: null
+  official_url: null
+agency:
+  name: Clare County Council
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.cliffsofmoher.ie/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Closure status of coastal path sections NOT confirmed from these pages (not read in full); fallback entry added as the leads direct. Recommend checking FAQs page for closure text.

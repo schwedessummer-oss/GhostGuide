@@ -1,0 +1,33 @@
+seed_no: 89
+slug: mount-rinjani
+name: Mount Rinjani
+region_group: asia-middle-east
+countries:
+- ID
+subdivisions: []
+area:
+  name: Rinjani National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Balai Taman Nasional Gunung Rinjani
+  wikidata: null
+hike_wikidata: null
+official_url: ''
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: No verified official page found. rinjaninationalpark.com and erinjani.id returned 200 but look like tour-operator/package sites, so excluded. Search reports eRinjani online booking suspended from 1 Sep 2026 (fire risk) per secondary news. Needs manual lookup of the Balai TNGR / KLHK site.

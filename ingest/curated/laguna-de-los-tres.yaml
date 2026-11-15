@@ -1,200 +1,292 @@
 slug: laguna-de-los-tres
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Senderismo y trekking
-  - field: distance_km
-    value: 25
-    basis: round_trip
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Zona Norte - Fitz Roy o Chaltén
-  - field: duration
-    value: { min_hours: 8, max_hours: 9 }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Zona Norte - Fitz Roy o Chaltén
-  - field: difficulty_official
-    value: { label: media-alta, scale: APN }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Zona Norte - Fitz Roy o Chaltén
-  - field: access_mode
-    value: independent
-    note: The page says trekking can be done independently or with a guide.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Senderismo y trekking
-  - field: permit_required
-    value: "yes"
-    note: Zona Norte charges park access, and the ticket must be bought online before walking.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: permit
-    value:
-      name: Los Glaciares Zona Norte access ticket
-      kind: day_use
-      how_to_apply: In Zona Norte tickets are sold only online, via the web or by scanning the QR code on site; payment is by credit or debit card only, no cash.
-      official_url: https://www.argentina.gob.ar/parquesnacionales/tarifas
-      price: { amount: 50000, currency: ARS, unit: per_person, audience: non_resident, note: "'Tarifa general'; rates valid from 1 June 2026" }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: permit
-    value:
-      name: Trail registration at the Visitor Centre (Registro de uso de montaña)
-      kind: other
-      how_to_apply: Register at the park visitor centre before El Chaltén, or online. The activities page says registration is required to walk the trails from May to September.
-      booking_window: May to September for trails
-      months: [5, 6, 7, 8, 9]
-      official_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
-    source_title: Actividades - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Senderismo y trekking
-  - field: fee
-    value:
-      name: Los Glaciares access, general rate
-      amount: 50000
-      currency: ARS
-      unit: per_person
-      audience: non_resident
-      valid_from: 2026-06-01
-      note: Listed as 'Tarifa general', applies to Zona Norte and Zona Sur.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: fee
-    value:
-      name: Los Glaciares access, national residents
-      amount: 25000
-      currency: ARS
-      unit: per_person
-      audience: resident
-      valid_from: 2026-06-01
-      note: Listed as 'Residentes nacionales'.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: fee
-    value:
-      name: Los Glaciares access, provincial residents
-      amount: 8000
-      currency: ARS
-      unit: per_person
-      audience: resident
-      valid_from: 2026-06-01
-      note: Listed as 'Residentes provinciales'.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: fee
-    value:
-      name: Los Glaciares access, students
-      amount: 15000
-      currency: ARS
-      unit: per_person
-      audience: student
-      valid_from: 2026-06-01
-      note: Listed as 'Estudiantes'; Argentine student documents are required. Several groups, including children 0 to 6, are exempt.
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
-    source_title: Tarifas - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas
-  - field: rule_dogs
-    value: { value: not_allowed, note: Pets may not enter the park. }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones generales
-  - field: rule_drones
-    value: { value: not_allowed, note: Drone use is prohibited. }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones generales
-  - field: rule_fires
-    value: { value: not_allowed, note: No fires in Zona Norte; only gas stoves in approved camping areas under supervision. }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
-  - field: rule_camping
-    value: { value: restricted, note: "The De Agostini, Capri and Poincenot campsites are run by the Asociación Amigos del Parque Nacional Los Glaciares and need a reservation." }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
-  - field: hazard
-    value: { type: cold, note: "From May to September trails carry ice, mud and snow and become extremely difficult; poles and crampons are required. Walking or skating on frozen lagoons is banned." }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
-  - field: hazard
-    value: { type: weather, note: Weather can change at any moment in any season; check road and trail status, and expect weak or no mobile signal in some sectors. }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones generales
-  - field: hazard
-    value: { type: remoteness, note: "There are no shops on the trails, so carry water, food, warm layers and a torch, and plan to be back in town before dark; APN advises walking with a companion." }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
-    source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
-  - field: trailhead_access
-    value: "Zona Norte services and trails all start from the town of El Chaltén, which is 95 km of paved road via RP 41 from RN 40; El Calafate to El Chaltén is 220 km, all paved."
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
-    source_title: Horarios / Cómo llegar - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Puntos de entrada al parque / En auto
-  - field: public_transport
-    value: "Regular buses run daily between El Calafate and El Chaltén, and long-distance buses reach the El Chaltén terminal from other parts of Argentina and from Punta Arenas and Puerto Natales in Chile."
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
-    source_title: Horarios / Cómo llegar - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Ómnibus
-  - field: nearest_town
-    value: { name: El Chaltén, note: Base for Zona Norte services and trails. }
-    source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
-    source_title: Horarios / Cómo llegar - Parque Nacional Los Glaciares
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Puntos de entrada al parque
+- field: official_url
+  value: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  note: APN activities page for Los Glaciares, listing the Fitz Roy walk to Laguna de los Tres.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: Senderismo y trekking
+  verified: true
+- field: distance_km
+  value: 25
+  basis: round_trip
+  note: Page gives 25 km as the total distance of the Fitz Roy walk; presumed to be the full out-and-back.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: De dificultad media- alta y entre 8 y 9 horas de duración, recorre un total de 25 km.
+  verified: true
+- field: duration
+  value:
+    min_hours: 8
+    max_hours: 9
+  note: Walking time for the whole Fitz Roy hike per APN.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: entre 8 y 9 horas de duración
+  verified: true
+- field: difficulty_official
+  value:
+    label: media-alta
+    scale: APN
+  note: APN rates it medium-high.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: De dificultad media- alta
+  verified: true
+- field: access_mode
+  value: independent
+  note: APN says activities can be done on your own or with a guide.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: Las actividades se pueden realizar de manera autónoma o con guía.
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Zona Norte park access tickets, including the Fitz Roy base portal, must be obtained online.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  source_title: Tarifas | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence:
+    page: P2
+    quote: 'Zona Norte, portales Los Cóndores, Cerro Torre Base Fitz Roy y Río Eléctrico: los tickets se obtienen únicamente online'
+  verified: true
+- field: permit
+  value:
+    name: Los Glaciares Zona Norte access ticket
+    kind: day_use
+    how_to_apply: Buy the ticket online on the web or by scanning the on-site QR code; pay by credit or debit card only, no cash.
+    official_url: https://www.argentina.gob.ar/parquesnacionales/tarifas
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  source_title: Tarifas | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence:
+    page: P2
+    quote: 'Zona Norte, portales Los Cóndores, Cerro Torre Base Fitz Roy y Río Eléctrico: los tickets se obtienen únicamente online, ya sea a través de la web o de manera presencial escaneando el código QR. El pago es solo con tarjeta de crédito o débito; no se acepta efectivo.'
+  verified: true
+- field: permit
+  value:
+    name: Trail registration (Registro de uso de montaña)
+    kind: other
+    how_to_apply: Register at the park information centre, or online through the park page; required for trails from May to September.
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_title: Actividades | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Senderismo y trekking
+  evidence:
+    page: P1
+    quote: El registro en el Centro de Informes del Parque es obligatorio tanto para escalada y trekking en áreas remotas como para recorrer los senderos (de mayo a septiembre).
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets may not enter the park.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Al igual que en todas las áreas protegidas de nuestro país, no se permite el ingreso con mascotas.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drone use is prohibited.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Está prohibido el uso de drones.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No fires in the northern zone; only gas heaters in approved camping areas under supervision.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: No está permitido hacer fuego esta zona del Parque. Sólo el uso de calentadores a gas en áreas de acampe habilitadas y bajo supervisión.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: De Agostini, Capri and Poincenot campsites are run by the park friends association and must be reserved.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Los campamentos De Agostini, Capri y Poincenot está administrados por la Asociación Amigos del Parque Nacional los Glaciares y es necesario hacer reserva.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: From May to September trails have ice, mud and snow and become extremely demanding; poles and crampons are mandatory.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: En temporada invernal (de mayo a septiembre) las sendas presentan hielo, barro y nieve, por lo que se vuelven extremadamente complejas. Es obligatorio el uso de bastones y crampones para evitar caídas.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Walking or skating on frozen lagoons is banned because the ice is unstable and hypothermia is a risk.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Está prohibido caminar y patinar sobre lagunas congeladas. La superficie es inestable y podrías sufrir un accidente y riesgo de hipotermia.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Weather can change at any moment in any season; check road and trail status before setting out.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Tené en cuenta que las condiciones climáticas pueden cambiar de un momento a otro en cualquier período del año. Consultá siempre el estado de rutas y senderos.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: There are no supplies on the paths, so carry water, food, extra warm clothing, torch and sun protection.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: en las sendas no hay proveeduría; recordá llevar agua, algo para comer, abrigo extra, anteojos de sol, linterna y protector solar
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Mobile signal is weak or absent in some sectors of the park.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: En algunos sectores la señal de celular es débil o nula.
+  verified: true
+- field: season_note
+  value: From May to September the trail registration is required and the paths are icy and snowy.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: En temporada invernal (de mayo a septiembre)
+  verified: true
+- field: trailhead_access
+  value: Zona Norte is reached by turning west off RN 40 onto RP 41 to the village of El Chaltén, 95 km of paved road.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  source_title: Horarios / Cómo llegar | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Puntos de entrada al parque
+  evidence:
+    page: P5
+    quote: En Zona Norte, el desvío hacia el oeste por RP 41 lleva a la localidad de El Chaltén (95 km asfaltados).
+  verified: true
+- field: trailhead_access
+  value: The distance between El Calafate and El Chaltén is 220 km, all paved.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  source_title: Horarios / Cómo llegar | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Puntos de entrada al parque
+  evidence:
+    page: P5
+    quote: Entre El Calafate (Zona Sur) y El Chaltén (Zona Norte) hay 220 km, todos asfaltados.
+  verified: true
+- field: public_transport
+  value: Regular buses run daily between El Calafate and El Chaltén.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  source_title: Horarios / Cómo llegar | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Puntos de entrada al parque
+  evidence:
+    page: P5
+    quote: Además, hay servicios diarios de buses regulares entre las localidades de El Calafate y El Chaltén.
+  verified: true
+- field: nearest_town
+  value:
+    name: El Chaltén
+    note: Village reached by RP 41 from RN 40, gateway to the northern zone.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  source_title: Horarios / Cómo llegar | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: 2026-11-15
+  evidence_heading: Puntos de entrada al parque
+  evidence:
+    page: P5
+    quote: En Zona Norte, el desvío hacia el oeste por RP 41 lleva a la localidad de El Chaltén (95 km asfaltados).
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 22
+  failed: 0
+  reasons: {}

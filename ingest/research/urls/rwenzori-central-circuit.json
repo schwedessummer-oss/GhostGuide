@@ -1,0 +1,39 @@
+{
+ "seed_no": 75,
+ "slug": "rwenzori-central-circuit",
+ "name": "Rwenzori Central Circuit",
+ "urls": [
+  {
+   "url": "https://ugandawildlife.org/",
+   "purpose": "agency home (park page not found)"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/uganda",
+   "purpose": "alerts/advisory (check Kasese/Rwenzori wording)"
+  },
+  {
+   "url": "https://ugandawildlife.org/national-parks/rwenzori-mountains/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/parks-reserves/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/wildlifereserves/bokora-wildlife-reserve/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/booking-terms/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/regulation-licensing/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/feedback/",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+slug: gr20
+deleted_facts:
+- field: route_type
+  value: point_to_point
+  note: The park describes 16 stages from Calenzana in the north to Conca in the south.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: 'Étape 16 : Paliri - Conca'
+- field: duration
+  value:
+    min_days: 16
+    max_days: 16
+  note: The park's stage list has 16 stages, with a split between the northern and southern halves. The page also advises against doubling stages.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les étapes du GR®20
+- field: season_note
+  value: In 2026 the park-run refuges are staffed from 16 May to 4 October inclusive.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: La centrale de réservation des nuitées
+- field: permit
+  value:
+    name: PnrC refuge night reservation (bunk, bivouac pitch or rented tent)
+    kind: overnight
+    how_to_apply: Book each night online on the park's reservation site. Walkers with their own tent must book one bivouac place per person. Keep the confirmation email to show the warden.
+    booking_window: Valid for the 2026 staffed season, 16 May to 4 October; changes up to 48 hours before, cancellations up to 2 months before the hike (see the park's sales conditions)
+    official_url: https://www.pnr-resa.corsica
+    price:
+      amount: 20
+      currency: EUR
+      unit: per_night
+      audience: all
+      note: bunk in a refuge; bivouac 12 EUR per person
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: La centrale de réservation des nuitées
+- field: fee
+  value:
+    name: Refuge bunk (bat-flanc), one person
+    amount: 20
+    currency: EUR
+    unit: per_night
+    audience: all
+    note: Not offered at Ortu di u Piobbu and Asinao, which have bivouac and tent hire only.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les tarifs
+- field: fee
+  value:
+    name: Bivouac pitch, one person
+    amount: 12
+    currency: EUR
+    unit: per_night
+    audience: all
+    note: One pitch per person, so two sharing a tent book two.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les tarifs
+- field: fee
+  value:
+    name: Tent hire with bivouac, 1 person
+    amount: 27
+    currency: EUR
+    unit: per_night
+    audience: all
+    note: Hired tents are two-person; the 2-person option (two bivouacs plus tent) is 39 EUR.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les tarifs
+- field: fee
+  value:
+    name: Tent hire with bivouac, 2 people
+    amount: 39
+    currency: EUR
+    unit: per_night
+    audience: all
+    note: Total for two people in one hired tent.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les tarifs
+- field: trailhead_access
+  value: The route starts at the fountain of San'Antone in the upper part of Calenzana and ends at Conca. A municipal order bars departures from Calenzana after 11:00.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Accès réglementé
+- field: public_transport
+  value: At Conca a shuttle runs on request to Santa Lucia di Porti Vechju and Porti Vechju (phone number on the park page). Walkers ending the northern half can take the train to Ajaccio or Bastia.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: 'Étape 16 : Paliri - Conca'
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Leashed dogs are allowed on the route but strongly discouraged because of steep, slippery sections and abseils. They are barred from the refuges and rental tents.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: FAQ
+- field: rule_drones
+  value:
+    value: restricted
+    note: Flying a drone needs prior authorisation.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Règlementation sur le GR®20
+- field: rule_camping
+  value:
+    value: restricted
+    note: Wild bivouac is banned; camping is only near the refuges or in designated areas, and each night must be reserved.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les bons comportements
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Lighting fires and smoking are banned in forests, scrub and mountain areas from 15 June to 30 September.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Les bons comportements
+- field: hazard
+  value:
+    type: other
+    note: From mid-June to mid-September, high fire risk can mean some massifs are closed to the public at any time. A fire-risk map is updated at 18:00 for the next day.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Risque incendie
+- field: hazard
+  value:
+    type: remoteness
+    note: Mobile coverage is unreliable along the route and calls may be impossible near several refuges, including Ortu di u Piobbu, Carrozzu, Tighjettu, Manganu, L'Onda, Usciolu and Paliri. Emergency numbers are 112, 17 and 18.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Sécurité en montagne
+- field: hazard
+  value:
+    type: weather
+    note: Mountain weather can change fast and violent storms occur even in summer; the park advises turning back if conditions worsen and checking Météo-France.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: Sécurité en montagne
+- field: hazard
+  value:
+    type: rockfall
+    note: The Cirque de la Solitude had fatal rockfalls on 10 June 2015, combined with bad weather. The section was unmarked and unequipped and is closed by prefectoral and communal order.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: 'Étape 4 : Ascu Stagnu - Tighjettu'
+- field: nearest_town
+  value:
+    name: Calenzana
+    note: Start of the route; Conca is the end point in the south.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: 'Étape 1 : Calenzana - Ortu di u Piobbu'
+- field: closure
+  value:
+    status: partially_closed
+    note: The Cirque de la Solitude is closed to the public by prefectoral and communal order. The bypass built after the 2015 accident is now the official GR20 route registered with the FFRP.
+    as_of: 2026-11-15
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  evidence_heading: 'Étape 4 : Ascu Stagnu - Tighjettu'

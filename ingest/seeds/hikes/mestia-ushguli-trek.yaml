@@ -1,0 +1,33 @@
+seed_no: 91
+slug: mestia-ushguli-trek
+name: Mestia-Ushguli
+region_group: asia-middle-east
+countries:
+- GE
+subdivisions: []
+area:
+  name: Svaneti
+  wikidata: null
+  official_url: null
+agency:
+  name: Georgian National Tourism Administration
+  wikidata: null
+hike_wikidata: null
+official_url: https://georgia.travel/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only the tourism board home page verified (200, 8491 chars); georgia.travel/destinations/svaneti was 404. Need a Svaneti or trek-specific page.

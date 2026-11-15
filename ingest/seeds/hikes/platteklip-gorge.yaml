@@ -1,0 +1,33 @@
+seed_no: 73
+slug: platteklip-gorge
+name: Platteklip Gorge
+region_group: africa
+countries:
+- ZA
+subdivisions: []
+area:
+  name: Table Mountain National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: SANParks
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.sanparks.org/parks/table_mountain
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'All sanparks.org pages returned 403 to the fetcher (not verified). Unverified candidates: https://www.sanparks.org/parks/table_mountain and https://www.sanparks.org. tablemountain.net (Table Mountain Aerial Cableway) returned 200 but only 14 text chars (JS site); cableway is optional. WebSearch not used.'

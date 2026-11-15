@@ -1,256 +1,228 @@
 slug: angels-landing
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Angels Landing Permits & Hiking
-
-  - field: distance_km
-    value: 8.7
-    basis: round_trip
-    note: "Page states 5.4 miles round trip; converted to km (x1.609, rounded)."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: After you get a permit
-
-  - field: elevation_gain_m
-    value: 454
-    note: "Page states a gain of 1,488 feet; converted to metres (x0.3048, rounded)."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: After you get a permit
-
-  - field: duration
-    value: { min_hours: 4, max_hours: null }
-    note: "Most hikers need about 4 hours for the round trip; some take longer. No upper figure is given."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: After you get a permit
-
-  - field: route_type
-    value: out_and_back
-    note: "The park tags this hike as out and back."
-    source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
-    source_title: Angels Landing (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Tags
-
-  - field: difficulty_official
-    value: { label: "strenuous", scale: "NPS" }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Background
-
-  - field: season_note
-    value: "Listed as a year-round hike that can be done at day, dawn or dusk. Permit lotteries run for every season of the year."
-    source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
-    source_title: Angels Landing (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Season
-
-  - field: permit_required
-    value: "yes"
-    note: "Every hiker going past Scout Lookout onto the chains section needs a permit. The West Rim Trail up to Scout Lookout needs none. Rangers may check permits and ID anywhere on the trail."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Angels Landing Pilot Permit Program
-
-  - field: permit
-    value:
-      name: Angels Landing permit (seasonal lottery)
-      kind: lottery
-      how_to_apply: "Apply on Recreation.gov during the window for your season, ranking up to seven preferred days and times. Up to 6 people can go on one application. Keep a printed or saved copy of the confirmation email, which serves as the permit."
-      booking_window: "Hikes 1 Mar-31 May: apply 1-20 Jan; 1 Jun-31 Aug: apply 1-20 Apr; 1 Sep-30 Nov: apply 1-20 Jul; 1 Dec-28 Feb: apply 1-20 Oct (opens 8 am MT, closes 11:59 pm MT; permits issued on the 25th)"
-      official_url: https://www.recreation.gov/permits/4675326
-      price: { amount: 6.00, currency: USD, unit: per_application, audience: all, note: "non-refundable; plus $3 per person if a permit is awarded" }
-    note: "Seasonal permits can be cancelled or reduced in size until two days before the hike for a refund of the per-person fee; dates, group increases and transfers are not allowed."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Seasonal Lottery
-
-  - field: permit
-    value:
-      name: Angels Landing permit (day-before lottery)
-      kind: lottery
-      how_to_apply: "Apply on Recreation.gov the day before your hike; every application in the window has equal odds. One application covers up to 6 people. Results come by email after 4 pm."
-      booking_window: "Day before the hike, 12:01 am to 3 pm Mountain Time"
-      official_url: https://www.recreation.gov/permits/4675325
-      price: { amount: 6.00, currency: USD, unit: per_application, audience: all, note: "non-refundable; plus $3 per person if a permit is awarded" }
-    note: "Day-before permits cannot be changed and no fees are refunded."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Day-before Lottery
-
-  - field: fee
-    value: { name: "Angels Landing permit application fee", amount: 6.00, currency: USD, unit: per_application, audience: all, note: "One fee per application, which can include up to 6 people; never refunded." }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Day-before Lottery
-
-  - field: fee
-    value: { name: "Angels Landing permit fee", amount: 3.00, currency: USD, unit: per_person, audience: all, note: "Charged only when a permit is awarded. Refundable for seasonal-lottery permits cancelled at least two days ahead; not refundable for day-before permits." }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Refunds or Changes
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers a private non-commercial vehicle (up to 15 passengers) and everyone in it for 1-7 days. Card preferred; cash accepted." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 20.00, currency: USD, unit: per_person, audience: all, note: "For one person entering without a car, valid 1-7 days; youth 15 and under free." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private motorcycles carrying up to 4 people in total." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Nonresident fee", amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Extra charge for every non-US resident 16 or older, paid on top of the standard entrance fee unless they enter on an Annual or America the Beautiful pass." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Nonresident Fees
-
-  - field: parking
-    value: "Park lots inside Zion often fill early. Paid parking is available in Springdale, from where the free Springdale Line shuttle reaches the park's pedestrian entrance."
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: How to Use the Shuttle System
-
-  - field: trailhead_access
-    value: "Most of the year the trailhead is reachable only by park shuttle from the Zion Canyon Visitor Center; most hikers begin at The Grotto, Shuttle Stop 6. In the few winter and spring weeks without shuttles you may drive and park on pavement."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Get to the trailhead
-
-  - field: public_transport
-    value: "Free park shuttles need no ticket. The Zion Canyon Line links the visitor center with 9 stops including The Grotto; the Springdale Line serves the town. Most years they run daily March-November and over the late-December holidays."
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: What to Expect When Shuttles Are Running
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets are barred from all park trails except the Pa'rus Trail, from wilderness and from shuttles; service animals excepted." }
-    source_url: https://www.nps.gov/zion/planyourvisit/pets.htm
-    source_title: Pets - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Know Where You Can Go
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Drones and other remote-controlled aircraft may not be used anywhere in the park." }
-    source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Aircraft-based Remote-controlled Equipment
-
-  - field: rule_camping
-    value: { value: restricted, note: "Camping only in designated campground sites, or in designated wilderness areas with a Wilderness Permit; overnighting in road pullouts or car parks is prohibited." }
-    source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Camping
-
-  - field: hazard
-    value: { type: exposure, note: "The last half mile follows a knife-edge ridge with a single chain to hold; most fatal accidents since 1930 happened here. Do not go up when rock is wet or icy, in the dark, or if you fear heights." }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Use caution on the Angels Landing Chains
-
-  - field: hazard
-    value: { type: lightning, note: "Being on the ridge in rain or thunderstorms is dangerous; storms are more common in the afternoon. Stop climbing and head down if storm clouds approach." }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Check the weather forecast
-
-  - field: hazard
-    value: { type: rockfall, note: "Rockfall can happen at any time, especially near cliff faces. Move away from the cliff base, or shelter behind a large boulder with your pack over your head." }
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Be mindful of conditions
-
-  - field: hazard
-    value: { type: heat, note: "Summer daytime highs in Zion Canyon often pass 100 F (38 C), and late-summer monsoon storms raise flash flood risk; check the forecast before setting out." }
-    source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
-    source_title: Current Conditions - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Current Weather in Zion Canyon
-
-  - field: nearest_town
-    value: { name: Springdale, note: "Gateway town beside the park's walk-in and cycle entrance (Zion Canyon Village); the free Springdale Line shuttle runs through it." }
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Springdale Line Schedule
-
-  - field: licensed_operator_list_url
-    value: "https://www.nps.gov/zion/getinvolved/loader.cfm?csModule=security/getfile&PageID=8205371"
-    note: "Linked from the permit page as the park's list of authorized guides. A guide is optional, and every hiker still needs a permit."
-    source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
-    source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: More Information
-
-  - field: closure
-    value: { status: open, note: "Park open 24 hours, every day. No long-term closure or alert covers Angels Landing; the only trail closure alerts are for the Watchman Trail and part of the East Rim Trail.", as_of: 2026-11-15 }
-    source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
-    source_title: Current Conditions - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Long-term Trail Closures
+- field: official_url
+  value: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  note: Zion National Park page on the Angels Landing permit program.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing Pilot Permit Program
+  evidence:
+    page: P1
+    quote: Everyone who hikes Angels Landing needs to have a permit.
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Needed for the chains section beyond Scout Lookout; the walk up to Scout Lookout itself needs none.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing Pilot Permit Program
+  evidence:
+    page: P1
+    quote: Permits are required to hike the chains section from Scout Lookout to Angels Landing.
+  verified: true
+- field: permit
+  value:
+    name: Angels Landing permit
+    kind: lottery
+    how_to_apply: Enter a seasonal lottery or the day-before lottery on recreation.gov; a confirmation email serves as the permit.
+    booking_window: Day-before lottery runs 12:01 am to 3 pm Mountain Time the day before the hike
+    price:
+      amount: 6
+      currency: USD
+      unit: per_application
+      audience: all
+      note: plus 3 USD per person if a permit is awarded
+  note: Application covers a group; a per-person charge applies only if awarded.
+  source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
+  source_title: Angels Landing (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing
+  evidence:
+    page: P3
+    quote: To enter the lottery for a permit, recreation.gov charges $6. If a permit is awarded, a fee of $3 per person will be charged to the same card used to apply.
+  verified: true
+- field: fee
+  value:
+    name: Angels Landing lottery application fee
+    amount: 6
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Non-refundable.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US Forest Service / NPS permit system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: Applicants pay a $6 non-refundable application fee.
+  verified: true
+- field: fee
+  value:
+    name: Angels Landing permit fee (if awarded)
+    amount: 3
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Charged automatically to successful applicants.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US Forest Service / NPS permit system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: You will automatically pay a $3 per person fee if recreation.gov issues a permit.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 6
+    note: One lottery application can list up to six people, the applicant included.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: When to apply
+  evidence:
+    page: P1
+    quote: The fee covers an application for up to 6 people (including the person filling out the application).
+  verified: true
+- field: duration
+  value:
+    min_hours: 1
+    max_hours: 2
+  note: Time given for the chains section only, which starts at Scout Lookout; getting to Scout Lookout takes extra time.
+  source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
+  source_title: Angels Landing (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing
+  evidence:
+    page: P3
+    quote: 1-2 Hours
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Narrow ridge with chains, a trail only a few feet wide in places, and very steep drop-offs on both sides.
+  source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
+  source_title: Angels Landing (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing
+  evidence:
+    page: P3
+    quote: exposed edges and sheer drop-offs of as much as 1,000 feet on each side
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Ice or snow can cover much of the trail in winter; the permit page calls it extremely dangerous then and suggests traction devices.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US Forest Service / NPS permit system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: This trail is extremely dangerous during icy or snowy conditions.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Summer daytime temperatures in Zion Canyon often pass 38 C.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Current Weather in Zion Canyon
+  evidence:
+    page: P2
+    quote: Summer daytime temperatures regularly exceed 100°F (38°C).
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Monsoon rains in mid-to-late summer raise the risk of flash floods in the canyon.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Current Weather in Zion Canyon
+  evidence:
+    page: P2
+    quote: Mid-to-late summer monsoons (heavy rain) increase the chance of flash floods.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Mobile and data signal in the park is poor, so save the permit email before arriving.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US Forest Service / NPS permit system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: Cellular and data connectivity in the park are poor
+  verified: true
+- field: trailhead_access
+  value: Start at The Grotto (shuttle stop 6), cross the road and bridge to the West Rim Trail, and follow it to Scout Lookout where the Angels Landing trail begins.
+  source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
+  source_title: Angels Landing (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing
+  evidence:
+    page: P3
+    quote: 'The hike to Angels Landing is accessed from The Grotto (shuttle stop #6).'
+  verified: true
+- field: parking
+  value: Parking at the Grotto trailhead is limited when shuttles are not running; if it is full, use another trailhead or return later.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US Forest Service / NPS permit system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: Limited parking will be at the Grotto trailhead when shuttles are not running.
+  verified: true
+- field: public_transport
+  value: Free park shuttles serve Zion Canyon from early spring to late fall, with no ticket or reservation needed.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Shuttle System
+  evidence:
+    page: P2
+    quote: From early spring to late fall, you can ride free shuttles in Zion Canyon and the town of Springdale.
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: The park is open daily; individual trails can still close for conditions, and a permit does not guarantee a hike.
+    as_of: '2026-11-15'
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Zion National Park is Open
+  evidence:
+    page: P2
+    quote: The park is open every day of the year, 24 hours a day.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 16
+  failed: 0
+  reasons: {}

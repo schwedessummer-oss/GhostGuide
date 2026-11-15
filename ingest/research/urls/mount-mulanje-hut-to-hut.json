@@ -1,0 +1,39 @@
+{
+ "seed_no": 74,
+ "slug": "mount-mulanje-hut-to-hut",
+ "name": "Mount Mulanje hut-to-hut",
+ "urls": [
+  {
+   "url": "https://www.visitmalawi.mw",
+   "purpose": "tourism board overview"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/malawi",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://visitmalawi.mw/plan-your-visit/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://visitmalawi.mw/hiking/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/malawi/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
+  }
+ ]
+}

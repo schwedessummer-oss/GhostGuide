@@ -1,0 +1,33 @@
+seed_no: 83
+slug: mount-fuji-yoshida-trail
+name: Mount Fuji (Yoshida Trail)
+region_group: asia-middle-east
+countries:
+- JP
+subdivisions: []
+area:
+  name: Yamanashi
+  wikidata: null
+  official_url: null
+agency:
+  name: Yamanashi Prefecture
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.fujisan-climb.jp/en/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: overnight
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Many guessed subpaths 404. Mid-Nov is closed season. Only 2 URLs verified.

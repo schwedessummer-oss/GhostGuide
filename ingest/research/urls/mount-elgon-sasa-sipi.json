@@ -1,0 +1,39 @@
+{
+ "seed_no": 0,
+ "slug": "mount-elgon-sasa-sipi",
+ "name": "Mount Elgon Sasa-Sipi traverse",
+ "urls": [
+  {
+   "url": "https://ugandawildlife.org/mount-elgon-national-park/",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/uganda",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://ugandawildlife.org/national-parks/mount-elgon-national-park",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/national-parks/mount-elgon-national-park/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/parks-reserves/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/wildlifereserves/bokora-wildlife-reserve/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/booking-terms/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/regulation-licensing/",
+   "purpose": "crawled"
+  }
+ ]
+}

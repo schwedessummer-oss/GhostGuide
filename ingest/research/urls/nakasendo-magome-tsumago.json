@@ -1,0 +1,23 @@
+{
+ "seed_no": 84,
+ "slug": "nakasendo-magome-tsumago",
+ "name": "Nakasendo Magome-Tsumago",
+ "urls": [
+  {
+   "url": "https://www.nagiso.jp/",
+   "purpose": "Tsumago/Nagiso tourism association (Japanese)"
+  },
+  {
+   "url": "https://www.city.nakatsugawa.lg.jp/",
+   "purpose": "Nakatsugawa city (Magome) homepage, Japanese"
+  },
+  {
+   "url": "https://nagiso.jp/topics_category/tsumago/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://nagiso.jp/topics/tsumago-juku-conservation-area/",
+   "purpose": "crawled"
+  }
+ ]
+}

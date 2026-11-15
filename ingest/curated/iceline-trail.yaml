@@ -1,59 +1,65 @@
 slug: iceline-trail
-researched_at: &id001 2026-11-15
+researched_at: '2026-11-15'
 facts:
 - field: official_url
   value: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Where to go
+  checked_at: '2026-11-15'
+  evidence_heading: Yoho National Park
+  evidence:
+    page: P1
+    quote: Yoho National Park offers spectacular backcountry experiences
+  verified: true
 - field: distance_km
   value: 20.8
-  note: Park table lists 20.8 km round trip for Iceline via Little Yoho; a shorter Iceline via Celeste Lake (17.5 km) is listed
-    in the hiking guide.
-  basis: loop
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
+  basis: round_trip
+  note: Brochure table lists the Iceline via Little Yoho with a return distance.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx
+  source_title: PDF
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Multi-day trails in Yoho National Park
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 23. Iceline via Little Yoho 8 hrs. or 2 days 20.8 km 710 m
+  verified: true
 - field: elevation_gain_m
   value: 710
-  note: Park lists 710 m elevation for this route.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx
+  source_title: PDF
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Multi-day trails in Yoho National Park
-- field: route_type
-  value: loop
-  note: Park calls it a signature circuit that returns past Laughing Falls.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Where to go
-- field: duration
-  value:
-    min_days: 2
-    max_days: 2
-  note: Park lists a hiking time of 2 days for the full circuit.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Multi-day trails in Yoho National Park
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 23. Iceline via Little Yoho 8 hrs. or 2 days 20.8 km 710 m
+  verified: true
 - field: duration
   value:
     min_hours: 8
     max_hours: 8
-  note: The hiking guide gives 8 hours or 2 days for Iceline via Little Yoho.
+  note: Brochure gives 8 hours as a day hike.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx
-  source_title: Hiking in Yoho National Park
+  source_title: PDF
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Hiking in Yoho National Park
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 23. Iceline via Little Yoho 8 hrs. or 2 days 20.8 km 710 m
+  verified: true
+- field: duration
+  value:
+    min_days: 2
+    max_days: 2
+  note: Brochure also offers a two-day option.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx
+  source_title: PDF
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 23. Iceline via Little Yoho 8 hrs. or 2 days 20.8 km 710 m
+  verified: true
 - field: best_months
   value:
   - 6
@@ -61,223 +67,168 @@ facts:
   - 8
   - 9
   - 10
-  note: Main hiking season is June to October; July and August are prime. Passes may be snowbound until late June.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: When to go
+  checked_at: '2026-11-15'
+  evidence_heading: Backpacking in Yoho National Park
+  evidence:
+    page: P1
+    quote: The main hiking season in Yoho National Park is from June to October.
+  verified: true
 - field: season_note
-  value: Yoho Valley Road, the only way to the trailhead, is open only from mid-June to mid-October; snow is common at height
-    even in summer.
+  value: Higher passes stay snowbound until late June; July and August are prime, September is drier but colder with more snowfall risk.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: When to go
+  checked_at: '2026-11-15'
+  evidence_heading: Backpacking in Yoho National Park
+  evidence:
+    page: P1
+    quote: Until late June, many mountain passes and trails at higher elevations remain snowbound and may be impassable.
+  verified: true
 - field: trailhead_access
-  value: Trailhead is the Takakkaw Falls parking lot, 17 km east of Field via the Trans-Canada Highway and Yoho Valley Road.
-    Road is open mid-June to mid-October; RVs and trailers are not allowed because of tight switchbacks.
+  value: The Yoho Valley road is snowbound much of the year, which limits access to Yoho Valley trails and campgrounds.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Iceline via Little Yoho
-- field: nearest_town
+  checked_at: '2026-11-15'
+  evidence_heading: Backpacking in Yoho National Park
+  evidence:
+    page: P1
+    quote: Access to the Yoho Valley trails and campgrounds is limited as the Yoho Valley road is snowbound much of the year.
+  verified: true
+- field: closure
   value:
-    name: Field
-    note: Trailhead distances are given from Field, B.C.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
+    status: closed
+    note: Yoho Valley Road is closed for the winter, mid-October to mid-June.
+    as_of: '2026-11-15'
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/etat-sentiers-trail-conditions
+  source_title: Trail conditions report - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Iceline via Little Yoho
+  checked_at: '2026-11-15'
+  evidence_heading: Fire Danger Rating
+  evidence:
+    page: P2
+    quote: The Yoho Valley Road is closed for the winter. Seasonal closure from mid-October through mid-June.
+  verified: true
 - field: permit_required
   value: conditional
-  note: A backcountry permit is mandatory for overnight trips; the page does not state a permit rule for day use, but a park
-    pass is required to enter.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Backcountry permits
+  checked_at: '2026-11-15'
+  evidence_heading: Yoho National Park
+  evidence:
+    page: P1
+    quote: A backcountry permit is mandatory for anyone planning an overnight trip into the backcountry of Yoho National Park.
+  verified: true
 - field: permit
   value:
     name: Yoho backcountry permit
     kind: overnight
-    how_to_apply: Reserve a campsite online with the Parks Canada reservation service or by phone; advance booking is needed
-      at most sites in July to September.
-    booking_window: 2026 reservations launched Monday 26 January 2026 at 8 am MT
-    official_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-    price:
-      amount: 15.0
-      currency: CAD
-      unit: per_night
-      audience: all
-      note: Per person per night; plus a reservation fee (see Yoho fees page).
-    months:
-    - 7
-    - 8
-    - 9
-  note: Months listed are those for which the page says advance reservations are needed.
+    how_to_apply: Reserve campsites through the Parks Canada Reservation Service online or by phone.
+    booking_window: Reservations opened Monday 26 January 2026, 8 am MT
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Backcountry permits
-- field: rule_dogs
-  value:
-    value: restricted
-    note: Pets are welcome in the backcountry but must be leashed at all times; the park suggests leaving dogs at home.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Pets
-- field: rule_drones
-  value:
-    value: not_allowed
-    note: Drones are not permitted in the national park.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Wildlife and People
+  checked_at: '2026-11-15'
+  evidence_heading: 'Backcountry permit bookings:'
+  evidence:
+    page: P1
+    quote: 'Reservation launch: Monday, January 26, 2026; 8 am MT'
+  verified: true
 - field: rule_fires
   value:
     value: not_allowed
-    note: Campfires are not permitted anywhere in the backcountry.
+    note: No campfires anywhere in the backcountry; bring a stove.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: What to bring
-- field: rule_camping
+  checked_at: '2026-11-15'
+  evidence_heading: Food and cooking
+  evidence:
+    page: P1
+    quote: Campfires are not permitted anywhere in the backcountry.
+  verified: true
+- field: rule_dogs
   value:
     value: restricted
-    note: Camping only in designated campgrounds as shown on the reservation; 3 consecutive nights maximum; a backcountry
-      permit copy must be shown on request.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
+    note: Pets must be kept on a leash.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx
+  source_title: PDF
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Where to stay
-- field: rule_group_size
-  value:
-    value: restricted
-    max_group: 10
-    note: Maximum group size per reservation is 10 people and 5 tents; 4 people and 1 tent per site.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Where to stay
-- field: hazard
-  value:
-    type: wildlife
-    note: Elk, wolves, cougars, grizzly and black bears live in the park; carry bear spray, make noise and keep 100 m from
-      bears.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
-  source_title: Backcountry - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Wildlife and People
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: Pets must be on a leash at all times.
+  verified: true
 - field: hazard
   value:
     type: weather
-    note: Mountain weather is unpredictable; prepare for winter conditions at any time of year.
+    note: Mountain weather changes quickly and snow is possible in any month.
   source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
   source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: What to bring
-- field: closure
+  checked_at: '2026-11-15'
+  evidence_heading: Other items to consider
+  evidence:
+    page: P1
+    quote: Mountain weather changes quickly and it can snow any month of the year.
+  verified: true
+- field: hazard
   value:
-    status: closed
-    note: Yoho Valley Road to Takakkaw Falls is closed to vehicles seasonally from mid-October to mid-June; the report shows
-      it closed for the season on 2026-10-13.
-    as_of: 2026-10-13
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/etat-sentiers-trail-conditions
-  source_title: Trail conditions report - Yoho National Park
+    type: avalanche
+    note: Trails above tree line can face avalanche hazard at any time of year.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Roads
-- field: fee
+  checked_at: '2026-11-15'
+  evidence_heading: Seasonal Avalanche Risk
+  evidence:
+    page: P1
+    quote: Trails above tree line (2,000 m) may be exposed to avalanche hazard at any time of the year.
+  verified: true
+- field: hazard
   value:
-    name: Yoho National Park daily admission
-    amount: 12.25
-    currency: CAD
-    unit: per_day
-    audience: adult
-    note: Ages 18 to 64. Currency inferred from the Parks Canada site.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
+    type: wildlife
+    note: Stay alert for wildlife; avoid earbuds and learn bear-country practice.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
+  checked_at: '2026-11-15'
+  evidence_heading: Other items to consider
+  evidence:
+    page: P1
+    quote: Be alert for wildlife at all times.
+  verified: true
+- field: hazard
   value:
-    name: Yoho National Park daily admission
-    amount: 10.75
-    currency: CAD
-    unit: per_day
-    audience: senior
-    note: Ages 65 and over.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
+    type: remoteness
+    note: Cell coverage is unreliable across the park.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
+  checked_at: '2026-11-15'
+  evidence_heading: Other items to consider
+  evidence:
+    page: P1
+    quote: Cell phone coverage is not reliable throughout the national park.
+  verified: true
+- field: hazard
   value:
-    name: Yoho National Park daily admission, family/group
-    amount: 24.5
-    currency: CAD
-    unit: per_vehicle
-    audience: all
-    note: Up to seven people arriving in a single vehicle.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
+    type: other
+    note: Ticks that may carry Lyme disease can occur in the park; check yourself afterwards.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
-  value:
-    name: Yoho National Park daily admission, youth
-    amount: 0
-    currency: CAD
-    unit: per_day
-    audience: child
-    note: Free for ages 17 and under.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
-  value:
-    name: Backcountry camping
-    amount: 15.0
-    currency: CAD
-    unit: per_night
-    audience: all
-    note: Per person per night; valid in Banff, Jasper, Kootenay and Yoho.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Backcountry use and camping
-- field: fee
-  value:
-    name: Backcountry permit reservation
-    amount: 12.75
-    currency: CAD
-    unit: per_application
-    audience: all
-    note: Charged per permit.
-  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
-  source_title: Fees - Yoho National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Backcountry use and camping
-verifier: null
+  checked_at: '2026-11-15'
+  evidence_heading: Other items to consider
+  evidence:
+    page: P1
+    quote: Ticks, which could carry Lyme disease, may be present in the park.
+  verified: true
+mechanical_check:
+  verified: 18
+  failed: 0
+  reasons: {}

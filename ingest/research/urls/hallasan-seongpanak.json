@@ -1,0 +1,11 @@
+{
+ "seed_no": 86,
+ "slug": "hallasan-seongpanak",
+ "name": "Hallasan (Seongpanak)",
+ "urls": [
+  {
+   "url": "https://visithalla.jeju.go.kr",
+   "purpose": "official reservation site (JS page, no extractable text)"
+  }
+ ]
+}

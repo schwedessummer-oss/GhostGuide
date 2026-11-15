@@ -1,0 +1,35 @@
+{
+ "seed_no": 91,
+ "slug": "mestia-ushguli-trek",
+ "name": "Mestia-Ushguli",
+ "urls": [
+  {
+   "url": "https://georgia.travel/",
+   "purpose": "tourism board home, general info only"
+  },
+  {
+   "url": "https://georgia.travel/why-georgia-the-highest-inhabited-point-in-europe",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/cities-towns/mestia",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/accessibility",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/trails",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/local-transport",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/regional-transport",
+   "purpose": "crawled"
+  }
+ ]
+}

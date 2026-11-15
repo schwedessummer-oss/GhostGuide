@@ -1,221 +1,140 @@
 slug: plain-of-six-glaciers
-researched_at: &id001 2026-11-15
+researched_at: '2026-11-15'
 facts:
 - field: official_url
   value: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_title: Hiking - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Hiking
-- field: distance_km
-  value: 5.9
-  note: The page lists 5.9 km one way from the Lake Louise Lakeshore lot; it also describes a 14.3 km loop if combined with
-    the Lake Agnes trail.
-  basis: one_way
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: elevation_gain_m
-  value: 595
-  note: Page gives 595 m gain and 250 m loss for the one-way walk.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: duration
-  value:
-    min_hours: 4
-    max_hours: 4
-  note: Estimated round-trip time stated as 4 hours.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: best_months
-  value:
-  - 7
-  - 8
-  - 9
-  note: Park says prime hiking season runs July to mid-September; most alpine passes are snow-free by mid-July.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Hiking
+  checked_at: '2026-11-15'
+  evidence_heading: 'You are here:'
+  evidence:
+    page: P1
+    quote: Banff National Park
+  verified: true
 - field: season_note
-  value: Passes stay snow-bound with avalanche hazard until late June and trails are muddier early on; the teahouse on the
-    route is seasonal.
+  value: Park lists July to mid-September as prime hiking time; passes can hold snow until late June and trails are muddier then.
   source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_title: Hiking - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Hiking
+  checked_at: '2026-11-15'
+  evidence_heading: Banff National Park
+  evidence:
+    page: P1
+    quote: Prime hiking season runs July through
+  verified: true
 - field: hazard
   value:
     type: avalanche
-    note: Until late June many passes are snow-bound and may be subject to avalanche hazard.
+    note: Many passes stay snow-bound into late June and may carry avalanche risk.
   source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_title: Hiking - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Hiking
+  checked_at: '2026-11-15'
+  evidence_heading: Banff National Park
+  evidence:
+    page: P1
+    quote: Until late June, many passes are still snow-bound and may be
+  verified: true
 - field: hazard
   value:
     type: weather
-    note: Mountain weather changes quickly and snow can fall in any month; carry layers, food and water treatment.
+    note: Mountain weather shifts fast and snow is possible in any month; dress in layers and carry extra food.
   source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_title: Hiking - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Safety
+  checked_at: '2026-11-15'
+  evidence_heading: Important information
+  evidence:
+    page: P1
+    quote: quickly and it can snow any month of the year.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Help may be slow to arrive, so know self-rescue and be ready to spend a night out.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Important information
+  evidence:
+    page: P1
+    quote: Be prepared and have knowledge about self rescue. Help is not always immediately available.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Park advises carrying bear spray along with a first aid kit and satellite communication.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Important information
+  evidence:
+    page: P1
+    quote: Carry a first aid kit, bear spray and a satellite
+  verified: true
 - field: rule_dogs
   value:
     value: restricted
-    note: Dogs must be kept on a leash and under physical control at all times.
+    note: Dogs must stay on a leash under physical control.
   source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
   source_title: Hiking - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Safety
-- field: parking
-  value: Trailhead is the Lake Louise Lakeshore lot, 4 km from the community of Lake Louise; parking there is paid.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
+  checked_at: '2026-11-15'
+  evidence_heading: Important information
+  evidence:
+    page: P1
+    quote: your pet, and yourself,  keep your dog on a
+  verified: true
 - field: public_transport
-  value: The trailhead is reachable by transit; the page names the Parks Canada Shuttle and Roam route 8x.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: trailhead_access
-  value: Start at the Lake Louise Lakeshore parking lot about 4 km from Lake Louise village.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: nearest_town
-  value:
-    name: Lake Louise
-    note: Trailhead is 4 km from the community of Lake Louise.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
-  source_title: Hiking - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Plain of Six Glaciers Trail
-- field: fee
-  value:
-    name: Banff National Park daily admission
-    amount: 12.25
-    currency: CAD
-    unit: per_day
-    audience: adult
-    note: Ages 18 to 64. Currency inferred from the Parks Canada site; the page shows a $ sign only.
+  value: The park runs a shuttle serving Lake Louise and Moraine Lake, with a booking fee charged on top of the fare.
   source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
   source_title: Fees - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
+  checked_at: '2026-11-15'
+  evidence_heading: PUBLIC TRANSIT / TRANSPORTATION SERVICES
+  evidence:
+    page: P2
+    quote: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  verified: true
 - field: fee
   value:
-    name: Banff National Park daily admission
-    amount: 10.75
+    name: Shuttle online reservation fee
+    amount: 3.5
     currency: CAD
-    unit: per_day
-    audience: senior
-    note: Ages 65 and over.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
-  source_title: Fees - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
-  value:
-    name: Banff National Park daily admission, family/group
-    amount: 24.5
-    currency: CAD
-    unit: per_vehicle
+    unit: per_trip
     audience: all
-    note: Up to seven people arriving in a single vehicle.
+  note: Non-refundable; phone bookings cost more.
   source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
   source_title: Fees - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
+  checked_at: '2026-11-15'
+  evidence_heading: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  evidence:
+    page: P2
+    quote: There is a non-refundable $3.50 reservation fee if booking online, and $5.50 if booking by telephone.
+  verified: true
 - field: fee
   value:
-    name: Banff National Park daily admission, youth
-    amount: 0
+    name: Shuttle phone reservation fee
+    amount: 5.5
     currency: CAD
-    unit: per_day
-    audience: child
-    note: Free for ages 17 and under.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
-  source_title: Fees - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Admission - Daily
-- field: fee
-  value:
-    name: Lake Louise Lakeshore general parking
-    amount: 42.0
-    currency: CAD
-    unit: per_vehicle
+    unit: per_trip
     audience: all
-    valid_from: 2026-05-15
-    valid_to: 2026-10-12
-    note: The date range appears under the parking rates on the page.
+  note: Non-refundable.
   source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
   source_title: Fees - Banff National Park
   publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Parking - Daily
-- field: fee
-  value:
-    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
-    amount: 12.75
-    currency: CAD
-    unit: per_person
-    audience: adult
-    note: Ages 18 to 64; plus a non-refundable $3.50 online reservation fee ($5.50 by phone).
-  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
-  source_title: Fees - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Public transit / transportation services
-- field: fee
-  value:
-    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
-    amount: 6.0
-    currency: CAD
-    unit: per_person
-    audience: senior
-    note: Ages 65 and over; plus reservation fee.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
-  source_title: Fees - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Public transit / transportation services
-- field: fee
-  value:
-    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
-    amount: 4.0
-    currency: CAD
-    unit: per_person
-    audience: child
-    note: Ages 17 and under; plus reservation fee.
-  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
-  source_title: Fees - Banff National Park
-  publisher: Parks Canada
-  checked_at: *id001
-  evidence_heading: Fees - Public transit / transportation services
+  checked_at: '2026-11-15'
+  evidence_heading: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  evidence:
+    page: P2
+    quote: There is a non-refundable $3.50 reservation fee if booking online, and $5.50 if booking by telephone.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

@@ -1,0 +1,43 @@
+{
+ "seed_no": 93,
+ "slug": "jordan-trail-dana-petra",
+ "name": "Jordan Trail: Dana-Petra",
+ "urls": [
+  {
+   "url": "https://www.jordantrail.org/",
+   "purpose": "trail home page"
+  },
+  {
+   "url": "https://www.jordanpass.jo/",
+   "purpose": "Petra ticket / Jordan Pass"
+  },
+  {
+   "url": "https://rscn.org.jo/",
+   "purpose": "Dana reserve operator (Arabic home page)"
+  },
+  {
+   "url": "https://www.jordantrail.org/dana-to-petra/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jordantrail.org/al-karak-to-dana/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jordantrail.org/504-al-matan-to-dana/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jordantrail.org/601-dana-to-wadi-malaga/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jordantrail.org/603-ras-al-feid-to-little-petra/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jordantrail.org/604-little-petra-to-petra/",
+   "purpose": "crawled"
+  }
+ ]
+}

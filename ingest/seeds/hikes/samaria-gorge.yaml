@@ -1,0 +1,33 @@
+seed_no: 58
+slug: samaria-gorge
+name: Samaria Gorge
+region_group: europe
+countries:
+- GR
+subdivisions: []
+area:
+  name: Crete
+  wikidata: null
+  official_url: null
+agency:
+  name: NECCA
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.samaria.gr/en/visit
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: samaria.gr/en/ root returns unrelated title, avoid it. No dedicated ticket page found.

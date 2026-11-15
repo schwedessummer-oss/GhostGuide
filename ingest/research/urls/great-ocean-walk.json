@@ -1,0 +1,43 @@
+{
+ "seed_no": 107,
+ "slug": "great-ocean-walk",
+ "name": "Great Ocean Walk",
+ "urls": [
+  {
+   "url": "https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk",
+   "purpose": "hike page, camping booking info"
+  },
+  {
+   "url": "https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park",
+   "purpose": "park page, alerts"
+  },
+  {
+   "url": "https://www.parks.vic.gov.au/-/media/project/pv/main/parks/documents/visitor-guides-and-publications/great-otway-national-park/great-otway-national-park-gow-faqs.pdf",
+   "purpose": "FAQs: bookings, rules (PDF, unfetched)"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Elliot-Ridge-Hike-in-Campground",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Blanket-Bay-Hike-in-Campground",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Cape-Otway-Hike-in-Campground",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Aire-River-Hike-in-Campground",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Johanna-Beach-Hike-in-Campground",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Ryans-Den-Hike-in-Campground",
+   "purpose": "crawled"
+  }
+ ]
+}

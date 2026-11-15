@@ -1,0 +1,39 @@
+{
+ "seed_no": 0,
+ "slug": "glendalough-spinc-loop",
+ "name": "Glendalough Spinc and Glenealo Valley loop (White Route)",
+ "urls": [
+  {
+   "url": "https://www.wicklowmountainsnationalpark.ie/",
+   "purpose": "park home, trails, rules"
+  },
+  {
+   "url": "https://www.nationalparks.ie/",
+   "purpose": "agency home"
+  },
+  {
+   "url": "https://www.nationalparks.ie/wicklow/glendalough-trail-closures/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.ie/wicklow/glendalough-trail-works-2026/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.ie/wicklow/parking-in-glendalough/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.ie/accessibility",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.ie/wicklow/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.ie/wicklow/things-to-do/",
+   "purpose": "crawled"
+  }
+ ]
+}

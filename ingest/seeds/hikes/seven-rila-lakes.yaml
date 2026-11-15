@@ -1,0 +1,33 @@
+seed_no: 61
+slug: seven-rila-lakes
+name: Seven Rila Lakes
+region_group: europe
+countries:
+- BG
+subdivisions: []
+area:
+  name: Rila National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Rila National Park Directorate
+  wikidata: null
+hike_wikidata: null
+official_url: https://rilanationalpark.bg/en
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only two park pages verified; no fee or alerts page found.

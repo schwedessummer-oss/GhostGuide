@@ -1,0 +1,33 @@
+seed_no: 104
+slug: larapinta-trail
+name: Larapinta Trail
+region_group: oceania
+countries:
+- AU
+subdivisions: []
+area:
+  name: Tjoritja / West MacDonnell National Park, NT
+  wikidata: null
+  official_url: null
+agency:
+  name: NT Parks and Wildlife
+  wikidata: null
+hike_wikidata: null
+official_url: https://nt.gov.au/parks/find-a-park/tjoritja-west-macdonnell-national-park/larapinta-trail
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'UNVERIFIED by fetch: nt.gov.au returns 403 to fetch_text. URLs come from a site:nt.gov.au search result (titles and paths match). Trail current-conditions page not located.'

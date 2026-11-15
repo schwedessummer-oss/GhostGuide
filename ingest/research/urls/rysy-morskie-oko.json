@@ -1,0 +1,35 @@
+{
+ "seed_no": 63,
+ "slug": "rysy-morskie-oko",
+ "name": "Rysy from Morskie Oko",
+ "urls": [
+  {
+   "url": "https://tpn.gov.pl",
+   "purpose": "park home: tickets, rules, closures (Polish)"
+  },
+  {
+   "url": "https://tpn.gov.pl/parkingi-morskie-oko",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://tpn.gov.pl/e-busy-do-morskiego-oka",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://tpn.gov.pl/morskie-oko-w-pigulce",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://tpn.gov.pl/szlaki-turystyczne/palenica-bialczanska-morskie-oko-i-spacer-wokol-morskiego-oka",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://tpn.gov.pl/sklep/monopoly-tatry-i-zakopane",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://tpn.gov.pl/parkingi",
+   "purpose": "crawled"
+  }
+ ]
+}

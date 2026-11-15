@@ -1,0 +1,132 @@
+slug: caminito-del-rey
+deleted_facts:
+- field: distance_km
+  value: 8
+  basis: one_way
+  note: The route page gives 8 km for the full one-way walk, north to south.
+  source_url: https://www.caminitodelrey.info/en/your-visit/access-route
+  evidence_heading: Access and route - Details
+- field: permit
+  value:
+    name: Caminito del Rey entry ticket (timed)
+    kind: timed_entry
+    how_to_apply: Reserve a date and time on the official platform; arrive at the access area at least 30 minutes before the time on your reservation. Guided visits can be booked on the same site.
+    official_url: https://www.caminitodelrey.info/en/tickets/buy
+    price:
+      amount: 10
+      currency: EUR
+      unit: per_person
+      audience: all
+      note: general admission; limit of 10 tickets per purchase
+  source_url: https://www.caminitodelrey.info/en/
+  evidence_heading: Tickets
+- field: fee
+  value:
+    name: General admission
+    amount: 10
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: self-guided; limit of 10 tickets per purchase
+  source_url: https://www.caminitodelrey.info/en/
+  evidence_heading: Tickets
+- field: fee
+  value:
+    name: Official guided visit
+    amount: 18
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: groups of up to 30 with a certified guide; Spanish and English
+  source_url: https://www.caminitodelrey.info/en/
+  evidence_heading: Tickets
+- field: fee
+  value:
+    name: Shuttle bus between the two ends
+    amount: 2.5
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: unlimited trips on the day of the visit; not included in the ticket; bus not run by Caminito del Rey; pay the driver in cash if not bought online
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  evidence_heading: Parking and shuttle bus
+- field: fee
+  value:
+    name: Visitors' Reception Centre car park
+    amount: 2
+    currency: EUR
+    unit: per_day
+    audience: all
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  evidence_heading: Parking and shuttle bus
+- field: parking
+  value: The Visitors' Reception Centre car park costs 2 EUR a day and can be reserved while buying tickets or paid on arrival if spaces remain. Arrive about an hour early.
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  evidence_heading: Parking and shuttle bus
+- field: trailhead_access
+  value: Vehicles cannot reach the start of the walkways; from the reception centre or the shuttle stop you still walk to the north entrance gate, about 25 minutes by the shortest route.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  evidence_heading: Compulsory rules and regulations
+- field: public_transport
+  value: A shuttle bus (not run by the site managers) links the two ends, about 15-20 minutes, roughly 07:40 to 19:00. Regional RENFE trains stop at El Chorro-Caminito del Rey station; check RENFE times.
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  evidence_heading: Parking and shuttle bus
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: No animals at all, guide dogs included, because of the narrow walkways.
+  source_url: https://www.caminitodelrey.info/en/your-visit/pets
+  evidence_heading: Pets
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones are banned unless the regional environment ministry authorises them.
+  source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
+  evidence_heading: Prohibitions and grounds for expulsion
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Lighting fires and smoking of any substance are prohibited.
+  source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
+  evidence_heading: Prohibitions and grounds for expulsion
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 55
+    note: Organised groups may have up to 55 people plus one responsible person or accredited guide.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  evidence_heading: Specific provisions for groups
+- field: hazard
+  value:
+    type: exposure
+    note: 'High, narrow boardwalks along the gorge and a hanging bridge 105 m up; many visitors feel dizzy. Rules: no children under 8, sturdy closed footwear, keep right, no large backpacks.'
+  source_url: https://www.caminitodelrey.info/en/your-visit/faq
+  evidence_heading: Frequently asked questions
+- field: hazard
+  value:
+    type: weather
+    note: Management can close the path in rain or strong wind; light rain is allowed but umbrellas are banned, so a raincoat is needed. Closure news is posted on the website, email and Telegram.
+  source_url: https://www.caminitodelrey.info/en/your-visit/faq
+  evidence_heading: Frequently asked questions
+- field: season_note
+  value: Open Tuesday to Sunday except 24, 25 and 31 December and 1 January, plus some special Mondays. Entry hours start at 09:00 and run to 14:50 or 17:20 depending on season.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  evidence_heading: Compulsory rules and regulations
+- field: nearest_town
+  value:
+    name: Ardales
+    note: North access is in Ardales municipality; the walk ends at El Chorro in Álora.
+  source_url: https://www.caminitodelrey.info/en/your-visit/access-route
+  evidence_heading: Access and route - Details
+- field: access_mode
+  value: independent
+  note: Self-guided entry is sold; official guided visits are an option.
+  source_url: https://www.caminitodelrey.info/en/
+  evidence_heading: Tickets
+- field: closure
+  value:
+    status: open
+    note: Site open Tuesday to Sunday; closed Mondays and on 24, 25, 31 December and 1 January. The administration may close or limit visits for safety, repairs or weather.
+    as_of: 2026-11-15
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  evidence_heading: Compulsory rules and regulations

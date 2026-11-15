@@ -1,0 +1,47 @@
+{
+ "seed_no": 56,
+ "slug": "yr-wyddfa-pyg-track",
+ "name": "Yr Wyddfa via Pyg Track",
+ "urls": [
+  {
+   "url": "https://eryri.gov.wales/visit/yr-wyddfa/",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/plan-your-visit/",
+   "purpose": "plan, access, transport, parking"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/",
+   "purpose": "visit hub"
+  },
+  {
+   "url": "https://eryri.gov.wales/",
+   "purpose": "park home, alerts"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/snowdon/yr-wyddfa-ground-conditions-reports/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/snowdon/parking-for-snowdon/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/snowdon/yr-wyddfa-walks-app/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/plan-your-visit/snowdon-sherpa/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/plan-your-visit/cycling/mountain-biking-on-snowdon/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://eryri.gov.wales/visit/snowdon/yr-wyddfa-visitor-survey/",
+   "purpose": "crawled"
+  }
+ ]
+}

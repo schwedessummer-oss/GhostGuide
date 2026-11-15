@@ -1,0 +1,33 @@
+seed_no: 64
+slug: pr1-pico-do-arieiro-pico-ruivo
+name: PR1 Pico do Arieiro-Pico Ruivo
+region_group: europe
+countries:
+- PT
+subdivisions: []
+area:
+  name: Madeira
+  wikidata: null
+  official_url: null
+agency:
+  name: IFCN
+  wikidata: null
+hike_wikidata: null
+official_url: https://ifcn.madeira.gov.pt/en/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: simplifica.madeira.gov.pt returned only 10 chars (JS portal), excluded. Closure status of PR1 not verified; fallback PR8 not added since closure is unconfirmed.

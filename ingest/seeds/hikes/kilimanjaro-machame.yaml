@@ -1,0 +1,33 @@
+seed_no: 67
+slug: kilimanjaro-machame
+name: Kilimanjaro (Machame)
+region_group: africa
+countries:
+- TZ
+subdivisions: []
+area:
+  name: Kilimanjaro National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: TANAPA
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.tanzaniaparks.go.tz
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only home page verified; Kilimanjaro subpage guesses 404. Operator mandatory. travel.state.gov not checked.

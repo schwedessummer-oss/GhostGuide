@@ -1,0 +1,39 @@
+{
+ "seed_no": 83,
+ "slug": "mount-fuji-yoshida-trail",
+ "name": "Mount Fuji (Yoshida Trail)",
+ "urls": [
+  {
+   "url": "https://www.fujisan-climb.jp/en/",
+   "purpose": "official climbing site: registration, fee, rules, conditions"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/about/",
+   "purpose": "rules and about climbing"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/comparison-of-routes",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/info/2918/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/faq",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/things-to-know-before-climbing",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/caution/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fujisan-climb.jp/en/info/",
+   "purpose": "crawled"
+  }
+ ]
+}

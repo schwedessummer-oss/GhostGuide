@@ -6,6 +6,34 @@
   {
    "url": "https://www.comune.agerola.na.it/vivere_il_comune/gallerie/galleria_15.html",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.campania.info",
+   "purpose": "Campania regional tourism (generic)"
+  },
+  {
+   "url": "https://www.campania.info/dove-dormire-campania/villaggi-turistici-campania/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.campania.info/vacanze-mare-campania/spiagge-campania/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.campania.info/dove-dormire-campania/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.campania.info/cosa-vedere-campania/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.campania.info/cosa-vedere-campania/borghi-campania/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.campania.info/vacanze-mare-campania/",
+   "purpose": "crawled"
   }
  ]
 }

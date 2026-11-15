@@ -1,0 +1,33 @@
+seed_no: 51
+slug: preikestolen
+name: Preikestolen
+region_group: europe
+countries:
+- 'NO'
+subdivisions: []
+area:
+  name: Rogaland
+  wikidata: null
+  official_url: null
+agency:
+  name: Stavanger Turistforening
+  wikidata: null
+hike_wikidata: null
+official_url: https://preikestolen.no/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only 2 verified; visitnorway.com returned 403 to fetcher so unverified. Preikestolen.no is Norwegian and not confirmed as Stavanger Turistforening's own site (text is thin at 1207 chars).

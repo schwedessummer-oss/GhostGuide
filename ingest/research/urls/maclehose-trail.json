@@ -1,0 +1,31 @@
+{
+ "seed_no": 80,
+ "slug": "maclehose-trail",
+ "name": "MacLehose Trail",
+ "urls": [
+  {
+   "url": "https://www.afcd.gov.hk/english/country/cou_vis/cou_vis_cou/cou_vis_cou.html",
+   "purpose": "country parks overview"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/hong-kong",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/hong-kong/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
+  }
+ ]
+}

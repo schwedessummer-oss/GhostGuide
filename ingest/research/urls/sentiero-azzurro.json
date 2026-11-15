@@ -14,6 +14,18 @@
   {
    "url": "https://card.parconazionale5terre.it/en/cartatreno",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.parconazionale5terre.it/en/",
+   "purpose": "park main site (robots-disallowed for fetch, official)"
+  },
+  {
+   "url": "https://card.parconazionale5terre.it/en/ticketing",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://card.parconazionale5terre.it/en/collection/tickets",
+   "purpose": "crawled"
   }
  ]
 }

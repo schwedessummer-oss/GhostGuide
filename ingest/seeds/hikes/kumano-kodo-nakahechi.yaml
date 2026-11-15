@@ -1,0 +1,33 @@
+seed_no: 82
+slug: kumano-kodo-nakahechi
+name: Kumano Kodo Nakahechi
+region_group: asia-middle-east
+countries:
+- JP
+subdivisions: []
+area:
+  name: Wakayama, Tanabe
+  wikidata: null
+  official_url: null
+agency:
+  name: Tanabe City Kumano Tourism Bureau
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Guessed access/accommodation subpages 404. Wakayama prefecture kumano-kodo.jp returned only a Japanese title, not included.

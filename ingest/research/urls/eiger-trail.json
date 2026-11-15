@@ -10,6 +10,26 @@
   {
    "url": "https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/prices-and-tickets/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/eiger-glacier-railway-station/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/hiking/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/winter-hiking/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/faq/",
+   "purpose": "crawled"
   }
  ]
 }

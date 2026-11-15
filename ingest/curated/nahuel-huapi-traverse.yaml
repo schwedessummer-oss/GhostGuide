@@ -1,230 +1,280 @@
 slug: nahuel-huapi-traverse
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
-    source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
-    source_title: Trekking y Actividades de Montaña - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones para la montaña
-  - field: permit_required
-    value: "yes"
-    note: Filling in the trekking registration is mandatory before walking these trails.
-    source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
-    source_title: Trekking y Actividades de Montaña - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Preparando la caminata
-  - field: permit
-    value:
-      name: Trekking registration (Registro de Trekking)
-      kind: other
-      how_to_apply: Complete the park's trekking registration before setting out, and then follow the itinerary you declared. The park publishes registration forms for trekking, climbing and ski touring.
-      official_url: https://nahuelhuapi.gov.ar/registros-trekking-escalada-esqui-travesia/
-      price: { amount: 0, currency: ARS, unit: per_trip, audience: all, note: described as free }
-    source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
-    source_title: Trekking y Actividades de Montaña - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Preparando la caminata
-  - field: permit
-    value:
-      name: Refugio Frey overnight reservation
-      kind: overnight
-      how_to_apply: Book ahead through the refugio's own booking site if you plan to stay the night at Frey.
-      official_url: https://www.refugiofreybariloche.com
-    source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
-    source_title: Refugio Frey desde el lago Gutiérrez - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Descripción
-  - field: permit
-    value:
-      name: Refugio San Martín (Laguna Jakob) overnight reservation
-      kind: overnight
-      how_to_apply: The refugio and its campsite both need a prior reservation, made through the refugio's own site.
-      official_url: https://www.refugiojakob.com.ar
-    source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
-    source_title: Tambo de Báez - Refugio San Martín (Laguna Jakob) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Descripción
-  - field: permit
-    value:
-      name: Refugio Italia (Laguna Negra) overnight reservation
-      kind: overnight
-      how_to_apply: The refugio and its campsite both need a prior reservation, made through the refugio's own site.
-      official_url: https://refugiolagunanegra.com/
-    source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
-    source_title: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Descripción
-  - field: fee
-    value:
-      name: Nahuel Huapi park access, general rate
-      amount: 35000
-      currency: ARS
-      unit: per_person
-      audience: non_resident
-      note: "Listed as 'Tarifa general'; valid for the first day, with 50% off a second day. The page says charge points are at the Mascardi access (Tronador road), Puerto Pañuelo and the Quetrihué peninsula; it does not say whether these trails pass one."
-    source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
-    source_title: Tarifas de ingreso - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas de ingreso y compra de tickets en línea
-  - field: fee
-    value:
-      name: Nahuel Huapi park access, national residents
-      amount: 15000
-      currency: ARS
-      unit: per_person
-      audience: resident
-      note: Listed as 'Residentes nacionales'.
-    source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
-    source_title: Tarifas de ingreso - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas de ingreso y compra de tickets en línea
-  - field: fee
-    value:
-      name: Nahuel Huapi park access, students
-      amount: 12000
-      currency: ARS
-      unit: per_person
-      audience: student
-      note: Listed as 'Estudiantes'.
-    source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
-    source_title: Tarifas de ingreso - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Tarifas de ingreso y compra de tickets en línea
-  - field: best_months
-    value: [12, 1, 2, 3]
-    note: The Frey and Jakob pages give December to March; the Laguna Negra page gives December to April.
-    source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
-    source_title: Refugio Frey desde el lago Gutiérrez - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cuándo realizar esta visita?
-  - field: season_note
-    value: Laguna Negra leg is recommended from December to April; the Jakob and Frey legs from December to March.
-    source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
-    source_title: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cuándo realizar esta visita?
-  - field: rule_dogs
-    value: { value: not_allowed, note: Pets are not to be brought on mountain trails or into the park. }
-    source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
-    source_title: Recomendaciones y Seguridad - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: rule_drones
-    value: { value: not_allowed, note: Drone use is prohibited. }
-    source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
-    source_title: Recomendaciones y Seguridad - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: rule_fires
-    value: { value: not_allowed, note: "No fires on mountain trails, only stoves. On the Laguna Negra and Jakob approach trails making fire or sleeping on the trail is strictly forbidden." }
-    source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
-    source_title: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Descripción
-  - field: rule_camping
-    value: { value: restricted, note: Camping is allowed only in designated places marked by signs. }
-    source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
-    source_title: Recomendaciones y Seguridad - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: hazard
-    value: { type: remoteness, note: "Mobile signal is missing in many areas, so APN advises telling family or friends beforehand and saving the emergency numbers; it also advises not hiking alone." }
-    source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
-    source_title: Trekking y Actividades de Montaña - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Preparando la caminata
-  - field: hazard
-    value: { type: other, note: "The Frey trail has uneven ground with rocks and roots, and its last 2 km are steep, rocky and stepped with strong sun exposure." }
-    source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
-    source_title: Refugio Frey desde el lago Gutiérrez - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Descripción
-  - field: hazard
-    value: { type: weather, note: "The alerts page lists storm warnings, including a yellow alert for the afternoon of Sunday 15 November." }
-    source_url: https://nahuelhuapi.gov.ar/alertas/
-    source_title: Alertas - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Alertas
-  - field: hazard
-    value: { type: other, note: Falling trees and branches are frequent in forested areas. }
-    source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
-    source_title: Recomendaciones y Seguridad - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: trailhead_access
-    value: "Frey from Lago Gutiérrez: 10 km, about 900 m climb, 4-5 h one way, starting by the ranger station 2 km beyond Villa Los Coihues. Frey from Villa Catedral: 9 km, 700 m, 4-5 h one way."
-    source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
-    source_title: Refugio Frey desde el lago Gutiérrez - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Distancia / Desnivel
-  - field: trailhead_access
-    value: "Laguna Negra leg starts at the Goye stream bridge in Colonia Suiza (gravel entrance, not the paved one): 11 km, about 800 m climb, 5-6 h one way, usually done over 2 days."
-    source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
-    source_title: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cómo llegar?
-  - field: trailhead_access
-    value: "Jakob leg starts at Tambo de Báez (a Mapuche community site where parking costs a fee; gate may be shut, close it again): 14 km, 727 m climb, 5-6 h one way, usually 2 days."
-    source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
-    source_title: Tambo de Báez - Refugio San Martín (Laguna Jakob) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cómo llegar?
-  - field: public_transport
-    value: "Frey from Lago Gutiérrez: Bariloche bus line 50 to Villa Los Coihues then a 2 km walk. Frey from Catedral: line 55 to the last stop at Cerro Catedral."
-    source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
-    source_title: Refugio Frey desde el lago Gutiérrez - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cómo llegar?
-  - field: public_transport
-    value: "Laguna Negra leg: Bariloche line 10 to the Goye bridge in Colonia Suiza, or line 20 to km 18 then line 13. Pay with a SUBE card."
-    source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
-    source_title: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cómo llegar?
-  - field: public_transport
-    value: "Jakob leg: Bariloche line 20 to Puerto Moreno (km 10.5 of Av. Bustillo), then about 5.5 km on foot by the old Catedral road and Colonia Suiza fork to Tambo de Báez."
-    source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
-    source_title: Tambo de Báez - Refugio San Martín (Laguna Jakob) - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: ¿Cómo llegar?
-  - field: nearest_town
-    value: { name: San Carlos de Bariloche, note: The park's headquarters are here and the Frey, Laguna Negra and Jakob access routes start from Bariloche bus lines. }
-    source_url: https://nahuelhuapi.gov.ar/registros-trekking-escalada-esqui-travesia/
-    source_title: Registros de trekking, escalada y esquí de travesía - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Intendencia de Parque Nacional Nahuel Huapi
-  - field: closure
-    value: { status: seasonal, note: "Official pages give December to March (April for Laguna Negra) as the hiking window. A yellow storm alert is listed for Sunday 15 November; no trail closure is listed.", as_of: 2026-11-15 }
-    source_url: https://nahuelhuapi.gov.ar/alertas/
-    source_title: Alertas - Parque Nacional Nahuel Huapi
-    publisher: Administración de Parques Nacionales (APN)
-    checked_at: 2026-11-15
-    evidence_heading: Alertas
+- field: official_url
+  value: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  note: Park page on trekking and mountain activities.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Trekking y Actividades
+  evidence:
+    page: P1
+    quote: Trekking y Actividades
+  verified: true
+- field: permit
+  value:
+    name: Trekking registration (Registro de trekking)
+    kind: other
+    how_to_apply: Complete the park trekking registration before setting out; it is mandatory and free of charge.
+  note: Required for the Frey, Jakob and Laguna Negra routes.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para la montaña
+  evidence:
+    page: P1
+    quote: Completar el registro de trekking, es obligatorio y gratuito.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Fires are not allowed on mountain trails; only stoves may be used.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para la montaña
+  evidence:
+    page: P1
+    quote: En los senderos de montaña no está permitido hacer fuego, sólo es posible el uso del calentador.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Along the Jakob route lighting fires and overnighting are strictly prohibited outside the refuge.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: Durante su recorrido está ESTRICTAMENTE PROHIBIDO HACER FUEGO y/o PERNOCTAR.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drone use is prohibited in the park.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  source_title: Recomendaciones y Seguridad – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Cómo transitar el Parque Nacional
+  evidence:
+    page: P11
+    quote: – Estás prohibido el uso de drones
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camp only in designated places indicated by signs.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  source_title: Recomendaciones y Seguridad – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Cómo transitar el Parque Nacional
+  evidence:
+    page: P11
+    quote: – Acampar sólo en lugares habilitados donde la cartelería lo indique
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping or sleeping at Refugio Laguna Negra needs a prior booking.
+  source_url: https://refugiolagunanegra.com/
+  source_title: Refugio Laguna Negra – | Bariloche | Patagonia Argentina
+  publisher: Refugio Laguna Negra
+  checked_at: 2026-11-15
+  evidence:
+    page: P8
+    quote: Para acampar o pernoctar en el refugio es necesario reservar lugar con anticipación.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Overnighting at Refugio Frey needs a reservation.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Descripción
+  evidence:
+    page: P5
+    quote: Para pernoctar en el refugio es necesario hacer una reserva
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Overnighting at Refugio San Martin or its camping area needs a prior reservation.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: El pernocte puede ser en el refugio o su zona de acampe, ambas con reserva previa www.refugiojakob.com.ar
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Many sectors have no mobile signal; tell family beforehand and save emergency numbers.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Recomendaciones para la montaña
+  evidence:
+    page: P1
+    quote: 'Señal de celular: En muchos sectores no hay señal. Previamente avisar a familiares/amigos que no habrá comunicación. Agendar teléfonos de emergencia.'
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Wading footwear is recommended on the Frey route.
+  source_url: https://www.refugiofreybariloche.com
+  source_title: Inicio - Refugio Frey
+  publisher: Refugio Frey
+  checked_at: 2026-11-15
+  evidence_heading: 'Recomendación: llevar calzado de vadeo'
+  evidence:
+    page: P4
+    quote: 'Recomendación: llevar calzado de vadeo'
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: After heavy snowfall the Frey path is often impassable until the snow melts or is compacted.
+  source_url: https://www.refugiofreybariloche.com
+  source_title: Inicio - Refugio Frey
+  publisher: Refugio Frey
+  checked_at: 2026-11-15
+  evidence_heading: 'Invierno: Deportes invernales'
+  evidence:
+    page: P4
+    quote: el sendero queda muchas veces intransitable hasta que la nieve se derrite, o se compacte
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: In dry summer weather there are no streams on the Frey path; carry at least 1.5 litres of water.
+  source_url: https://www.refugiofreybariloche.com
+  source_title: Inicio - Refugio Frey
+  publisher: Refugio Frey
+  checked_at: 2026-11-15
+  evidence_heading: 'Verano: Trekking & escalada'
+  evidence:
+    page: P4
+    quote: es importante que llevemos a la caminata al menos 1,5 litros de agua
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Much of the Frey route is exposed to strong sun after an old fire; the ground is uneven with rocks and roots.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Descripción
+  evidence:
+    page: P5
+    quote: A partir de este punto no hay presencia de grandes árboles, por lo tanto, la exposición al sol es alta.
+  verified: true
+- field: trailhead_access
+  value: For Refugio Frey, drive Av. Bustillo or Av. de los Pioneros to km 8.600, turn to Villa Los Coihues and follow the lakeside road 2 km to the ranger station where the trail starts.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: En caso de utilizar transporte público, se deberá tomar la línea 50 en el centro de la ciudad de Bariloche, debiendo bajar en el barrio Villa Los Coihues. Desde la parada frente al lago Gutiérrez, caminar 2km por un camino vehicular de ripio que bordea el lago Gutiérrez hasta la seccional de guardaparque. Por este camino circulan una gran cantidad de vehículos, caminar prestando atención a la circulación. De contar con vehículo particular, tomar Av. Bustillo o Av. de los Pioneros hasta el km 8.600, donde se debe tomar el desvío hasta Villa Los Coihues. Una vez allí y luego de cruzar el puente de ingreso, tomar el camino hacia la izquierda que bordea el lago durante 2 kilómetros, hasta la seccional de guardaparques donde inicia el sendero.
+  evidence:
+    page: P5
+    quote: De contar con vehículo particular, tomar Av. Bustillo o Av. de los Pioneros hasta el km 8.600, donde se debe tomar el desvío hasta Villa Los Coihues.
+  verified: true
+- field: trailhead_access
+  value: The Jakob route starts at Tambo de Báez, about 4 km beyond a junction 1.5 km up the old Cerro Catedral road from Puerto Moreno at km 10.5 of Av. Bustillo; the gate may be closed and must be reclosed.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: tomar Av. Bustillo hasta Puerto Moreno en el km 10.5, doblar a la izquierda para tomar el “camino viejo a cerro Catedral” durante 1.5km. Luego tomar la bifurcación a la derecha que conduce a Colonia Suiza y a aproximadamente 4km, se llega a la tranquera de acceso al Tambo de Báez
+  verified: true
+- field: trailhead_access
+  value: The Laguna Negra route starts at the bridge over Arroyo Goye in Colonia Suiza, via the second (gravel) entrance from the km 18 roundabout on Av. Bustillo.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: De contar con vehículo particular, tomar Av. Bustillo hasta la rotonda del km 18, allí tomar la segunda salida hacia Colonia Suiza.
+  verified: true
+- field: parking
+  value: At Tambo de Báez, the Jakob trailhead, you can leave a vehicle for a parking charge.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: donde es posible dejar el vehículo abonando una tarifa por la estadía
+  verified: true
+- field: public_transport
+  value: For Refugio Frey, take bus line 50 in downtown Bariloche to Villa Los Coihues, then walk 2 km along the gravel lakeside road to the ranger station.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: En caso de utilizar transporte público, se deberá tomar la línea 50 en el centro de la ciudad de Bariloche, debiendo bajar en el barrio Villa Los Coihues. Desde la parada frente al lago Gutiérrez, caminar 2km por un camino vehicular de ripio que bordea el lago Gutiérrez hasta la seccional de guardaparque. Por este camino circulan una gran cantidad de vehículos, caminar prestando atención a la circulación. De contar con vehículo particular, tomar Av. Bustillo o Av. de los Pioneros hasta el km 8.600, donde se debe tomar el desvío hasta Villa Los Coihues. Una vez allí y luego de cruzar el puente de ingreso, tomar el camino hacia la izquierda que bordea el lago durante 2 kilómetros, hasta la seccional de guardaparques donde inicia el sendero.
+  evidence:
+    page: P5
+    quote: En caso de utilizar transporte público, se deberá tomar la línea 50 en el centro de la ciudad de Bariloche, debiendo bajar en el barrio Villa Los Coihues.
+  verified: true
+- field: public_transport
+  value: For the Jakob route, take line 20 from downtown Bariloche to Puerto Moreno at km 10.5 of Av. Bustillo, then walk the old Cerro Catedral road.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: En caso de utilizar transporte público tomar la Línea 20 en el centro de la ciudad de Bariloche y descender en Puerto Moreno ubicado en el km 10.5 de Av. Bustillo.
+  verified: true
+- field: public_transport
+  value: For Laguna Negra, take line 10 from downtown Bariloche to the stop near the Arroyo Goye bridge in Colonia Suiza; buses are paid with the SUBE card.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: En caso de utilizar transporte público, se deberá tomar la Línea 10 en el centro de la ciudad de Bariloche.
+  verified: true
+- field: nearest_town
+  value:
+    name: San Carlos de Bariloche
+    note: City where the Frey, Jakob and Laguna Negra bus routes start.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales - Parque Nacional Nahuel Huapi
+  checked_at: 2026-11-15
+  evidence_heading: En caso de utilizar transporte público, se deberá tomar la línea 50 en el centro de la ciudad de Bariloche, debiendo bajar en el barrio Villa Los Coihues. Desde la parada frente al lago Gutiérrez, caminar 2km por un camino vehicular de ripio que bordea el lago Gutiérrez hasta la seccional de guardaparque. Por este camino circulan una gran cantidad de vehículos, caminar prestando atención a la circulación. De contar con vehículo particular, tomar Av. Bustillo o Av. de los Pioneros hasta el km 8.600, donde se debe tomar el desvío hasta Villa Los Coihues. Una vez allí y luego de cruzar el puente de ingreso, tomar el camino hacia la izquierda que bordea el lago durante 2 kilómetros, hasta la seccional de guardaparques donde inicia el sendero.
+  evidence:
+    page: P5
+    quote: tomar la línea 50 en el centro de la ciudad de Bariloche
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 22
+  failed: 0
+  reasons: {}

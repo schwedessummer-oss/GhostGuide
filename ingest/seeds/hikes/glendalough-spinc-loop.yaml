@@ -1,0 +1,34 @@
+seed_no: 0
+slug: glendalough-spinc-loop
+name: Glendalough Spinc and Glenealo Valley loop (White Route)
+region_group: null
+countries:
+- IE
+subdivisions: []
+area:
+  name: Wicklow Mountains National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: National Parks and Wildlife Service
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.wicklowmountainsnationalpark.ie/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags:
+- fallback
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Fallback entry. Only park home verified; deeper trail page not found.

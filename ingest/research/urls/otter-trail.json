@@ -1,0 +1,11 @@
+{
+ "seed_no": 71,
+ "slug": "otter-trail",
+ "name": "Otter Trail",
+ "urls": [
+  {
+   "url": "https://www.sanparks.org",
+   "purpose": "official_url"
+  }
+ ]
+}

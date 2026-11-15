@@ -1,0 +1,34 @@
+seed_no: 0
+slug: mount-elgon-sasa-sipi
+name: Mount Elgon Sasa-Sipi traverse
+region_group: null
+countries:
+- UG
+subdivisions: []
+area:
+  name: Mount Elgon National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Uganda Wildlife Authority
+  wikidata: null
+hike_wikidata: null
+official_url: https://ugandawildlife.org/mount-elgon-national-park/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags:
+- fallback
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Fallback for Rwenzori if advisory is against travel. Permits/fees page not found yet.

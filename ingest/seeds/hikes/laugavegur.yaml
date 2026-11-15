@@ -1,0 +1,33 @@
+seed_no: 50
+slug: laugavegur
+name: Laugavegur
+region_group: europe
+countries:
+- IS
+subdivisions: []
+area:
+  name: Iceland Highlands
+  wikidata: null
+  official_url: null
+agency:
+  name: Ferðafélag Íslands
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.fi.is/en/laugavegur
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: ust.is deep link guess 404; no UST page verified.

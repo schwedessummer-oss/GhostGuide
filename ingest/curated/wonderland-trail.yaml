@@ -1,279 +1,345 @@
 slug: wonderland-trail
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: distance_km
-    value: 150
-    basis: loop
-    note: "The park gives the trail as about 93 miles (150 km), circling Mount Rainier; the total varies with the trailhead used."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: elevation_gain_m
-    value: 8230
-    note: "The park states about 27,000 feet (8,230 m) of gain and the same amount of loss."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: route_type
-    value: loop
-    note: "The trail encircles the mountain and can be done as a full loop or in sections, starting from any of several trailheads."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hiking the Wonderland Trail
-
-  - field: difficulty_official
-    value: { label: "strenuous", scale: "NPS" }
-    note: "The park describes it as a strenuous hike."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: best_months
-    value: [7, 8, 9]
-    note: "Typical through-hiking season: mostly snow-free from mid-July to the end of September; September can bring snow up high."
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
-    source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: What is the typical season for through-hiking the Wonderland Trail?
-
-  - field: season_note
-    value: "Usually mostly free of snow from mid-July into October. In an average snow year the park advises waiting until mid- to late July; earlier trips need winter skills such as expert navigation, ice-axe self-arrest and fording glacial rivers."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: permit_required
-    value: "yes"
-    note: "Every night spent in the backcountry, in any season, requires a wilderness permit. Park entrance fees are charged on top of the permit."
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
-    source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Get Your Permit
-
-  - field: permit
-    value:
-      name: Wilderness permit - early access lottery
-      kind: lottery
-      how_to_apply: "Apply on Recreation.gov for the optional lottery in February. Winners get a personal access window between March and April in which they may book one itinerary before general sales; this is the park's recommended route to a full circuit."
-      booking_window: "Lottery opens in February (see Recreation.gov for dates); access windows March-April; early access ends 25 April"
-      official_url: https://www.recreation.gov/permits/4675317
-      price: { amount: 12.00, currency: USD, unit: per_night, audience: all, note: "per person per night (up to 13 consecutive nights), plus a $6 Recreation.gov fee" }
-    note: "Lottery entrants may make only one reservation during early access; more can be booked after 25 April. A reservation is not a permit until the named holder activates it in person at a ranger station."
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
-    source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Early Access Lottery
-
-  - field: permit
-    value:
-      name: Wilderness permit - advance reservation (general on-sale)
-      kind: quota
-      how_to_apply: "From 25 April, book any remaining camps on Recreation.gov at least two days before the start. The person named must then collect the permit in person at a ranger station, from one day before and by noon on the start day."
-      booking_window: "From 25 April, for trips between 1 June and 10 October; at least 2 days before the trip"
-      official_url: https://www.recreation.gov/permits/4675317
-      price: { amount: 12.00, currency: USD, unit: per_night, audience: all, note: "per person per night (up to 13 consecutive nights/14 days), plus a $6 Recreation.gov fee" }
-    note: "About two thirds of summer (June-September) permits can be reserved. The park warns a full Wonderland itinerary is unlikely once general sales open. Unclaimed reservations are cancelled at noon on the start day."
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
-    source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: General On-Sale
-
-  - field: permit
-    value:
-      name: Wilderness permit - walk-up (first come, first served)
-      kind: overnight
-      how_to_apply: "Go in person to a wilderness information center in the park on your start day or the day before. Permits are not issued by phone; camps depend on what is left."
-      booking_window: "Same day or one day before the trip start"
-      official_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
-      price: { amount: 12.00, currency: USD, unit: per_night, audience: all, note: "per person per night, plus the non-refundable $6 reservation fee; card only, no cash" }
-    note: "Roughly one third of campsites are held back for walk-up permits. Summer permit offices are Longmire, Paradise and White River wilderness information centers."
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
-    source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: How to Acquire a Walk-up Permit
-
-  - field: fee
-    value: { name: "Wilderness permit fee", amount: 12.00, currency: USD, unit: per_night, audience: all, valid_from: 2026-01-01, valid_to: 2026-12-31, note: "2026 rate, charged per person per night; individuals 15 and younger are free." }
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
-    source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: What is the wilderness permit fee structure in 2026?
-
-  - field: fee
-    value: { name: "Recreation.gov application fee", amount: 6.00, currency: USD, unit: per_application, audience: all, valid_from: 2026-01-01, valid_to: 2026-12-31, note: "Charged once per trip." }
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
-    source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: What is the wilderness permit fee structure in 2026?
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Unlimited entry for 7 consecutive days for one private, non-commercial vehicle (up to 15 seats) and its passengers. The park takes no cash." }
-    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
-    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 25.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days; covers up to 2 private motorcycles with up to 4 people in total." }
-    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
-    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For visitors 16 and older arriving without a vehicle; valid 7 consecutive days. Under-16s need no pass." }
-    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
-    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Mount Rainier annual park pass", amount: 55.00, currency: USD, unit: per_vehicle, audience: resident, note: "One year of entry for the holder and passengers in one private vehicle; sold to US citizens and residents; no camping fees covered." }
-    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
-    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Annual Entrance - Park
-
-  - field: trailhead_access
-    value: "Several trailheads reach the trail: Longmire, Mowich Lake, Sunrise parking lot, White River Campground, Cowlitz Divide, Box Canyon, Reflection Lakes, Narada Falls and Cougar Rock Campground. The circuit's mileage depends on which one you start from."
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trailheads along the Wonderland Trail
-
-  - field: trailhead_access
-    value: "There is no public access to Carbon River or Mowich Lake: the SR 165 bridge is closed to vehicles, bikes and walkers with no detour. The Summerland Trailhead is closed through 2029 for Fryingpan Creek Bridge work. Sunrise and White River roads are closed for winter."
-    source_url: https://www.nps.gov/mora/planyourvisit/road-status.htm
-    source_title: Road Status - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Road Status
-
-  - field: nearest_town
-    value: { name: "Ashford", note: "Town just outside the Nisqually Entrance in the park's southwest corner, the entrance used for Longmire; 85 miles one way from Seattle." }
-    source_url: https://www.nps.gov/mora/planyourvisit/directions.htm
-    source_title: Directions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: By Plane
-
-  - field: rule_camping
-    value: { value: restricted, note: "Hikers doing the full circuit may camp only in designated camps, never in cross-country zones, and only at the camp named on their permit for that night. No party may stay more than four nights in a row in one camp or zone." }
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-guidelines-and-regulations.htm
-    source_title: Wilderness Guidelines And Regulations - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Wilderness Camping and Climbing Policies
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 12, note: "In summer, individual camp sites take parties of up to 5; groups of 6 to 12 must use the group sites found at 25 designated camps. Large groups may not split up on the same itinerary to dodge the limit." }
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-guidelines-and-regulations.htm
-    source_title: Wilderness Guidelines And Regulations - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Party Size
-
-  - field: rule_fires
-    value: { value: not_allowed, note: "Fires are banned on trails and in the backcountry. White gas, iso-butane cartridge and alcohol stoves are fine; stoves that burn twigs or cones are not." }
-    source_url: https://www.nps.gov/mora/planyourvisit/wilderness-guidelines-and-regulations.htm
-    source_title: Wilderness Guidelines And Regulations - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: For the care of the wilderness
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "The park bars pets from its backcountry, along with fires, bikes and other wheeled devices." }
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Launching, landing or flying a drone anywhere on NPS-administered land or water in the park is prohibited under the Superintendent's Compendium." }
-    source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
-    source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Drones
-
-  - field: hazard
-    value: { type: river_crossing, note: "River crossings and log footbridges often wash out, which can strand hikers; cross early in the day when water is lowest and take great care fording. Washed-out crossings are not rebuilt until the next spring or summer." }
-    source_url: https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm
-    source_title: Trails and Backcountry Camp Conditions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Backcountry Trails and Camp Reports
-
-  - field: hazard
-    value: { type: volcanic, note: "Rainier is a glacier-capped volcano: glacier outburst floods and debris flows can strike suddenly. Learn the warning signs and how to reach safety." }
-    source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
-    source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hiking in Geohazard Zones
-
-  - field: hazard
-    value: { type: lightning, note: "Thunderstorms occur on Mount Rainier and can build unseen behind the mountain. Lightning strikes are most often deadly; descend quickly, and get out of your tent if a storm hits since poles attract lightning." }
-    source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
-    source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Thunderstorms and Lightning
-
-  - field: hazard
-    value: { type: remoteness, note: "Most of the park has no cell coverage. Tell someone your plans, avoid hiking alone and consider a personal locator beacon." }
-    source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
-    source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Use Common Sense
-
-  - field: hazard
-    value: { type: other, note: "Snow: before mid- to late July in an average year, the route needs winter travel skills, including expert navigation, ice-axe self-arrest and fording dangerous glacial rivers." }
-    source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
-    source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Wonderland Trail
-
-  - field: closure
-    value: { status: partially_closed, note: "Closed between Carbon River and Summerland because of the Grand Park 2 and Garda Falls fires; no full-circuit permits until further notice. The Upper Fryingpan Creek crossing (White River Campground to Summerland) is out.", as_of: 2026-10-16 }
-    source_url: https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm
-    source_title: Trails and Backcountry Camp Conditions - Mount Rainier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Wonderland Trail
-verifier: null
+- field: official_url
+  value: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: The Wonderland Trail is about 93 miles (150 km) long and encircles Mount Rainier.
+  verified: true
+- field: distance_km
+  value: 150
+  basis: loop
+  note: Park gives roughly 93 miles (150 km) for the full circuit around Rainier; exact total shifts with the trailhead used.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: about 93 miles (150 km) long
+  verified: true
+- field: elevation_gain_m
+  value: 8230
+  note: Park-stated climbing for the whole circuit, with an equal amount of descent.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: about 27,000 feet (8,230 m) of elevation gain
+  verified: true
+- field: route_type
+  value: loop
+  note: Circles the mountain; can be done whole or split into sections.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Hiking the Wonderland Trail
+  evidence:
+    page: P1
+    quote: The Wonderland Trail can be hiked as a full loop or in sections.
+  verified: true
+- field: difficulty_official
+  value:
+    label: strenuous
+    scale: NPS
+  note: Park rates the hike strenuous.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: It is a strenuous hike
+  verified: true
+- field: best_months
+  value:
+  - 7
+  - 8
+  - 9
+  note: Snow-free window is mid-July to end of September; September storms can drop snow at height.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Application Seasons
+  evidence:
+    page: P3
+    quote: The trail is typically mostly snow-free from mid-July through the end of September.
+  verified: true
+- field: season_note
+  value: Mostly snow-free from mid-July into autumn. In a typical snow year the park says to hold off until mid to late July, since earlier trips demand winter mountaineering skills.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: In an average snow year it is not advisable to hike the Wonderland Trail until mid- to late July.
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Any night in the backcountry needs a wilderness permit; park entrance fees apply separately.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
+  source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Get Your Permit
+  evidence:
+    page: P4
+    quote: A permit is required year-round for all overnight stays in the backcountry.
+  verified: true
+- field: permit
+  value:
+    name: Wilderness permit - early access lottery
+    kind: lottery
+    how_to_apply: Enter the optional early access lottery via Recreation.gov; winners get a time slot to book before the general public.
+    booking_window: Lottery entries mid-February to early March; early access booking in March and April
+  note: A pilot lottery; check Recreation.gov for exact dates.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Early Access Period
+  evidence:
+    page: P3
+    quote: Applications to participate in the lottery are accepted in mid-February to early March
+  verified: true
+- field: permit
+  value:
+    name: Wilderness permit - general on-sale reservation
+    kind: quota
+    how_to_apply: Book remaining camps on Recreation.gov once general sales open.
+    booking_window: Remaining inventory opens to the public on April 25
+    official_url: https://www.recreation.gov/permits/4675317
+  note: Summer circuit trips are limited by campsites; popular camps sell out early.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Application Seasons
+  evidence:
+    page: P3
+    quote: On April 25, all remaining inventory will open to the public for the general on-sale.
+  verified: true
+- field: permit
+  value:
+    name: Wilderness permit - first-come, first-served
+    kind: overnight
+    how_to_apply: Request in person at a wilderness information center or visitor center; camps depend on what remains.
+  note: A smaller share of summer circuit trips is held for walk-up permits.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Application Seasons
+  evidence:
+    page: P3
+    quote: Another 300 or so are issued as first-come, first-served permits.
+  verified: true
+- field: fee
+  value:
+    name: Wilderness permit fee
+    amount: 12.0
+    currency: USD
+    unit: per_night
+    audience: all
+    valid_from: 2026-01-01
+    valid_to: 2026-12-31
+    note: Charged per person for each night; people aged fifteen and younger pay nothing.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Wilderness Permit Fee Structure
+  evidence:
+    page: P3
+    quote: The wilderness permit fee in 2026 is $12 per person per night.
+  verified: true
+- field: fee
+  value:
+    name: Recreation.gov application fee
+    amount: 6.0
+    currency: USD
+    unit: per_trip
+    audience: all
+    valid_from: 2026-01-01
+    valid_to: 2026-12-31
+    note: Booking fee on top of the permit fee, charged once for each trip.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm
+  source_title: Wilderness Permit Frequently Asked Questions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Wilderness Permit Fee Structure
+  evidence:
+    page: P3
+    quote: Application fees paid to Recreation.gov of $6 per trip remains in place.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Full-circuit hikers must use designated camps; cross-country camping zones are off limits to them.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: Hikers doing the complete Wonderland Trail are limited to camping in designated camps only - the use of cross-country zones is not permitted.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 12
+    note: Parties of 6 to 12 need a camp with a group site; not every camp has one.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Camps along the Wonderland Trail
+  evidence:
+    page: P1
+    quote: Parties with 6-12 people will need a camp that has a group site.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Campfires are banned in the park backcountry.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: Fires, pets, bicycles, and other wheeled devices are not permitted in the backcountry at Mount Rainier.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are barred from the backcountry, so dogs cannot join the trek.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: Fires, pets, bicycles, and other wheeled devices are not permitted in the backcountry at Mount Rainier.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Flying a drone anywhere in the park is prohibited under the superintendent's compendium.
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Planning Your Visit
+  evidence:
+    page: P2
+    quote: Launching, landing, or operating an unmanned aircraft (drone) from or on lands and waters administered by the National Park services within the boundaries of Mount Rainier National Park is prohibited
+  verified: true
+- field: trailhead_access
+  value: The loop can be joined from many trailheads around the park, and total mileage varies with where you start.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trailheads along the Wonderland Trail
+  evidence:
+    page: P1
+    quote: The Wonderland Trail can accessed from several trailheads around the park.
+  verified: true
+- field: trailhead_access
+  value: The Carbon River and Mowich Lake side is cut off until further notice because a bridge outside the park is shut to all traffic, with no detour.
+  source_url: https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm
+  source_title: Wilderness Permits - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Winter Camping Permits
+  evidence:
+    page: P4
+    quote: there is NO access to Carbon River & Mowich Lake due to the closure of the SR165 Carbon River Fairfax Bridge outside of the park.
+  verified: true
+- field: trailhead_access
+  value: The Sunrise and White River park roads are shut for the winter season.
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Alerts & Conditions
+  evidence:
+    page: P2
+    quote: Sunrise & White River Roads are closed for the winter season.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Wildfires are burning inside the park and expected to continue until put out by nature, affecting trail access.
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Alerts & Conditions
+  evidence:
+    page: P2
+    quote: remain active within the park and are expected to continue burning until extinguished naturally.
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Early-season trips mean fording dangerous glacier-fed rivers; park says only experienced hikers should attempt that.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: fording dangerous glaciated rivers
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Early-season snow demands winter skills such as expert navigation and ice-axe self-arrest.
+  source_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+  source_title: The Wonderland Trail - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Wonderland Trail
+  evidence:
+    page: P1
+    quote: Anything earlier requires winter travel skills including expert skills in navigation, ice-axe self arrest
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The circuit is shut between the Carbon River suspension bridge and White River Campground, and the Northern Loop Trail is also closed.
+    as_of: 2026-11-03
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Alerts & Conditions
+  evidence:
+    page: P2
+    quote: The Wonderland Trail is closed from Carbon River Suspension Bridge to White River Campground, along with the Northern Loop Trail.
+  verified: true
+mechanical_check:
+  verified: 25
+  failed: 0
+  reasons: {}

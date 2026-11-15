@@ -1,0 +1,19 @@
+{
+ "seed_no": 72,
+ "slug": "tugela-falls-chain-ladders",
+ "name": "Tugela Falls chain ladders",
+ "urls": [
+  {
+   "url": "https://www.kznwildlife.com",
+   "purpose": "agency home, fees, alerts"
+  },
+  {
+   "url": "https://www.kznwildlife.com/drakensberg",
+   "purpose": "Drakensberg parks info (page loaded same home-title)"
+  },
+  {
+   "url": "https://bookings.kznwildlife.com/",
+   "purpose": "crawled"
+  }
+ ]
+}

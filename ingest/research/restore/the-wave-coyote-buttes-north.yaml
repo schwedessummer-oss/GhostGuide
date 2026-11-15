@@ -1,0 +1,135 @@
+slug: the-wave-coyote-buttes-north
+deleted_facts:
+- field: season_note
+  value: Permits are issued for every day of the year, but road and weather conditions can make reaching Coyote Buttes unsafe or impossible; permits cannot be moved to another date, so a bad-weather day means using or losing it.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  evidence_heading: PERMITS
+- field: permit
+  value:
+    name: Coyote Buttes North (The Wave) Advanced Lottery permit
+    kind: lottery
+    how_to_apply: Apply on Recreation.gov during the calendar month four months before your trip, picking up to three dates. The draw runs on the 1st of the next month and results come by email; winners accept and pay online, and the permit is mailed.
+    booking_window: Apply during the month four months ahead (e.g. 1-31 January for May); the draw is held at 9 am MT on the 1st of the following month
+    official_url: https://www.recreation.gov/permits/274309
+    price:
+      amount: 6.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: non-refundable application fee; if awarded, $7 per person per day and $7 per dog
+  note: Up to 48 people or 12 groups a day are awarded through this lottery. Only one date is granted per winning application; the permit holder or a listed alternate must be on the hike. No date or group changes after the draw.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: Advanced Lottery Frequently Asked Questions
+- field: permit
+  value:
+    name: Coyote Buttes North (The Wave) Daily Lottery permit
+    kind: lottery
+    how_to_apply: From a phone or tablet inside the geofence (e.g. Kanab, Page, Big Water, Fredonia, Jacob Lake), apply via the Recreation.gov app or mobile site two days before your hike. Winners accept and pay by 8 am MT next day, then collect the permit and attend a required safety briefing in person.
+    booking_window: Apply two days before the hike date; results the same evening; accept and pay by 8 am MT the next day; permit pick-up and safety briefing before 8:30 am MT the day before the hike
+    official_url: https://www.recreation.gov/permits/4251909
+  note: Applications only work from a location-enabled mobile device; computers are not accepted. BLM says every application carries a reservation fee whether or not it wins, plus permit fees if awarded.
+  source_url: https://www.blm.gov/sites/default/files/docs/2023-10/FAQs_508.2023.pdf
+  evidence_heading: Q7. Example of how to apply for, receive notification, and obtain a permit through the geofence process
+- field: fee
+  value:
+    name: Coyote Buttes North permit fee
+    amount: 7.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Per person per day, charged for lottery winners; non-refundable and non-transferable, with no rain checks.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: General Frequently Asked Questions
+- field: fee
+  value:
+    name: Dog fee
+    amount: 7.0
+    currency: USD
+    unit: per_trip
+    audience: all
+    note: Charged for each dog, which must be listed on the permit; dogs are not counted in the six-person group cap.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: General Frequently Asked Questions
+- field: fee
+  value:
+    name: Advanced Lottery application fee
+    amount: 6.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Non-refundable administrative fee charged for each application.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: Advanced Lottery Frequently Asked Questions
+- field: trailhead_access
+  value: The access road is unpaved and only maintained now and then. High-clearance 2WD usually reaches the trailhead, but wet roads may need high-clearance 4WD and can become impassable to all vehicles in the rainy season and winter. House Rock Valley Road in Utah is impassable when wet.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  evidence_heading: Road Conditions
+- field: trailhead_access
+  value: The monument has no paved roads. Reach it via US 89 from Kanab, Utah, or via US 89 and 89A from Flagstaff. House Rock Valley Road (BLM 1065), though maintained, is dirt and can turn impassable when wet.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  evidence_heading: Getting Around
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 6
+    note: Groups are capped at six people, babies included; groups may not combine permits to exceed six, and violators may be cited.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: General Frequently Asked Questions
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs may come if listed on the permit and kept under control at all times; owners must pack out their waste.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  evidence_heading: REGULATIONS
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Under 43 CFR 6302.20, drones cannot launch or land anywhere in BLM wilderness.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  evidence_heading: REGULATIONS
+- field: rule_camping
+  value:
+    value: not_allowed
+    note: No overnight stays inside the Coyote Buttes permit area; permits cover day use only.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  evidence_heading: PERMITS
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Campfires are banned.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  evidence_heading: REGULATIONS
+- field: hazard
+  value:
+    type: heat
+    note: 'Plan for heat and sun: have each person drink at least a gallon (3.75 litres) of water a day and carry it with you, and cover up with a hat, sunglasses and light long sleeves.'
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  evidence_heading: Safety
+- field: hazard
+  value:
+    type: remoteness
+    note: Route markers are few, there is no drinking water, and other people are rarely around. Cell coverage is unreliable; bring map and compass or GPS, leave a trip plan, and carry enough to spend a night out.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  evidence_heading: Safety
+- field: hazard
+  value:
+    type: flash_flood
+    note: BLM lists flash floods among the monument's hazards, alongside rough unmarked roads, deep sand and extreme heat or cold.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  evidence_heading: Safety
+- field: hazard
+  value:
+    type: wildlife
+    note: Venomous reptiles and invertebrates live in the monument.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  evidence_heading: Safety
+- field: licensed_operator_list_url
+  value: https://www.blm.gov/documents/arizona/public-room/permits/vermilion-cliffs-srps
+  note: BLM list of outfitters and guides holding special recreation permits for Vermilion Cliffs National Monument (Arizona Strip list, June 2026 update).
+  source_url: https://www.blm.gov/documents/arizona/public-room/permits/vermilion-cliffs-srps
+  evidence_heading: Vermilion Cliffs Special Recreation Permits - Outfitters and Guides
+- field: access_mode
+  value: independent
+  note: Permits go to members of the public by lottery; authorized commercial guides must compete in the same lotteries rather than getting separate permits.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/coyote-buttes-north-advanced-lottery-wave-faqs
+  evidence_heading: General Frequently Asked Questions

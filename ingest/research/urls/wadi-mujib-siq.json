@@ -1,0 +1,31 @@
+{
+ "seed_no": 94,
+ "slug": "wadi-mujib-siq",
+ "name": "Wadi Mujib Siq",
+ "urls": [
+  {
+   "url": "https://en.visitjordan.com/Wheretogo/Wadi-Mujib",
+   "purpose": "hike page, season, tickets (Jordan Tourism Board)"
+  },
+  {
+   "url": "https://rscn.org.jo/",
+   "purpose": "operator home page"
+  },
+  {
+   "url": "https://international.visitjordan.com/wheretogo/wadi-mujib/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://international.visitjordan.com/wheretogo/wadi-rum/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://international.visitjordan.com/page/27/air-transport/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://international.visitjordan.com/page/17/entrance-fees/",
+   "purpose": "crawled"
+  }
+ ]
+}

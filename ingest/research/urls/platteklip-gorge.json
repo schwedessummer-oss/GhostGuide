@@ -1,0 +1,31 @@
+{
+ "seed_no": 73,
+ "slug": "platteklip-gorge",
+ "name": "Platteklip Gorge",
+ "urls": [
+  {
+   "url": "https://www.sanparks.org/parks/table_mountain",
+   "purpose": "official_url"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/south-africa",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/south-africa/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
+  }
+ ]
+}

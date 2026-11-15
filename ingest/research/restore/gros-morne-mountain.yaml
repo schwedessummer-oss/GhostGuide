@@ -1,0 +1,122 @@
+slug: gros-morne-mountain
+deleted_facts:
+- field: season_note
+  value: Best from 28 June to mid October, with the most settled weather and long days, though a few snow patches can linger early on. From mid October to 30 April the Summit Trail is not recommended because of ice, snow, storms, short days and later avalanche risk.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: When to go - seasonal hiking conditions
+- field: closure
+  value:
+    status: seasonal
+    note: The Summit Trail is closed to hikers each year from 1 May until 27 June to protect wildlife and plants; it reopens on 28 June. Hiking it while closed can lead to charges under the Canada National Parks Act.
+    as_of: 2026-11-15
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Spring trail closure (May 1 to June 27)
+- field: permit
+  value:
+    name: Primitive camping permit (Ferry Gulch)
+    kind: overnight
+    how_to_apply: A permit is needed to use the primitive campsite at Ferry Gulch; it is booked through Parks Canada's reservation service.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Primitive camping
+- field: rule_camping
+  value:
+    value: restricted
+    note: Only the primitive campsite at Ferry Gulch is mentioned for this hike, and it needs a camping permit.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Primitive camping
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs are not recommended on the Summit Trail because they disturb wildlife. If brought, they must be leashed under physical control at all times and owners must clean up.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Hiking with your dog
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones are prohibited in all national parks.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Regulations
+- field: hazard
+  value:
+    type: exposure
+    note: The Summit Trail crosses a steep scree slope and a rocky plateau with loose, uneven ground. Cliffs are unmarked and the route is hard to follow in cloud, so hikers should avoid it when the summit is clouded in; cairns mark the way across the top.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Trail safety - know before you go
+- field: hazard
+  value:
+    type: remoteness
+    note: Rescue can take many hours, and mobile coverage is unreliable across the park. Parks Canada gives an emergency line of 1-877-852-3100 and advises telling someone your plan and return time.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Trail safety - know before you go
+- field: hazard
+  value:
+    type: weather
+    note: The summit is often windy and much cooler than the base. By mid October frost, storms, ice and snow arrive; later in winter avalanche risk builds and the trail is hard to see.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: When to go - seasonal hiking conditions
+- field: hazard
+  value:
+    type: wildlife
+    note: Arctic hare, caribou and rock ptarmigan live on the summit. Hikers are told not to approach or feed wildlife and to give animals an escape route.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  evidence_heading: Protecting the mountain - trail etiquette
+- field: fee
+  value:
+    name: Daily admission
+    amount: 12.25
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Adults 18-64. A park pass is required to visit the park. Reduced winter rates apply 1 November to 15 May.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Daily
+- field: fee
+  value:
+    name: Daily admission
+    amount: 10.75
+    currency: CAD
+    unit: per_person
+    audience: senior
+    note: Seniors 65 and over.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Daily
+- field: fee
+  value:
+    name: Daily admission
+    amount: 0
+    currency: CAD
+    unit: per_person
+    audience: child
+    note: Free for youth 17 and under.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Daily
+- field: fee
+  value:
+    name: Daily admission - family/group
+    amount: 24.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Covers up to seven people arriving in one vehicle.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Daily
+- field: fee
+  value:
+    name: Daily admission - winter season
+    amount: 10.0
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Reduced service fees apply from 1 November to 15 May. Seniors 8.75, family/group 19.50, youth free.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Daily - Winter Season
+- field: fee
+  value:
+    name: Annual admission pass
+    amount: 60.5
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Seniors 51.50; also sold as a Discovery Pass (adult 83.50).
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  evidence_heading: ADMISSION - Annual

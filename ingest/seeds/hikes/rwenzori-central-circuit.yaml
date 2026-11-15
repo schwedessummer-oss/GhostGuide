@@ -1,0 +1,33 @@
+seed_no: 75
+slug: rwenzori-central-circuit
+name: Rwenzori Central Circuit
+region_group: africa
+countries:
+- UG
+subdivisions: []
+area:
+  name: Rwenzori Mountains National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Uganda Wildlife Authority
+  wikidata: null
+hike_wikidata: null
+official_url: https://ugandawildlife.org/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'Conditional: I did not read advisory text, so the use_fallback decision is not made; the FCDO page should be checked for Kasese/DRC border wording. US State Dept page returned 403. UWA Rwenzori page guessed URL 404; find via site search. Fallback entry added below as requested.'

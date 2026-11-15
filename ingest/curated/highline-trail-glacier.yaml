@@ -1,257 +1,272 @@
 slug: highline-trail-glacier
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.nps.gov/places/highline-trailhead.htm
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: distance_km
-    value: 19.0
-    basis: one_way
-    note: "The park gives 11.8 miles (19 km) one way from Logan Pass to The Loop. Side trips to Grinnell Glacier Overlook, Swiftcurrent Lookout or Granite Park Chalet change the distance."
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: elevation_gain_m
-    value: 728
-    note: "Page states a gain of 2,388 ft (728 m) and a loss of 4,773 ft (1,455 m) for the one-way route; 2,388 ft x 0.3048 rounds to 728 m."
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: route_type
-    value: point_to_point
-    note: "The park describes the hike as usually starting at Logan Pass and finishing at The Loop; turning back toward the Logan Pass lot after a set time is offered as a shorter option."
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: season_note
-    value: "Trails over high passes and along the Continental Divide are normally snow-free only by late July."
-    source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
-    source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Status
-
-  - field: permit_required
-    value: seasonal
-    note: "In the 2026 summer pilot (1 July to 7 September) Logan Pass parking was capped at three hours, and the park said hikers doing longer day hikes from Logan Pass, such as the Highline, needed a Logan Pass Shuttle ticket."
-    source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-    source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Timed Parking at Logan Pass
-
-  - field: permit
-    value:
-      name: Logan Pass Shuttle ticket (2026 pilot)
-      kind: other
-      how_to_apply: "Book on Recreation.gov (website or app) or by phone at 877-444-6777; each ticket is for one person aged 2 or over and is tied to a date, boarding time and boarding stop. Tickets are not sold in the park and cannot be transferred."
-      booking_window: "Part of the tickets released 60 days ahead on a rolling basis from 2 May 2026 at 8 a.m. MDT; the rest released daily at 7 p.m. MDT for the next day, from 30 June"
-      official_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
-      price: { amount: 1.00, currency: USD, unit: per_person, audience: all, note: "non-refundable Recreation.gov processing fee per ticket; under-2s ride on an adult's lap without a ticket" }
-      months: [7, 8, 9]
-    note: "Shuttles ran 1 July to 7 September 2026 from Apgar Visitor Center, Lake McDonald Lodge, St. Mary Visitor Center and Rising Sun Picnic Area. The park says the ticketed shuttle and timed parking do not continue after Labor Day 2026."
-    source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-    source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: How do I get tickets and where can I find more information about the Logan Pass Shuttle?
-
-  - field: permit
-    value:
-      name: Logan Pass parking permit (2026 timed parking)
-      kind: parking
-      how_to_apply: "Find a free space first, then take a free time-stamped permit from the kiosk in the Logan Pass lot and leave it on the dashboard; the stay is limited to three hours."
-      booking_window: "Taken from the kiosk on arrival, after parking"
-      official_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-      price: { amount: 0.00, currency: USD, unit: per_vehicle, audience: all, note: "free" }
-      months: [7, 8, 9]
-    note: "Applied 1 July to 7 September 2026, around the clock. The park says three hours suits shorter visits such as Hidden Lake Overlook and told Highline hikers to use the shuttle instead."
-    source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-    source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Before heading to Logan Pass, review the following details. Know what to expect and be prepared.
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers everyone in one private, non-commercial vehicle for seven days. Winter rate is $25.00 from 1 November to 30 April. The park takes no cash." }
-    source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
-    source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 20.00, currency: USD, unit: per_person, audience: all, note: "Valid seven days; children under 16 need no pass. Winter rate is $15.00 from 1 November to 30 April." }
-    source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
-    source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private motorcycles carrying up to 4 people. Winter rate is $20.00 from 1 November to 30 April." }
-    source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
-    source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Glacier annual pass", amount: 70.00, currency: USD, unit: per_vehicle, audience: resident, note: "For US citizens and residents; valid for 12 months counted from the month of entry, for the holder and passengers in one private vehicle, or the holder's immediate family when on foot or bicycle." }
-    source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
-    source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Annual Entrance - Park
-
-  - field: fee
-    value: { name: "Nonresident fee", amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Extra charge for each non-US resident aged 16 or older on top of the standard entrance fee; waived for holders of an Annual or America the Beautiful pass. People on commercial tours pay it too." }
-    source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
-    source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Nonresident Fees
-
-  - field: parking
-    value: "Logan Pass parking had a three-hour limit from 1 July to 7 September 2026 (free kiosk permit on the dashboard). Overnight parking there is only for backcountry permit holders and Granite Park Chalet guests."
-    source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-    source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Timed Parking at Logan Pass
-
-  - field: trailhead_access
-    value: "The trailhead sits on the opposite side of Going-to-the-Sun Road from the Continental Divide sign, next to the Logan Pass parking lot. The park warns that parking at one end and finishing at the other takes extra logistics."
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: trailhead_access
-    value: "Going-to-the-Sun Road is normally fully open no earlier than late June, and its alpine section usually shuts around the third Monday of October. Vehicles over 21 ft long or 8 ft wide are banned between Avalanche Creek and Rising Sun."
-    source_url: https://www.nps.gov/glac/planyourvisit/directions.htm
-    source_title: Directions, Transportation, & Road Conditions - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: When does Going-to-the-Sun Road open and close?
-
-  - field: trailhead_access
-    value: "No vehicle reservations were needed anywhere in the park in 2026, including Going-to-the-Sun Road; cars may be turned away at entrances for a while when areas get too crowded."
-    source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
-    source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Vehicle Reservations Not Required in 2026
-
-  - field: public_transport
-    value: "In 2026 a ticket-only express shuttle (1 Jul-7 Sep) ran to Logan Pass from Apgar, Lake McDonald Lodge, St. Mary and Rising Sun, with pick-ups at The Loop from late morning for Highline hikers. Last runs left Logan Pass at 7:30 pm (west) and 8 pm (east)."
-    source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
-    source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Loop Shuttle Stop
-
-  - field: public_transport
-    value: "Amtrak's Empire Builder calls at West Glacier all year (and seasonally at East Glacier Park); a paid, reservation-only summer shuttle by Glacier National Park Lodges links the West Glacier depot with Apgar and Lake McDonald Lodge."
-    source_url: https://www.nps.gov/glac/planyourvisit/directions.htm
-    source_title: Directions, Transportation, & Road Conditions - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: How do I get to Glacier National Park?
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets are barred from all trails and the backcountry; they may only go in developed areas such as roads, parking lots and frontcountry campgrounds, on a leash of 6 ft or less." }
-    source_url: https://www.nps.gov/glac/planyourvisit/pets.htm
-    source_title: Pets - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Pets
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "The park bans public use of drones and other unmanned aircraft, including take-off and landing." }
-    source_url: https://www.nps.gov/glac/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Unmanned Aircraft
-
-  - field: rule_camping
-    value: { value: restricted, note: "Any overnight camping in the park needs a wilderness use permit, booked in advance on Recreation.gov or as a walk-up permit at a permit office." }
-    source_url: https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm
-    source_title: How Do I Get a Wilderness Permit? - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Advance vs. Walk-up Permits
-
-  - field: rule_fires
-    value: { value: restricted, note: "Fires only in built fire rings or grates at campgrounds, picnic areas and the backcountry campgrounds that allow them; the Granite Park backcountry campground is on the no-fire list." }
-    source_url: https://www.nps.gov/glac/learn/management/compendium.htm
-    source_title: Superintendent's Compendium - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Section 2.13 (Fires)
-
-  - field: hazard
-    value: { type: exposure, note: "Long stretches of the trail are exposed, so a fall is more likely and bad weather hits harder than on sheltered trails." }
-    source_url: https://www.nps.gov/places/highline-trailhead.htm
-    source_title: Highline Trailhead (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Highline Trailhead
-
-  - field: hazard
-    value: { type: wildlife, note: "The park is home to nearly 1,000 grizzly and black bears. Stay at least 100 yards (91 m) from bears and wolves, carry bear spray within reach, make noise and hike in a group; the park has no record of an attack on a party of four or more." }
-    source_url: https://www.nps.gov/glac/planyourvisit/safety.htm
-    source_title: Have Fun and Stay Safe - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: What if I encounter a bear?
-
-  - field: hazard
-    value: { type: weather, note: "Mountain weather changes fast; at high spots such as Logan Pass expect colder and harsher conditions than lower in the park." }
-    source_url: https://www.nps.gov/glac/planyourvisit/conditions.htm
-    source_title: Current Conditions - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Weather
-
-  - field: hazard
-    value: { type: other, note: "Snow: in early season, steep snowfields and snow bridges linger at high elevations and an ice axe is often advised; from September, new snow can again cover routes." }
-    source_url: https://www.nps.gov/glac/planyourvisit/trailstatusreports.htm
-    source_title: Trail Status Reports - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Status Summary
-
-  - field: closure
-    value: { status: seasonal, note: "Seasonal road closure in force: Going-to-the-Sun Road is shut at Avalanche Creek (west side) and Jackson Glacier Overlook (east side); the open stretches can change with winter weather.", as_of: 2026-11-15 }
-    source_url: https://www.nps.gov/glac/park-alerts-glac.json
-    source_title: Going-to-the-Sun Road Seasonal Closure (Glacier National Park alerts feed shown on the Current Conditions page)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Going-to-the-Sun Road Seasonal Closure
-
-  - field: access_mode
-    value: independent
-    note: "The park expects hikers to plan their own trips; ranger-led hikes and a guide service (Glacier Guides) are listed for anyone who wants company."
-    source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
-    source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hiking the Trails
-verifier: null
+- field: official_url
+  value: https://www.nps.gov/places/highline-trailhead.htm
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: This is one end of the very popular Highline Trail
+  verified: true
+- field: distance_km
+  value: 19
+  basis: one_way
+  note: Listed as 11.8 miles one way, typically Logan Pass to The Loop.
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: Distance: 11.8 miles (19 km), one way
+  verified: true
+- field: elevation_gain_m
+  value: 728
+  note: Stated as 2,388 ft (728 m); offshoots change the totals.
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: Elevation gain: 2,388 ft (728 m)
+  verified: true
+- field: route_type
+  value: point_to_point
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: a hike that is most commonly started at Logan Pass and completed at The Loop
+  verified: true
+- field: season_note
+  value: High passes and Continental Divide sections are typically snow-free only by late July; lower trails clear earlier.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: Trails in the higher elevations – over mountain passes and on the Continental Divide – are typically snow free by late July.
+  verified: true
+- field: permit
+  value:
+    name: Logan Pass Shuttle ticket (2026 pilot)
+    kind: other
+    how_to_apply: Book a one-day, time-assigned ticket on Recreation.gov or by phone; none sold in the park.
+    price:
+      amount: 1
+      currency: USD
+      unit: per_person
+      audience: all
+      note: Recreation.gov processing fee
+    months:
+    - 7
+    - 8
+    - 9
+  source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
+  source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: How Do I Get a Shuttle Ticket?
+  evidence:
+    page: P5
+    quote: In 2026, a $1 Logan Pass Shuttle ticket is required for each person over the age of 2 years.
+  verified: true
+- field: permit
+  value:
+    name: Logan Pass timed-parking permit (2026)
+    kind: parking
+    how_to_apply: Park first, then take a free timestamped permit from the kiosk and display it on the dashboard.
+  source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
+  source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Before heading to Logan Pass, review the following details. Know what to expect and be prepared.
+  evidence:
+    page: P4
+    quote: visitors must then obtain a free, timestamped parking permit from the parking permit kiosk
+  verified: true
+- field: fee
+  value:
+    name: Logan Pass Shuttle ticket
+    amount: 1
+    currency: USD
+    unit: per_person
+    audience: all
+    valid_from: '2026-07-01'
+    valid_to: '2026-09-07'
+    note: Recreation.gov processing fee per ticket.
+  source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
+  source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: How Do I Get a Shuttle Ticket?
+  evidence:
+    page: P5
+    quote: In 2026, a $1 Logan Pass Shuttle ticket is required for each person over the age of 2 years.
+  verified: true
+- field: fee
+  value:
+    name: Non-US resident surcharge
+    amount: 100
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: For visitors 16 and over, unless entering with an annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
+  source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Get an entrance pass
+  evidence:
+    page: P6
+    quote: Non-US residents (16 and over) must pay an additional $100 per person fee unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: parking
+  value: Logan Pass private-vehicle parking is capped at three hours from 1 July to 7 September 2026, enforced round the clock.
+  source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
+  source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Before heading to Logan Pass, review the following details. Know what to expect and be prepared.
+  evidence:
+    page: P4
+    quote: The three-hour parking limit will be implemented July 1, 2026 through Labor Day, September 7, 2026 and will be enforced 24 hours each day.
+  verified: true
+- field: trailhead_access
+  value: The trailhead is across Going-to-the-Sun Road from the Continental Divide sign by the Logan Pass lot.
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: 'Trailhead: Across Going-to-the-Sun Road from the Continental Divide sign near the Logan Pass parking lot.'
+  verified: true
+- field: trailhead_access
+  value: No vehicle reservations are needed anywhere in the park in 2026.
+  source_url: https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm
+  source_title: Visiting Logan Pass in 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In 2026, Glacier National Park will pilot a ticketed-only, Logan Pass shuttle service with early morning express routes to Logan Pass. Additionally, the park will limit private vehicle parking to three hours or less at Logan Pass beginning July 1, 2026 through Labor Day on September 7, 2026. Vehicle reservations will not be required anywhere in the park in 2026.
+  evidence:
+    page: P4
+    quote: Vehicle reservations will not be required anywhere in the park in 2026.
+  verified: true
+- field: public_transport
+  value: From 1 July to 7 September 2026 a ticket-only express shuttle serves Logan Pass; boarding at Apgar, Lake McDonald Lodge, St. Mary and Rising Sun.
+  source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
+  source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Logan Pass Return Times Vary
+  evidence:
+    page: P5
+    quote: Shuttle service begins July 1, 2026 and continues through Labor Day, September 7, 2026.
+  verified: true
+- field: public_transport
+  value: Many Highline hikers finish at The Loop trailhead, which has ticketed-only shuttle pickups at set times.
+  source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
+  source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Logan Pass Return Times Vary
+  evidence:
+    page: P5
+    quote: Many visitors who hike Glacier's Highline Trail end their hike at The Loop Trailhead.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Backcountry camping needs a wilderness permit from the Apgar permit centre, St. Mary Visitor Center or a ranger station.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: must stop at the Apgar Wilderness Permit Center, St. Mary Visitor Center, or other ranger stations to obtain a wilderness camping permit.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Much of the trail is exposed, raising the risk of falls and of bad weather impact.
+  source_url: https://www.nps.gov/places/highline-trailhead.htm
+  source_title: Highline Trailhead (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Highline Trailhead
+  evidence:
+    page: P1
+    quote: Much of the Highline Trail is exposed, which means there is a higher risk of falling, and a higher risk of being negatively impacted by inclement weather.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Help can be hours or days away; no cell coverage outside Apgar and St. Mary.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: Help may be hours or days away. Prepare to care for yourself.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Carry bear spray and know how to use it.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: Carry bear spray and know how to use it.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Weather changes quickly; bring rain gear and warm layers.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: Pack rain gear and layers for warmth, as weather can change quickly.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Going-to-the-Sun Road is closed for the season at Avalanche Creek (west) and Jackson Glacier Overlook (east).
+    as_of: '2026-11-15'
+  source_url: https://www.nps.gov/glac/park-alerts-glac.json
+  source_title: (none)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P2
+    quote: Going-to-the-Sun Road is closed for the season at Avalanche Creek on the west side of the park. On the east side, the closure is located at Jackson Glacier Overlook.
+  verified: true
+mechanical_check:
+  verified: 20
+  failed: 0
+  reasons: {}

@@ -1,176 +1,252 @@
 slug: caminito-del-rey
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.caminitodelrey.info/en/
-    source_url: https://www.caminitodelrey.info/en/
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Prepare your visit
-  - field: distance_km
-    value: 8
-    basis: one_way
-    note: The route page gives 8 km for the full one-way walk, north to south.
-    source_url: https://www.caminitodelrey.info/en/your-visit/access-route
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Access and route - Details
-  - field: duration
-    value: { min_hours: 3, max_hours: 4 }
-    note: Whole visit including the access trails and the walkways.
-    source_url: https://www.caminitodelrey.info/en/your-visit/access-route
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Access and route - Details
-  - field: route_type
-    value: point_to_point
-    note: One-way walk running north to south; a shuttle bus links the two ends.
-    source_url: https://www.caminitodelrey.info/en/your-visit/access-route
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Access and route - Details
-  - field: permit_required
-    value: "yes"
-    note: Tickets must be bought through the advance reservation system; the rules also mention a ticket office at the north access, subject to availability.
-    source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Compulsory rules and regulations
-  - field: permit
-    value:
-      name: Caminito del Rey entry ticket (timed)
-      kind: timed_entry
-      how_to_apply: Reserve a date and time on the official platform; arrive at the access area at least 30 minutes before the time on your reservation. Guided visits can be booked on the same site.
-      official_url: https://www.caminitodelrey.info/en/tickets/buy
-      price: { amount: 10, currency: EUR, unit: per_person, audience: all, note: "general admission; limit of 10 tickets per purchase" }
-    source_url: https://www.caminitodelrey.info/en/
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Tickets
-  - field: fee
-    value: { name: General admission, amount: 10, currency: EUR, unit: per_person, audience: all, note: "self-guided; limit of 10 tickets per purchase" }
-    source_url: https://www.caminitodelrey.info/en/
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Tickets
-  - field: fee
-    value: { name: Official guided visit, amount: 18, currency: EUR, unit: per_person, audience: all, note: "groups of up to 30 with a certified guide; Spanish and English" }
-    source_url: https://www.caminitodelrey.info/en/
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Tickets
-  - field: fee
-    value: { name: Shuttle bus between the two ends, amount: 2.5, currency: EUR, unit: per_person, audience: all, note: "unlimited trips on the day of the visit; not included in the ticket; bus not run by Caminito del Rey; pay the driver in cash if not bought online" }
-    source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Parking and shuttle bus
-  - field: fee
-    value: { name: Visitors' Reception Centre car park, amount: 2, currency: EUR, unit: per_day, audience: all }
-    source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Parking and shuttle bus
-  - field: parking
-    value: The Visitors' Reception Centre car park costs 2 EUR a day and can be reserved while buying tickets or paid on arrival if spaces remain. Arrive about an hour early.
-    source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Parking and shuttle bus
-  - field: trailhead_access
-    value: Vehicles cannot reach the start of the walkways; from the reception centre or the shuttle stop you still walk to the north entrance gate, about 25 minutes by the shortest route.
-    source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Compulsory rules and regulations
-  - field: public_transport
-    value: A shuttle bus (not run by the site managers) links the two ends, about 15-20 minutes, roughly 07:40 to 19:00. Regional RENFE trains stop at El Chorro-Caminito del Rey station; check RENFE times.
-    source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Parking and shuttle bus
-  - field: rule_dogs
-    value: { value: not_allowed, note: "No animals at all, guide dogs included, because of the narrow walkways." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/pets
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Pets
-  - field: rule_drones
-    value: { value: not_allowed, note: "Drones are banned unless the regional environment ministry authorises them." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibitions and grounds for expulsion
-  - field: rule_fires
-    value: { value: not_allowed, note: "Lighting fires and smoking of any substance are prohibited." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibitions and grounds for expulsion
-  - field: rule_group_size
-    value: { value: restricted, max_group: 55, note: "Organised groups may have up to 55 people plus one responsible person or accredited guide." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Specific provisions for groups
-  - field: hazard
-    value: { type: exposure, note: "High, narrow boardwalks along the gorge and a hanging bridge 105 m up; many visitors feel dizzy. Rules: no children under 8, sturdy closed footwear, keep right, no large backpacks." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/faq
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Frequently asked questions
-  - field: hazard
-    value: { type: weather, note: "Management can close the path in rain or strong wind; light rain is allowed but umbrellas are banned, so a raincoat is needed. Closure news is posted on the website, email and Telegram." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/faq
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Frequently asked questions
-  - field: season_note
-    value: Open Tuesday to Sunday except 24, 25 and 31 December and 1 January, plus some special Mondays. Entry hours start at 09:00 and run to 14:50 or 17:20 depending on season.
-    source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Compulsory rules and regulations
-  - field: nearest_town
-    value: { name: Ardales, note: "North access is in Ardales municipality; the walk ends at El Chorro in Álora." }
-    source_url: https://www.caminitodelrey.info/en/your-visit/access-route
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Access and route - Details
-  - field: access_mode
-    value: independent
-    note: Self-guided entry is sold; official guided visits are an option.
-    source_url: https://www.caminitodelrey.info/en/
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Tickets
-  - field: closure
-    value: { status: open, note: "Site open Tuesday to Sunday; closed Mondays and on 24, 25, 31 December and 1 January. The administration may close or limit visits for safety, repairs or weather.", as_of: 2026-11-15 }
-    source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
-    source_title: Plataforma Oficial de reservas Caminito del Rey
-    publisher: Diputación de Málaga (official reservation platform)
-    checked_at: 2026-11-15
-    evidence_heading: Compulsory rules and regulations
+- field: official_url
+  value: https://www.caminitodelrey.info/en/
+  note: Official reservations and visitor information site.
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: The entrance to the Caminito del Rey
+  evidence:
+    page: P1
+    quote: You can reserve and purchase your ticket through this website
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Entry needs a pre-booked ticket.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Compulsory rules and regulations
+  evidence:
+    page: P2
+    quote: Tickets to visit the Caminito del Rey must be obtained through the prior reservation system.
+  verified: true
+- field: permit
+  value:
+    name: Caminito del Rey timed ticket
+    kind: timed_entry
+    how_to_apply: Choose date, time and ticket type on the official booking site; tickets cannot be bought at the reception centre.
+    official_url: https://www.caminitodelrey.info/en/tickets/buy
+  note: Ticket is linked to a chosen time slot.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Compulsory rules and regulations
+  evidence:
+    page: P2
+    quote: Visitors must arrive at the chosen access area at least 30 minutes before the time indicated on the reservation receipt
+  verified: true
+- field: fee
+  value:
+    name: General admission
+    amount: 10
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: Self-guided visit.
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: General admission
+  evidence:
+    page: P1
+    quote: 10€
+  verified: true
+- field: fee
+  value:
+    name: Official guided visit
+    amount: 18
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: Guided visit in Spanish or English.
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Official guided visit
+  evidence:
+    page: P1
+    quote: 18€
+  verified: true
+- field: fee
+  value:
+    name: Shuttle bus ticket
+    amount: 2.5
+    currency: EUR
+    unit: per_person
+    audience: all
+    note: Not included in the entry ticket; cash only if paid to the driver.
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Parking and shuttle bus
+  evidence:
+    page: P5
+    quote: The cost is 2.50 euros/pax
+  verified: true
+- field: fee
+  value:
+    name: Reception centre parking
+    amount: 2
+    currency: EUR
+    unit: per_day
+    audience: all
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: The entrance to the Caminito del Rey
+  evidence:
+    page: P1
+    quote: You can park in Visitors' Reception Centre Parking (2 euros/day).
+  verified: true
+- field: parking
+  value: A paid car park at the Visitors' Reception Centre can be used; spaces can be reserved with the ticket or taken on arrival if free.
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Parking and shuttle bus
+  evidence:
+    page: P5
+    quote: You can reserve and purchase your space through our website during the ticket purchase process. or directly upon arrival (depending on availability).
+  verified: true
+- field: trailhead_access
+  value: The Visitors' Reception Centre is at Puerto de las Atalayas, well under an hour by road from Malaga; the walk starts at the north entrance.
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: The entrance to the Caminito del Rey
+  evidence:
+    page: P1
+    quote: The Visitors' Reception Centre is situated at el Puerto de las Atalayas, 57.7km away from Málaga
+  verified: true
+- field: trailhead_access
+  value: From El Kiosko restaurant by the reservoir, the entrance gate is about a 25-minute walk; arrive 30 minutes before the booked time.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Compulsory rules and regulations
+  evidence:
+    page: P2
+    quote: Visitors must be at the entrance gate 30 minutes in advance, which is located a 25-minute walk via the shortest route from El Kiosko restaurant
+  verified: true
+- field: public_transport
+  value: A shuttle bus (not run by the Caminito) links the car park and the El Chorro end, running about 07:40 to 19:00 and taking 15-20 minutes.
+  source_url: https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Parking and shuttle bus
+  evidence:
+    page: P5
+    quote: The bus service schedule is from 07:40 am to 07:00 pm. The journey takes approximately 15-20 minutes
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: One-way linear walk running from north to south.
+  source_url: https://www.caminitodelrey.info/en/your-visit/access-route
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Access and route
+  evidence:
+    page: P3
+    quote: Linear route, one way, desdending from North to South
+  verified: true
+- field: duration
+  value:
+    min_hours: 3
+    max_hours: 4
+  note: Duration listed with the route information; not clear whether access paths are included.
+  source_url: https://www.caminitodelrey.info/en/your-visit/access-route
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Access and route
+  evidence:
+    page: P3
+    quote: 3-4 hours
+  verified: true
+- field: best_months
+  value:
+  - 3
+  - 4
+  note: Recommended for the flora and birdlife.
+  source_url: https://www.caminitodelrey.info/en/your-visit/access-route
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Access 2. Pedestrian tunnel and Gaitanejo´s track (1.5km. route)
+  evidence:
+    page: P3
+    quote: visiting is recommended during the months of March and April
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets cannot join the tour because the facility cannot keep them safe.
+  source_url: https://www.caminitodelrey.info/en/your-visit/pets
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence:
+    page: P6
+    quote: it is not possible to take the tour accompanied by pets
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 55
+    note: Organised groups may have up to 55 people plus a leader or accredited guide.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Specific provisions for groups
+  evidence:
+    page: P2
+    quote: the maximum authorized number of people per group is 55, plus one person responsible or a duly accredited guide
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: The route uses high, narrow boardwalks along a gorge; visitors must keep right and take great care.
+  source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Prohibitions and grounds for expulsion
+  evidence:
+    page: P7
+    quote: the visit is a protected natural setting with high and narrow paths
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Closed on Mondays and on four fixed holidays; the managers may also close or limit visits for safety, repairs or weather.
+    as_of: '2026-11-15'
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: Caminito del Rey official reservations platform
+  checked_at: '2026-11-15'
+  evidence_heading: Compulsory rules and regulations
+  evidence:
+    page: P2
+    quote: The site will remain open from Tuesday to Sunday, except on December 24, 25, and 31, and January 1
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 18
+  failed: 0
+  reasons: {}

@@ -1,0 +1,174 @@
+slug: nahuel-huapi-traverse
+deleted_facts:
+- field: permit_required
+  value: 'yes'
+  note: Filling in the trekking registration is mandatory before walking these trails.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  evidence_heading: Preparando la caminata
+- field: permit
+  value:
+    name: Trekking registration (Registro de Trekking)
+    kind: other
+    how_to_apply: Complete the park's trekking registration before setting out, and then follow the itinerary you declared. The park publishes registration forms for trekking, climbing and ski touring.
+    official_url: https://nahuelhuapi.gov.ar/registros-trekking-escalada-esqui-travesia/
+    price:
+      amount: 0
+      currency: ARS
+      unit: per_trip
+      audience: all
+      note: described as free
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  evidence_heading: Preparando la caminata
+- field: permit
+  value:
+    name: Refugio Frey overnight reservation
+    kind: overnight
+    how_to_apply: Book ahead through the refugio's own booking site if you plan to stay the night at Frey.
+    official_url: https://www.refugiofreybariloche.com
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  evidence_heading: Descripción
+- field: permit
+  value:
+    name: Refugio San Martín (Laguna Jakob) overnight reservation
+    kind: overnight
+    how_to_apply: The refugio and its campsite both need a prior reservation, made through the refugio's own site.
+    official_url: https://www.refugiojakob.com.ar
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  evidence_heading: Descripción
+- field: permit
+  value:
+    name: Refugio Italia (Laguna Negra) overnight reservation
+    kind: overnight
+    how_to_apply: The refugio and its campsite both need a prior reservation, made through the refugio's own site.
+    official_url: https://refugiolagunanegra.com/
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  evidence_heading: Descripción
+- field: fee
+  value:
+    name: Nahuel Huapi park access, general rate
+    amount: 35000
+    currency: ARS
+    unit: per_person
+    audience: non_resident
+    note: Listed as 'Tarifa general'; valid for the first day, with 50% off a second day. The page says charge points are at the Mascardi access (Tronador road), Puerto Pañuelo and the Quetrihué peninsula; it does not say whether these trails pass one.
+  source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
+  evidence_heading: Tarifas de ingreso y compra de tickets en línea
+- field: fee
+  value:
+    name: Nahuel Huapi park access, national residents
+    amount: 15000
+    currency: ARS
+    unit: per_person
+    audience: resident
+    note: Listed as 'Residentes nacionales'.
+  source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
+  evidence_heading: Tarifas de ingreso y compra de tickets en línea
+- field: fee
+  value:
+    name: Nahuel Huapi park access, students
+    amount: 12000
+    currency: ARS
+    unit: per_person
+    audience: student
+    note: Listed as 'Estudiantes'.
+  source_url: https://nahuelhuapi.gov.ar/tarifas-de-ingreso/
+  evidence_heading: Tarifas de ingreso y compra de tickets en línea
+- field: best_months
+  value:
+  - 12
+  - 1
+  - 2
+  - 3
+  note: The Frey and Jakob pages give December to March; the Laguna Negra page gives December to April.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  evidence_heading: ¿Cuándo realizar esta visita?
+- field: season_note
+  value: Laguna Negra leg is recommended from December to April; the Jakob and Frey legs from December to March.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  evidence_heading: ¿Cuándo realizar esta visita?
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are not to be brought on mountain trails or into the park.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  evidence_heading: Recomendaciones
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drone use is prohibited.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  evidence_heading: Recomendaciones
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No fires on mountain trails, only stoves. On the Laguna Negra and Jakob approach trails making fire or sleeping on the trail is strictly forbidden.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  evidence_heading: Descripción
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping is allowed only in designated places marked by signs.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  evidence_heading: Recomendaciones
+- field: hazard
+  value:
+    type: remoteness
+    note: Mobile signal is missing in many areas, so APN advises telling family or friends beforehand and saving the emergency numbers; it also advises not hiking alone.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  evidence_heading: Preparando la caminata
+- field: hazard
+  value:
+    type: other
+    note: The Frey trail has uneven ground with rocks and roots, and its last 2 km are steep, rocky and stepped with strong sun exposure.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  evidence_heading: Descripción
+- field: hazard
+  value:
+    type: weather
+    note: The alerts page lists storm warnings, including a yellow alert for the afternoon of Sunday 15 November.
+  source_url: https://nahuelhuapi.gov.ar/alertas/
+  evidence_heading: Alertas
+- field: hazard
+  value:
+    type: other
+    note: Falling trees and branches are frequent in forested areas.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  evidence_heading: Recomendaciones
+- field: trailhead_access
+  value: 'Frey from Lago Gutiérrez: 10 km, about 900 m climb, 4-5 h one way, starting by the ranger station 2 km beyond Villa Los Coihues. Frey from Villa Catedral: 9 km, 700 m, 4-5 h one way.'
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  evidence_heading: Distancia / Desnivel
+- field: trailhead_access
+  value: 'Laguna Negra leg starts at the Goye stream bridge in Colonia Suiza (gravel entrance, not the paved one): 11 km, about 800 m climb, 5-6 h one way, usually done over 2 days.'
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  evidence_heading: ¿Cómo llegar?
+- field: trailhead_access
+  value: 'Jakob leg starts at Tambo de Báez (a Mapuche community site where parking costs a fee; gate may be shut, close it again): 14 km, 727 m climb, 5-6 h one way, usually 2 days.'
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  evidence_heading: ¿Cómo llegar?
+- field: public_transport
+  value: 'Frey from Lago Gutiérrez: Bariloche bus line 50 to Villa Los Coihues then a 2 km walk. Frey from Catedral: line 55 to the last stop at Cerro Catedral.'
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  evidence_heading: ¿Cómo llegar?
+- field: public_transport
+  value: 'Laguna Negra leg: Bariloche line 10 to the Goye bridge in Colonia Suiza, or line 20 to km 18 then line 13. Pay with a SUBE card.'
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  evidence_heading: ¿Cómo llegar?
+- field: public_transport
+  value: 'Jakob leg: Bariloche line 20 to Puerto Moreno (km 10.5 of Av. Bustillo), then about 5.5 km on foot by the old Catedral road and Colonia Suiza fork to Tambo de Báez.'
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  evidence_heading: ¿Cómo llegar?
+- field: nearest_town
+  value:
+    name: San Carlos de Bariloche
+    note: The park's headquarters are here and the Frey
+    Laguna Negra and Jakob access routes start from Bariloche bus lines.: null
+  source_url: https://nahuelhuapi.gov.ar/registros-trekking-escalada-esqui-travesia/
+  evidence_heading: Intendencia de Parque Nacional Nahuel Huapi
+- field: closure
+  value:
+    status: seasonal
+    note: Official pages give December to March (April for Laguna Negra) as the hiking window. A yellow storm alert is listed for Sunday 15 November; no trail closure is listed.
+    as_of: 2026-11-15
+  source_url: https://nahuelhuapi.gov.ar/alertas/
+  evidence_heading: Alertas

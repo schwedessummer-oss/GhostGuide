@@ -1,0 +1,33 @@
+seed_no: 56
+slug: yr-wyddfa-pyg-track
+name: Yr Wyddfa via Pyg Track
+region_group: europe
+countries:
+- GB
+subdivisions: []
+area:
+  name: Eryri National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Eryri National Park Authority
+  wikidata: null
+hike_wikidata: null
+official_url: https://eryri.gov.wales/visit/yr-wyddfa/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Pen-y-Pass booking site penypass.wales errored; booking page not verified.

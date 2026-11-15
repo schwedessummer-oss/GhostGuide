@@ -1,0 +1,43 @@
+{
+ "seed_no": 99,
+ "slug": "abel-tasman-coast-track",
+ "name": "Abel Tasman Coast Track",
+ "urls": [
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/",
+   "purpose": "hike page (22k chars, likely includes bookings, tides, alerts)"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park",
+   "purpose": "park page"
+  },
+  {
+   "url": "https://www.doc.govt.nz/great-walks",
+   "purpose": "Great Walks overview, booking and fees"
+  },
+  {
+   "url": "https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-track-guide.pdf",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-coast-track-trip-sheet.pdf",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/abel-tasman-coast-track--average-temperatures/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bookings.doc.govt.nz/Web/Default.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/what-to-take/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/tide-tables/",
+   "purpose": "crawled"
+  }
+ ]
+}

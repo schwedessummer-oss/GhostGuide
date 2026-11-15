@@ -1,0 +1,33 @@
+seed_no: 54
+slug: west-highland-way
+name: West Highland Way
+region_group: europe
+countries:
+- GB
+subdivisions: []
+area:
+  name: Scotland
+  wikidata: null
+  official_url: null
+agency:
+  name: Loch Lomond & The Trossachs National Park / Councils
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.westhighlandway.org/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Camping pages titles were non-descriptive in head output but status 200; the zones PDF has 5136 chars.

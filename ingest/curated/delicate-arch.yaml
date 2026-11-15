@@ -1,198 +1,201 @@
 slug: delicate-arch
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_title: Delicate Arch - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch
-
-  - field: distance_km
-    value: 4.8
-    basis: round_trip
-    note: "The park gives 3 miles (4.8 km) round trip from Wolfe Ranch. Starting from the Delicate Arch Viewpoint lot when the trailhead lot is full adds a 1-mile road walk each way, for 5 miles (8 km) in total."
-    source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_title: Delicate Arch - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch
-
-  - field: elevation_gain_m
-    value: 146
-    note: "Page states a climb of 480 feet (146 m); 480 ft x 0.3048 rounds to 146 m. The trail rises steadily all the way to the arch."
-    source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_title: Delicate Arch - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch
-
-  - field: season_note
-    value: "Open all year. March to October is the busy season; spring and fall are mild, summer days often top 100 F (37 C), and winter highs average 30-50 F (-1 to 10 C)."
-    source_url: https://www.nps.gov/arch/planyourvisit/hours.htm
-    source_title: Operating Hours & Seasons - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Operating Hours & Seasons
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers one private, non-commercial vehicle with up to 15 seats and everyone in it. Card only (credit/debit) at the Arches Entrance Station." }
-    source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
-    source_title: Fees & Passes - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 25.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private motorcycles carrying up to 4 people in total." }
-    source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
-    source_title: Fees & Passes - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (no vehicle)", amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For one person entering on foot or by bicycle without a car; youth 15 and under enter free." }
-    source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
-    source_title: Fees & Passes - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Southeast Utah parks annual pass", amount: 55.00, currency: USD, unit: per_vehicle, audience: resident, note: "US residents only. Valid for a year, running through the month it was bought, for one private vehicle or the pass holder at Arches, Canyonlands, Natural Bridges and Hovenweep." }
-    source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
-    source_title: Fees & Passes - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Annual Entrance - Park
-
-  - field: parking
-    value: "The trail begins at the Wolfe Ranch lot, which fills on very busy days. Overflow parking is at the Delicate Arch Viewpoint lot, a 1-mile road walk from the trailhead. Sunset draws big crowds."
-    source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_title: Delicate Arch - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch
-
-  - field: parking
-    value: "Wolfe Ranch Parking Lot lists 157 spaces and 28 oversize spaces, with a few oversize spots on the far side of the road. Toilets are available year-round, but the trailhead has no drinking water."
-    source_url: https://www.nps.gov/arch/planyourvisit/parking.htm
-    source_title: Parking - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Wolfe Ranch Parking Lot
-
-  - field: trailhead_access
-    value: "Wolfe Ranch is 13 miles (21 km) along the park road from the entrance."
-    source_url: https://www.nps.gov/arch/planyourvisit/parking.htm
-    source_title: Parking - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Wolfe Ranch Parking Lot
-
-  - field: trailhead_access
-    value: "For 2026 the park dropped its timed-entry reservation system; visitors may enter any time during operating hours with a valid pass. When lots fill, staff may briefly close access to specific areas, and drivers must not wait on roads for spaces."
-    source_url: https://www.nps.gov/arch/learn/news/news02182026.htm
-    source_title: Arches National Park Lifts Entry Reservation Requirement for 2026 - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Arches National Park Lifts Entry Reservation Requirement for 2026
-
-  - field: trailhead_access
-    value: "In peak season (spring to fall, about 8 am-3 pm) the entrance line can be long and full lots can lead to entry delays of 3-5 hours; summer trailhead lots often fill by 7:30 am. Arriving early or late in the day is advised."
-    source_url: https://www.nps.gov/arch/planyourvisit/traffic.htm
-    source_title: Traffic & Travel Tips - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Traffic & Travel Tips
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets may not go on any trail or off-trail, even in a carrier, nor at overlooks; leashed pets are allowed only on roads, in parking areas, campgrounds and picnic areas." }
-    source_url: https://www.nps.gov/arch/planyourvisit/pets.htm
-    source_title: Pets - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: "Pets are not allowed:"
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Launching, landing or flying remotely piloted aircraft in the park is banned unless the superintendent has approved it in writing." }
-    source_url: https://www.nps.gov/arch/learn/management/compendium.htm
-    source_title: Superintendent's Compendium - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hang Gliders, BASE Jumping, and Remotely Piloted Aerial Vehicles
-
-  - field: rule_camping
-    value: { value: restricted, note: "Overnight backcountry stays need a permit from the NPS office in Moab and are limited to a few designated sites in the Courthouse Wash and Devils Garden zones (7 permits a night in total, up to 7 people each)." }
-    source_url: https://www.nps.gov/arch/learn/management/compendium.htm
-    source_title: Superintendent's Compendium - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Backcountry Areas
-
-  - field: rule_fires
-    value: { value: restricted, note: "Wood and charcoal fires on the ground are banned throughout the park; fires are allowed only in the fire pits provided at Devils Garden Campground and at picnic areas set up for them. Stricter fire restrictions may apply at times." }
-    source_url: https://www.nps.gov/arch/learn/management/compendium.htm
-    source_title: Superintendent's Compendium - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: 2.13 Fires
-
-  - field: hazard
-    value: { type: heat, note: "July and August often pass 100 F (38 C) with little shade. Take at least 2-3 litres of water per person on frontcountry hikes, eat salty snacks and avoid hiking from 10 am to 5 pm." }
-    source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
-    source_title: Safety - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Beat the Heat and Stay Hydrated
-
-  - field: hazard
-    value: { type: lightning, note: "Summer monsoon storms bring lightning, hail, wind and heavy rain; only a car or building is safe shelter. If you hear thunder, shelter and wait 30 minutes after the last thunder." }
-    source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
-    source_title: Safety - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Watch the Weather
-
-  - field: hazard
-    value: { type: cold, note: "After snow, trails and roads can be icy and drifting snow may hide trail markers; wear traction aids, use trekking poles and ask at the visitor center about trail conditions." }
-    source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
-    source_title: Safety - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Winter Safety
-
-  - field: hazard
-    value: { type: exposure, note: "The trail has a steep climb over bedrock, rock steps and a ledge with a drop-off; the steepest grade reaches 80% and nearly half the route is steeper than 8%." }
-    source_url: https://www.nps.gov/arch/planyourvisit/physical-mobility.htm
-    source_title: Physical / Mobility Accessibility - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch Trail
-
-  - field: hazard
-    value: { type: other, note: "Rangers often rescue hikers who misjudged this trail; weigh the heat or ice and your own fitness before you set out." }
-    source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
-    source_title: Delicate Arch - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Delicate Arch
-
-  - field: nearest_town
-    value: { name: Moab, note: "The park has few goods and services; Moab is about ten minutes away." }
-    source_url: https://www.nps.gov/arch/planyourvisit/basicinfo.htm
-    source_title: Basic Information - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Basic Information
-
-  - field: closure
-    value: { status: open, note: "Park generally open around the clock all year; on very busy days entries may be held for a few hours once the line reaches the highway or parking lots fill.", as_of: 2026-11-15 }
-    source_url: https://www.nps.gov/arch/planyourvisit/conditions.htm
-    source_title: Alerts & Conditions - Arches National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Arches National Park is Open
+- field: official_url
+  value: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: Delicate Arch
+  verified: true
+- field: distance_km
+  value: 4.8
+  basis: round_trip
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: The trail to see Delicate Arch up close and personal is 3 miles (4.8 km) roundtrip and climbs 480 feet (146m).
+  verified: true
+- field: elevation_gain_m
+  value: 146
+  note: Metric figure as printed by NPS (480 ft).
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: The trail to see Delicate Arch up close and personal is 3 miles (4.8 km) roundtrip and climbs 480 feet (146m).
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Described as a roundtrip hike to the arch and back.
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: The trail to see Delicate Arch up close and personal is 3 miles (4.8 km) roundtrip and climbs 480 feet (146m).
+  verified: true
+- field: season_note
+  value: Park is open year-round; March to October is busiest, summer afternoons often exceed 37 C, winter is cold and quiet.
+  source_url: https://www.nps.gov/arch/planyourvisit/hours.htm
+  source_title: Operating Hours & Seasons - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Operating Hours & Seasons
+  evidence:
+    page: P3
+    quote: The park is busiest March through October. Temperatures in spring and fall are comfortable. In summer, daytime temperatures often exceed 100°F (37°C).
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Covers one private non-commercial vehicle and its occupants.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  source_title: Fees & Passes - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P4
+    quote: $30.00
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 25.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid 7 days.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  source_title: Fees & Passes - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P4
+    quote: $25.00
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (no vehicle)
+    amount: 15.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For walkers and cyclists aged 16 and over; under 16 free.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  source_title: Fees & Passes - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P4
+    quote: $15.00
+  verified: true
+- field: parking
+  value: Wolfe Ranch trailhead lot fills on busy days; the Delicate Arch Viewpoint lot is overflow, adding a 1.6 km road walk each way.
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: There is additional parking at the Delicate Arch Viewpoint parking lot. If you walk from the viewpoint, you will have to hike 1 mile (1.6 km) along the road to the trailhead.
+  verified: true
+- field: trailhead_access
+  value: Wolfe Ranch trailhead is about 21 km along the park road from the entrance.
+  source_url: https://www.nps.gov/arch/planyourvisit/parking.htm
+  source_title: Parking - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Wolfe Ranch
+  evidence:
+    page: P5
+    quote: Wolfe Ranch is located 13 miles (21 km) from the park entrance.
+  verified: true
+- field: trailhead_access
+  value: In 2026 no timed-entry reservation is needed; a valid entrance pass is still required.
+  source_url: https://www.nps.gov/arch/learn/news/news02182026.htm
+  source_title: Arches National Park Lifts Entry Reservation Requirement for 2026 - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Arches National Park Lifts Entry Reservation Requirement for 2026
+  evidence:
+    page: P6
+    quote: Arches National Park today announced it will not require advanced timed-entry reservations this year. Visitors may enter the park at any time during operating hours.
+  verified: true
+- field: trailhead_access
+  value: Long entrance lines and full lots can delay entry for several hours in peak season.
+  source_url: https://www.nps.gov/arch/planyourvisit/traffic.htm
+  source_title: Traffic & Travel Tips - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Traffic & Travel Tips
+  evidence:
+    page: P7
+    quote: Periods of restricted access can last 3-5 hours.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Summer daytime temperatures often exceed 37 C; rangers frequently rescue hikers who underestimate the trail.
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  source_title: Delicate Arch - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Delicate Arch
+  evidence:
+    page: P1
+    quote: Rangers frequently rescue people who underestimated the trail's difficulty.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Winters are cold with occasional snow or ice.
+  source_url: https://www.nps.gov/arch/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Alerts & Conditions
+  evidence:
+    page: P2
+    quote: Winters can be cold, with occasional snowy or icy conditions.
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: Park normally open around the clock all year; entry may be briefly delayed when lots are full.
+    as_of: '2026-11-15'
+  source_url: https://www.nps.gov/arch/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Arches National Park is Open
+  evidence:
+    page: P2
+    quote: Arches National Park is generally open 24 hours a day, year-round.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 15
+  failed: 0
+  reasons: {}

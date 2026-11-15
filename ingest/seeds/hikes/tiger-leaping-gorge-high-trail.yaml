@@ -1,0 +1,33 @@
+seed_no: 87
+slug: tiger-leaping-gorge-high-trail
+name: Tiger Leaping Gorge High Trail
+region_group: asia-middle-east
+countries:
+- CN
+subdivisions: []
+area:
+  name: Yunnan
+  wikidata: null
+  official_url: null
+agency:
+  name: Tiger Leaping Gorge scenic area
+  wikidata: null
+hike_wikidata: null
+official_url: ''
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: No official site found; tigerleapinggorge.com is a spam/casino site. Needs a search.

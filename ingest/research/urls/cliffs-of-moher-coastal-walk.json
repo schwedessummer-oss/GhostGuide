@@ -1,0 +1,43 @@
+{
+ "seed_no": 53,
+ "slug": "cliffs-of-moher-coastal-walk",
+ "name": "Cliffs of Moher Coastal Walk",
+ "urls": [
+  {
+   "url": "https://www.cliffsofmoher.ie/",
+   "purpose": "visitor experience home, tickets"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/faqs/",
+   "purpose": "parking, fees, rules, coastal walk access"
+  },
+  {
+   "url": "https://www.clarecoco.ie/",
+   "purpose": "council home, alerts"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/en/your-visit/visiting-the-cliffs/parking/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/faq/is-the-site-wheelchair-accessible/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/en/about-the-cliffs-of-moher/faq/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.cliffsofmoher.ie/en/your-visit/visiting-the-cliffs/location-and-directions/",
+   "purpose": "crawled"
+  }
+ ]
+}

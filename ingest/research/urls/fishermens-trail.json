@@ -1,0 +1,39 @@
+{
+ "seed_no": 65,
+ "slug": "fishermens-trail",
+ "name": "Fishermen's Trail",
+ "urls": [
+  {
+   "url": "https://rotavicentina.com/en/trails/fishermens-trail/",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://rotavicentina.com/en/",
+   "purpose": "home, practical info, rules, conditions"
+  },
+  {
+   "url": "https://rotavicentina.com/en/fishermens-trail/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rotavicentina.com/en/walking/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rotavicentina.com/en/long-distance-mtb-trail/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rotavicentina.com/en/book-with-us/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rotavicentina.com/en/transports/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rotavicentina.com/en/terms-conditions/",
+   "purpose": "crawled"
+  }
+ ]
+}

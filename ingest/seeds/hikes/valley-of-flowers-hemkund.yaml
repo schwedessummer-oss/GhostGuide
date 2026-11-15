@@ -1,0 +1,33 @@
+seed_no: 92
+slug: valley-of-flowers-hemkund
+name: Valley of Flowers (+ Hemkund)
+region_group: asia-middle-east
+countries:
+- IN
+subdivisions: []
+area:
+  name: Uttarakhand
+  wikidata: null
+  official_url: null
+agency:
+  name: Uttarakhand Forest Department
+  wikidata: null
+hike_wikidata: null
+official_url: https://whc.unesco.org/en/list/335/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'Candidates from search but not verifiable via fetch: forest.uk.gov.in/pages/view/159-valley-of-flowers-national-park- (fetch error; has Online Booking link) and uttarakhandtourism.gov.in/destination/valley-of-flowers (200 but only 51 chars, JS page). uttarakhandforest.org is hijacked spam, avoid. Recommend the forest.uk.gov.in page after manual check.'

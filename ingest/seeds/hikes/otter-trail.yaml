@@ -1,0 +1,33 @@
+seed_no: 71
+slug: otter-trail
+name: Otter Trail
+region_group: africa
+countries:
+- ZA
+subdivisions: []
+area:
+  name: Garden Route National Park (Tsitsikamma)
+  wikidata: null
+  official_url: null
+agency:
+  name: SANParks
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.sanparks.org
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: All sanparks.org URLs returned 403 to fetch tool; none verified. Candidate https://www.sanparks.org/parks/garden_route/tourism/otter-trail unverified.

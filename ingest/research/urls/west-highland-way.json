@@ -1,0 +1,47 @@
+{
+ "seed_no": 54,
+ "slug": "west-highland-way",
+ "name": "West Highland Way",
+ "urls": [
+  {
+   "url": "https://www.westhighlandway.org/",
+   "purpose": "official trail site"
+  },
+  {
+   "url": "https://www.lochlomond-trossachs.org/things-to-do/camping/",
+   "purpose": "camping permits"
+  },
+  {
+   "url": "https://www.lochlomond-trossachs.org/park-information/camping-management-zones/",
+   "purpose": "camping management zones rules (PDF)"
+  },
+  {
+   "url": "https://www.lochlomond-trossachs.org/",
+   "purpose": "park home"
+  },
+  {
+   "url": "https://www.westhighlandway.org/the-route/multi-use-access-for-west-highland-way/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.westhighlandway.org/getting-started/getting-to-from-the-route/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.westhighlandway.org/the-route/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.westhighlandway.org/business-listings/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.westhighlandway.org/accessibility-statement/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.westhighlandway.org/terms-conditions-website-use/",
+   "purpose": "crawled"
+  }
+ ]
+}

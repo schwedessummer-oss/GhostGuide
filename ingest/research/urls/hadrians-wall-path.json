@@ -1,0 +1,35 @@
+{
+ "seed_no": 57,
+ "slug": "hadrians-wall-path",
+ "name": "Hadrian's Wall Path",
+ "urls": [
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/",
+   "purpose": "hike page, rules, alerts, access"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-holidays/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/circular-linear-walks/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/route/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/walking-holidays/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/add-your-information/",
+   "purpose": "crawled"
+  }
+ ]
+}

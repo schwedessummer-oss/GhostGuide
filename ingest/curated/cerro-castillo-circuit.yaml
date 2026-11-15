@@ -1,111 +1,185 @@
 slug: cerro-castillo-circuit
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Parque Nacional Cerro Castillo
-  - field: distance_km
-    value: 53.5
-    note: Length CONAF gives for the Las Horquetas trail, the multi-day trail through the park.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados / Sendero Las Horquetas
-  - field: duration
-    value: { min_days: 3, max_days: 5 }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados / Sendero Las Horquetas
-  - field: difficulty_official
-    value: { label: media, scale: CONAF }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados / Sendero Las Horquetas
-  - field: season_note
-    value: The Horquetas trail is shut every year from May to September; the rest of the year it can still be closed in bad weather.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados / Recomendaciones
-  - field: access_mode
-    value: licensed_operator_required
-    note: At the time checked, the page lists the Horquetas trail as closed by resolution and open only with a certified guide.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Planifica tu visita
-  - field: closure
-    value:
-      status: partially_closed
-      note: Horquetas trail closed by resolution, certified guide only. Camping Laguna Chiguay (run by the park) is listed as not operating.
-      as_of: 2026-11-15
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Planifica tu visita
-  - field: trailhead_access
-    value: The park is reached by the Carretera Austral (Ruta 7), which crosses it 64 km south of Coyhaique. Register at the park administration at Laguna Chiguay (km 57, Ruta 7 Sur) before starting any trail.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Accesos / Recomendaciones
-  - field: rule_fires
-    value: { value: not_allowed, note: Any heat source, including stoves and cigarettes, is banned under Ley 20.653 art. 22. }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones
-  - field: rule_dogs
-    value: { value: not_allowed, note: Pets and exotic animals may not enter the park. }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones
-  - field: rule_drones
-    value: { value: not_allowed, note: Only research or professional filming with prior CONAF authorisation. }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones
-  - field: hazard
-    value:
-      type: weather
-      note: Conditions change fast; the page mentions extreme cold or snow even in summer, with temperatures between -15 and 25 degrees C. Trails close in torrential rain, snow or strong wind.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: hazard
-    value:
-      type: wildlife
-      note: Rodents in the area can carry hantavirus; avoid contact with them. Huemul deer often cross the road, so drive slowly.
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados / Recomendaciones
-  - field: nearest_town
-    value: { name: Coyhaique, note: The park administration is about 57 km from Coyhaique, the nearest fuel stop the page names; lodging is also in Villa Cerro Castillo and Puerto Ingeniero Ibáñez. }
-    source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
-    source_title: Parque Nacional Cerro Castillo - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Servicios
+- field: official_url
+  value: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: Parque Nacional Cerro Castillo
+  verified: true
+- field: duration
+  value:
+    min_days: 3
+    max_days: 5
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Duración total del recorrido: 3-5 días.'
+  verified: true
+- field: season_note
+  value: The Laguna Castillo and Estero Parada day trails shut May to September; in winter entry is only with a CONAF-approved guide.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: El sendero cierra desde mayo a septiembre, aunque en los meses de invierno, únicamente se permite el ingreso en compañía de un guía avalado por CONAF.
+  verified: true
+- field: access_mode
+  value: licensed_operator_required
+  note: At the time checked, the Horquetas trail is listed as closed by resolution and open only with a certified guide.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Sendero por Horquetas: cerrado por resolución, solo habilitado con guia certificado.'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Horquetas trail open only with a certified guide; Estero Parada closed to self-guided hikers since 29 May 2026.
+    as_of: '2026-11-15'
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Sendero por Estero Parada: cerrado para autoguiado desde el 29 de mayo de 2026, solo se podrá acceder con guía y previo trámite de autorización en oficina regional.'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The park-run Laguna Chiguay campsite is listed as not operating.
+    as_of: '2026-11-15'
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Camping Laguna Chiguay (Administración): no operativo.'
+  verified: true
+- field: trailhead_access
+  value: The park is reached from the Carretera Austral, which crosses it 64 km south of Coyhaique.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: A la unidad se puede acceder por la Carretera Austral, que atraviesa la unidad 64 km al sur de la ciudad de Coyhaique.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Any heat source, including stoves and cigarettes, is banned and penalised by law.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: Encender cualquier fuente de calor (parrillas, fogatas, cocinillas a gas, cigarros, etc.) está prohibido y penado por la Ley 20653, artículo 22.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets and exotic animals may not enter the park.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: No ingresar con mascotas o animales exóticos. Perturban o pueden transmitir enfermedades a la fauna nativa.
+  verified: true
+- field: rule_drones
+  value:
+    value: restricted
+    note: Banned except for research or professional filming with prior CONAF authorisation.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: Está prohibido el uso de drones al interior del parque. Solo se permiten para realizar investigaciones o filmaciones profesionales, previa autorización de CONAF.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Conditions change often; extreme cold or snow is possible even in summer, with temperatures from -15 to 25 degrees C.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'En los senderos las condiciones de tiempo suelen ser cambiantes: puede presentarse en verano frío extremo hasta nieve. Las temperaturas fluctúan entre los –15 °C y 25 °C.'
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Rodents can transmit hantavirus; take precautions to avoid contact.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Riesgos del sector: contagio de hantavirus si no se toman precauciones para evitar contacto con roedores.'
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Huemul deer often cross nearby roads, so drive carefully.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: Maneja con cuidado, en los caminos cercanos es usual avistar huemules, los que cruzan la ruta. Evita su atropello.
+  verified: true
+- field: nearest_town
+  value:
+    name: Coyhaique
+    note: Fuel is sold there, 57 km from the park administration; lodging is in Villa Cerro Castillo and Puerto Ingeniero Ibáñez.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Combustible: Coyhaique, a 57 km de la administración. Tener presente la carga oportuna de combustible debido a la distancia.'
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 14
+  failed: 0
+  reasons: {}

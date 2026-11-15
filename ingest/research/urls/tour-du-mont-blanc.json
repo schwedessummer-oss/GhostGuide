@@ -18,6 +18,30 @@
   {
    "url": "https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/information/trails-conditions",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/information/trails-conditions/conditions-july-8th-2021",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/information/trails-conditions/trails-conditions-12-06-2022",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/routes/all-routes",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/information/the-hikers-diary",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/routes",
+   "purpose": "crawled"
   }
  ]
 }

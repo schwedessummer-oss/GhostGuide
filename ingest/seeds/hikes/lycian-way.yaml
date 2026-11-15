@@ -1,0 +1,33 @@
+seed_no: 60
+slug: lycian-way
+name: Lycian Way
+region_group: europe
+countries:
+- TR
+subdivisions: []
+area:
+  name: Turkiye
+  wikidata: null
+  official_url: null
+agency:
+  name: Culture Routes Society
+  wikidata: null
+hike_wikidata: null
+official_url: https://cultureroutesinturkey.com/en/lycian-way
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: OGM page is thin (642 chars); weak. Forest-entry ban notices are issued by Mugla/Antalya governorships, not found.

@@ -10,6 +10,30 @@
   {
    "url": "https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees",
    "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/etat-sentiers-trail-conditions",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/nl/grosmorne/visit/accessibilite-accessibility",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/nl/grosmorne/activ/camping/primitive",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/gg",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parcs.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees",
+   "purpose": "crawled"
   }
  ]
 }

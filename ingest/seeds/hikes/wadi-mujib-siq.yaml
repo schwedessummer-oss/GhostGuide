@@ -1,0 +1,33 @@
+seed_no: 94
+slug: wadi-mujib-siq
+name: Wadi Mujib Siq
+region_group: asia-middle-east
+countries:
+- JO
+subdivisions: []
+area:
+  name: Mujib Biosphere Reserve
+  wikidata: null
+  official_url: null
+agency:
+  name: RSCN
+  wikidata: null
+hike_wikidata: null
+official_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: RSCN 2026 trails price PDF exists (https://www.rscn.org.jo/uploaded_files/reservation/Mujib Biosphere Reserve Trails 2026.pdf, fees and rules) but fetch errored, so not verified. Season reportedly 1 Apr-31 Oct.

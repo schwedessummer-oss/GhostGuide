@@ -1,0 +1,33 @@
+seed_no: 84
+slug: nakasendo-magome-tsumago
+name: Nakasendo Magome-Tsumago
+region_group: asia-middle-east
+countries:
+- JP
+subdivisions: []
+area:
+  name: Gifu / Nagano
+  wikidata: null
+  official_url: null
+agency:
+  name: Nakatsugawa City / Nagiso Town
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.nagiso.jp/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: English Magome/Nagiso pages not found; only Japanese homepages verified. Needs one search.

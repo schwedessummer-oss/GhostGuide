@@ -1,0 +1,33 @@
+seed_no: 69
+slug: jebel-toubkal
+name: Jebel Toubkal
+region_group: africa
+countries:
+- MA
+subdivisions: []
+area:
+  name: Toubkal National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: ANEF (Agence Nationale des Eaux et Forêts)
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.eauxetforets.gov.ma
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: overnight
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: ANEF site errored (both root and /en). Only advisory verified; guide requirement unverified from official source. Needs search.

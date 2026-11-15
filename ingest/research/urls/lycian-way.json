@@ -1,0 +1,43 @@
+{
+ "seed_no": 60,
+ "slug": "lycian-way",
+ "name": "Lycian Way",
+ "urls": [
+  {
+   "url": "https://cultureroutesinturkey.com/en/lycian-way",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com",
+   "purpose": "managing body home"
+  },
+  {
+   "url": "https://www.ogm.gov.tr/tr",
+   "purpose": "forest directorate, summer forest bans"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/lycian-way-news-blogs/sounding-art-trail-listening-to-a-trail/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/lycian-way-news-blogs/first-hike4all-events-in-italy-over-200-participants-in-piedmont/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/lycian-way-news-blogs/sounding-art-trail-projesi-basladi/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/adventure/lycian-way-extended-north-geyikbayiri/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/tag/walking-routes/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://cultureroutesinturkey.com/the-lycian-way/",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -30,7 +30,8 @@ CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 class _Text(HTMLParser):
     SKIP = {"script", "style", "noscript", "svg", "template", "iframe"}
-    BLOCK = {"p", "div", "li", "tr", "h1", "h2", "h3", "h4", "h5", "h6", "br", "section", "article", "table", "dt", "dd", "td", "th"}
+    BLOCK = {"p", "div", "li", "tr", "h1", "h2", "h3", "h4", "h5", "h6", "br", "section", "article", "table", "dt", "dd"}
+    CELL = {"td", "th"}
 
     def __init__(self):
         super().__init__(convert_charrefs=True)
@@ -43,6 +44,8 @@ class _Text(HTMLParser):
             self._in_title = True
         if tag in self.BLOCK:
             self.out.append("\n")
+        if tag in self.CELL:
+            self.out.append(" | ")
         if tag in ("h1", "h2", "h3", "h4"):
             self.out.append("## ")
 

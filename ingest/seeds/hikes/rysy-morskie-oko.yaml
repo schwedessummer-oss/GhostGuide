@@ -1,0 +1,33 @@
+seed_no: 63
+slug: rysy-morskie-oko
+name: Rysy from Morskie Oko
+region_group: europe
+countries:
+- PL
+subdivisions: []
+area:
+  name: Tatra National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: TPN
+  wikidata: null
+hike_wikidata: null
+official_url: https://tpn.gov.pl
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only the home page verified; guessed subpages 404. Needs a targeted search for the ticket and parking pages.

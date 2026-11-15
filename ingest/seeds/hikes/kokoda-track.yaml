@@ -1,0 +1,33 @@
+seed_no: 108
+slug: kokoda-track
+name: Kokoda Track
+region_group: oceania
+countries:
+- PG
+subdivisions: []
+area:
+  name: Kokoda Track
+  wikidata: null
+  official_url: null
+agency:
+  name: Kokoda Track Authority
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.kokodatrackauthority.org
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: All 200 (6186/4838/3312 chars). Smartraveller fetch errored so not included.

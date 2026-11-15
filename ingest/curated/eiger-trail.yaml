@@ -1,89 +1,80 @@
 slug: eiger-trail
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Eiger Trail
-  - field: distance_km
-    value: 6.1
-    basis: one_way
-    note: "Stated for both directions, Eigergletscher to Alpiglen and the reverse."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: elevation_gain_m
-    value: 78
-    note: "Ascent when walking from Eigergletscher to Alpiglen; the page gives 779 m descent that way. Walking from Alpiglen the figures swap (779 m up, 78 m down)."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: high_point_m
-    value: 2346
-    note: "Highest point stated on the page; the start at Eigergletscher is listed as 2348 m and the end as 1616 m in the header."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: duration
-    value: { min_hours: 2, max_hours: 2.5 }
-    note: "2:00 h from Eigergletscher downhill, 2:30 h from Alpiglen uphill."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: route_type
-    value: point_to_point
-    note: "Runs between Eigergletscher station and Alpiglen station and can be walked in either direction."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Eiger Trail
-  - field: difficulty_official
-    value: { label: "Moderate", scale: "Jungfrau Railways" }
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: public_transport
-    value: "The trail starts at Eigergletscher railway station and ends at Alpiglen station, both on the railway. The operator says the train ride is included in its hike ticket, whichever end you start from."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Where would you like to start your hike?
-  - field: trailhead_access
-    value: "Grindelwald Grund is described as the valley station for Kleine Scheidegg, with a large car park and a rail link; Eigergletscher is the start for hikes below the Eiger north face."
-    source_url: https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/
-    source_title: Arrival, Stations, Parking | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Grindelwald Grund railway station
-  - field: hazard
-    value:
-      type: other
-      note: "The operator says trails are used at the walker's own risk and that its trail condition notes are recommendations only."
-    source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
-    source_title: Eiger Trail | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Eiger Trail
-  - field: nearest_town
-    value: { name: Grindelwald, note: "Grindelwald railway station links to the Wengernalp Railway and Kleine Scheidegg." }
-    source_url: https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/
-    source_title: Arrival, Stations, Parking | jungfrau.ch
-    publisher: Jungfraubahnen Management AG (Jungfrau Railways)
-    checked_at: 2026-11-15
-    evidence_heading: Grindelwald railway station
+- field: official_url
+  value: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Eiger Trail
+  evidence:
+    page: P1
+    quote: Eiger Trail
+  verified: true
+- field: duration
+  value:
+    min_hours: 2
+    max_hours: 2
+  note: Page gives an approximate time of about two hours.
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Eiger Trail
+  evidence:
+    page: P1
+    quote: Time required ~ 2 hours
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Walk runs from Eigergletscher station down to Alpiglen station and can be done in either direction.
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Where would you like to start your hike?
+  evidence:
+    page: P1
+    quote: The Eiger Trail can be hiked from either direction.
+  verified: true
+- field: public_transport
+  value: Both ends are railway stations (Eigergletscher and Alpiglen); the operator says the train ride is part of the ticket whichever end you start from.
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Where would you like to start your hike?
+  evidence:
+    page: P1
+    quote: Choose your starting point – the train journey is included in your ticket.
+  verified: true
+- field: trailhead_access
+  value: Grindelwald Grund is the valley station for the rail link to Kleine Scheidegg and has a large car park.
+  source_url: https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/
+  source_title: Arrival, Stations, Parking | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Grindelwald Grund railway station
+  evidence:
+    page: P2
+    quote: Grindelwald Grund railway station – valley station to Kleine Scheidegg with rail link and large car park.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Operator states walkers use trails at their own risk; trail condition information is advisory only.
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Eiger Trail
+  evidence:
+    page: P1
+    quote: Walking and hiking on the trails and mountain paths is undertaken at your own responsibility and risk.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 6
+  failed: 0
+  reasons: {}

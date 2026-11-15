@@ -1,0 +1,230 @@
+slug: grand-canyon-south-kaibab-bright-angel
+deleted_facts:
+- field: closure
+  value:
+    status: partially_closed
+    note: 'Open: South Kaibab Trail to Black Bridge, River Trail from River Resthouse to the South Kaibab junction, Bright Angel Trail to River Resthouse. Closed after the 29 Aug 2026 flood, no reopening estimate: Phantom Ranch incl. Bright Angel Campground, and both bridges.'
+    as_of: 2026-11-13
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  evidence_heading: Trail Status, and Current Closures
+- field: closure
+  value:
+    status: partially_closed
+    note: From 18 Nov 2026, expect holds of about 30-45 minutes on the Bright Angel Trail just above 3-Mile Resthouse while crews do rockfall mitigation.
+    as_of: 2026-11-13
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  evidence_heading: Trail Status, and Current Closures
+- field: high_point_m
+  value: 2213
+  note: Elevation of the South Kaibab Trailhead (7260 ft / 2213 m), the higher of the two trailheads, from the park's distance table.
+  source_url: https://www.nps.gov/grca/planyourvisit/trail-distances.htm
+  evidence_heading: Corridor Trails Distances
+- field: permit
+  value:
+    name: Grand Canyon backcountry permit
+    kind: overnight
+    how_to_apply: Enter the early access lottery on Recreation.gov; up to 750 winners get a time slot to pick and pay for an itinerary. Any space left opens to everyone on the 1st of the following month, and start dates within three months can be booked directly.
+    booking_window: Lottery opens on the 16th of the month five months before the start month and closes at 5pm MST on the 1st, four months before; remaining space opens to all at 8am MST on the 1st of the next month
+    official_url: https://www.recreation.gov/permits/4675337
+    price:
+      amount: 10.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: plus $15 per person per night in below-rim areas; park entrance fee paid separately
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: When to Apply
+- field: permit
+  value:
+    name: Last-minute Havasupai Gardens Campground permit
+    kind: overnight
+    how_to_apply: Sold only in person at the South Rim Backcountry Information Center, for one night at Havasupai Gardens and no earlier than the day before the hike. Visitors in the park can join a waitlist by returning to the office at 8am each day.
+    booking_window: 1 March to 30 November; at most one day before the hike start; availability not guaranteed after the August 2026 flood
+    official_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+    months:
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+    - 11
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Last-Minute Permit for Corridor Campgrounds
+- field: permit
+  value:
+    name: Special Use Permit for organized group inner-canyon hikes
+    kind: other
+    how_to_apply: Organized non-commercial groups of 12 to 30, and not-for-profit groups, doing rim-to-river-to-rim or other long inner-canyon day hikes need this permit. Groups may not split onto separate permits to get around the size rule; commercial trips are not covered.
+    official_url: https://www.nps.gov/grca/getinvolved/sup.htm
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Organized Group Rim-to-Rim and Extended Day Hike/Run
+- field: fee
+  value:
+    name: Backcountry permit or lottery application
+    amount: 10.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Non-refundable.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Permit Cost
+- field: fee
+  value:
+    name: Below-rim nightly charge
+    amount: 15.0
+    currency: USD
+    unit: per_night
+    audience: all
+    note: Charged per person for each night in below-rim areas; refundable until 30 days before the permit start date.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Permit Cost
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Covers one private non-commercial vehicle and its passengers (up to a 15-passenger van); entry is valid for seven days. Card only, no cash.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  evidence_heading: Private Vehicle
+- field: fee
+  value:
+    name: Individual entrance pass
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For hikers, cyclists and pedestrians aged 16 and over; valid seven days. Under-16s need no pass.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  evidence_heading: Per Person
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid seven days; covers up to 2 private motorcycles with up to 4 riders in total.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  evidence_heading: Motorcycle
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Each non-US resident aged 16 or older pays this on top of the standard entrance fee, unless entering with an Annual or America the Beautiful pass; applies to tour group members too.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  evidence_heading: Nonresident Fees
+- field: parking
+  value: 'Leave the car at the Backcountry Information Center (Lot D): walk from there to the Bright Angel Trailhead and take the free Hikers'' Express to the South Kaibab Trailhead, which private cars cannot reach. A 24-hour taxi is also available.'
+  source_url: https://www.nps.gov/grca/planyourvisit/hiking-faq.htm
+  evidence_heading: 'Q: Where do I park my vehicle(s)?'
+- field: trailhead_access
+  value: The South Kaibab Trailhead has no public parking and is closed to private vehicles; arrive on foot, by bike or on the Kaibab (Orange) shuttle, about 9 minutes from the Visitor Center. When buses are not running, Xanterra taxi (928.638.2631) can take you.
+  source_url: https://www.nps.gov/places/000/south-kaibab-trail.htm
+  evidence_heading: Accessing South Kaibab Trailhead
+- field: public_transport
+  value: 'Free Hikers'' Express, 12 Sep-30 Nov 2026: leaves Bright Angel Lodge at 6, 7 and 8 am and stops at the Backcountry Information Center (Lot D), the Visitor Center terminal and the South Kaibab Trailhead. All park shuttles are free with the entrance fee.'
+  source_url: https://www.nps.gov/grca/planyourvisit/shuttle-buses.htm
+  evidence_heading: Hikers' Express Shuttle
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets and other domestic animals are banned below the rim.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
+  evidence_heading: Grand Canyon Backcountry Regulations
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Flying drones is currently prohibited in the park, as in all national parks.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
+  evidence_heading: Additional Regulations and Policies
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No wood or charcoal fires of any kind in the backcountry; backpacking stoves burning fossil fuel or Sterno are allowed.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
+  evidence_heading: Grand Canyon Backcountry Regulations
+- field: rule_camping
+  value:
+    value: restricted
+    note: A backcountry permit is needed. Corridor camping (Havasupai Gardens, Bright Angel, Cottonwood) is in designated campgrounds only, up to 2 nights per campground per hike; 15 Nov-28 Feb the Corridor limit rises to 4 nights per campground.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Length of Stay
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 11
+    note: Camping groups may not exceed 11 people in one campground or use area, and affiliated groups may not share one on the same night. Organized groups of 12-30 doing rim-to-river-to-rim day hikes need a Special Use Permit.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Group Size
+- field: hazard
+  value:
+    type: heat
+    note: NPS says not to try rim to river and back in a single day, especially May-September, when heat can quickly turn deadly; more than 300 people are rescued from the canyon each year.
+  source_url: https://www.nps.gov/grca/planyourvisit/day-hiking.htm
+  evidence_heading: Day Hiking
+- field: hazard
+  value:
+    type: heat
+    note: The South Kaibab is exposed, with little shade and no water. Summer shade temperatures often top 100°F (38°C); avoid hiking 10 am-4 pm.
+  source_url: https://www.nps.gov/places/000/south-kaibab-trail.htm
+  evidence_heading: Hike Smart
+- field: hazard
+  value:
+    type: lightning
+    note: From July to September monsoon storms can bring violent lightning; take shelter at once. The exposed South Kaibab ridge offers little cover.
+  source_url: https://www.nps.gov/places/000/south-kaibab-trail.htm
+  evidence_heading: Hike Smart
+- field: hazard
+  value:
+    type: cold
+    note: In winter and early spring temperatures can drop below freezing and the upper trail gets dangerously icy, with hard ice hiding hazards; over-the-shoe traction is strongly advised.
+  source_url: https://www.nps.gov/places/000/south-kaibab-trail.htm
+  evidence_heading: Hike Smart
+- field: hazard
+  value:
+    type: other
+    note: Because the South Kaibab is steep and has no water, rangers advise using it only for the descent and climbing out on the Bright Angel Trail.
+  source_url: https://www.nps.gov/grca/planyourvisit/trail-distances.htm
+  evidence_heading: Corridor Trails Distances
+- field: hazard
+  value:
+    type: other
+    note: All inner-canyon water is currently turned off, including Havasupai Gardens and the Bright Angel Trail resthouses; carry all the water you need or a reliable treatment method. Status can change suddenly.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  evidence_heading: 'Water Availability: Trailheads and Inner Canyon'
+- field: hazard
+  value:
+    type: flash_flood
+    note: Flash floods can come without warning; watch upstream weather, head for higher ground if you hear a roar, and keep an exit plan near creeks.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  evidence_heading: Flash Floods
+- field: hazard
+  value:
+    type: rockfall
+    note: Rockfall is common during or after rain and in freeze-thaw periods and can come without warning; move away quickly and do not stop where loose rock is on the trail.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  evidence_heading: Rock Fall
+- field: nearest_town
+  value:
+    name: Tusayan
+    note: Gateway town of the South Rim, where both trailheads are.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  evidence_heading: Locations in the South Rim gateway town of Tusayan that accept cash
+- field: access_mode
+  value: independent
+  note: Private hikers get their own backcountry permits; only commercial organizations also need a Commercial Use Authorization.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  evidence_heading: Commercial Use
+- field: licensed_operator_list_url
+  value: https://www.nps.gov/grca/getinvolved/cua-list.htm
+  note: List of companies authorized by NPS to run guided day hikes and backpacking trips below the rim.
+  source_url: https://www.nps.gov/grca/planyourvisit/guided-hikes.htm
+  evidence_heading: Backpacking Guide Services

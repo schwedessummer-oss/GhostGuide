@@ -1,216 +1,282 @@
 slug: zion-narrows
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Narrows from the Bottom Up
-
-  - field: distance_km
-    value: 7.6
-    basis: one_way
-    note: "Up to 4.7 mi (7.6 km) one way from the Temple of Sinawava to Big Spring; the page calls the full trip a 9.4-mile out-and-back. Hikers may turn back at any point."
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: elevation_gain_m
-    value: 102
-    note: "The details box lists 'Elevation: 334 ft (102 m)' for the route to Big Spring; the metric figure is the page's own."
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: duration
-    value: { min_hours: 1, max_hours: 8 }
-    note: "Estimated hiking time; length of trip depends on how far upstream you choose to go."
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: route_type
-    value: out_and_back
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: The Narrows from the Bottom Up
-
-  - field: difficulty_official
-    value: { label: "strenuous", scale: "NPS" }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Safety
-
-  - field: season_note
-    value: "Summer and early fall are the usual season, with lower and warmer water, but monsoon flash floods peak then. Fall is steadier but colder; winter and early spring bring high, cold water, and the route closes in spring while snowmelt keeps flow above 150 cfs."
-    source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
-    source_title: The Narrows - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: When should I hike The Narrows?
-
-  - field: permit_required
-    value: "no"
-    note: "No permit for upstream hikes from the Temple of Sinawava as far as Big Spring. The 16-mile top-down route from Chamberlain's Ranch needs a Wilderness Permit."
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers a private non-commercial vehicle (up to 15 passengers) and everyone in it for 1-7 days. Card preferred; cash accepted." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 20.00, currency: USD, unit: per_person, audience: all, note: "For one person entering without a car, valid 1-7 days; youth 15 and under free." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private motorcycles carrying up to 4 people in total." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Nonresident fee", amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Extra charge for every non-US resident 16 or older, paid on top of the standard entrance fee unless they enter on an Annual or America the Beautiful pass." }
-    source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
-    source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Nonresident Fees
-
-  - field: parking
-    value: "Park lots inside Zion often fill early. Paid parking is available in Springdale, from where the free Springdale Line shuttle reaches the park's pedestrian entrance."
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: How to Use the Shuttle System
-
-  - field: trailhead_access
-    value: "Begin at Shuttle Stop 9, Temple of Sinawava, which has restrooms and a water-filling station. Walk the paved Riverside Walk for about a mile; the Narrows begin where the pavement ends and you step into the river."
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: public_transport
-    value: "Free park shuttles need no ticket. A ride on the Zion Canyon Line between the visitor center and the Temple of Sinawava takes about 45 minutes; most years shuttles run daily March-November and over the late-December holidays. Do not count on the last bus out."
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Basic Information
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets are not allowed on this hike." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Details
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Drones and other remote-controlled aircraft may not be used anywhere in the park." }
-    source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Aircraft-based Remote-controlled Equipment
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 12, note: "Upstream of the Orderville Canyon junction, groups may have at most 12 people; a group counts everyone with a shared affiliation on the same day, even on separate permits." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsregulations.htm
-    source_title: The Narrows Regulations - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Group Size Limits
-
-  - field: rule_camping
-    value: { value: restricted, note: "Camping only in designated campground sites, or in designated wilderness areas with a Wilderness Permit; overnighting in road pullouts or car parks is prohibited." }
-    source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Camping
-
-  - field: rule_fires
-    value: { value: restricted, note: "No fires at any time in Zion Wilderness; only gas or liquid-fuel stoves. Extra restrictions may apply when wildfire risk is high; fireworks always banned." }
-    source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
-    source_title: Current Conditions - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fire Restrictions
-
-  - field: hazard
-    value: { type: flash_flood, note: "Flash floods, often from storms far away, can raise the river within minutes. Check the NWS flash flood potential first; if water turns muddy, debris appears or you hear a roar, get to high ground." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowssafety.htm
-    source_title: The Narrows Safety - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Flash Floods
-
-  - field: hazard
-    value: { type: river_crossing, note: "Well over half the route (60% or more) is spent in cold, fast water over slippery boulders, with wading and sometimes swimming. Closed-toe shoes and a walking pole are advised." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
-    source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Safety
-
-  - field: hazard
-    value: { type: cold, note: "Hypothermia is a risk even in summer because immersion chills fast. Average water temperature is 56-68 F (13-20 C) in summer and 38-45 F (3-7 C) in winter; avoid cotton and carry dry spare layers." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowssafety.htm
-    source_title: The Narrows Safety - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hypothermia
-
-  - field: hazard
-    value: { type: other, note: "Toxic cyanobacteria may be in the river. Never drink river or stream water, since normal hiking filters do not remove the toxins; fill up at the Temple of Sinawava or treat water taken straight from springs." }
-    source_url: https://www.nps.gov/zion/planyourvisit/narrowssafety.htm
-    source_title: The Narrows Safety - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Cyanobacteria and Water Sources
-
-  - field: nearest_town
-    value: { name: Springdale, note: "Gateway town beside the park's walk-in and cycle entrance (Zion Canyon Village); the free Springdale Line shuttle runs through it." }
-    source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
-    source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Springdale Line Schedule
-
-  - field: closure
-    value: { status: open, note: "No closure alert for The Narrows on this date. The route shuts whenever flow tops 150 cfs or a Flash Flood Warning is in effect, so check on the day.", as_of: 2026-11-15 }
-    source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
-    source_title: Current Conditions - Zion National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Water Safety
-verifier: null
+- field: official_url
+  value: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: Hiking upstream in The Narrows does not require a permit.
+  verified: true
+- field: distance_km
+  value: 7.6
+  basis: one_way
+  note: Park lists up to 4.7 miles (7.6 km) each way for the upstream route from the Temple of Sinawava.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: 'Distance (one-way): up to 4.7 mi (7.6 km)'
+  verified: true
+- field: distance_km
+  value: 15.1
+  basis: round_trip
+  note: Park gives 9.4 miles for the full out-and-back to Big Spring; converted to km (x1.609344, rounded).
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: a 9.4 mile out-and-back trip
+  verified: true
+- field: duration
+  value:
+    min_hours: 1
+    max_hours: 8
+  note: Park's time estimate for the upstream hike, depending on how far you go.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: 'Estimated Hiking Time: 1-8 hours'
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Walk upstream as far as you like, then return the same way.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: a 9.4 mile out-and-back trip
+  verified: true
+- field: difficulty_official
+  value:
+    label: strenuous
+    scale: NPS
+  note: Park rates it strenuous.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Recommended Gear
+  evidence:
+    page: P1
+    quote: The Narrows is a strenuous trail that requires proper planning and equipment.
+  verified: true
+- field: season_note
+  value: Summer and early autumn are the usual months, when the river is lower and warmer, though monsoon flash flooding is more frequent then. Winter and spring bring high cold water.
+  source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
+  source_title: The Narrows - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Summer and Fall
+  evidence:
+    page: P3
+    quote: Most people hike The Narrows in the summer and early fall when the water level drops and tends to be at its warmest.
+  verified: true
+- field: permit_required
+  value: conditional
+  note: The bottom-up route from the Temple of Sinawava needs no permit; the top-down through-hike does.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Top-Down Information
+  evidence:
+    page: P1
+    quote: Visitors who plan to hike ~16 miles top-down through The Narrows will need a Wilderness Permit.
+  verified: true
+- field: permit
+  value:
+    name: Narrows top-down wilderness permit
+    kind: other
+    how_to_apply: Apply online or ask a wilderness ranger at a visitor center when conditions allow.
+  note: Applies to the through-hike starting at Chamberlain's Ranch.
+  source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
+  source_title: The Narrows - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: 16-Mile Through-Hike from Chamberlain's Ranch (Wilderness Permit required)
+  evidence:
+    page: P3
+    quote: When conditions allow, apply for permits online or from a Wilderness Ranger at a visitor center.
+  verified: true
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Extra charge for visitors aged 16 and over who live outside the US, unless they hold an annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Get an entrance pass
+  evidence:
+    page: P4
+    quote: Non-US residents (16 and over) must pay an additional $100 per person fee unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: fee
+  value:
+    name: Non-commercial group entrance (16+ persons)
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For non-commercial vehicles with capacity of 16 or more; young people 15 and under are free.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P4
+    quote: $20 per person. Non-commercial vehicles with a capacity of 16 or greater.
+  verified: true
+- field: public_transport
+  value: Free shuttles run in Zion Canyon and Springdale from early spring to late fall, with no ticket or reservation required.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Shuttle System
+  evidence:
+    page: P2
+    quote: From early spring to late fall, you can ride free shuttles in Zion Canyon and the town of Springdale.
+  verified: true
+- field: trailhead_access
+  value: The bottom-up route starts at the Temple of Sinawava; follow the paved Riverside Walk of about a mile to where you step into the river.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: To enter the bottom of The Narrows, head to Temple of Sinawava. Then, walk the Riverside Walk trail (about 1 mile in length).
+  verified: true
+- field: trailhead_access
+  value: Through-hikers must organise their own transport to the Chamberlain's Ranch start.
+  source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
+  source_title: The Narrows - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: 16-Mile Through-Hike from Chamberlain's Ranch (Wilderness Permit required)
+  evidence:
+    page: P3
+    quote: Those who choose this option must arrange their own transportation to the Chamberlain's Ranch trailhead.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 12
+    note: Canyoneering parties in Orderville Canyon are capped at 12 people.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Orderville Canyon
+  evidence:
+    page: P1
+    quote: Canyoneering groups are limited to a maximum of 12 people.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: No fires in Zion Wilderness apart from gas or liquid-fuel stoves; extra limits may apply with wildfire risk.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Fire Restrictions
+  evidence:
+    page: P2
+    quote: Fires are never allowed in Zion Wilderness (except for gas or liquid-fueled stoves).
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Flash floods can strike at any time; checking the weather service forecast beforehand is advised.
+  source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
+  source_title: The Narrows - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Are The Narrows safe?
+  evidence:
+    page: P3
+    quote: Flash floods can happen at any time, and your safety is your responsibility.
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Most of the route is spent wading or swimming in cold fast water over slippery boulders.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Recommended Gear
+  evidence:
+    page: P1
+    quote: At least 60% of the hike is spent wading, walking, and sometimes swimming in the river.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Cold water and shaded canyon walls make hypothermia a risk; quick-drying clothing is advised.
+  source_url: https://www.nps.gov/zion/planyourvisit/thenarrows.htm
+  source_title: The Narrows - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: What should I wear or bring?
+  evidence:
+    page: P3
+    quote: High canyon walls and cold water create cooler conditions than anywhere else in Zion Canyon
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Toxic cyanobacteria may be present; avoid immersing your head or drinking untreated river water.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Water Safety
+  evidence:
+    page: P2
+    quote: Do not submerge your head in or drink instream water in Zion National Park.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: The Narrows shuts when river flow exceeds 150 cfs or a flash flood warning is issued; snowmelt closes it in spring. Check conditions on the day.
+    as_of: 2026-09-16
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Water Safety
+  evidence:
+    page: P2
+    quote: The Narrows closes when the Virgin River flow rate is over 150 cubic feet per second and when the National Weather Service issues a Flash Flood Warning.
+  verified: true
+mechanical_check:
+  verified: 21
+  failed: 0
+  reasons: {}

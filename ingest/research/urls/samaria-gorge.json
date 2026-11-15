@@ -1,0 +1,43 @@
+{
+ "seed_no": 58,
+ "slug": "samaria-gorge",
+ "name": "Samaria Gorge",
+ "urls": [
+  {
+   "url": "https://www.samaria.gr/en/visit",
+   "purpose": "hike page, tickets, opening hours, rules"
+  },
+  {
+   "url": "https://www.samaria.gr",
+   "purpose": "park home, alerts"
+  },
+  {
+   "url": "https://necca.gov.gr",
+   "purpose": "managing agency (Greek)"
+  },
+  {
+   "url": "https://www.samaria.gr/subject-information-about-the-entrance-ticket-in-the-national-park-of-samaria/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/visitors/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/presidents-welcome/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/responsibilities-of-mb/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/management-body-organization-chart/",
+   "purpose": "crawled"
+  }
+ ]
+}

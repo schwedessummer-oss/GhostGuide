@@ -1,0 +1,35 @@
+{
+ "seed_no": 55,
+ "slug": "ben-nevis-mountain-track",
+ "name": "Ben Nevis Mountain Track",
+ "urls": [
+  {
+   "url": "https://www.johnmuirtrust.org/",
+   "purpose": "landowner/manager home"
+  },
+  {
+   "url": "https://www.mwis.org.uk/",
+   "purpose": "mountain weather forecasts (conditions)"
+  },
+  {
+   "url": "https://www.mwis.org.uk/information/partners/mountaineering-scotland",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.mwis.org.uk/information/about-us",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.johnmuirtrust.org/support-us/for-businesses",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.johnmuirtrust.org/terms-conditions",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.johnmuirtrust.org/accessibility",
+   "purpose": "crawled"
+  }
+ ]
+}

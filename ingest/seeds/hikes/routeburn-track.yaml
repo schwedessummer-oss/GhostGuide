@@ -1,0 +1,33 @@
+seed_no: 97
+slug: routeburn-track
+name: Routeburn Track
+region_group: oceania
+countries:
+- NZ
+subdivisions: []
+area:
+  name: Fiordland / Mt Aspiring National Parks
+  wikidata: null
+  official_url: null
+agency:
+  name: Department of Conservation (DOC)
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only 2 verified URLs (200, >500 chars). Mount Aspiring route page returned only 401 chars so excluded. Great Walks booking page URL not found; DOC alerts page not verified.

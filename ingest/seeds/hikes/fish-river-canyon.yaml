@@ -1,0 +1,33 @@
+seed_no: 70
+slug: fish-river-canyon
+name: Fish River Canyon
+region_group: africa
+countries:
+- NA
+subdivisions: []
+area:
+  name: /Ai-/Ais Richtersveld, Fish River Canyon Park
+  wikidata: null
+  official_url: null
+agency:
+  name: MEFT / Namibia Wildlife Resorts
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.nwr.com.na
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Leads data for this seed was garbled (name fields split). nwr.com.na errored; booking page unverified. Season ~May to mid-Sept, doctor's certificate, min 3 hikers.

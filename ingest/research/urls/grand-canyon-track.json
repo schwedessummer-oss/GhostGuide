@@ -1,0 +1,43 @@
+{
+ "seed_no": 105,
+ "slug": "grand-canyon-track",
+ "name": "Grand Canyon Track",
+ "urls": [
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/visit-a-park/parks/blue-mountains-national-park",
+   "purpose": "park page, rules, access"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/visit-a-park/parks/blue-mountains-national-park/local-alerts",
+   "purpose": "alerts and closures"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/visitor-info",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track?p=1&pdfprint=true",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/near-by",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/learn-more",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/map",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/Grand-Canyon-track/visitor-info",
+   "purpose": "crawled"
+  }
+ ]
+}

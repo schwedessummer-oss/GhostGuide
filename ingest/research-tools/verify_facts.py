@@ -65,13 +65,36 @@ def numbers(o, skip_keys=("months", "currency", "unit", "audience", "kind", "sca
     return out
 
 
-def quote_numbers(q):
+def _interpretations(tok):
+    tok = tok.replace(" ", "")
+    outs = set()
+    if "," in tok and "." in tok:
+        dec = "," if tok.rfind(",") > tok.rfind(".") else "."
+        th = "." if dec == "," else ","
+        outs.add(tok.replace(th, "").replace(dec, "."))
+    elif "," in tok or "." in tok:
+        sep = "," if "," in tok else "."
+        parts = tok.split(sep)
+        outs.add(tok.replace(sep, ""))  # thousands separator reading
+        if len(parts) == 2:
+            outs.add(parts[0] + "." + parts[1])  # decimal reading
+    else:
+        outs.add(tok)
     vals = []
-    for m in re.findall(r"\d[\d,]*(?:\.\d+)?", q):
+    for o in outs:
         try:
-            vals.append(float(m.replace(",", "")))
+            vals.append(float(o))
         except ValueError:
             pass
+    return vals
+
+
+def quote_numbers(q):
+    vals = []
+    for m in re.findall(r"\d+(?:[.,\s]\d+)*", q):
+        vals += _interpretations(m)
+    for m in re.findall(r"\d+(?:[.,]\d+)?", q):  # also each number on its own
+        vals += _interpretations(m)
     return vals
 
 

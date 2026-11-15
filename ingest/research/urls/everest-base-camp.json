@@ -1,0 +1,43 @@
+{
+ "seed_no": 76,
+ "slug": "everest-base-camp",
+ "name": "Everest Base Camp",
+ "urls": [
+  {
+   "url": "https://dnpwc.gov.np",
+   "purpose": "agency home, park permits"
+  },
+  {
+   "url": "https://ntb.gov.np/",
+   "purpose": "tourism board, guide rule"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/nepal",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://ntb.gov.np/en/camping",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://dnpwc.gov.np/pages/everest-national-observatory-65",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://dnpwc.gov.np/pages/area-coverage-database-of-all-pas-72/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/everest",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://dnpwc.gov.np/pages/dhorpatan-hunting-reserve-brochure-36",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/hiking",
+   "purpose": "crawled"
+  }
+ ]
+}

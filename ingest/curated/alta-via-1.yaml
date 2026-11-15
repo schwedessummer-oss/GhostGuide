@@ -1,128 +1,259 @@
 slug: alta-via-1
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
-  - field: distance_km
-    value: 125
-    basis: one_way
-    note: The park gives about 125 km in 12 stages for the whole route from Lago di Braies to Belluno. Another official site gives a different figure, so treat this as approximate.
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
-  - field: elevation_gain_m
-    value: 7300
-    note: The park says total ascent is over 7,300 m (descent over 8,400 m) for the whole route.
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
-  - field: route_type
-    value: point_to_point
-    note: Starts at Lago di Braies and ends in Belluno.
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
-  - field: duration
-    value: { min_days: 8, max_days: 12 }
-    note: South Tyrol's tourism site gives 8 to 12 days; the park describes 12 stages.
-    source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
-    source_title: "Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol"
-    publisher: South Tyrol official tourism website (suedtirol.info)
-    checked_at: 2026-11-15
-    evidence_heading: Dolomite Alpine Ridgeway No.1
-
-  - field: hazard
-    value:
-      type: exposure
-      note: In the park's final two stages (Marmol bivouac down to Belluno) the route follows very hard equipped paths with exposed sections; suitable equipment, technical skill and fitness are needed.
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
-  - field: hazard
-    value:
-      type: altitude
-      note: The main route stays around 2,000 m on average, so high-alpine conditions should be expected.
-    source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
-    source_title: "Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol"
-    publisher: South Tyrol official tourism website (suedtirol.info)
-    checked_at: 2026-11-15
-    evidence_heading: Dolomite Alpine Ridgeway No.1
-
-  - field: trailhead_access
-    value: The Braies valley road is regulated in summer; in 2026 it ran 1 July to 15 September, 09:00 to 16:00, with access only by public transport, on foot, by bike or with an online reservation or valid pass. From 16 September there is no restriction. The regulation returns in summer 2027.
-    source_url: https://www.prags.bz/it
-    source_title: Lago di Braies
-    publisher: Prags/Braies tourism organisation (prags.bz access portal)
-    checked_at: 2026-11-15
-    evidence_heading: Il regolamento stradale in sintesi
-
-  - field: fee
-    value:
-      name: Braies valley combined ticket (road pass, guaranteed parking, 22 EUR restaurant and shop voucher)
-      amount: 44
-      currency: EUR
-      unit: per_day
-      audience: all
-      valid_from: 2026-07-01
-      valid_to: 2026-09-15
-      note: Offered during the road regulation period; the page does not say whether it is per vehicle.
-    source_url: https://www.prags.bz/it
-    source_title: Lago di Braies
-    publisher: Prags/Braies tourism organisation (prags.bz access portal)
-    checked_at: 2026-11-15
-    evidence_heading: Auto
-
-  - field: parking
-    value: Three paid car parks (P2, P3, P4) are at the lake, 800 m, 300 m and 100 m away. Places are limited. P1 can be booked in advance on some holidays and includes a shuttle.
-    source_url: https://www.prags.bz/it
-    source_title: Lago di Braies
-    publisher: Prags/Braies tourism organisation (prags.bz access portal)
-    checked_at: 2026-11-15
-    evidence_heading: Arrivo in auto, camper, pullman e moto
-
-  - field: public_transport
-    value: Bus line 442 links Dobbiaco and Villabassa with the lake (timetable 14 June to 12 December 2026). During the road regulation, bus seats on lines 439 and 442 must be reserved and paid online. At the southern end, Bolzano Bellunese connects to Belluno by public transport.
-    source_url: https://www.prags.bz/it
-    source_title: Lago di Braies
-    publisher: Prags/Braies tourism organisation (prags.bz access portal)
-    checked_at: 2026-11-15
-    evidence_heading: Bus
-
-  - field: public_transport
-    value: To return to the Alta Pusteria, take a bus from Belluno via Tai di Cadore and Cortina to Dobbiaco, then on to the lake. Bus tickets from Dobbiaco to the lake need online booking from 10 July to 10 September.
-    source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
-    source_title: "Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol"
-    publisher: South Tyrol official tourism website (suedtirol.info)
-    checked_at: 2026-11-15
-    evidence_heading: Dolomite Alpine Ridgeway No.1
-
-  - field: closure
-    value:
-      status: seasonal
-      note: The park recommends June to September for its four-stage section. The Braies valley road had no restriction on the date checked, and the regulation is expected again in summer 2027.
-      as_of: 2026-11-15
-    source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
-    source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
-    publisher: Ente Parco Nazionale Dolomiti Bellunesi
-    checked_at: 2026-11-15
-    evidence_heading: Alta Via n. 1
-
+- field: official_url
+  value: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  note: Park page describing the route and its stages.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: The Alta Via n. 1 is one of the classic great Dolomite crossings.
+  verified: true
+- field: distance_km
+  value: 125
+  basis: one_way
+  note: Whole route, Lake Braies to Belluno, split into 12 stages. The park gives this length; another official site lists a different one.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: It is divided into 12 stages, for a total of 125 kilometers in length
+  verified: true
+- field: elevation_gain_m
+  value: 7300
+  note: Total ascent for the whole route is stated as above this figure; descent is given separately.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: which exceed 7,300 meters in altitude uphill
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Runs from Lake Braies at the start to Belluno at the end.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: it starts from Lake Braies and ends in Belluno
+  verified: true
+- field: duration
+  value:
+    min_days: 8
+    max_days: 12
+  note: South Tyrol tourism site gives this range of stages/days.
+  source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
+  source_title: Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol
+  publisher: South Tyrol official tourism website (suedtirol.info)
+  checked_at: '2026-11-15'
+  evidence_heading: Dolomite Alpine Ridgeway No.1
+  evidence:
+    page: P3
+    quote: 'Stages: 8 -12 days'
+  verified: true
+- field: best_months
+  value:
+  - 6
+  - 7
+  - 8
+  - 9
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: 'Recommended Period: from June to September'
+  verified: true
+- field: high_point_m
+  value: 2395
+  note: Highest point reachable by hiking trail inside the park section (Van de Zita Sud fork); not the whole route.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: Van de Zità Sud fork (2,395). This is the highest point that can be reached in the park with hiking trails.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: The last two park stages have very hard equipped sections with exposed passages; proper gear, technical skill and fitness are needed.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: IN THE LAST TWO STAGES THERE ARE EXTREMELY DIFFICULT EQUIPPED ROUTES, WITH EXPOSED PASSAGES WHICH NEED A SUITABLE EQUIPMENT, TECHNICAL AND PSYCHOPHYSICAL TRAINING
+  verified: true
+- field: hazard
+  value:
+    type: altitude
+    note: The main route stays high on average, so expect high-alpine conditions.
+  source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
+  source_title: Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol
+  publisher: South Tyrol official tourism website (suedtirol.info)
+  checked_at: '2026-11-15'
+  evidence_heading: Dolomite Alpine Ridgeway No.1
+  evidence:
+    page: P3
+    quote: so you have to expect high - alpine conditions
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: A steep gully near the Marmol fork can hold ice; the park says to avoid it and climb on the rocks to the right.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: A frozen gully descends from the fork, as inviting as it is dangerous, which must be absolutely avoided
+  verified: true
+- field: parking
+  value: Roadside parking is available near the Duran pass start, where the CAI 543 path leaves the road at Pian de Caleda.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: Parking available along the road.
+  verified: true
+- field: trailhead_access
+  value: For the park section, drive from Belluno to Agordo and then toward Passo Duran; the CAI 543 path branches off to the right just before the pass.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: From Belluno you reach Agordo, where you turn towards Passo Duran. Just before the pass, in Pian de Caleda, the CAI 543 path branches off on the right.
+  verified: true
+- field: public_transport
+  value: Public transport only goes as far as La Valle Agordina, about 7 km short of Passo Duran, so a second car at the end is suggested.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: public transport only goes to La Valle Agordina (about 7 kilometers from the pass)
+  verified: true
+- field: public_transport
+  value: At the southern end, the paved road reaches Bolzano Bellunese, from where Belluno can be reached by public transport.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  source_title: Alta Via n. 1 – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: The most classic among the dolomitic itineraries
+  evidence:
+    page: P1
+    quote: it is possible to reach Belluno by public transport
+  verified: true
+- field: public_transport
+  value: Bus line 442 runs from Dobbiaco/Villabassa to Lake Braies at ordinary local fares and without booking outside the road-regulation period.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Collegamenti diretti in autobus al Lago di Braies
+  evidence:
+    page: P2
+    quote: La linea 442 ti porta direttamente da Dobbiaco/Villabassa al Lago di Braies. Si applicano le tariffe del trasporto pubblico locale. In questo periodo non è necessaria la prenotazione.
+  verified: true
+- field: public_transport
+  value: During the road-regulation period, seats on the Lake Braies buses (lines 439 and 442) must be booked and paid online; Mobilcard and guest passes are not valid then.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Collegamenti diretti in autobus al Lago di Braies
+  evidence:
+    page: P2
+    quote: è richiesta la prenotazione con pagamento online
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs must wear a muzzle on all public transport, including the Lake Braies buses.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Collegamenti diretti in autobus al Lago di Braies
+  evidence:
+    page: P2
+    quote: su tutti i mezzi di trasporto pubblico vige l'obbligo di museruola per i cani
+  verified: true
+- field: fee
+  value:
+    name: Braies valley combined ticket (day road pass, guaranteed parking, voucher)
+    amount: 44
+    currency: EUR
+    unit: per_day
+    audience: all
+    note: Offered when the summer road regulation applies; the page does not say if it is per vehicle or per person.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Escursione al Lago di Braies
+  evidence:
+    page: P2
+    quote: In questo periodo sarà disponibile il biglietto combinato al prezzo di 44 €.
+  verified: true
+- field: entry_fee_none
+  value: true
+  note: Visiting Lake Braies itself costs nothing; the route start is at the lake.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Informazioni in generale
+  evidence:
+    page: P2
+    quote: No, la visita al Lago di Braies è gratuita.
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: No traffic restrictions were stated for the Braies valley; the road can be reached at any time when no regulation is active.
+    as_of: '2026-11-15'
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Escursione al Lago di Braies
+  evidence:
+    page: P2
+    quote: Attualmente non ci sono limitazioni al traffico
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 20
+  failed: 0
+  reasons: {}

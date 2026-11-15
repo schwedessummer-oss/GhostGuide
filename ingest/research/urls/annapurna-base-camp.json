@@ -1,0 +1,43 @@
+{
+ "seed_no": 78,
+ "slug": "annapurna-base-camp",
+ "name": "Annapurna Base Camp",
+ "urls": [
+  {
+   "url": "https://ntnc.org.np",
+   "purpose": "manager home (ACAP)"
+  },
+  {
+   "url": "https://ntb.gov.np/",
+   "purpose": "licensed guide rule"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/nepal",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://ntb.gov.np/en/camping",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntnc.org.np/project/annapurna-conservation-area-project-acap",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/annapurna",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/annapurna-conservation-area",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntnc.org.np/information-disclosure",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/hiking",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -1,0 +1,61 @@
+slug: cerro-castillo-circuit
+deleted_facts:
+- field: distance_km
+  value: 53.5
+  note: Length CONAF gives for the Las Horquetas trail, the multi-day trail through the park.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Senderos habilitados / Sendero Las Horquetas
+- field: difficulty_official
+  value:
+    label: media
+    scale: CONAF
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Senderos habilitados / Sendero Las Horquetas
+- field: season_note
+  value: The Horquetas trail is shut every year from May to September; the rest of the year it can still be closed in bad weather.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Senderos habilitados / Recomendaciones
+- field: closure
+  value:
+    status: partially_closed
+    note: Horquetas trail closed by resolution, certified guide only. Camping Laguna Chiguay (run by the park) is listed as not operating.
+    as_of: 2026-11-15
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Planifica tu visita
+- field: trailhead_access
+  value: The park is reached by the Carretera Austral (Ruta 7), which crosses it 64 km south of Coyhaique. Register at the park administration at Laguna Chiguay (km 57, Ruta 7 Sur) before starting any trail.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Accesos / Recomendaciones
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Any heat source
+    including stoves and cigarettes: null
+    is banned under Ley 20.653 art. 22.: null
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Prohibiciones
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Only research or professional filming with prior CONAF authorisation.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Prohibiciones
+- field: hazard
+  value:
+    type: weather
+    note: Conditions change fast; the page mentions extreme cold or snow even in summer, with temperatures between -15 and 25 degrees C. Trails close in torrential rain, snow or strong wind.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Recomendaciones
+- field: hazard
+  value:
+    type: wildlife
+    note: Rodents in the area can carry hantavirus; avoid contact with them. Huemul deer often cross the road, so drive slowly.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Senderos habilitados / Recomendaciones
+- field: nearest_town
+  value:
+    name: Coyhaique
+    note: The park administration is about 57 km from Coyhaique
+    the nearest fuel stop the page names; lodging is also in Villa Cerro Castillo and Puerto Ingeniero Ibáñez.: null
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  evidence_heading: Servicios

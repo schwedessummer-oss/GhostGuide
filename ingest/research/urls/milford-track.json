@@ -1,0 +1,39 @@
+{
+ "seed_no": 96,
+ "slug": "milford-track",
+ "name": "Milford Track",
+ "urls": [
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/",
+   "purpose": "hike page, bookings, fees, rules"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/getting-there/",
+   "purpose": "access/transport"
+  },
+  {
+   "url": "https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/fiordland/milford-track-walking-guide-brochure.pdf",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/fiordland/great-walks-milford-track-brochure.pdf",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bookings.doc.govt.nz/Web/Default.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/know-before-you-go/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-stay/stay-in-a-hut/booking-and-paying/backcountry-hut-tickets/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/what-to-take/",
+   "purpose": "crawled"
+  }
+ ]
+}

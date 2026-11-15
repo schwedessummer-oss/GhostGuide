@@ -1,0 +1,39 @@
+{
+ "seed_no": 51,
+ "slug": "preikestolen",
+ "name": "Preikestolen",
+ "urls": [
+  {
+   "url": "https://preikestolen.no/",
+   "purpose": "hike info, parking (Norwegian)"
+  },
+  {
+   "url": "https://www.stavanger-turistforening.no/",
+   "purpose": "managing association home (Norwegian)"
+  },
+  {
+   "url": "https://preikestolen.no/?lang=en",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/preikestolen-no-vurderes-solgt/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/om-preikestolen/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/hvordan-komme-seg-til-preikestolen/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/overnatting-i-naerheten-av-preikestolen/",
+   "purpose": "crawled"
+  }
+ ]
+}

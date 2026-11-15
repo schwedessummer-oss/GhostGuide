@@ -1,0 +1,216 @@
+slug: half-dome
+deleted_facts:
+- field: elevation_gain_m
+  value: 1463
+  note: Page states a total gain of 4,800 feet; converted to metres (x0.3048, rounded).
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Hiking
+- field: difficulty_official
+  value:
+    label: Strenuous
+    scale: NPS
+  source_url: https://www.nps.gov/yose/planyourvisit/valleyhikes.htm
+  evidence_heading: Yosemite Valley Day Hikes
+- field: season_note
+  value: The summit cables are normally installed on the Friday before Memorial Day and taken down the day after the second Monday in October; dates shift with conditions. Do not climb the dome when the cables are down.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Half Dome Cables
+- field: permit
+  value:
+    name: Half Dome day-hiker permit (preseason lottery)
+    kind: lottery
+    how_to_apply: Enter the March lottery on Recreation.gov or by phone (877/444-6777). One application covers up to six people for chosen dates or a date range; name a permit holder and, ideally, an alternate. Results arrive by email in mid-April.
+    booking_window: Applications 1-31 March (eastern time); results mid-April
+    official_url: https://www.recreation.gov/permits/234652
+    price:
+      amount: 10.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: non-refundable application fee; plus $10 per person if a permit is awarded
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: 225 permits per day are offered in this lottery. Either the named holder or the alternate has to be with the group when rangers check permits at the subdome. Permits are not transferable and include no camping.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  evidence_heading: Preseason Lottery
+- field: permit
+  value:
+    name: Half Dome day-hiker permit (daily lottery)
+    kind: lottery
+    how_to_apply: During the hiking season, apply on Recreation.gov or by phone two days before your hike; results are emailed late that night. Only a permit holder can be named (no alternate).
+    booking_window: Two days before the hike, midnight to 4 pm Pacific time
+    official_url: https://www.recreation.gov/permits/234652
+    price:
+      amount: 10.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: non-refundable application fee; plus $10 per person if a permit is awarded
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: Daily numbers depend on expected no-shows and cancellations; the park says weekday odds are better, especially from late August.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  evidence_heading: Daily Lottery
+- field: permit
+  value:
+    name: Half Dome permit for backpackers (added to a Yosemite wilderness permit)
+    kind: overnight
+    how_to_apply: Ask for Half Dome permits when you collect a Yosemite wilderness permit that starts at an eligible trailhead (e.g. Happy Isles to Little Yosemite Valley). No advance booking of the add-on is needed; it is not valid for day hikes.
+    official_url: https://www.nps.gov/yose/planyourvisit/hdwildpermits.htm
+    price:
+      amount: 10.0
+      currency: USD
+      unit: per_person
+      audience: all
+      note: paid at the wilderness center when picking up the permit; not refundable
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: About 75 backpacker Half Dome permits per day. Wilderness permits issued outside Yosemite do not cover Half Dome; those hikers must use the day-hiker lotteries.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdwildpermits.htm
+  evidence_heading: Reservations for Wilderness Permits & Half Dome Permits
+- field: fee
+  value:
+    name: Half Dome permit lottery application fee
+    amount: 10.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Charged by Recreation.gov when you apply; not refundable; one fee per application, not per person.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  evidence_heading: Fees
+- field: fee
+  value:
+    name: Half Dome day-hiker permit fee
+    amount: 10.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Charged only if a permit is awarded. Refunded if you cancel by 11:59 pm Pacific the day before, or when the cables are down on your date.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  evidence_heading: Fees
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Good for 7 days in a row; covers a private vehicle with up to 15 seats and everyone in it; per-person nonresident fee still applies. No cash accepted.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Private Vehicle
+- field: fee
+  value:
+    name: Per-person entrance pass (on foot, bicycle, horse)
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Valid seven consecutive days; ages 15 and under enter free.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Per Person
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid 7 days; covers up to 2 private motorcycles with up to 4 people in total; nonresident fee still applies.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Motorcycle
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Extra charge for every non-US resident 16 or older, paid on top of the standard entrance fee unless they enter on an Annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Nonresident Fees
+- field: parking
+  value: Trailhead parking sits just past Curry Village, about half a mile from Happy Isles; Curry Village also has parking but it fills early.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Trailhead and Parking Information
+- field: trailhead_access
+  value: 'Most hikers start at Happy Isles, shuttle stop #16. Shuttles start at 7 am; earlier starters walk the road (closed to private cars) from the parking areas to the trailhead.'
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Trailhead and Parking Information
+- field: trailhead_access
+  value: For 2026 the park has dropped its timed entry reservation system and manages traffic and Valley parking on the day instead; weekday visits are encouraged.
+  source_url: https://www.nps.gov/yose/planyourvisit/reservations.htm
+  evidence_heading: Entrance Reservations
+- field: public_transport
+  value: YARTS buses run to Yosemite Valley all year on Highway 140 from Merced (Amtrak and Greyhound connect there), with summer routes on other highways. In the Valley, free shuttles serve the eastern trailheads, roughly 7 am to 10 pm.
+  source_url: https://www.nps.gov/yose/planyourvisit/publictransportation.htm
+  evidence_heading: Public Transportation
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are banned on park trails and in wilderness, even if carried; service animals are the exception.
+  source_url: https://www.nps.gov/yose/planyourvisit/pets.htm
+  evidence_heading: Where Pets Are Not Allowed
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Flying, launching or landing drones and other unmanned aircraft anywhere in the park is prohibited, and the park issues no drone permits.
+  source_url: https://www.nps.gov/yose/planyourvisit/safety.htm
+  evidence_heading: Air Delivery and Unmanned Aircraft
+- field: rule_camping
+  value:
+    value: restricted
+    note: The day-hiker permit covers no camping. For a night in Little Yosemite Valley or anywhere en route, apply for a wilderness permit with Half Dome added instead.
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  evidence_heading: Camping and Lodging
+- field: hazard
+  value:
+    type: lightning
+    note: The summit is very dangerous in thunderstorms, which are most common in the afternoon. Turn back if storms are near and leave the summit area.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Weather
+- field: hazard
+  value:
+    type: exposure
+    note: The final 400 feet climb steep granite between two cables. Almost all fatal falls have happened on wet rock; stay off the cables when the rock is wet or storms threaten.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Half Dome Cables
+- field: hazard
+  value:
+    type: weather
+    note: Expect the summit to be 15-20 F (8-11 C) colder than the Valley and often windy; carry layers and rain gear.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Weather
+- field: hazard
+  value:
+    type: altitude
+    note: Some hikers get altitude sickness (bad headache, nausea); descending is the only fix. Heat exhaustion, dehydration and low sodium also occur.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Altitude Sickness
+- field: hazard
+  value:
+    type: wildlife
+    note: Black bears snatch packs day and night; keep food within reach and scare bears off loudly. Feeding wildlife or poor food storage can bring a fine of up to $5,000.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  evidence_heading: Wildlife
+- field: closure
+  value:
+    status: seasonal
+    note: Cables removed for the winter; permits apply again once they are reinstalled (normally late May).
+    as_of: 2026-11-13
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  evidence_heading: Yosemite Valley Area

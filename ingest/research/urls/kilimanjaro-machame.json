@@ -1,0 +1,31 @@
+{
+ "seed_no": 67,
+ "slug": "kilimanjaro-machame",
+ "name": "Kilimanjaro (Machame)",
+ "urls": [
+  {
+   "url": "https://www.tanzaniaparks.go.tz",
+   "purpose": "agency home, park fees, rules"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/tanzania",
+   "purpose": "official travel advisory (safety/alerts)"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/tanzania/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
+  }
+ ]
+}

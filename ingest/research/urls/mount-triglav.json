@@ -1,0 +1,39 @@
+{
+ "seed_no": 62,
+ "slug": "mount-triglav",
+ "name": "Mount Triglav",
+ "urls": [
+  {
+   "url": "https://www.tnp.si/en/",
+   "purpose": "park home, rules, visitor info (English)"
+  },
+  {
+   "url": "https://pzs.si/",
+   "purpose": "alpine association, hut info (Slovene)"
+  },
+  {
+   "url": "https://www.tnp.si/en/park/basic-information/triglavski-narodni-park/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tnp.si/en/education/education/triglav-treasury/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tnp.si/en/sustainability/education/triglav-treasury/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tnp.si/en/park/julian-alps/julian-alps-biosphere-reserve/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tnp.si/en/park/julian-alps/transboundary-biosphere-reserve-julian-alps/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tnp.si/en/visiting-park/latest/actual-conditions/",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -23,8 +23,8 @@ from fetch_text import fetch, page_text  # noqa: E402
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 URLS = os.path.join(ROOT, "ingest", "research", "urls")
 PACKS = os.path.join(ROOT, "ingest", "research", "packs")
-PER_PAGE = 7000
-PER_HIKE = 20000
+PER_HIKE = 36000
+MIN_PAGE = 2500
 
 KW = re.compile(
     r"(\$|€|£|¥|₩|₹|\bUSD|\bNZD|\bAUD|\bCAD|\bCHF|\bNOK|\bSEK|\bISK|\bPEN|\bS/|\bCLP|\bARS|\bCOP|\bBRL|R\$|\bTZS|\bKES|\bNAD|\bZAR|\bMAD|\bUGX|\bNPR|\bINR|\bJPY|\bTWD|NT\$|\bKRW|\bCNY|\bRMB|\bMYR|\bRM\s?\d|\bIDR|\bRp\b|\bKGS|\bGEL|\bJOD|\bOMR|\bPGK|\bMWK|\bHKD|\bEUR|\bGBP|"
@@ -81,6 +81,8 @@ def build(slug):
     out = [f"# Evidence pack: {spec.get('name', slug)} ({slug}, seed {spec.get('seed_no')})", ""]
     total = 0
     seen = set()
+    n_pages = max(1, len(spec.get("urls", [])))
+    per_page = max(MIN_PAGE, PER_HIKE // n_pages)
     for n, u in enumerate(spec.get("urls", []), start=1):
         url = u["url"] if isinstance(u, dict) else u
         purpose = u.get("purpose", "") if isinstance(u, dict) else ""
@@ -93,10 +95,20 @@ def build(slug):
             out.append("")
             continue
         used = 0
-        for i, line in select_lines(text, seen):
-            if used > PER_PAGE or total > PER_HIKE:
-                out.append("(truncated)")
-                break
+        lines = select_lines(text, seen)
+        if sum(len(l) for _, l in lines) > per_page:
+            # over budget: keep headings and lines with digits/currency first, in page order
+            pri = [(i, l) for i, l in lines if l.startswith("## ") or re.search(r"\d|\$|€|£", l)]
+            rest = [(i, l) for i, l in lines if (i, l) not in pri]
+            keep, size = [], 0
+            for i, l in pri + rest:
+                if size + len(l) > per_page:
+                    continue
+                keep.append((i, l))
+                size += len(l)
+            lines = sorted(keep)
+            out.append(f"(page trimmed to fit: {len(lines)} lines kept)")
+        for i, line in lines:
             line = line[:900]
             out.append(f"[P{n} L{i}] {line}")
             used += len(line)

@@ -1,197 +1,240 @@
 slug: gros-morne-mountain
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Gros Morne Mountain
-
-  - field: distance_km
-    value: 17
-    basis: round_trip
-    note: "Parks Canada lists 17 km return for the whole route: a 9 km return Approach Trail plus an 8 km Summit Trail loop. The park's landing page calls the whole route a 17 km loop."
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail details
-
-  - field: elevation_gain_m
-    value: 1000
-    note: "Stated in metres on the page for the full route; the Approach Trail is 463 m and the Summit Trail 537 m."
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail details
-
-  - field: high_point_m
-    value: 806
-    note: Summit elevation given for Gros Morne Mountain, the park's highest point.
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Gros Morne Mountain
-
-  - field: duration
-    value: { min_hours: 6, max_hours: 8.5 }
-    note: "Listed as a minimum hiking time. The page splits it into 2.5-3.5 h for the Approach Trail and 3.5-5.5 h for the Summit Trail."
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail details
-
-  - field: difficulty_official
-    value: { label: difficult, scale: Parks Canada }
-    note: "Whole route rated difficult; the Approach Trail alone is rated moderate and the Summit Trail difficult."
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail details
-
-  - field: best_months
-    value: [6, 7, 8, 9, 10]
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: When to go - seasonal hiking conditions
-
-  - field: season_note
-    value: "Best from 28 June to mid October, with the most settled weather and long days, though a few snow patches can linger early on. From mid October to 30 April the Summit Trail is not recommended because of ice, snow, storms, short days and later avalanche risk."
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: When to go - seasonal hiking conditions
-
-  - field: closure
-    value: { status: seasonal, note: "The Summit Trail is closed to hikers each year from 1 May until 27 June to protect wildlife and plants; it reopens on 28 June. Hiking it while closed can lead to charges under the Canada National Parks Act.", as_of: 2026-11-15 }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Spring trail closure (May 1 to June 27)
-
-  - field: permit
-    value:
-      name: Primitive camping permit (Ferry Gulch)
-      kind: overnight
-      how_to_apply: A permit is needed to use the primitive campsite at Ferry Gulch; it is booked through Parks Canada's reservation service.
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Primitive camping
-
-  - field: rule_camping
-    value: { value: restricted, note: "Only the primitive campsite at Ferry Gulch is mentioned for this hike, and it needs a camping permit." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Primitive camping
-
-  - field: rule_dogs
-    value: { value: restricted, note: "Dogs are not recommended on the Summit Trail because they disturb wildlife. If brought, they must be leashed under physical control at all times and owners must clean up." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Hiking with your dog
-
-  - field: rule_drones
-    value: { value: not_allowed, note: Drones are prohibited in all national parks. }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Regulations
-
-  - field: hazard
-    value: { type: exposure, note: "The Summit Trail crosses a steep scree slope and a rocky plateau with loose, uneven ground. Cliffs are unmarked and the route is hard to follow in cloud, so hikers should avoid it when the summit is clouded in; cairns mark the way across the top." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail safety - know before you go
-
-  - field: hazard
-    value: { type: remoteness, note: "Rescue can take many hours, and mobile coverage is unreliable across the park. Parks Canada gives an emergency line of 1-877-852-3100 and advises telling someone your plan and return time." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Trail safety - know before you go
-
-  - field: hazard
-    value: { type: weather, note: "The summit is often windy and much cooler than the base. By mid October frost, storms, ice and snow arrive; later in winter avalanche risk builds and the trail is hard to see." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: When to go - seasonal hiking conditions
-
-  - field: hazard
-    value: { type: wildlife, note: "Arctic hare, caribou and rock ptarmigan live on the summit. Hikers are told not to approach or feed wildlife and to give animals an escape route." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
-    source_title: Gros Morne Mountain - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Protecting the mountain - trail etiquette
-
-  - field: fee
-    value: { name: Daily admission, amount: 12.25, currency: CAD, unit: per_person, audience: adult, note: "Adults 18-64. A park pass is required to visit the park. Reduced winter rates apply 1 November to 15 May." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Daily
-
-  - field: fee
-    value: { name: Daily admission, amount: 10.75, currency: CAD, unit: per_person, audience: senior, note: "Seniors 65 and over." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Daily
-
-  - field: fee
-    value: { name: Daily admission, amount: 0, currency: CAD, unit: per_person, audience: child, note: "Free for youth 17 and under." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Daily
-
-  - field: fee
-    value: { name: Daily admission - family/group, amount: 24.50, currency: CAD, unit: per_group, audience: all, note: "Covers up to seven people arriving in one vehicle." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Daily
-
-  - field: fee
-    value: { name: Daily admission - winter season, amount: 10.00, currency: CAD, unit: per_person, audience: adult, note: "Reduced service fees apply from 1 November to 15 May. Seniors 8.75, family/group 19.50, youth free." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Daily - Winter Season
-
-  - field: fee
-    value: { name: Annual admission pass, amount: 60.50, currency: CAD, unit: per_person, audience: adult, note: "Seniors 51.50; also sold as a Discovery Pass (adult 83.50)." }
-    source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
-    source_title: Fees - Gros Morne National Park
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: ADMISSION - Annual
-
-verifier: null
+- field: official_url
+  value: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Gros Morne National Park
+  evidence:
+    page: P1
+    quote: The hike to the summit of Gros Morne Mountain (806 m)
+  verified: true
+- field: distance_km
+  value: 17
+  basis: round_trip
+  note: 'Whole route: a 9 km return Approach Trail plus an 8 km Summit Trail loop.'
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Trail details
+  evidence:
+    page: P1
+    quote: 'Distance: 17 km return'
+  verified: true
+- field: elevation_gain_m
+  value: 1000
+  note: Full route; Approach Trail 463 m and Summit Trail 537 m.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Trail details
+  evidence:
+    page: P1
+    quote: 'Elevation gain: 1000 m'
+  verified: true
+- field: high_point_m
+  value: 806
+  note: Summit height of Gros Morne Mountain.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Gros Morne National Park
+  evidence:
+    page: P1
+    quote: Gros Morne Mountain (806 m)
+  verified: true
+- field: duration
+  value:
+    min_hours: 6
+    max_hours: 8.5
+  note: Given as a minimum for the whole route; Approach and Summit trails are timed separately.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Trail details
+  evidence:
+    page: P1
+    quote: 'Hiking time: 6-8.5 hours (minimum)'
+  verified: true
+- field: difficulty_official
+  value:
+    label: difficult
+    scale: Parks Canada
+  note: The 8 km Summit Trail is rated difficult; the Approach Trail is rated moderate.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: The Summit Trail is an additional 3.5-5.5 hours on a difficult 8-kilometre loop
+  verified: true
+- field: route_type
+  value: loop
+  note: The Summit Trail part is a loop beginning at the end of the Approach Trail.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: 'Distance: 8 km loop'
+  verified: true
+- field: best_months
+  value:
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Summer to early fall (June 28 to mid October)
+  verified: true
+- field: season_note
+  value: 'Summit Trail hiking is not recommended from mid October to 30 April: ice, snow, storms, short days and later avalanche risk.'
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: During winter, hiking the Summit Trail is not recommended.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Summit trail shut each year 1 May to 27 June for wildlife; reopens 28 June.
+    as_of: '2026-11-15'
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Spring trail closure (May 1 to June 27)
+  evidence:
+    page: P1
+    quote: the Gros Morne Summit trail is closed annually to hikers beginning on May 1 and re-opens on June 28
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs are allowed but must be leashed and under physical control.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: If you bring your dog, it must always be under physical control with a leash, so they do not harass or harm wildlife or disturb other hikers.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Cliffs and steep drops on the route are unmarked; stay on the trail.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Cliffs and other steep and dangerous terrain are not marked.
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: Descending the scree slope risks falls and loose boulders; clockwise travel avoids it.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Descending the scree slope is more dangerous than climbing because you have less control, increasing your risk of falling or dislodging boulders onto hikers below.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Rescue can take many hours; cell coverage is unreliable.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Emergency assistance may take many hours to arrive due to weather, darkness or remoteness.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Summit is windy and noticeably colder than the base.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: The summit is often windy and can be significantly cooler than the base.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Dehydration and heat stroke risk; carry plenty of water.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Avoid dehydration and heat stroke. Bring 3 litres of water per person and more on hot days.
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: Late-winter snow accumulation brings avalanche risk and hides the trail.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Later in winter the accumulation of snow brings the risk of avalanches
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Do not approach or feed animals; keep alert for surprise encounters.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  source_title: Gros Morne Mountain - Gros Morne National Park - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Prepare for your hike
+  evidence:
+    page: P1
+    quote: Do not approach or feed wildlife.
+  verified: true
+mechanical_check:
+  verified: 18
+  failed: 0
+  reasons: {}

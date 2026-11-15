@@ -1,0 +1,229 @@
+slug: chilkoot-trail
+deleted_facts:
+- field: closure
+  value:
+    status: partially_closed
+    note: In 2026 hikers may not cross the US-Canada border on the trail, in either direction. Trips must start from Dyea (US side) or Bennett (Canadian side) and turn back at the border on Chilkoot Pass.
+    as_of: 2026-11-15
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Trail Information for 2026
+- field: closure
+  value:
+    status: partially_closed
+    note: 'While the border stays shut, Parks Canada offers the Canadian stretch as an out-and-back: 26 km each way from Bennett to Chilkoot Pass with a moderate 450 m climb, about the full trail''s length in total but with easier ascents.'
+    as_of: 2026-11-15
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  evidence_heading: Hike the Canadian side
+- field: season_note
+  value: Summer season runs June to mid-September. Early June means snow travel and likely snow camping, avalanche risk below the pass lasts to mid-July, mid-July to early August is mostly snow-free and busiest, and late season brings more fog and freezing nights.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  evidence_heading: Hiking season
+- field: permit
+  value:
+    name: Chilkoot Trail overnight permit (Canadian side)
+    kind: overnight
+    how_to_apply: Reserve through the Parks Canada Reservation Service. Every hiker must then attend an in-person orientation within 2 days of the hike (in Whitehorse for Canadian-side trips, booked by phone on 867-333-0775), where the permit is issued.
+    booking_window: Reservations can be made, changed or cancelled until 11:59 pm two days before arrival; Canadian-side reservations are closed for the current season
+    official_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/permis-permits
+    months:
+    - 6
+    - 7
+    - 8
+    - 9
+  note: Permit fees are fully refunded up to 21 days before the start and half refunded after that; reservation fees are never refunded. Commercial guides, outfitters and youth groups book by email (chilkootinfo@pc.gc.ca).
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/permis-permits
+  evidence_heading: Reservations
+- field: permit
+  value:
+    name: Chilkoot Trail overnight permit (US side)
+    kind: overnight
+    how_to_apply: Pick campgrounds and dates on Recreation.gov and print the permit, then have it validated at the Trail Center in Skagway (Broadway between 5th and 6th Avenues), where every group member attends a mandatory safety orientation of about 30 minutes. One permit covers the group.
+    official_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+    months:
+    - 6
+    - 7
+    - 8
+    - 9
+  note: Required 1 June-12 September for all overnight users; camping only in designated campgrounds. The US-side permit fee is non-refundable. Trail runners collect their permit a day ahead or before noon on the start day.
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Reserve your permit
+- field: permit
+  value:
+    name: Chilkoot Trail day-use permit (Canadian side)
+    kind: day_use
+    how_to_apply: Contact Parks Canada for a permit. From 15 April to 31 October all day use in the historic site needs one, except at the Log Cabin parking lot and in the Bennett area.
+    official_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/bulletins/0F0A11D7-F1D1-4EBE-8531-AFAD1EA15388
+    months:
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: Set by the Summer restricted activity order issued 30 April 2026, which also makes all overnight travel and camping permit-only. Permits are free 15 April-31 May and 14 September-31 October; a fee applies 1 June-13 September.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/bulletins/0F0A11D7-F1D1-4EBE-8531-AFAD1EA15388
+  evidence_heading: Summer restricted activity order (April 15 - October 31)
+- field: fee
+  value:
+    name: Overnight permit, Canadian side only (adult and senior)
+    amount: 47.0
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Same rate for seniors (65+); adult means 18-64. The page does not say whether the amount is per trip or per night.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: Canadian Side Only - Overnight Permit
+- field: fee
+  value:
+    name: Overnight permit, Canadian side only (youth)
+    amount: 23.75
+    currency: CAD
+    unit: per_person
+    audience: child
+    note: Youth means ages 6 to 17.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: Canadian Side Only - Overnight Permit
+- field: fee
+  value:
+    name: Day-use permit, Canadian side
+    amount: 13.75
+    currency: CAD
+    unit: per_person
+    audience: all
+    note: Per person.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: Canadian Side Day Use Permit
+- field: fee
+  value:
+    name: Online reservation fee (hiking group)
+    amount: 11.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Charged for each online reservation, change or cancellation for an overnight hiking group.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: RESERVATION SERVICES
+- field: fee
+  value:
+    name: Phone reservation fee (hiking group)
+    amount: 13.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Charged for each reservation, change or cancellation made by phone for an overnight hiking group.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: RESERVATION SERVICES
+- field: fee
+  value:
+    name: Online reservation fee (day-use group)
+    amount: 3.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Per online reservation, change or cancellation for a day-use group; by phone it is 5.50.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  evidence_heading: RESERVATION SERVICES
+- field: fee
+  value:
+    name: Dyea Campground
+    amount: 10.0
+    currency: USD
+    unit: per_night
+    audience: all
+    note: Per site, per night; first come, first served, with no reservations.
+  source_url: https://www.nps.gov/klgo/planyourvisit/fees.htm
+  evidence_heading: Fees & Passes
+- field: trailhead_access
+  value: The southern (US) trailhead is reached by road, just north of the old Dyea townsite about 10 mi (16 km) from Skagway; arrange your ride to it in advance.
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Chilkoot Trailhead
+- field: trailhead_access
+  value: 'Bennett, the northern trailhead, has no road: you arrive or leave by train, air taxi or boat, booked with the carrier ahead of time. Walking the railway is illegal, and there is no cell signal, so bring a satellite messenger.'
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Bennett
+- field: parking
+  value: Anyone leaving a vehicle in Dyea has to use the Chilkoot Trailhead parking area.
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Arriving to the Chilkoot Trailhead
+- field: public_transport
+  value: Bennett is served only by the White Pass and Yukon Route railway (1-800-343-7373), floatplane firms (Alkan Air, Alpine Aviation, Amber Airways) or boat; book with the carrier directly and carry a satellite device to reach them at the end.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  evidence_heading: Getting to and from Bennett
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Parks Canada advises leaving pets at home. Any pet must stay leashed at all times, keep out of cooking shelters, and have its food locked in the bear boxes.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/conditions
+  evidence_heading: 7. Pets must be on a leash at all times
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Recreational drone use is banned in national parks and historic sites in Yukon and northern BC, which includes the Canadian part of the trail; special permits are only for research or filming.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/aeronefs-aircraft
+  evidence_heading: Flying in and around national parks and historic sites in Yukon and northern British Columbia
+- field: rule_camping
+  value:
+    value: restricted
+    note: Designated campgrounds only, named night by night in your reservation along with the number of tent sites (plan on at least two hikers per site). No camping at Chilkoot Pass.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  evidence_heading: Choosing your campgrounds
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: 'No open fires anywhere on the trail; bring a stove. Some shelters below treeline have wood stoves: on the US side only dead and down wood may be gathered, on the Canadian side wood is supplied and collecting it is banned.'
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/conditions
+  evidence_heading: 6. No campfires
+- field: hazard
+  value:
+    type: avalanche
+    note: The slope between Happy Camp and Chilkoot Pass is avalanche terrain until mid-July. Cross early in the day, avoid the afternoon, never rest below avalanche signs, and move through one at a time with gaps.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Avalanche hazard
+- field: hazard
+  value:
+    type: weather
+    note: Above treeline, between Deep Lake and the pass, expect cold, wet, windy or whiteout conditions; heavy rain or snowstorms can arrive even in midsummer, and fog often cuts visibility.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Travel conditions
+- field: hazard
+  value:
+    type: other
+    note: 'Snowfields and route finding: between Happy Camp and the pass the way is an unmarked route that can stay snow-covered into July or all season, and snow or ice bridges over streams and rocks can give way without warning.'
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Snowfields
+- field: hazard
+  value:
+    type: river_crossing
+    note: 'Swollen creeks may have to be waded: keep footwear on, face upstream, lean on poles or a stick and link arms if needed.'
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Creek crossing
+- field: hazard
+  value:
+    type: cold
+    note: Frequent cold, wet and windy weather makes hypothermia a real danger; skip cotton and carry spare warm layers, good rain gear and a hat.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Hypothermia
+- field: hazard
+  value:
+    type: remoteness
+    note: There is no cell coverage in the historic site, so carry a satellite device. Helicopter evacuations happen every year, and injured hikers may be billed for rescue and medical care.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  evidence_heading: Injuries and evacuations
+- field: hazard
+  value:
+    type: wildlife
+    note: Black and grizzly bear country. Parks Canada recommends carrying bear spray at all times, keeping packs within arm's reach and locking every attractant in the campground food lockers.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ours-bears
+  evidence_heading: Bear safety
+- field: nearest_town
+  value:
+    name: Skagway
+    note: The Chilkoot Trailhead near Dyea is about 10 mi (16 km) from Skagway, where the Trail Center runs the mandatory US-side orientation and validates permits.
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  evidence_heading: Chilkoot Trailhead
+- field: licensed_operator_list_url
+  value: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/guides
+  note: Parks Canada's list of guides and outfitters for the historic site (three companies when the page was last updated in January 2026).
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/guides
+  evidence_heading: Guides and outfitters

@@ -6,6 +6,42 @@
   {
    "url": "https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS",
    "purpose": "cited"
+  },
+  {
+   "url": "https://zermatt.swiss/en/",
+   "purpose": "Zermatt tourism (English)"
+  },
+  {
+   "url": "https://www.chamonix.com/",
+   "purpose": "Chamonix tourism office"
+  },
+  {
+   "url": "https://www.sac-cas.ch/de/",
+   "purpose": "Swiss Alpine Club huts"
+  },
+  {
+   "url": "https://zermatt.swiss/en/activities/snowsports/winter-hiking-snowshoe-tours",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://zermatt.swiss/en/plan-book/cable-car-tickets",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://zermatt.swiss/en/plan-book/experiences-tickets",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://zermatt.swiss/en/activities/hiking-mountaineering/hiking",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.chamonix.com/etat-des-routes",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.chamonix.com/infos-et-services/transports/se-deplacer",
+   "purpose": "crawled"
   }
  ]
 }

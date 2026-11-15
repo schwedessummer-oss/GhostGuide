@@ -1,0 +1,33 @@
+seed_no: 72
+slug: tugela-falls-chain-ladders
+name: Tugela Falls chain ladders
+region_group: africa
+countries:
+- ZA
+subdivisions: []
+area:
+  name: Royal Natal NP / Sentinel car park, Drakensberg
+  wikidata: null
+  official_url: null
+agency:
+  name: Ezemvelo KZN Wildlife
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.kznwildlife.com
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Sentinel gate is Free State side; manager unclear, Ezemvelo only partly relevant. No dedicated hike page verified.

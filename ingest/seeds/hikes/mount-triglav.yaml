@@ -1,0 +1,33 @@
+seed_no: 62
+slug: mount-triglav
+name: Mount Triglav
+region_group: europe
+countries:
+- SI
+subdivisions: []
+area:
+  name: Triglav National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Triglav National Park
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.tnp.si/en/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: overnight
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: PZS subpages guessed returned 404; hut booking page not located.

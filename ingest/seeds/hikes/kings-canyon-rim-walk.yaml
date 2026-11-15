@@ -1,0 +1,33 @@
+seed_no: 106
+slug: kings-canyon-rim-walk
+name: Kings Canyon Rim Walk
+region_group: oceania
+countries:
+- AU
+subdivisions: []
+area:
+  name: Watarrka National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: NT Parks and Wildlife Commission
+  wikidata: null
+hike_wikidata: null
+official_url: https://nt.gov.au/parks/find-a-park/watarrka-national-park/short-walks
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: nt.gov.au pages return 403 to the fetch helper (not verified by fetch; surfaced by site search of official domain). northernterritory.com verified 200, 14704 chars. Pass/fees page not found.

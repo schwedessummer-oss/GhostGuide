@@ -10,6 +10,22 @@
   {
    "url": "https://www.gov.uk/foreign-travel-advice/peru/safety-and-security",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/driving-abroad/international-driving-permit",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
   }
  ]
 }

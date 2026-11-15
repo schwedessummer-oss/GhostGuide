@@ -1,0 +1,33 @@
+seed_no: 103
+slug: overland-track
+name: Overland Track
+region_group: oceania
+countries:
+- AU
+subdivisions: []
+area:
+  name: Cradle Mountain-Lake St Clair National Park, Tasmania
+  wikidata: null
+  official_url: null
+agency:
+  name: Parks and Wildlife Service Tasmania
+  wikidata: null
+hike_wikidata: null
+official_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'Search snippet: 1 Oct-31 May booking season, adult fee about 312 AUD (unverified, read the page).'

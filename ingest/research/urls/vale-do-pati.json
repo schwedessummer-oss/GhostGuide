@@ -6,6 +6,18 @@
   {
    "url": "https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.br/icmbio/pt-br/servicos/servicos-do-icmbio-no-gov.br/compensacao-de-reserva-legal",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.br/icmbio/pt-br/assuntos/populacoes-tradicionais/comissao-das-reservas-extrativistas-federais-conarex",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.br/pt-br/servicos/buscar-servicos-por",
+   "purpose": "crawled"
   }
  ]
 }

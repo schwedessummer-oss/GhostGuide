@@ -1,318 +1,257 @@
 slug: teton-crest-trail
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: distance_km
-    value: 62.8
-    basis: one_way
-    note: "Park gives 39 miles point to point from Phillips Pass (outside the park) to String Lake; converted to km. Shorter suggested versions exist, e.g. Granite Canyon to Paintbrush Canyon, 38.6 miles over 4 nights."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: elevation_gain_m
-    value: 2743
-    note: "Page says the route climbs over 9,000 feet in total; converted to metres (x0.3048, rounded), so treat as a minimum. Riding the aerial tram from Teton Village cuts roughly 4 miles and 2,400 feet of climbing."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: route_type
-    value: point_to_point
-    note: "Described as a point-to-point route from Phillips Pass to String Lake, best done over several days."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: best_months
-    value: [8, 9]
-    note: "The park says backpacking in the Tetons is usually more pleasant in August and September; before then, snow lingers on the high passes."
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Snow into July
-
-  - field: season_note
-    value: "Snow and winter conditions hang on well into July. Hurricane Pass, Paintbrush Divide and Static Peak Divide remain snowbound and hazardous into summer, and the park says the TCT needs an ice axe, crampons and self-arrest skills then."
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Snow into July
-
-  - field: season_note
-    value: "The route is very popular: its camping zones are booked almost every night from late July to early September."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: permit_required
-    value: conditional
-    note: "Nights inside Grand Teton NP need a backcountry camping permit. Hikers who camp only on Forest Service land (no nights in the park) need no permit from either agency; Alaska Basin or Fox Creek Pass nights appear on a park permit at no charge."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm
-    source_title: Backcountry Camping FAQs - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Staying in the National Forest
-
-  - field: permit
-    value:
-      name: Grand Teton backcountry camping permit (advance reservation)
-      kind: overnight
-      how_to_apply: "Reserve one permit covering consecutive nights on Recreation.gov; about a third of the quota is sold in advance. The permit holder (or the named alternate) must collect it in person at a park permit office from the day before the trip until 10 a.m. on the start day."
-      booking_window: "Opens January 11, 2027 at 8 a.m. MST for the May 1-October 31, 2027 season; reservable up to two days before the start date"
-      official_url: https://www.recreation.gov/permits/4675342
-      price: { amount: 20.00, currency: USD, unit: per_trip, audience: all, note: "flat, non-refundable fee per permit, plus a $7 nightly charge for each person, refunded if you cancel at least five days ahead; passes give no discount" }
-      months: [5, 6, 7, 8, 9, 10]
-    note: "Up to six people per permit; groups of 7-12 must use designated group sites. Reservations not picked up by 10 a.m. on the first night are cancelled as no-shows unless the office (307-739-3309) is told of a late arrival."
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Advanced Reservations for Backcountry Camping Permits
-
-  - field: permit
-    value:
-      name: Grand Teton backcountry camping permit (walk-up)
-      kind: overnight
-      how_to_apply: "Go in person to the Craig Thomas Discovery & Visitor Center, Colter Bay Visitor Center or Jenny Lake Ranger Station; permits are handed out first come, first served, no earlier than the day before you start. Not available by phone or online in peak season."
-      booking_window: "In person, from one day before the trip start date"
-      price: { amount: 20.00, currency: USD, unit: per_trip, audience: all, note: "same fees as advance permits: $20 per permit plus $7 per person per night" }
-      months: [5, 6, 7, 8, 9, 10]
-    note: "Roughly two thirds of the nightly backcountry quota is kept for walk-up permits."
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Walk-Up Permits
-
-  - field: permit
-    value:
-      name: Grand Teton winter backcountry camping permit
-      kind: overnight
-      how_to_apply: "Outside peak season, phone the backcountry office on 307-739-3309; a ranger goes over conditions and rules and emails the permit."
-      booking_window: "November 1-April 30, by phone"
-      months: [11, 12, 1, 2, 3, 4]
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: About
-
-  - field: fee
-    value: { name: "Backcountry camping permit fee", amount: 20.00, currency: USD, unit: per_trip, audience: all, note: "Flat charge for each permit; not refundable. Card payment only; passes give no discount; entrance fees are separate." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fees
-
-  - field: fee
-    value: { name: "Backcountry nightly camping fee", amount: 7.00, currency: USD, unit: per_night, audience: all, note: "Charged per person for each night; refundable up to five days before the permit start date." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fees
-
-  - field: fee
-    value: { name: "Private vehicle entrance pass", amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers a private non-commercial vehicle and its passengers for 7 days. The park accepts no cash." }
-    source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: "Per-person entrance pass (foot, bicycle, ski)", amount: 20.00, currency: USD, unit: per_person, audience: all, note: "Valid 7 days for each visitor aged 16 or over entering without a vehicle; under-16s need no pass." }
-    source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: "Motorcycle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days; admits up to 2 private motorcycles carrying up to 4 people in total." }
-    source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: "Nonresident fee", amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Added to the standard entrance fee for every non-US resident aged 16+, including those on commercial tours, Annual and America the Beautiful pass holders are exempt." }
-    source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Nonresident Fees
-
-  - field: fee
-    value: { name: "Grand Teton annual park pass", amount: 70.00, currency: USD, unit: per_vehicle, audience: resident, note: "One year of entry for the holder and passengers in one private vehicle; sold to US citizens and residents." }
-    source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Annual Entrance - Park
-
-  - field: parking
-    value: "Backpackers may leave a car in a designated trailhead lot for the dates on their permit and must give its make, model and plate number."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm
-    source_title: Backcountry Camping FAQs - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Parking and Shuttles
-
-  - field: parking
-    value: "Trailhead lots in the park fill up in July and August."
-    source_url: https://www.nps.gov/grte/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Laws & Policies
-
-  - field: trailhead_access
-    value: "The full route begins outside the park at Phillips Pass and finishes at String Lake. Alternatives start at Granite Canyon Trailhead, or take the paid aerial tram from Teton Village to skip about 4 miles and 2,400 feet of climbing."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
-    source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Teton Crest Trail (TCT)
-
-  - field: public_transport
-    value: "The park runs no shuttle between trailheads, so hikers arrange their own transfers. Ride-hailing operates inside the park and hitchhiking is allowed, with restrictions."
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm
-    source_title: Backcountry Camping FAQs - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Parking and Shuttles
-
-  - field: rule_camping
-    value: { value: restricted, note: "Permit needed for every night in the park. Max two nights at one location (three on Jackson Lake); a cap of 10 nights from June 1 to Labor Day and 30 nights per year." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: About
-
-  - field: rule_fires
-    value: { value: restricted, note: "Wood or charcoal fires are allowed only in existing metal rings at Jackson, Leigh, Bearpaw and Trapper lakes, so none elsewhere in the backcountry; building new rings is banned. Fuel stoves are fine." }
-    source_url: https://www.nps.gov/grte/planyourvisit/back.htm
-    source_title: Backcountry Camping - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Things to Know
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets may not go into the backcountry (qualified service animals excepted)." }
-    source_url: https://www.nps.gov/grte/planyourvisit/back.htm
-    source_title: Backcountry Camping - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Things to Know
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Launching, landing or flying a drone or other unmanned aircraft is banned in the park." }
-    source_url: https://www.nps.gov/grte/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Laws & Policies
-
-  - field: rule_group_size
-    value: { value: restricted, note: "A standard backcountry permit covers at most six people; parties of 7 to 12 have to stay in designated group sites." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: About
-
-  - field: hazard
-    value: { type: other, note: "Steep snow lingers on passes such as Hurricane Pass, Paintbrush Divide and Static Peak Divide well into summer; slips can be serious and route-finding on snow is slow. Carry an ice axe and crampons and know self-arrest." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Snow into July
-
-  - field: hazard
-    value: { type: wildlife, note: "Grizzly and black bears range across the whole park. Backpackers must keep all food and scented items in an IGBC-approved bear canister (free loans with the permit); hanging food is banned in the park." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Bear Country
-
-  - field: hazard
-    value: { type: lightning, note: "Afternoon thunderstorms are frequent; keep off exposed ridges, summits, open ground and lone trees when storms build." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Lightning
-
-  - field: hazard
-    value: { type: cold, note: "A sudden storm plus cool high-country temperatures can bring on hypothermia; pack rain gear and spare warm layers and avoid cotton." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hypothermia
-
-  - field: hazard
-    value: { type: altitude, note: "Park elevations run from 6,320 to 13,770 feet and anyone can get altitude sickness; climb slowly and go lower if symptoms persist." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Altitude Sickness
-
-  - field: hazard
-    value: { type: remoteness, note: "Mobile coverage in the backcountry is patchy; the park suggests taking a satellite messenger. Some water sources on the route (e.g. Death Canyon Shelf, Fox Creek Pass) can dry up in late summer." }
-    source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
-    source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Lack of connectivity
-
-  - field: access_mode
-    value: independent
-    note: "Permits are issued to private parties, with the permit holder acting as trip leader and required for the whole trip."
-    source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
-    source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: About
-
-  - field: closure
-    value: { status: seasonal, note: "Winter: trail conditions are not updated and heavy snow is expected October-April; the backcountry permit offices have shut until next season (phone 307-739-3399). Planned 2027 construction keeps Death Canyon Trailhead closed until June 19, 2027.", as_of: 2026-11-10 }
-    source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
-    source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Winter Conditions
-
-  - field: closure
-    value: { status: partially_closed, note: "Death Canyon Road and Trailhead (start of the Death Canyon TCT variants) are listed as closed to all use under the park's road construction updates for November 2026.", as_of: 2026-11-03 }
-    source_url: https://www.nps.gov/grte/planyourvisit/conditions.htm
-    source_title: Alerts & Current Conditions - Grand Teton National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Road Construction
+- field: official_url
+  value: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Camping Routes and Zones
+  evidence:
+    page: P1
+    quote: '## Backcountry Camping Routes and Zones'
+  verified: true
+- field: distance_km
+  value: 62.8
+  basis: one_way
+  note: Page gives 39 miles; converted to km (x1.609344, rounded).
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Teton Crest Trail (TCT)
+  evidence:
+    page: P1
+    quote: The Teton Crest Trail is a 39-mile point to point route starting outside the park at Phillips Pass and ending at String Lake.
+  verified: true
+- field: elevation_gain_m
+  value: 2743
+  note: Page says over 9000 feet of gain; converted to metres (x0.3048, rounded), so a minimum.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Teton Crest Trail (TCT)
+  evidence:
+    page: P1
+    quote: This route climbs over 9000’ of elevation gain
+  verified: true
+- field: route_type
+  value: point_to_point
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Teton Crest Trail (TCT)
+  evidence:
+    page: P1
+    quote: 39-mile point to point route
+  verified: true
+- field: best_months
+  value:
+  - 8
+  - 9
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Snow into July
+  evidence:
+    page: P3
+    quote: Backpacking the Tetons is typically more enjoyable in August and September.
+  verified: true
+- field: season_note
+  value: Winter conditions last well into July; high routes stay snow-covered and passes can be treacherous before August.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Planning a trip before August? Grand Teton is snowy!
+  evidence:
+    page: P3
+    quote: Winter conditions persist well into July. High-elevation routes remain snow-covered.
+  verified: true
+- field: season_note
+  value: Valley trails clear of snow by mid-June, while mountain trails and passes may keep snow until late July.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Hike Smart
+  evidence:
+    page: P2
+    quote: Snow melts gradually, leaving valley trails snow-free by mid-June. Mountain trails and passes may not be snow-free until late July.
+  verified: true
+- field: trailhead_access
+  value: The full route starts outside the park at Phillips Pass and ends at String Lake; a shorter option starts at Granite Canyon trailhead.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Teton Crest Trail (TCT)
+  evidence:
+    page: P1
+    quote: starting outside the park at Phillips Pass and ending at String Lake. This route climbs over 9000’ of elevation gain and is best enjoyed over multiple days. You can also start at the Granite Canyon trailhead
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are barred from the backcountry apart from qualified service animals.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: General Updates
+  evidence:
+    page: P2
+    quote: With exception of qualified service animals, pets are not allowed in the backcountry. This includes the Grand Teton Bike Pathway and the Snake River.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Campfires are allowed only in fire rings, and only at some backcountry campsites.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: General Updates
+  evidence:
+    page: P2
+    quote: Campfires are only permitted within the fire rings in campgrounds and at some, not all, backcountry campsites.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    note: Groups of seven or more use designated group campsites.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Choosing a place to sleep
+  evidence:
+    page: P1
+    quote: Group sites are designated spots for groups of 7 or larger.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: At lakeshore sites a stay is capped at three nights in the same site.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Lakeshore Sites
+  evidence:
+    page: P1
+    quote: Can stay three nights in the same site.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Passes such as Paintbrush Divide, Hurricane Pass and Static Peak Divide stay snowy into summer; ice axe, crampons and self-arrest skill are needed.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Snow into July
+  evidence:
+    page: P3
+    quote: Paintbrush Divide, Hurricane Pass, and Static Peak Divide, among others, remain snowy and hazardous well into the summer months.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Black and grizzly bears live throughout the park; approved bear-resistant food storage is required.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Bear Country
+  evidence:
+    page: P3
+    quote: Backpackers are required to carry approved bear-resistant storage except where food storage boxes are provided.
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: Afternoon thunderstorms are common; stay off exposed summits, ridges and open ground.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Lightning
+  evidence:
+    page: P3
+    quote: Afternoon thunderstorms are common in the Tetons. Avoid exposed summits and ridges, open areas, lone trees, and bodies of water.
+  verified: true
+- field: hazard
+  value:
+    type: altitude
+    note: Altitude sickness can strike anyone; ascend slowly and descend if symptoms persist.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Altitude Sickness
+  evidence:
+    page: P3
+    quote: Altitude sickness may strike anyone.
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Northern canyons have difficult, dangerous stream crossings without bridges.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Northern Canyons
+  evidence:
+    page: P1
+    quote: Hiking can include difficult and dangerous stream crossings without bridges.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Some water sources, including Fox Creek Pass and Death Canyon Shelf, may run dry in late summer.
+  source_url: https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm
+  source_title: Know Before You Go - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Drinking Water Access
+  evidence:
+    page: P3
+    quote: 'In late summer, the following areas may become dry: Fox Creek Pass, Death Canyon Shelf, Mt. Hunt Divide, and Open Canyon.'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Death Canyon Trailhead is shut until June 19, 2027 for construction.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Plan Ahead for 2027 Construction
+  evidence:
+    page: P2
+    quote: Death Canyon Trailhead will be closed until June 19, 2027.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Trail conditions are not updated in winter; heavy snow and freezing temperatures are expected October to April.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  source_title: Backcountry and Trail Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Winter Conditions
+  evidence:
+    page: P2
+    quote: Expect heavy snow and freezing temperatures when recreating in the park between October - April.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 20
+  failed: 0
+  reasons: {}

@@ -1,246 +1,315 @@
 slug: mount-whitney-trail
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney
-
-  - field: distance_km
-    value: 17.1
-    basis: one_way
-    note: "Whitney Portal to the summit; NPS gives 10.7 miles (17.1 km) for this shortest and most used route."
-    source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
-    source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Routes
-
-  - field: distance_km
-    value: 35.4
-    basis: round_trip
-    note: "Inyo NF calls the day hike a 22-mile round trip; converted to km (x1.609, rounded)."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Day Use – Mt. Whitney Zone Permit
-
-  - field: elevation_gain_m
-    value: 1890
-    note: "Page says the trail climbs more than 6,200 feet from Whitney Portal (8,300 ft) to the summit; converted to metres (x0.3048, rounded). The real gain is a little higher."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney Lottery & Permit Reservations
-
-  - field: high_point_m
-    value: 4421
-    note: "Summit elevation as given by NPS: 14,505 feet (4,421 m, NAVD88)."
-    source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
-    source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Routes
-
-  - field: duration
-    value: { min_hours: 12, max_hours: 14 }
-    note: "Expected time for a day hike to the summit and back; Inyo NF suggests leaving before sunrise and being ready to walk in the dark."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Day Use – Mt. Whitney Zone Permit
-
-  - field: route_type
-    value: out_and_back
-    note: "Day hikers go up and back down the same trail from Whitney Portal."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Day Use – Mt. Whitney Zone Permit
-
-  - field: difficulty_official
-    value: { label: "non-technical, but strenuous", scale: "Inyo National Forest (descriptive, not a graded scale)" }
-    note: "Applies when the route is free of snow."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney Lottery & Permit Reservations
-
-  - field: best_months
-    value: [7, 8, 9]
-    note: "Inyo NF says the trail is usually free of snow from July to late September."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney Lottery & Permit Reservations
-
-  - field: season_note
-    value: "Outside roughly July to late September the route usually holds snow or ice and becomes a winter mountaineering climb; Inyo NF says to expect ice and snow until early July."
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney Lottery & Permit Reservations
-
-  - field: permit_required
-    value: "yes"
-    note: "Anyone entering the Mt. Whitney Zone needs a wilderness permit, for day hikes as well as overnight trips, all year round. Daily quotas apply 1 May-1 Nov."
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
-    source_title: Inyo National Forest | Wilderness Permits | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Wilderness Permits
-
-  - field: permit
-    value:
-      name: Mt. Whitney Day Use (Mt. Whitney Zone) permit
-      kind: lottery
-      how_to_apply: "Send one application to the annual Recreation.gov lottery (up to 10 alternate dates); winners pay and confirm by the April deadline, then leftover dates go first come, first served. Valid for one calendar day on any Whitney Zone route; quota 100 people a day, 1 May-1 Nov."
-      booking_window: "Lottery 1 Feb-1 Mar; results 15 Mar; winners must pay by 9 pm PT on 21 Apr; remaining dates open 7:00 am PT on 22 Apr. Non-quota season (2 Nov-30 Apr): unlimited, booked online within 2 weeks of the trip"
-      official_url: https://www.recreation.gov/permits/445860
-      price: { amount: 15.00, currency: USD, unit: per_person, audience: all, note: "per-person reservation fee that lottery winners pay to claim their date" }
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Important Dates
-
-  - field: permit
-    value:
-      name: Mt. Whitney Trail overnight permit
-      kind: lottery
-      how_to_apply: "Allocated in the same Recreation.gov lottery as day use. It allows camping along the Mt. Whitney Trail and a summit bid, and can be extended onto the JMT or PCT by adding an exit point and date; it cannot be used for a one-day hike. Quota 60 people a day, 1 May-1 Nov."
-      booking_window: "Lottery 1 Feb-1 Mar; results 15 Mar; winners must pay by 9 pm PT on 21 Apr; remaining dates open 7:00 am PT on 22 Apr. Non-quota season (2 Nov-30 Apr): unlimited, booked online within 2 weeks of the trip"
-      official_url: https://www.recreation.gov/permits/445860
-      price: { amount: 15.00, currency: USD, unit: per_person, audience: all, note: "per-person reservation fee that lottery winners pay to claim their date" }
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Overnight — Mt. Whitney Trail
-
-  - field: fee
-    value: { name: Wilderness permit reservation fee, amount: 6.00, currency: USD, unit: per_application, audience: all, note: "Charged per permit on top of the per-person fee; no discounts, and interagency passes are not accepted." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
-    source_title: Inyo National Forest | Wilderness Permits | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Fees
-
-  - field: fee
-    value: { name: Mt. Whitney Zone per-person fee, amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For trips entering the Mt. Whitney Zone; no nightly charge and no age discounts. Mt. Whitney Day Use and Trail Overnight permits are not refundable." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
-    source_title: Inyo National Forest | Wilderness Permits | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Fees
-
-  - field: trailhead_access
-    value: "The trail starts at Whitney Portal on the east side of the Sierra, reached by road 13 miles (21 km) west of Lone Pine."
-    source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
-    source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Routes
-
-  - field: public_transport
-    value: "Eastern Sierra Transit (ESTA) runs buses between towns along Highway 395. The trailhead routes it lists are summer services near Mammoth Lakes, Reds Meadow and Bishop Creek; none is listed for Whitney Portal."
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
-    source_title: Inyo National Forest | Wilderness Permits | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Local Transportation in the Eastern Sierra
-
-  - field: rule_dogs
-    value: { value: restricted, note: "Dogs under control are allowed on national forest land, but pets are banned in Sequoia National Park, and the summit lies in the park." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
-    source_title: Inyo National Forest | Wilderness Regulations | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Pets
-
-  - field: rule_fires
-    value: { value: not_allowed, note: "The Mt. Whitney area is on Inyo NF's list of places closed to campfires; gas or liquid-fuel stoves may be used, but not stoves burning wood or other solid fuel." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
-    source_title: Inyo National Forest | Wilderness Regulations | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Campfire Restrictions
-
-  - field: rule_camping
-    value: { value: restricted, note: "Overnight stays need a permit. Use existing sites at least 100 ft from trails and water; camping is banned at Mirror Lake and Trailside Meadow. Bear-resistant food storage is mandatory in the Mt. Whitney area and solid human waste must be packed out." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
-    source_title: Inyo National Forest | Wilderness Regulations | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Camping Restrictions
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 15, note: "Groups larger than 15 people are prohibited, even when split across separate permits." }
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
-    source_title: Inyo National Forest | Wilderness Regulations | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: General Wilderness Restrictions
-
-  - field: hazard
-    value: { type: cold, note: "When snow or ice is on the mountain, safe travel requires winter mountaineering skills and equipment; ice and snow are expected until early July." }
-    source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
-    source_title: Inyo National Forest | Mount Whitney | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Mount Whitney Lottery & Permit Reservations
-
-  - field: hazard
-    value: { type: altitude, note: "The Forest Service lists high altitude among the main natural hazards of a Whitney climb and advises building in time to acclimatize." }
-    source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
-    source_title: Hiking the Mt. Whitney Trail (PDF)
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Welcome to Mount Whitney
-
-  - field: hazard
-    value: { type: lightning, note: "Lightning storms and high winds are among the natural hazards the Forest Service lists for the mountain." }
-    source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
-    source_title: Hiking the Mt. Whitney Trail (PDF)
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Welcome to Mount Whitney
-
-  - field: nearest_town
-    value: { name: Lone Pine, note: "Whitney Portal is 13 miles (21 km) west of the town." }
-    source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
-    source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Routes
-
-  - field: access_mode
-    value: independent
-    note: "Hikers reserve their own permits on Recreation.gov; a permit naming the commercial service is needed only if a guide or pack outfit is used."
-    source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
-    source_title: Inyo National Forest | Wilderness Permits | Forest Service
-    publisher: USDA Forest Service, Inyo National Forest
-    checked_at: 2026-11-15
-    evidence_heading: Commercial or Organized Groups
-
-  - field: closure
-    value:
-      status: seasonal
-      note: "Upper Whitney Portal Road is listed as closed for the annual winter closure."
-      as_of: 2026-11-13
-    source_url: "https://www.inyocounty.us/sites/default/files/2026-11/CURRENT%20ROAD%20UPDATE%20%20%2011.13.26.pdf"
-    source_title: INYO COUNTY ROAD OPEN/CLOSED STATUS (PDF, updated 11/13/2026)
-    publisher: Inyo County Public Works
-    checked_at: 2026-11-15
-    evidence_heading: Upper Whitney Portal Rd - ANNUAL WINTER CLOSURE
+- field: official_url
+  value: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  note: Inyo National Forest page for the Mt. Whitney lottery and permits.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+  evidence:
+    page: P1
+    quote: Mount Whitney Lottery & Permit Reservations
+  verified: true
+- field: distance_km
+  value: 17.1
+  basis: one_way
+  note: NPS states 10.7 miles (17.1 km) one way from Whitney Portal to the summit.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trail Routes
+  evidence:
+    page: P3
+    quote: a 10.7 mile (17.1 km) trail from Whitney Portal
+  verified: true
+- field: distance_km
+  value: 35.4
+  basis: round_trip
+  note: 22 miles x 1.609344 = 35.4 km, round trip for the day hike.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Day Use – Mt. Whitney Zone Permit
+  evidence:
+    page: P1
+    quote: The 22-mile round-trip hike will challenge even very fit hikers.
+  verified: true
+- field: elevation_gain_m
+  value: 1890
+  note: 6,200 ft x 0.3048 = 1,890 m, rounded; page says "over", so a lower bound.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+  evidence:
+    page: P1
+    quote: The trail gains over 6,200 feet of elevation before reaching the summit in Sequoia National Park.
+  verified: true
+- field: high_point_m
+  value: 4421
+  note: Summit height as stated by NPS.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trail Routes
+  evidence:
+    page: P3
+    quote: The elevation at the summit is 14,505 feet (4,421 meters) (NAVD88).
+  verified: true
+- field: duration
+  value:
+    min_hours: 12
+    max_hours: 14
+  note: Day-hike round trip; start before sunrise and be ready to walk in the dark.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Day Use – Mt. Whitney Zone Permit
+  evidence:
+    page: P1
+    quote: Expect to hike 12 to 14 hours to the summit and back.
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Day hikers go up and back on the same trail.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Day Use – Mt. Whitney Zone Permit
+  evidence:
+    page: P1
+    quote: The 22-mile round-trip hike will challenge even very fit hikers.
+  verified: true
+- field: difficulty_official
+  value:
+    label: non-technical, but strenuous
+    scale: Inyo National Forest (descriptive)
+  note: Applies when the route is snow-free.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+  evidence:
+    page: P1
+    quote: The Mt. Whitney Trail is a non-technical, but strenuous, route to the summit when it is free of snow.
+  verified: true
+- field: best_months
+  value:
+  - 7
+  - 8
+  - 9
+  note: July to late September per Inyo NF.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+  evidence:
+    page: P1
+    quote: The trail is usually snow-free from July to late September
+  verified: true
+- field: season_note
+  value: Expect ice and snow until the start of July; with snow or ice on the mountain, winter mountaineering skills and gear are needed.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Are You Prepared ?
+  evidence:
+    page: P1
+    quote: Weather, expect ice and snow until the beginning of July
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Required for day hikes and overnight trips alike.
+  source_url: https://www.recreation.gov/permits/445860
+  source_title: Mt. Whitney, Inyo National Forest - Recreation.gov
+  publisher: Recreation.gov (USDA Forest Service, Inyo National Forest)
+  checked_at: 2026-11-15
+  evidence_heading: Permit & Season Information
+  evidence:
+    page: P5
+    quote: A wilderness permit is required year-round to visit Mt. Whitney.
+  verified: true
+- field: permit
+  value:
+    name: Mt. Whitney lottery application
+    kind: lottery
+    how_to_apply: Submit one lottery application on Recreation.gov for the Mt. Whitney Zone permits.
+    official_url: https://www.recreation.gov/permits/445860
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Important Dates
+  evidence:
+    page: P1
+    quote: Apply for Mt. Whitney lottery on https://www.recreation.gov/permits/445860
+  verified: true
+- field: permit
+  value:
+    name: Mt. Whitney lottery application window
+    kind: lottery
+    how_to_apply: Apply for the lottery during this window.
+    booking_window: February 1 - March 1
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Important Dates
+  evidence:
+    page: P1
+    quote: February 1 - March 1
+  verified: true
+- field: permit
+  value:
+    name: Mt. Whitney Day Use permit
+    kind: day_use
+    how_to_apply: Win a date in the lottery, or reserve a remaining date once reservations open on Recreation.gov.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Day Use – Mt. Whitney Zone Permit
+  evidence:
+    page: P1
+    quote: This permit is for one day only, from midnight to midnight and is valid for all routes in the Mt. Whitney Zone.
+  verified: true
+- field: permit
+  value:
+    name: Mt. Whitney Trail overnight permit
+    kind: overnight
+    how_to_apply: Win a date in the lottery, or reserve a remaining date once reservations open on Recreation.gov.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Overnight — Mt. Whitney Trail
+  evidence:
+    page: P1
+    quote: This permit includes multi-night trips starting on the Mt. Whitney Trail, allows camping along the Mt. Whitney Trail and summiting Mt. Whitney.
+  verified: true
+- field: permit
+  value:
+    name: Mt. Whitney quota season limits
+    kind: quota
+    how_to_apply: Permits are capped per day in the quota season; outside it they are unlimited and can be booked online up to two weeks ahead.
+  note: Quota season runs from 1 May to 1 November.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Important Dates
+  evidence:
+    page: P1
+    quote: Quota season when number of people per day is limited to 100 per day for day use and 60 per day for overnight.
+  verified: true
+- field: fee
+  value:
+    name: Mt. Whitney lottery reservation fee
+    amount: 15
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Paid by lottery winners to claim the date, by the April 21 deadline.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Important Dates
+  evidence:
+    page: P1
+    quote: You must pay the $15 per person reservation fee and complete the acceptance before 9 p.m. Pacific time (midnight Eastern Time) April 21 or you will lose the date.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 15
+    note: Groups larger than 15 people are prohibited.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Important Dates
+  evidence:
+    page: P1
+    quote: Groups larger than 15 people are prohibited.
+  verified: true
+- field: trailhead_access
+  value: Hikers start at Whitney Portal, a road trip of 13 miles (21 km) from Lone Pine on the Sierra east side.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trail Routes
+  evidence:
+    page: P3
+    quote: Whitney Portal, 13 miles (21 km) west of the town of Lone Pine on the east side of the Sierra
+  verified: true
+- field: closure
+  value:
+    status: closed
+    note: The road to the upper Whitney Portal area is closed for the annual winter closure per the county road report.
+    as_of: 2026-11-13
+  source_url: https://www.inyocounty.us/sites/default/files/2026-11/CURRENT%20ROAD%20UPDATE%20%20%2011.13.26.pdf
+  source_title: PDF
+  publisher: Inyo County Road Department
+  checked_at: 2026-11-15
+  evidence:
+    page: P2
+    quote: Upper Whitney Portal Rd ANNUAL WINTER CLOSURE CLOSED
+  verified: true
+- field: nearest_town
+  value:
+    name: Lone Pine
+    note: Whitney Portal is 13 miles (21 km) west of the town.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trail Routes
+  evidence:
+    page: P3
+    quote: Whitney Portal, 13 miles (21 km) west of the town of Lone Pine on the east side of the Sierra
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: When snow or ice covers the mountain, safe travel needs winter mountaineering skills and equipment.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  source_title: Inyo National Forest | Mount Whitney | Forest ServiceLock
+  publisher: USDA Forest Service, Inyo National Forest
+  checked_at: 2026-11-15
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+  evidence:
+    page: P1
+    quote: However when snow or ice is on the mountain winter mountaineering skills and equipment are necessary for safe travel.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Spring and early summer climbs call for ice axes and crampons; from mid-July to early October technical gear is usually unnecessary.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  source_title: Seeing and Climbing Mt. Whitney - Sequoia & Kings Canyon National Parks (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Trail Routes
+  evidence:
+    page: P3
+    quote: Ice axes and crampons are needed in spring and early summer, but technical climbing equipment is not usually necessary between mid-July and early October.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 23
+  failed: 0
+  reasons: {}

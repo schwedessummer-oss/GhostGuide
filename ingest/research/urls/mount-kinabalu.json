@@ -1,0 +1,39 @@
+{
+ "seed_no": 88,
+ "slug": "mount-kinabalu",
+ "name": "Mount Kinabalu",
+ "urls": [
+  {
+   "url": "https://www.sabahparks.org.my/index.php/kinabalu-park",
+   "purpose": "park and climb page"
+  },
+  {
+   "url": "https://www.sabahparks.org.my/",
+   "purpose": "homepage, notices"
+  },
+  {
+   "url": "https://reservation.sabahparks.org.my/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.sabahparks.org.my/index.php/kinabalu-park/gurkha-hut",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://reservation.sabahparks.org.my/high-altitude-training",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.sabahparks.org.my/index.php/kinabalu-park/poring",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://whs.sabahparks.org.my",
+   "purpose": "crawled"
+  }
+ ]
+}

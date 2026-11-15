@@ -1,0 +1,33 @@
+seed_no: 86
+slug: hallasan-seongpanak
+name: Hallasan (Seongpanak)
+region_group: asia-middle-east
+countries:
+- KR
+subdivisions: []
+area:
+  name: Jeju
+  wikidata: null
+  official_url: null
+agency:
+  name: Hallasan National Park Office
+  wikidata: null
+hike_wikidata: null
+official_url: https://visithalla.jeju.go.kr
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Returned 200 but TEXT_CHARS 0 and empty title, so unverified against the criteria; english.visithalla.jeju.go.kr errored. Needs a search for an English trail/closure page.

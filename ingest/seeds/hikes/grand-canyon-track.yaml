@@ -1,0 +1,33 @@
+seed_no: 105
+slug: grand-canyon-track
+name: Grand Canyon Track
+region_group: oceania
+countries:
+- AU
+subdivisions: []
+area:
+  name: Blue Mountains National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: NSW National Parks and Wildlife Service
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: All 200, TEXT_CHARS 7684/8815/3536. No fees/permits page found separately.

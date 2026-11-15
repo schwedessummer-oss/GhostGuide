@@ -1,0 +1,33 @@
+seed_no: 102
+slug: hooker-valley-track
+name: Hooker Valley
+region_group: oceania
+countries:
+- NZ
+subdivisions: []
+area:
+  name: Aoraki/Mount Cook National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Department of Conservation (DOC)
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only 1 verified URL.

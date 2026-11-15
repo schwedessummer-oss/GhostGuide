@@ -1,0 +1,35 @@
+{
+ "seed_no": 70,
+ "slug": "fish-river-canyon",
+ "name": "Fish River Canyon",
+ "urls": [
+  {
+   "url": "https://www.nwr.com.na",
+   "purpose": "official_url"
+  },
+  {
+   "url": "https://www.meft.gov.na",
+   "purpose": "ministry home (permits/regulations)"
+  },
+  {
+   "url": "https://www.meft.gov.na/services/books-book-chapters-and-conference-proceeding/160/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.meft.gov.na/services/permits-registrationscertificates-licences/173/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.meft.gov.na/policies-legislation/regulations/184/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.meft.gov.na/policies-legislation/regulations/244/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.meft.gov.na/policies-legislation/regulations/254/",
+   "purpose": "crawled"
+  }
+ ]
+}

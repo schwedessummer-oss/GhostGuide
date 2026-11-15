@@ -1,0 +1,35 @@
+{
+ "seed_no": 102,
+ "slug": "hooker-valley-track",
+ "name": "Hooker Valley",
+ "urls": [
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/",
+   "purpose": "hike page, alerts"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/things-to-do/walking-and-tramping/track-categories/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/pets-on-conservation-land",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/get-involved/apply-for-permits/all-permissions/drone-use-on-conservation-land/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/walking-and-tramping-gear-lists/short-walks-gear-list/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.journeys.nzta.govt.nz/highway-conditions/canterbury",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/paid-car-parks/",
+   "purpose": "crawled"
+  }
+ ]
+}

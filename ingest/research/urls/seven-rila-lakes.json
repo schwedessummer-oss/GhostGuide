@@ -1,0 +1,39 @@
+{
+ "seed_no": 61,
+ "slug": "seven-rila-lakes",
+ "name": "Seven Rila Lakes",
+ "urls": [
+  {
+   "url": "https://rilanationalpark.bg/en",
+   "purpose": "park page, rules, visitor info (English)"
+  },
+  {
+   "url": "https://rilanationalpark.bg/",
+   "purpose": "park home (Bulgarian)"
+  },
+  {
+   "url": "https://rilanationalpark.bg/tourism/safety-rules-2.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rilanationalpark.bg/the-park/abiota/water/lakes-2.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rilanationalpark.bg/directorate/management/park-directorate/access-to-public-information-2.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rilanationalpark.bg/directorate/management/legislation/rules-2.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rilanationalpark.bg/directorate/management/legislation/management-plans/rilomanastirska-gora-reserve-management-plan-2.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://rilanationalpark.bg/directorate/management/legislation/internal-regulations-2.html",
+   "purpose": "crawled"
+  }
+ ]
+}

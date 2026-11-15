@@ -1,0 +1,43 @@
+{
+ "seed_no": 66,
+ "slug": "malerweg",
+ "name": "Malerweg",
+ "urls": [
+  {
+   "url": "https://nationalpark-saechsische-schweiz.de/en/",
+   "purpose": "park rules, closures, alerts (English)"
+  },
+  {
+   "url": "https://nationalpark-saechsische-schweiz.de/",
+   "purpose": "park home, closures/diversions after 2022 fire (German)"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de",
+   "purpose": "tourism board, Malerweg trail info"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg/faq",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg/planen",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg/etappen",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg/unterkunft",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.saechsische-schweiz.de/malerweg/kunst-geschichte",
+   "purpose": "crawled"
+  }
+ ]
+}

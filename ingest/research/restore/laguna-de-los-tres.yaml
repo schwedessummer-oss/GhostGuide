@@ -1,0 +1,120 @@
+slug: laguna-de-los-tres
+deleted_facts:
+- field: permit
+  value:
+    name: Los Glaciares Zona Norte access ticket
+    kind: day_use
+    how_to_apply: In Zona Norte tickets are sold only online, via the web or by scanning the QR code on site; payment is by credit or debit card only, no cash.
+    official_url: https://www.argentina.gob.ar/parquesnacionales/tarifas
+    price:
+      amount: 50000
+      currency: ARS
+      unit: per_person
+      audience: non_resident
+      note: '''Tarifa general''; rates valid from 1 June 2026'
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  evidence_heading: Tarifas
+- field: permit
+  value:
+    name: Trail registration at the Visitor Centre (Registro de uso de montaña)
+    kind: other
+    how_to_apply: Register at the park visitor centre before El Chaltén, or online. The activities page says registration is required to walk the trails from May to September.
+    booking_window: May to September for trails
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    official_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  evidence_heading: Senderismo y trekking
+- field: fee
+  value:
+    name: Los Glaciares access, general rate
+    amount: 50000
+    currency: ARS
+    unit: per_person
+    audience: non_resident
+    valid_from: 2026-06-01
+    note: Listed as 'Tarifa general', applies to Zona Norte and Zona Sur.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  evidence_heading: Tarifas
+- field: fee
+  value:
+    name: Los Glaciares access, national residents
+    amount: 25000
+    currency: ARS
+    unit: per_person
+    audience: resident
+    valid_from: 2026-06-01
+    note: Listed as 'Residentes nacionales'.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  evidence_heading: Tarifas
+- field: fee
+  value:
+    name: Los Glaciares access, provincial residents
+    amount: 8000
+    currency: ARS
+    unit: per_person
+    audience: resident
+    valid_from: 2026-06-01
+    note: Listed as 'Residentes provinciales'.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  evidence_heading: Tarifas
+- field: fee
+  value:
+    name: Los Glaciares access, students
+    amount: 15000
+    currency: ARS
+    unit: per_person
+    audience: student
+    valid_from: 2026-06-01
+    note: Listed as 'Estudiantes'; Argentine student documents are required. Several groups, including children 0 to 6, are exempt.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas
+  evidence_heading: Tarifas
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No fires in Zona Norte; only gas stoves in approved camping areas under supervision.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
+- field: rule_camping
+  value:
+    value: restricted
+    note: The De Agostini, Capri and Poincenot campsites are run by the Asociación Amigos del Parque Nacional Los Glaciares and need a reservation.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
+- field: hazard
+  value:
+    type: cold
+    note: From May to September trails carry ice, mud and snow and become extremely difficult; poles and crampons are required. Walking or skating on frozen lagoons is banned.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
+- field: hazard
+  value:
+    type: weather
+    note: Weather can change at any moment in any season; check road and trail status
+    and expect weak or no mobile signal in some sectors.: null
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  evidence_heading: Recomendaciones generales
+- field: hazard
+  value:
+    type: remoteness
+    note: There are no shops on the trails, so carry water, food, warm layers and a torch, and plan to be back in town before dark; APN advises walking with a companion.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  evidence_heading: Recomendaciones para la Zona Norte del Parque Nacional
+- field: trailhead_access
+  value: Zona Norte services and trails all start from the town of El Chaltén, which is 95 km of paved road via RP 41 from RN 40; El Calafate to El Chaltén is 220 km, all paved.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  evidence_heading: Puntos de entrada al parque / En auto
+- field: public_transport
+  value: Regular buses run daily between El Calafate and El Chaltén, and long-distance buses reach the El Chaltén terminal from other parts of Argentina and from Punta Arenas and Puerto Natales in Chile.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  evidence_heading: Ómnibus
+- field: nearest_town
+  value:
+    name: El Chaltén
+    note: Base for Zona Norte services and trails.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  evidence_heading: Puntos de entrada al parque

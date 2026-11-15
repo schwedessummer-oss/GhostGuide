@@ -1,0 +1,33 @@
+seed_no: 49
+slug: kungsleden-abisko-nikkaluokta
+name: Kungsleden (Abisko–Nikkaluokta)
+region_group: europe
+countries:
+- SE
+subdivisions: []
+area:
+  name: Lapland
+  wikidata: null
+  official_url: null
+agency:
+  name: Länsstyrelsen Norrbotten / Svenska Turistföreningen
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.swedishtouristassociation.com/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only STF pages verified. lansstyrelsen.se/norrbotten guessed deep links 404; root not confirmed to be relevant. Needs a follow-up for the trail's own page, alerts and rules.

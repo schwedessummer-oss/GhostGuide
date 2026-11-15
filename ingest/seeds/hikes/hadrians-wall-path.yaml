@@ -1,0 +1,33 @@
+seed_no: 57
+slug: hadrians-wall-path
+name: Hadrian's Wall Path
+region_group: europe
+countries:
+- GB
+subdivisions: []
+area:
+  name: England
+  wikidata: null
+  official_url: null
+agency:
+  name: National Trails
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only the trail page verified (200, 25.7k chars); it likely covers code of conduct, passport, closures and transport. Guessed subpages 404.

@@ -1,0 +1,33 @@
+seed_no: 95
+slug: balcony-walk-jebel-shams
+name: Balcony Walk (W6)
+region_group: asia-middle-east
+countries:
+- OM
+subdivisions: []
+area:
+  name: Jebel Shams
+  wikidata: null
+  official_url: null
+agency:
+  name: Ministry of Heritage & Tourism
+  wikidata: null
+hike_wikidata: null
+official_url: https://experienceoman.om/en
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only the home page verified; no Jebel Shams / Balcony Walk page found yet.

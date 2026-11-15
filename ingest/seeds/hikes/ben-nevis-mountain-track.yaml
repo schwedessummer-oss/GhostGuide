@@ -1,0 +1,33 @@
+seed_no: 55
+slug: ben-nevis-mountain-track
+name: Ben Nevis Mountain Track
+region_group: europe
+countries:
+- GB
+subdivisions: []
+area:
+  name: Lochaber, Scotland
+  wikidata: null
+  official_url: null
+agency:
+  name: John Muir Trust
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.johnmuirtrust.org/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'Weak: no Ben Nevis page found (guessed JMT deep links 404). MWIS is a mountain-weather service, not strictly an agency; drop if too loose. Needs follow-up search.'

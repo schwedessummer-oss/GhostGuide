@@ -1,0 +1,43 @@
+{
+ "seed_no": 108,
+ "slug": "kokoda-track",
+ "name": "Kokoda Track",
+ "urls": [
+  {
+   "url": "https://www.kokodatrackauthority.org",
+   "purpose": "home, hike overview"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/trekking-information",
+   "purpose": "permits, operators, planning"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/about-the-kokoda-track-authority",
+   "purpose": "agency background"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/track-permit-fees-use",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/x,963,345,0/trek-permits-for-the-kokoda-track.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/maintenance-feedback-form",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/x,963,344,0/planning-your-walk-along-the-kokoda-track.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/funding-track-communities",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.kokodatrackauthority.org/kokoda-track-authority/kokoda-track-information",
+   "purpose": "crawled"
+  }
+ ]
+}

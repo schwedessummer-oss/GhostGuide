@@ -1,165 +1,158 @@
 slug: torres-del-paine-w-o
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Parque Nacional Torres del Paine
-  - field: permit_required
-    value: "yes"
-    note: Entering the park needs a paid entry ticket; the park rules forbid entering without having paid the entry fee.
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones generales al interior de la unidad
-  - field: permit
-    value:
-      name: Torres del Paine park entry ticket
-      kind: day_use
-      how_to_apply: CONAF directs visitors to buy the entry ticket on its Pases Parques site, which also shows current hours and conditions.
-      booking_window: "Sales for 2027 are paused during November 2026 for a price update and reopen from December 2026"
-      official_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
-    note: The page says anyone who books overnight accommodation inside the park has entry tickets guaranteed. Lodging, refugios and campsites are limited-capacity concessions booked directly with the operators.
-    source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
-    source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial) - Pases Digitales Parques Nacionales
-    publisher: CONAF (Pases Parques)
-    checked_at: 2026-11-15
-    evidence_heading: INFORMACIÓN IMPORTANTE
-  - field: permit
-    value:
-      name: Torres del Paine entry pricing structure (from 1 May 2026)
-      kind: other
-      how_to_apply: From 1 May 2026 CONAF sells a one-day entry and an entry for two or more days, valid for a continuous stretch of up to 10 days. Amounts per category are on Pases Parques.
-      official_url: https://www.pasesparques.cl/es
-    note: Exact fees are not stated on the CONAF page, so none are recorded here.
-    source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
-    source_title: El 1° de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: El 1° de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
-  - field: season_note
-    value: "Park hours: summer (October to April) 07:00-21:00 with last entry 21:00; winter (May to September) 08:00-18:30 with last entry 18:30. Hours and days can change with weather or safety orders. Microspikes and trekking poles are required or strongly recommended for safety."
-    source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
-    source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial) - Pases Digitales Parques Nacionales
-    publisher: CONAF (Pases Parques)
-    checked_at: 2026-11-15
-    evidence_heading: Temporada / Horario
-  - field: season_note
-    value: "In winter the W sections between Paine Grande, Italiano, Británico, Chileno and Torres, and Grey to Paine Grande, are walked only with a guide under the park's winter protocol. The O Circuit stretches from Serón through Dickson, Los Perros, Paso and Grey are rated closed in winter. Snow risk is listed for May to September."
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados
-  - field: access_mode
-    value: independent
-    note: No official page found that requires a licensed operator in summer; in winter parts of the W need a guide (see season note).
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados
-  - field: licensed_operator_list_url
-    value: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
-    note: The ticket page links an official list of accredited specialised guides (used for the winter guided sections).
-    source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
-    source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial) - Pases Digitales Parques Nacionales
-    publisher: CONAF (Pases Parques)
-    checked_at: 2026-11-15
-    evidence_heading: guías especializados acreditados
-  - field: rule_dogs
-    value: { value: not_allowed, note: Pets and exotic animals may not enter the park. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones
-  - field: rule_drones
-    value: { value: restricted, note: Drones are banned inside the park except for research or professional filming with prior CONAF authorisation. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones
-  - field: rule_fires
-    value: { value: not_allowed, note: Any heat source (fires, grills, gas stoves, cigarettes) is banned and penalised under Law 20653; cooking is allowed only with stoves that burn no plant material, and only in designated camp areas. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Prohibiciones / Recomendaciones
-  - field: rule_camping
-    value: { value: restricted, note: Camping is allowed only in the authorised and signed camping areas; sleeping anywhere else is prohibited. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Recomendaciones
-  - field: rule_group_size
-    value: { value: restricted, note: "Park rules tell hikers to walk accompanied and not alone; no maximum group size is stated." }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Respecto al senderismo
-  - field: hazard
-    value: { type: wildlife, note: CONAF warns that walking in the dark risks getting lost, falling or a puma attack, and that most fatal accidents involved people walking alone or leaving the trail. Walking trails without daylight is banned. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Respecto al senderismo
-  - field: hazard
-    value: { type: remoteness, note: The park has no basic services in the mountains and help for an emergency can take several hours to arrive. Mobile coverage exists only at Villa Monzino. }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Seguridad
-  - field: hazard
-    value: { type: weather, note: "Page lists snow risk for May to September on the W sections, snow, floods and avalanches between Grey and Paine Grande, and asks hikers on the O sections to keep checking the forecast and the circuit protocol." }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Senderos habilitados
-  - field: hazard
-    value: { type: other, note: "The final Base Torres section crosses glacial moraine, where leg joint injuries can happen." }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Sendero Guardería Torres-Mirador Base Torres
-  - field: trailhead_access
-    value: "Reached by paved road Punta Arenas to Puerto Natales, then Route 9 north; alternatively the 80 km Lago Porteño road (Y-290) from Puerto Natales. There is also a border crossing at Río Don Guillermo near Cerro Castillo."
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Accesos
-  - field: public_transport
-    value: "Four regular bus companies run from Puerto Natales at 7:30 and 14:30 to Laguna Amarga, Pudeto and the park administration. Catamarans cross Lago Grey and Lago Pehoé."
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Servicios
-  - field: nearest_town
-    value: { name: Puerto Natales, note: Main gateway; bus services to the park leave from here and the nearest hospital is here (80-140 km). }
-    source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
-    source_title: Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: Servicios
-  - field: closure
-    value: { status: open, note: "CONAF says no Base Torres access regulation will be applied in the 2026 season; it may be considered later. No closure of the W or O is stated on the pages checked.", as_of: 2026-11-15 }
-    source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
-    source_title: El 1° de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
-    publisher: Corporación Nacional Forestal (CONAF)
-    checked_at: 2026-11-15
-    evidence_heading: El 1° de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
+- field: official_url
+  value: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: '## Parque Nacional Torres del Paine'
+  verified: true
+- field: permit
+  value:
+    name: Park entry ticket (Pases Parques)
+    kind: other
+    how_to_apply: Buy digital park entry tickets on the Pases Parques site; the multi-day ticket covers a continuous stay of up to 10 days.
+    official_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
+  source_title: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
+  evidence:
+    page: P4
+    quote: una entrada por 2 o más días, válida para un período continuo de hasta 10 días como máximo
+  verified: true
+- field: season_note
+  value: Winter rules require anyone doing winter tourism on high-difficulty routes or in winter conditions to hire a guide licensed by CONAF.
+  source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
+  source_title: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
+  evidence:
+    page: P4
+    quote: toda persona que realice actividades turísticas invernales en rutas de alta dificultad o en condiciones invernales deberá contratar los servicios de un guía habilitado por CONAF
+  verified: true
+- field: season_note
+  value: The W trail between Paine Grande and the Italiano ranger post may only be hiked with a guide in winter.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: Este sendero, que forma parte de la W, se hace solo con guía en el periodo invernal, especificado en el protocolo de visitación en invierno.
+  verified: true
+- field: public_transport
+  value: Four regular bus companies run from Puerto Natales twice daily, at 7.30 and 14.30, to Laguna Amarga, Pudeto and the administration area; catamarans sail on Lago Grey and Lago Pehoé.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Medios de transporte adicionales al interior del área: navegación por catamaranes en lago Grey y lago Pehoé, cuatro compañías de buses regulares que salen desde Puerto Natales en dos horarios: 7.30 y 14.30 (laguna Amarga-Pudeto-administración).'
+  verified: true
+- field: nearest_town
+  value:
+    name: Puerto Natales
+    note: Gateway town where park buses depart; its hospital is 80 to 140 km from the park.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: Hospital de Puerto Natales, entre 80 y 140 km.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Snow is a listed risk from May to September on the Paine Grande to Italiano section.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Riesgos del sector: nieve (mayo-septiembre).'
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The final stretch to Base Torres crosses glacial moraine, which can cause leg joint injuries; snow also a risk May to September.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Riesgos del sector: nieve (mayo-septiembre). Además, el tramo forma parte de la morrena glaciar, por lo que se pueden sufrir lesiones articulares en las piernas.'
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: On the Serón to Dickson stretch of the O, check the forecast constantly and follow the official circuit protocol.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Riesgos del sector: revisar pronóstico del tiempo de manera constante, además del protocolo oficializado para el circuito.'
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: 'Emergency help is far away: ambulance from Villa Cerro Castillo takes about an hour and a half and from Puerto Natales hospital about two hours.'
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Ambulancias: desde Villa Cerro Castillo (una hora y media), hospital de Puerto Natales (dos horas) y posta de la sede administrativa (hasta media hora).'
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Safety rules keep requiring micro-spikes and trekking poles.
+  source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial)
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Idioma y moneda
+  evidence:
+    page: P2
+    quote: Por medidas de seguridad, se mantendrá la recomendación y exigencia del uso de microcrampones y bastones de treckking
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The Serón to Dickson section of the O circuit is listed as closed in winter.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: 'Dificultad de caminata invernal: cerrado.'
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 12
+  failed: 0
+  reasons: {}

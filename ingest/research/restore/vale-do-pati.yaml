@@ -1,0 +1,68 @@
+slug: vale-do-pati
+deleted_facts:
+- field: distance_km
+  value: 40
+  note: ICMBio gives 40 km for the 3-day Capão to Mucugê crossing through the Pati valley, 38 km of it inside the park. It also lists Guiné to Andaraí as 30 km in 4 days and Capão to Andaraí as about 60 km in 5 days.
+  basis: one_way
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Travessias / 3 dias / Vale do Capão - Mucugê
+- field: duration
+  value:
+    min_days: 3
+    max_days: 3
+  note: Duration of the Capão to Mucugê crossing; the 4-day and 5-day crossings through the valley are also listed.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Travessias / 3 dias / Vale do Capão - Mucugê
+- field: route_type
+  value: point_to_point
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Travessias / 3 dias / Vale do Capão - Mucugê
+- field: access_mode
+  value: guide_recommended
+  note: The park recommends hiring a visitor guide (condutor de visitantes) because trails are unsigned and faint in places; it does not make a guide mandatory.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Principais atrativos / Travessias
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets of any kind may not enter the park because of disease risk to wildlife.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Cuidados com o ambiente natural
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Campfires are banned throughout the park; use a camp stove.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Cuidados com o ambiente natural
+- field: rule_camping
+  value:
+    value: restricted
+    note: On other multi-day crossings camping is wild and unserviced. In the Pati valley itself visitors can stay in residents' homes or use the listed camping spots near the houses; avoid river banks and caves and do not create new sites.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Travessias; Cuidados com o ambiente natural
+- field: hazard
+  value:
+    type: remoteness
+    note: There is no mobile signal inside the park and the trails are unmarked in places. The park urges telling someone your plan and not hiking alone.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Dicas de segurança
+- field: hazard
+  value:
+    type: other
+    note: River pools are dark, hiding rocks and logs, and rain changes the river bed. The park warns against jumping into them.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Dicas de segurança
+- field: trailhead_access
+  value: The Capão crossings start in the Bomba hamlet in Vale do Capão (Palmeiras). The Guiné route starts near Guiné in Mucugê. The shortest valley access takes about three hours.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Travessias / 4 dias e 5 dias
+- field: public_transport
+  value: Regular daily buses reach Andaraí and Mucugê. Vans carry passengers from Palmeiras to Capão, and local transport around the park is limited.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Como chegar
+- field: nearest_town
+  value:
+    name: Palmeiras
+    note: The park headquarters are in Palmeiras. Mucugê and Andaraí are other gateway towns.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  evidence_heading: Parna da Chapada Diamantina

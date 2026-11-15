@@ -1,0 +1,19 @@
+{
+ "seed_no": 104,
+ "slug": "larapinta-trail",
+ "name": "Larapinta Trail",
+ "urls": [
+  {
+   "url": "https://nt.gov.au/parks/find-a-park/tjoritja-west-macdonnell-national-park/larapinta-trail",
+   "purpose": "hike page"
+  },
+  {
+   "url": "https://nt.gov.au/parks/find-a-park/tjoritja-west-macdonnell-national-park/larapinta-trail/plan-larapinta-trail-walk",
+   "purpose": "planning, passes, bookings"
+  },
+  {
+   "url": "https://nt.gov.au/parks/find-a-park/tjoritja-west-macdonnell-national-park/larapinta-trail/campgrounds",
+   "purpose": "campgrounds and bookings"
+  }
+ ]
+}

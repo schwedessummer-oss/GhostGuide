@@ -4,125 +4,231 @@ facts:
 - field: official_url
   value: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
   source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  source_title: Tour du Mont Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
-  evidence_heading: Tour du Mont Blanc
+  evidence_heading: Technical data
+  evidence:
+    page: P1
+    quote: 3 countries, 10.000 meters in altitude and about 60 hours of walking, 170 km of discovery for a total of 10 days of satisfaction
+  verified: true
 - field: distance_km
   value: 170
-  note: Length the official TMB site gives for the full circuit.
+  note: Length the official site gives for the whole circuit.
   basis: loop
-  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
-  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
-  checked_at: '2026-11-15'
-  evidence_heading: Tour du Mont Blanc
-- field: elevation_gain_m
-  value: 10000
-  note: The page lists this as the altitude difference of the route; it is not stated whether it is total
-    ascent only.
-  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
-  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
-  checked_at: '2026-11-15'
-  evidence_heading: Tour du Mont Blanc
-- field: duration
-  value:
-    min_days: 10
-    max_days: 10
-  note: The welcome text gives about 10 days and roughly 60 hours of walking for the circuit.
   source_url: https://www.autourdumontblanc.com/en/
   source_title: Autour du Mont-Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
   evidence_heading: Welcome to the Tour du Mont Blanc (TMB)
+  evidence:
+    page: P2
+    quote: 3 countries, one identity, 10,000 m in altitude and about 60 hours of walking, 170 km of discovery for a total of 10 days of satisfaction!
+  verified: true
+- field: elevation_gain_m
+  value: 10000
+  note: The site quotes this as altitude for the circuit and does not say whether it is ascent only.
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Welcome to the Tour du Mont Blanc (TMB)
+  evidence:
+    page: P2
+    quote: 3 countries, one identity, 10,000 m in altitude and about 60 hours of walking, 170 km of discovery for a total of 10 days of satisfaction!
+  verified: true
+- field: duration
+  value:
+    min_days: 10
+    max_days: 10
+  note: The welcome text also mentions about 60 hours of walking.
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Welcome to the Tour du Mont Blanc (TMB)
+  evidence:
+    page: P2
+    quote: 3 countries, one identity, 10,000 m in altitude and about 60 hours of walking, 170 km of discovery for a total of 10 days of satisfaction!
+  verified: true
 - field: route_type
   value: loop
-  note: The route is described as a circuit that can be walked in either direction from several start
-    points.
+  note: The circuit can be walked either way round and joined from many villages.
   source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  source_title: Tour du Mont Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Technical data
+  evidence:
+    page: P1
+    quote: Two different directions (clockwise and anticlockwise), many different starting points
+  verified: true
+- field: trailhead_access
+  value: The circuit can be joined from many places around the massif, including Courmayeur, Les Houches, Chamonix, Les Contamines, Saint-Gervais, Les Chapieux and Orsieres.
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
   evidence_heading: Description
-- field: difficulty_official
-  value:
-    label: Difficult
-    scale: Autour du Mont-Blanc
-  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
-  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
-  checked_at: '2026-11-15'
-  evidence_heading: Tour du Mont Blanc
+  evidence:
+    page: P1
+    quote: 'Many different starting points: Courmayeur, Les Houches, Chamonix, Les Contamines, St Gervais, Chapieux, Orsières (Champex, La Fouly) Trient Trient'
+  verified: true
 - field: public_transport
-  value: The route page says public transport and lifts can be used to shorten the walk, and that many
-    villages around the massif work as start points.
+  value: Public transport and lifts can be used to speed up or shorten the walk.
   source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
-  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  source_title: Tour du Mont Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
   evidence_heading: Description
+  evidence:
+    page: P1
+    quote: The possibility to use public transport and lifts to accelerate and shorten the path
+  verified: true
 - field: rule_camping
   value:
     value: restricted
-    note: Wild camping is largely banned along the route. Aosta Valley bans camping and bivouacs below
-      2,500 m. Swiss Valais municipalities on the route prohibit bivouacs and allow camping only at designated
-      sites. Chamonix bans camping outside designated sites and tolerates only high-altitude bivouacs
-      from sunset to sunrise. Booking a pitch is mandatory in the Aiguilles Rouges nature reserves from
-      1 June to 30 September.
+    note: 'Aosta Valley (Italy): bivouacs are banned below 2,500 m, which covers almost all of the Italian section.'
   source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
-  source_title: Bivouac and wild camping - Autour du Mont-Blanc
+  source_title: Bivouac
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
-  evidence_heading: Bivouac and wild camping
+  evidence_heading: IN ITALY - Aosta Valley
+  evidence:
+    page: P3
+    quote: Bivouacs are forbidden below 2,500 meters altitude, which is almost the entire territory of the Aosta Valley crossed by the Tour du Mont-Blanc.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: 'Valais (Switzerland): bivouac and wild camping are banned, with limited tolerance for one night above the tree line or in an emergency.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: IN SWITZERLAND - Canton of Valais
+  evidence:
+    page: P3
+    quote: Bivouacking and wild camping are prohibited in Switzerland.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: 'Chamonix (France): camping outside designated sites has been banned by municipal by-law since 1992; only high-altitude bivouacs between sunset and sunrise are allowed.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: IN FRANCE
+  evidence:
+    page: P3
+    quote: Only high-altitude bivouacking is permitted between sunset and sunrise.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: 'Aiguilles Rouges reserves (France): wild camping is regulated by decree in summer and a pitch must be booked on the reserve booking website first.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Aiguilles Rouges National Nature Reserve
+  evidence:
+    page: P3
+    quote: It is compulsory to book a pitch on the website https://reserve-bivouac74.fr/ before going to camp in one of the nature reserves of the Aiguilles Rouges massif (Carlaveyon – Aiguilles Rouges – Vallon de Bérard).
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: 'Les Contamines-Montjoie reserve (France): camping is banned below 2,500 m apart from two small sites, and booking is required.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Les Contamines-Montjoie National Nature Reserve
+  evidence:
+    page: P3
+    quote: 'camping is strictly prohibited below an altitude of 2,500 metres, except at two small-capacity sites (Giettaz-Pont de la Rollaz and La Balme), between 7 pm and 9 am. Booking is also compulsory via the same website: https://reserve-bivouac74.fr/'
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Fires are banned in the Contamines-Montjoie nature reserve, along with swimming and boating on lakes and waterways.
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Les Contamines-Montjoie National Nature Reserve
+  evidence:
+    page: P3
+    quote: Fires are also prohibited.
+  verified: true
 - field: hazard
   value:
     type: rockfall
-    note: A Swiss section between Prayon and Branche (Treutsebo sector) was rerouted because of rockfall
-      risk; the signposted new path was due to open on 11 July 2026 and the old path is closed.
+    note: A path in the Swiss sector between Prayon and Branche (Les Treutsebo) was rerouted because of rockfall risk, so follow the signed new route.
   source_url: https://www.autourdumontblanc.com/en/
   source_title: Autour du Mont-Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
   evidence_heading: 'Route diversion in the Swiss sector: path between Prayon and Branche (Treutsebo sector)'
+  evidence:
+    page: P2
+    quote: for safety reasons relating to the risk of rockfalls, the path between Prayon and Branche, in the area known as Les Treutsebo – which is used, in particular, by the Tour du Mont-Blanc (TMB) – has been rerouted.
+  verified: true
 - field: hazard
   value:
     type: lightning
-    note: The site warns that storms can build quickly on hot summer days and gives guidance on seeking
-      shelter away from ridges and water.
+    note: Storms are common on hot summer days and can develop fast, so the site gives advice on where to shelter.
   source_url: https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment
-  source_title: Mountain hazards and equipment - Autour du Mont-Blanc
+  source_title: Mountain hazards and equipment
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
-  evidence_heading: Mountain hazards / Storms
+  evidence_heading: Mountain hazards
+  evidence:
+    page: P4
+    quote: Storms are commonplace in the mountains, especially on hot summer days. Some kinds of storms can develop very rapidly even when the skies are clear.
+  verified: true
 - field: hazard
   value:
     type: weather
-    note: Snowfields can persist on trails even early in the season; they can hide markings and be slippery,
-      and snow bridges over streams can collapse. The site advises crampons, ice axe and navigation tools.
+    note: Snow can lie on trails even early in the season, causing slips and hiding waymarks.
   source_url: https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment
-  source_title: Mountain hazards and equipment - Autour du Mont-Blanc
+  source_title: Mountain hazards and equipment
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
-  evidence_heading: Mountain hazards / Snow and snowfields
+  evidence_heading: Mountain hazards
+  evidence:
+    page: P4
+    quote: Trails can be covered with a considerable amount of snow even early in the season.
+  verified: true
 - field: closure
   value:
     status: partially_closed
-    note: Old path between Prayon and Branche (Les Treutsebo, Switzerland) is closed for rockfall risk
-      and must not be used; a signposted diversion was to open on 11 July 2026. Camping and bivouacking
-      are banned in that area.
+    note: The old path at Les Treutsebo between Prayon and Branche is closed and a signed diversion replaces it from 11 July 2026.
     as_of: '2026-11-15'
   source_url: https://www.autourdumontblanc.com/en/
   source_title: Autour du Mont-Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
   evidence_heading: 'Route diversion in the Swiss sector: path between Prayon and Branche (Treutsebo sector)'
+  evidence:
+    page: P2
+    quote: The old route is closed and must not be used under any circumstances.
+  verified: true
 - field: season_note
-  value: The Casermetta Espace Mont-Blanc visitor centre at Col de la Seigne was announced as open daily
-    from 25 June to 13 September 2026.
+  value: The Casermetta Espace Mont-Blanc visitor centre was announced as open daily from 25 June to 13 September 2026.
   source_url: https://www.autourdumontblanc.com/en/
   source_title: Autour du Mont-Blanc
   publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
   checked_at: '2026-11-15'
-  evidence_heading: Summer 2026 - Opening of Casermetta Espace Mont-Blanc
+  evidence_heading: Summer 2026 - Opening of Casermetta Espace Mont-Blanc
+  evidence:
+    page: P2
+    quote: will be open daily from 25 June to 13 September 2026.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 18
+  failed: 0
+  reasons: {}

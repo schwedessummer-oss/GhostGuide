@@ -1,0 +1,33 @@
+seed_no: 74
+slug: mount-mulanje-hut-to-hut
+name: Mount Mulanje hut-to-hut
+region_group: africa
+countries:
+- MW
+subdivisions: []
+area:
+  name: Mulanje Mountain Forest Reserve
+  wikidata: null
+  official_url: null
+agency:
+  name: Malawi Department of Forestry
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.visitmalawi.mw
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Weak coverage. mulanje.org is a tour operator (Mulanje Adventure Tours) so excluded; forestry.gov.mw did not respond. Needs a targeted search for Mulanje Mountain Conservation Trust / Dept of Forestry pages (fees, huts, guide rule).

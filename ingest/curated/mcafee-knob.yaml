@@ -1,188 +1,134 @@
 slug: mcafee-knob
 researched_at: 2026-11-15
 facts:
-  - field: official_url
-    value: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    note: "Page of the Roanoke Appalachian Trail Club, which maintains this AT section and, by its own account, manages it jointly with the NPS, the US Forest Service and the Appalachian Trail Conservancy. The NPS has no McAfee Knob page of its own."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: McAfee Knob and Virginia’s Triple Crown
-
-  - field: distance_km
-    value: 12.9
-    basis: round_trip
-    note: "The club puts the round trip from the VA 311 parking lot at just under 8 miles; 8 miles converted to km, so this is a slight upper bound. Starting from the Catawba lots via the Catawba Greenway is about 10.4 miles."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
-
-  - field: elevation_gain_m
-    value: 427
-    note: "Page gives a 1,400-foot gain, mostly in the last 1.5 miles; converted to metres (x0.3048, rounded)."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
-
-  - field: duration
-    value: { min_hours: 4, max_hours: 6 }
-    note: "Typical time for the round trip from the VA 311 lot; allow 5-7 hours from the Catawba lots."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
-
-  - field: route_type
-    value: out_and_back
-    note: "Round trip on the white-blazed AT from the VA 311 lot; part of the way can instead follow the McAfee fire road in one or both directions."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
-
-  - field: season_note
-    value: "Weekends are usually crowded, above all in spring (March-May) and fall (September-November); the club recommends a weekday. About 60,000 people visit the Knob each year."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: IS IT CROWDED?
-
-  - field: permit_required
-    value: "no"
-    note: "The NPS says walking the Appalachian Trail needs no fee, membership or permit; the exceptions it lists are other parks and forests along the trail, not the McAfee Knob section."
-    source_url: https://www.nps.gov/appa/planyourvisit/fees.htm
-    source_title: Fees & Passes - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fees & Passes
-
-  - field: entry_fee_none
-    value: true
-    note: "No entrance pass is required for the Appalachian National Scenic Trail."
-    source_url: https://www.nps.gov/appa/planyourvisit/fees.htm
-    source_title: Fees & Passes - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fees & Passes
-
-  - field: parking
-    value: "NPS lot on VA 311 (4440 Catawba Valley Road), redesigned with a new footbridge; it fills early on weekends and holidays. Parking on VA 311 itself is banned; offenders may be ticketed and towed. Alternatives: some signed spaces on Old Catawba Road (Rt 864) or day lots on VA 779 (no overnight)."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: WHERE CAN I PARK?
-
-  - field: parking
-    value: "Local rules prohibit parking on the VA 311 road shoulder near the McAfee Knob area."
-    source_url: https://www.nps.gov/appa/learn/management/compendium.htm
-    source_title: Superintendent Compendium - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: I. 36 CFR §1.5 – Visiting Hours, Public Use Limits, Closures, and Area Designations for Specific Use or Activities
-
-  - field: trailhead_access
-    value: "From I-81 exit 141 take VA 419 for 0.4 mile, then VA 311 for 4.6 miles to the lot at the top of Catawba Mountain. Cross VA 311 with care to join the AT. The Catawba lots on VA 779 link to the AT fire road via the Catawba Greenway."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: WHERE CAN I PARK?
-
-  - field: public_transport
-    value: "The McAfee Knob Trailhead Shuttle, a Roanoke County partnership with Ride Source, serves the trailhead on Fridays, Saturdays and Sundays in spring, summer and autumn."
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: WHERE CAN I PARK?
-
-  - field: rule_camping
-    value: { value: restricted, note: "On NPS land from the VA 311 crossing to Campbell Shelter (the McAfee Knob area), camping is allowed only at designated campsites and shelters; alcohol and glass containers are also banned there." }
-    source_url: https://www.nps.gov/appa/learn/management/compendium.htm
-    source_title: Superintendent Compendium - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: I. 36 CFR §1.5 – Visiting Hours, Public Use Limits, Closures, and Area Designations for Specific Use or Activities
-
-  - field: rule_camping
-    value: { value: restricted, note: "North of VA 624 only 7 designated sites are legal, incl. Catawba Shelter and campsites and Campbell Shelter; no camping or fires on McAfee Knob itself. Groups camping are limited to 10." }
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: WHAT SPECIAL RULES APPLY?
-
-  - field: rule_fires
-    value: { value: restricted, note: "In the McAfee Knob area open fires are allowed only in designated receptacles; on the club's section, fires go in metal fire rings only." }
-    source_url: https://www.nps.gov/appa/learn/management/compendium.htm
-    source_title: Superintendent Compendium - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: I. 36 CFR §1.5 – Visiting Hours, Public Use Limits, Closures, and Area Designations for Specific Use or Activities
-
-  - field: rule_dogs
-    value: { value: restricted, note: "Pets must stay on a leash of six feet or less on NPS-administered AT land; bury or properly dispose of pet waste away from trails, campsites and water." }
-    source_url: https://www.nps.gov/appa/learn/management/compendium.htm
-    source_title: Superintendent Compendium - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: 36 CFR §2.15 - Pets
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Flying, launching or landing drones on NPS-administered AT land is banned unless the Superintendent approves it in writing." }
-    source_url: https://www.nps.gov/appa/learn/management/lawsandpolicies.htm
-    source_title: Laws & Policies - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Unmanned Aircraft (Drones)
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 25, note: "Day-hiking groups may have at most 25 people and overnight groups at most 10; bigger groups need a permit from the Chief Ranger." }
-    source_url: https://www.nps.gov/appa/learn/management/compendium.htm
-    source_title: Superintendent Compendium - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: I. 36 CFR §1.5 – Visiting Hours, Public Use Limits, Closures, and Area Designations for Specific Use or Activities
-
-  - field: hazard
-    value: { type: wildlife, note: "Black bears used to people are often seen around McAfee Knob. Never feed them, keep to the food storage rules and use the food lockers provided." }
-    source_url: https://www.nps.gov/appa/park-alerts-appa.json
-    source_title: Black Bears Frequenting the McAfee Knob Area in Virginia (Appalachian National Scenic Trail alerts feed shown on the Alerts page)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Black Bears Frequenting the McAfee Knob Area in Virginia
-
-  - field: nearest_town
-    value: { name: Salem, note: "Closest town per the trail club, reached from I-81 exits 137, 140 and 141; about 9 miles from downtown to the McAfee Knob trailhead." }
-    source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
-    source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
-    publisher: Roanoke Appalachian Trail Club
-    checked_at: 2026-11-15
-    evidence_heading: WHERE CAN I FIND PLACES TO STAY IN THE AREA?
-
-  - field: access_mode
-    value: independent
-    note: "The NPS describes the trail as free and open to all, with no permit needed to walk it."
-    source_url: https://www.nps.gov/appa/planyourvisit/fees.htm
-    source_title: Fees & Passes - Appalachian National Scenic Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Fees & Passes
-
-  - field: closure
-    value: { status: open, note: "No closure is listed for the McAfee Knob area; the feed carries a caution about habituated bears there and a general notice that post-Hurricane Helene closures remain elsewhere on the trail.", as_of: 2026-11-15 }
-    source_url: https://www.nps.gov/appa/park-alerts-appa.json
-    source_title: Alerts - Appalachian National Scenic Trail (alerts feed shown on the Alerts page)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Alerts
+- field: official_url
+  value: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  note: The club that maintains this stretch of the Appalachian Trail runs this page about McAfee Knob.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: McAfee Knob and Virginia’s Triple Crown
+  evidence:
+    page: P1
+    quote: The Roanoke Appalachian Trail Club maintains this section
+  verified: true
+- field: distance_km
+  value: 16.1
+  basis: round_trip
+  note: From the Catawba Sustainability Center lot, a little over 10 miles round trip; 10 mi x 1.609344 = 16.1 km.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: 'From south to north, potential parking areas are:'
+  evidence:
+    page: P1
+    quote: 'Round trip to McAfee Knob: a little over 10 mi.'
+  verified: true
+- field: permit_required
+  value: 'no'
+  note: NPS says no fee, membership or permit is needed to walk the Appalachian Trail, though some parks and forests along it charge for parking or camping.
+  source_url: https://www.nps.gov/appa/planyourvisit/fees.htm
+  source_title: Fees & Passes - Appalachian National Scenic Trail (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Fees & Passes
+  evidence:
+    page: P3
+    quote: No fees, memberships, or permits are required to walk on the Trail.
+  verified: true
+- field: entry_fee_none
+  value: true
+  source_url: https://www.nps.gov/appa/planyourvisit/fees.htm
+  source_title: Fees & Passes - Appalachian National Scenic Trail (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Fees & Passes
+  evidence:
+    page: P3
+    quote: The Appalachian Trail is free for all to enjoy.
+  verified: true
+- field: season_note
+  value: Weekends are generally busy, particularly in spring (March-May) and fall (September-November); a weekday visit is suggested. About 60,000 people come yearly.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: IS IT CROWDED?
+  evidence:
+    page: P1
+    quote: Weekend days are generally crowded especially in spring (March-May) and fall (September-November). McAfee Knob receives about 60,000 visitors every year
+  verified: true
+- field: parking
+  value: The NPS lot at 4440 Catawba Valley Road (VA 311) has a new footbridge and redesigned layout; do not park along VA 311, where cars may be ticketed and towed. Limited spaces on Old Catawba Road (Rt. 864).
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: 'From south to north, potential parking areas are:'
+  evidence:
+    page: P1
+    quote: McAFEE KNOB PARKING – VA 311 – 4440 Catawba Valley Road (National Park Service lot).
+  verified: true
+- field: parking
+  value: Trailhead lots fill early, especially on weekends and holidays; a weekday visit is suggested.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: WHERE CAN I PARK?
+  evidence:
+    page: P1
+    quote: These are heavy use areas and parking lots may fill up early, especially on weekends and holidays.
+  verified: true
+- field: parking
+  value: The Catawba Sustainability Center lot on VA 779 has at least 25 spaces and no overnight parking; the trip to the Knob from there is a little over 10 miles round trip.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: 'From south to north, potential parking areas are:'
+  evidence:
+    page: P1
+    quote: CATAWBA SUSTAINABILITY CENTER (CSC) – 5061 Catawba Creek Road (VA 779) is a two-minute drive from the McAfee Knob parking via VA 311. No overnight parking. At least 25 parking spaces available.
+  verified: true
+- field: trailhead_access
+  value: From I-81 exit 141 take VA 419 for 0.4 miles to VA 311, then drive 4.6 miles to the McAfee Knob lot on the left at the top of Catawba Mountain.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: 'From south to north, potential parking areas are:'
+  evidence:
+    page: P1
+    quote: Take I-81 south to exit 141. Go left on Virginia VA 419, Electric Road. Go 0.4 miles to VA 311. Take right. In 4.6 miles, pass McAfee Knob trailhead parking lot on left at top of Catawba Mountain.
+  verified: true
+- field: public_transport
+  value: A trailhead shuttle run by Roanoke County and Ride Source operates Fridays, Saturdays and Sundays in spring, summer and autumn.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: 2026-11-15
+  evidence_heading: WHERE CAN I PARK?
+  evidence:
+    page: P1
+    quote: The McAfee Knob Trailhead Shuttle Service, a partnership between Roanoke County and Ride Source, operates Fridays, Saturdays, and Sundays during spring, summer, and autumn.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Black bears used to people are frequently seen around McAfee Knob; follow food storage rules and never feed them.
+  source_url: https://www.nps.gov/appa/park-alerts-appa.json
+  source_title: (none)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence:
+    page: P2
+    quote: Human-habituated bears have been frequently spotted in the McAfee Knob Area. Allowing bears access to human food or garbage causes it to lose its fear of humans.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 11
+  failed: 0
+  reasons: {}

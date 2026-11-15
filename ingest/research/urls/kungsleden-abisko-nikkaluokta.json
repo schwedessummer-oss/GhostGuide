@@ -1,0 +1,39 @@
+{
+ "seed_no": 49,
+ "slug": "kungsleden-abisko-nikkaluokta",
+ "name": "Kungsleden (Abisko\u2013Nikkaluokta)",
+ "urls": [
+  {
+   "url": "https://www.swedishtouristassociation.com/",
+   "purpose": "hut operator home, bookings"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/discover/",
+   "purpose": "mountain stations and cabins map"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/activities/kungsleden-abisko-kebnekaise-on-nordic-backcountry-skis/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/trails/kungsleden/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/activities/abisko-northern-light-hike/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/activities/abisko-snowshoe-hike/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/faq/do-i-have-to-be-a-member-to-book/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.swedishtouristassociation.com/activities/hiking/traveling-with-dogs/",
+   "purpose": "crawled"
+  }
+ ]
+}

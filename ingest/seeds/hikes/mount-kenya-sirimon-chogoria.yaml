@@ -1,0 +1,33 @@
+seed_no: 68
+slug: mount-kenya-sirimon-chogoria
+name: Mount Kenya (Sirimon-Chogoria)
+region_group: africa
+countries:
+- KE
+subdivisions: []
+area:
+  name: Mount Kenya National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: Kenya Wildlife Service
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.kws.go.ke
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 'No URL verified: kws.go.ke errored, ecitizen.go.ke returned 403. Candidates remain https://www.kws.go.ke and https://www.ecitizen.go.ke unverified; needs web search or retry.'

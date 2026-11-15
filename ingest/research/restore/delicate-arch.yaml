@@ -1,0 +1,133 @@
+slug: delicate-arch
+deleted_facts:
+- field: season_note
+  value: Open all year. March to October is the busy season; spring and fall are mild, summer days often top 100 F (37 C), and winter highs average 30-50 F (-1 to 10 C).
+  source_url: https://www.nps.gov/arch/planyourvisit/hours.htm
+  evidence_heading: Operating Hours & Seasons
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Covers one private, non-commercial vehicle with up to 15 seats and everyone in it. Card only (credit/debit) at the Arches Entrance Station.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  evidence_heading: Private Vehicle
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 25.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid 7 days for up to 2 private motorcycles carrying up to 4 people in total.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  evidence_heading: Motorcycle
+- field: fee
+  value:
+    name: Per-person entrance pass (no vehicle)
+    amount: 15.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For one person entering on foot or by bicycle without a car; youth 15 and under enter free.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  evidence_heading: Per Person
+- field: fee
+  value:
+    name: Southeast Utah parks annual pass
+    amount: 55.0
+    currency: USD
+    unit: per_vehicle
+    audience: resident
+    note: US residents only. Valid for a year, running through the month it was bought, for one private vehicle or the pass holder at Arches, Canyonlands, Natural Bridges and Hovenweep.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  evidence_heading: Annual Entrance - Park
+- field: parking
+  value: The trail begins at the Wolfe Ranch lot, which fills on very busy days. Overflow parking is at the Delicate Arch Viewpoint lot, a 1-mile road walk from the trailhead. Sunset draws big crowds.
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  evidence_heading: Delicate Arch
+- field: parking
+  value: Wolfe Ranch Parking Lot lists 157 spaces and 28 oversize spaces, with a few oversize spots on the far side of the road. Toilets are available year-round, but the trailhead has no drinking water.
+  source_url: https://www.nps.gov/arch/planyourvisit/parking.htm
+  evidence_heading: Wolfe Ranch Parking Lot
+- field: trailhead_access
+  value: Wolfe Ranch is 13 miles (21 km) along the park road from the entrance.
+  source_url: https://www.nps.gov/arch/planyourvisit/parking.htm
+  evidence_heading: Wolfe Ranch Parking Lot
+- field: trailhead_access
+  value: For 2026 the park dropped its timed-entry reservation system; visitors may enter any time during operating hours with a valid pass. When lots fill, staff may briefly close access to specific areas, and drivers must not wait on roads for spaces.
+  source_url: https://www.nps.gov/arch/learn/news/news02182026.htm
+  evidence_heading: Arches National Park Lifts Entry Reservation Requirement for 2026
+- field: trailhead_access
+  value: In peak season (spring to fall, about 8 am-3 pm) the entrance line can be long and full lots can lead to entry delays of 3-5 hours; summer trailhead lots often fill by 7:30 am. Arriving early or late in the day is advised.
+  source_url: https://www.nps.gov/arch/planyourvisit/traffic.htm
+  evidence_heading: Traffic & Travel Tips
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets may not go on any trail or off-trail, even in a carrier, nor at overlooks; leashed pets are allowed only on roads, in parking areas, campgrounds and picnic areas.
+  source_url: https://www.nps.gov/arch/planyourvisit/pets.htm
+  evidence_heading: 'Pets are not allowed:'
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Launching, landing or flying remotely piloted aircraft in the park is banned unless the superintendent has approved it in writing.
+  source_url: https://www.nps.gov/arch/learn/management/compendium.htm
+  evidence_heading: Hang Gliders, BASE Jumping, and Remotely Piloted Aerial Vehicles
+- field: rule_camping
+  value:
+    value: restricted
+    note: Overnight backcountry stays need a permit from the NPS office in Moab and are limited to a few designated sites in the Courthouse Wash and Devils Garden zones (7 permits a night in total, up to 7 people each).
+  source_url: https://www.nps.gov/arch/learn/management/compendium.htm
+  evidence_heading: Backcountry Areas
+- field: rule_fires
+  value:
+    value: restricted
+    note: Wood and charcoal fires on the ground are banned throughout the park; fires are allowed only in the fire pits provided at Devils Garden Campground and at picnic areas set up for them. Stricter fire restrictions may apply at times.
+  source_url: https://www.nps.gov/arch/learn/management/compendium.htm
+  evidence_heading: 2.13 Fires
+- field: hazard
+  value:
+    type: heat
+    note: July and August often pass 100 F (38 C) with little shade. Take at least 2-3 litres of water per person on frontcountry hikes, eat salty snacks and avoid hiking from 10 am to 5 pm.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  evidence_heading: Beat the Heat and Stay Hydrated
+- field: hazard
+  value:
+    type: lightning
+    note: Summer monsoon storms bring lightning, hail, wind and heavy rain; only a car or building is safe shelter. If you hear thunder, shelter and wait 30 minutes after the last thunder.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  evidence_heading: Watch the Weather
+- field: hazard
+  value:
+    type: cold
+    note: After snow, trails and roads can be icy and drifting snow may hide trail markers; wear traction aids, use trekking poles and ask at the visitor center about trail conditions.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  evidence_heading: Winter Safety
+- field: hazard
+  value:
+    type: exposure
+    note: The trail has a steep climb over bedrock, rock steps and a ledge with a drop-off; the steepest grade reaches 80% and nearly half the route is steeper than 8%.
+  source_url: https://www.nps.gov/arch/planyourvisit/physical-mobility.htm
+  evidence_heading: Delicate Arch Trail
+- field: hazard
+  value:
+    type: other
+    note: Rangers often rescue hikers who misjudged this trail; weigh the heat or ice and your own fitness before you set out.
+  source_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+  evidence_heading: Delicate Arch
+- field: nearest_town
+  value:
+    name: Moab
+    note: The park has few goods and services; Moab is about ten minutes away.
+  source_url: https://www.nps.gov/arch/planyourvisit/basicinfo.htm
+  evidence_heading: Basic Information
+- field: closure
+  value:
+    status: open
+    note: Park generally open around the clock all year; on very busy days entries may be held for a few hours once the line reaches the highway or parking lots fill.
+    as_of: 2026-11-15
+  source_url: https://www.nps.gov/arch/planyourvisit/conditions.htm
+  evidence_heading: Arches National Park is Open

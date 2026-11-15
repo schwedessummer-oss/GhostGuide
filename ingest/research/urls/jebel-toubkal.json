@@ -1,0 +1,31 @@
+{
+ "seed_no": 69,
+ "slug": "jebel-toubkal",
+ "name": "Jebel Toubkal",
+ "urls": [
+  {
+   "url": "https://www.eauxetforets.gov.ma",
+   "purpose": "official_url"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/morocco",
+   "purpose": "official travel advisory (alerts)"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/morocco/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
+  }
+ ]
+}

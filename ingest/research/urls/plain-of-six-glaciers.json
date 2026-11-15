@@ -10,6 +10,30 @@
   {
    "url": "https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees",
    "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking/etat-sentiers-trail-conditions",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/ab/banff/securite-safety",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/ab/banff/visit/fermetures-closures",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/mtn/securiteenmontagne-mountainsafety",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/ab/banff/visit/faune-wildlife/chiens-dogs",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/mtn/ours-bears/gestion-management/ours-bears/minnewanka",
+   "purpose": "crawled"
   }
  ]
 }

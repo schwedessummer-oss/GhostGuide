@@ -1,0 +1,33 @@
+seed_no: 78
+slug: annapurna-base-camp
+name: Annapurna Base Camp
+region_group: asia-middle-east
+countries:
+- NP
+subdivisions: []
+area:
+  name: Annapurna Conservation Area
+  wikidata: null
+  official_url: null
+agency:
+  name: NTNC (ACAP)
+  wikidata: null
+hike_wikidata: null
+official_url: https://ntnc.org.np
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Same sources as seed 77. Deep ACAP permit page not found.

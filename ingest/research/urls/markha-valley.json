@@ -1,0 +1,39 @@
+{
+ "seed_no": 81,
+ "slug": "markha-valley",
+ "name": "Markha Valley",
+ "urls": [
+  {
+   "url": "https://leh.nic.in",
+   "purpose": "permits and fees entry point (Leh district administration)"
+  },
+  {
+   "url": "https://ladakh.gov.in",
+   "purpose": "UT administration, alerts and notices"
+  },
+  {
+   "url": "https://leh.nic.in/notice/notice-select-list-of-candidates-for-graduate-above-level-posts-advertised-vide-advertisement-notice-no-01-of-2025-operation-of-wait-reserve-lists-post-code-lsb2513-junior-assistant-tabulator-cum/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://leh.nic.in/feedback/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ladakh.gov.in/document-category/acts-rules/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ladakh.gov.in/tribal-research-institute-university-of-ladakh-kargil-campus-organises-quiz-competition-in-collaboration-with-team-stringmo-at-pm-shri-government-middle-school-samar-pashkum/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ladakh.gov.in/event/sustainable-campus-challenge/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ladakh.gov.in/feedback/",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+seed_no: 93
+slug: jordan-trail-dana-petra
+name: 'Jordan Trail: Dana-Petra'
+region_group: asia-middle-east
+countries:
+- JO
+subdivisions: []
+area:
+  name: Jordan
+  wikidata: null
+  official_url: null
+agency:
+  name: Jordan Trail Association / RSCN
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.jordantrail.org/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: All three returned 200 with >500 chars; rscn.org.jo title is Arabic home page, no Dana-specific page found.

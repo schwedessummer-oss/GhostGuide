@@ -1,0 +1,43 @@
+{
+ "seed_no": 106,
+ "slug": "kings-canyon-rim-walk",
+ "name": "Kings Canyon Rim Walk",
+ "urls": [
+  {
+   "url": "https://nt.gov.au/parks/find-a-park/watarrka-national-park/short-walks",
+   "purpose": "hike page, heat rule (from search result)"
+  },
+  {
+   "url": "https://nt.gov.au/parks/regions/alice-springs/check-park-open-alice-springs/watarrka-national-park",
+   "purpose": "alerts/park open status (from search result)"
+  },
+  {
+   "url": "https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "hike page, access (official tourism board)"
+  },
+  {
+   "url": "https://northernterritory.com/us/en/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://northernterritory.com/gb/en/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://northernterritory.com/sg/en/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://northernterritory.com/fr/fr/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://northernterritory.com/it/it/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://northernterritory.com/de/de/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk",
+   "purpose": "crawled"
+  }
+ ]
+}

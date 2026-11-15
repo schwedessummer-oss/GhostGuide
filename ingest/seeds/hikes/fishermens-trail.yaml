@@ -1,0 +1,33 @@
+seed_no: 65
+slug: fishermens-trail
+name: Fishermen's Trail
+region_group: europe
+countries:
+- PT
+subdivisions: []
+area:
+  name: Rota Vicentina, Alentejo/Algarve
+  wikidata: null
+  official_url: null
+agency:
+  name: Associação Rota Vicentina
+  wikidata: null
+hike_wikidata: null
+official_url: https://rotavicentina.com/en/trails/fishermens-trail/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only 2 verified URLs (200). No permit or fee. Other subpages guessed returned 404; fetch of /trails/fishermens-trail/ is large (106k chars) and likely holds rules/practical info.

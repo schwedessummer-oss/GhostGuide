@@ -1,0 +1,43 @@
+{
+ "seed_no": 79,
+ "slug": "manaslu-circuit",
+ "name": "Manaslu Circuit",
+ "urls": [
+  {
+   "url": "https://ntnc.org.np",
+   "purpose": "manager home (MCAP/ACAP)"
+  },
+  {
+   "url": "https://ntb.gov.np/",
+   "purpose": "tourism board, guide rule"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/nepal",
+   "purpose": "alerts"
+  },
+  {
+   "url": "https://ntnc.org.np/project/manaslu-conservation-area-project-mcap",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/mount-manaslu",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntnc.org.np/information-disclosure",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/hiking",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/camping",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/heritage-walk",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -1,280 +1,172 @@
 slug: grand-canyon-rim-to-rim
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://www.nps.gov/places/000/north-kaibab-trail.htm
-    source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
-    source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: North Kaibab Trail - CLOSED
-
-  - field: closure
-    value:
-      status: closed
-      note: "Closed after the 29 Aug 2026 flash flood: the whole North Kaibab Trail incl. Cottonwood Campground, all of Phantom Ranch incl. Bright Angel Campground, and the Black and Silver bridges. NPS gives no reopening estimate."
-      as_of: 2026-11-13
-    source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
-    source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Trail Status, and Current Closures
-
-  - field: closure
-    value:
-      status: closed
-      note: "The North Rim FAQ answers no to whether the North Kaibab Trail is open: it has been shut end to end since 29 Aug 2026 because of flash flooding, along with Phantom Ranch and both river bridges, with no reopening date."
-      as_of: 2026-11-10
-    source_url: https://www.nps.gov/grca/northrimstatus.htm
-    source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Is the North Kaibab Trail open?
-
-  - field: route_type
-    value: point_to_point
-    note: "The North Kaibab Trail drops from the North Rim to the Colorado River and the Bright Angel Trail climbs from the river to the South Rim, so the crossing starts and ends at different rims."
-    source_url: https://www.nps.gov/grca/planyourvisit/trail-distances.htm
-    source_title: Backcountry Trail Distances - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Corridor Trails Distances
-
-  - field: high_point_m
-    value: 2512
-    note: "Elevation of the North Kaibab Trailhead, the route's North Rim start, as given in the park's distance table (8241 ft / 2512 m)."
-    source_url: https://www.nps.gov/grca/planyourvisit/trail-distances.htm
-    source_title: Backcountry Trail Distances - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Corridor Trails Distances
-
-  - field: season_note
-    value: "North Rim winter rules begin when snow closes Highway 67 or on 1 December, whichever is first, and last until the rim reopens in mid-May. In winter the North Rim can only be reached on foot, snowshoes or skis."
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: North Rim Winter Use
-
-  - field: permit_required
-    value: conditional
-    note: "Day hikes, including night-time ones, need no permit. Camping anywhere below the rim needs a Grand Canyon backcountry permit; guests with Phantom Ranch cabin or dorm reservations do not need one."
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Backcountry Permit
-
-  - field: permit
-    value:
-      name: Grand Canyon backcountry permit
-      kind: overnight
-      how_to_apply: "Enter the early access lottery on Recreation.gov; up to 750 winners get a time slot to pick and pay for an itinerary. Any space left opens to everyone on the 1st of the following month, and start dates within three months can be booked directly."
-      booking_window: "Lottery opens on the 16th of the month five months before the start month and closes at 5pm MST on the 1st, four months before; remaining space opens to all at 8am MST on the 1st of the next month"
-      official_url: https://www.recreation.gov/permits/4675337
-      price: { amount: 10.00, currency: USD, unit: per_application, audience: all, note: "plus $15 per person per night in below-rim areas; park entrance fee paid separately" }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: When to Apply
-
-  - field: permit
-    value:
-      name: Special Use Permit for organized group rim-to-rim hikes
-      kind: other
-      how_to_apply: "Organized non-commercial groups of 12 to 30, and not-for-profit groups, doing rim-to-rim or other long inner-canyon day hikes or runs need this permit. Groups may not split onto separate permits to get around the size rule; commercial trips are not covered."
-      official_url: https://www.nps.gov/grca/getinvolved/sup.htm
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Organized Group Rim-to-Rim and Extended Day Hike/Run
-
-  - field: fee
-    value: { name: Backcountry permit or lottery application, amount: 10.00, currency: USD, unit: per_application, audience: all, note: "Non-refundable." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Permit Cost
-
-  - field: fee
-    value: { name: Below-rim nightly charge, amount: 15.00, currency: USD, unit: per_night, audience: all, note: "Charged per person for each night in below-rim areas; refundable until 30 days before the permit start date." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Permit Cost
-
-  - field: fee
-    value: { name: Private vehicle entrance pass, amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers one private non-commercial vehicle and its passengers (up to a 15-passenger van); entry is valid for seven days. Card only, no cash." }
-    source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Private Vehicle
-
-  - field: fee
-    value: { name: Individual entrance pass, amount: 20.00, currency: USD, unit: per_person, audience: all, note: "For hikers, cyclists and pedestrians aged 16 and over; valid seven days. Under-16s need no pass." }
-    source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Per Person
-
-  - field: fee
-    value: { name: Motorcycle entrance pass, amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid seven days; covers up to 2 private motorcycles with up to 4 riders in total." }
-    source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Motorcycle
-
-  - field: fee
-    value: { name: Nonresident fee, amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Each non-US resident aged 16 or older pays this on top of the standard entrance fee, unless entering with an Annual or America the Beautiful pass; applies to tour group members too." }
-    source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Nonresident Fees
-
-  - field: parking
-    value: "There is a car park at the North Kaibab trailhead. On the South Rim, hikers can leave cars at the Backcountry Information Center (Lot D), a short walk from the Bright Angel Trailhead. Lock valuables out of sight."
-    source_url: https://www.nps.gov/grca/planyourvisit/hiking-faq.htm
-    source_title: Hiking Frequently Asked Questions - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: "Q: Where do I park my vehicle(s)?"
-
-  - field: trailhead_access
-    value: "The North Rim is open for limited day use through 30 Nov 2026 or until the first big snowstorm. Its campground and gas station have closed for the season; fuel is sold at Jacob Lake and the North Rim Country Store."
-    source_url: https://www.nps.gov/grca/northrimstatus.htm
-    source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: North Rim — OPEN through Nov. 30, 2026 (or the first major snowstorm of the season)
-
-  - field: public_transport
-    value: "At the South Rim end, the free Village (Blue) shuttle runs from the Visitor Center to Hermit Road Interchange, a short walk uphill from the Bright Angel Trailhead."
-    source_url: https://www.nps.gov/places/000/bright-angel-trail.htm
-    source_title: Bright Angel Trail (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Where to Park
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Pets and other domestic animals are banned below the rim." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
-    source_title: Backcountry Rules and Regulations - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Grand Canyon Backcountry Regulations
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "Flying drones is currently prohibited in the park, as in all national parks." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
-    source_title: Backcountry Rules and Regulations - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Additional Regulations and Policies
-
-  - field: rule_fires
-    value: { value: not_allowed, note: "No wood or charcoal fires of any kind in the backcountry; backpacking stoves burning fossil fuel or Sterno are allowed." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
-    source_title: Backcountry Rules and Regulations - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Grand Canyon Backcountry Regulations
-
-  - field: rule_camping
-    value: { value: restricted, note: "A backcountry permit is needed. Corridor camping (Havasupai Gardens, Bright Angel, Cottonwood) is in designated campgrounds only, up to 2 nights per campground per hike; 15 Nov-28 Feb the Corridor limit rises to 4 nights per campground." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Length of Stay
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 11, note: "Camping groups may not exceed 11 people in one campground or use area, and affiliated groups may not share one on the same night. Organized groups of 12-30 doing rim-to-rim day hikes need a Special Use Permit." }
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Group Size
-
-  - field: hazard
-    value: { type: heat, note: "Shade temperatures often top 100°F (38°C) in summer. In May-September start well before dawn or after 3 p.m. and stay off the trail 10 am-4 pm; NPS advises against hiking the whole North Kaibab Trail in one day, above all in summer." }
-    source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
-    source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hike Smart
-
-  - field: hazard
-    value: { type: lightning, note: "From July to September monsoon storms can bring violent lightning; take shelter at once." }
-    source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
-    source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hike Smart
-
-  - field: hazard
-    value: { type: cold, note: "In winter and early spring temperatures fall below freezing and the upper North Kaibab can be icy or snowbound, with ice hiding hazards; over-the-shoe traction is strongly advised." }
-    source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
-    source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Hike Smart
-
-  - field: hazard
-    value: { type: flash_flood, note: "Flash floods can hit the lower North Kaibab Trail and the Phantom Ranch area with little or no warning, even when no storm is visible overhead." }
-    source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
-    source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Current Trail Hazards
-
-  - field: hazard
-    value: { type: other, note: "All inner-canyon water is currently turned off, including the North Rim, Cottonwood, Phantom Ranch and Havasupai Gardens. Carry all the water you need or a reliable way to treat natural water; status can change suddenly." }
-    source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
-    source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: "Water Availability: Trailheads and Inner Canyon"
-
-  - field: hazard
-    value: { type: rockfall, note: "Rockfall is common during or after rain and in freeze-thaw periods and can come without warning; move away quickly and do not stop where loose rock is on the trail." }
-    source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
-    source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Rock Fall
-
-  - field: nearest_town
-    value: { name: Tusayan, note: "Gateway town of the South Rim, where this route finishes." }
-    source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
-    source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Locations in the South Rim gateway town of Tusayan that accept cash
-
-  - field: access_mode
-    value: independent
-    note: "Private hikers get their own backcountry permits; only commercial organizations also need a Commercial Use Authorization."
-    source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
-    source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Commercial Use
-
-  - field: licensed_operator_list_url
-    value: https://www.nps.gov/grca/getinvolved/cua-list.htm
-    note: "List of companies authorized by NPS to run guided day hikes and backpacking trips below the rim."
-    source_url: https://www.nps.gov/grca/planyourvisit/guided-hikes.htm
-    source_title: Guided Hikes - Grand Canyon National Park (U.S. National Park Service)
-    publisher: National Park Service
-    checked_at: 2026-11-15
-    evidence_heading: Backpacking Guide Services
+- field: official_url
+  value: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: North Kaibab Trail - CLOSED (U.S. National Park Service)
+  verified: true
+- field: closure
+  value:
+    status: closed
+    note: The whole North Kaibab Trail is shut after flash flooding on 29 Aug 2026; no reopening date was given.
+    as_of: '2026-10-17'
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: North Kaibab Trail - CLOSED
+  evidence:
+    page: P1
+    quote: The entirety of the North Kaibab Trail is currently closed due to flash flooding - August 29, 2026.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: North Rim is open until 30 Nov 2026 or the first major snowstorm; its campground has closed for the season.
+    as_of: '2026-11-15'
+  source_url: https://www.nps.gov/grca/northrimstatus.htm
+  source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: North Rim — OPEN through Nov. 30, 2026 (or the first major snowstorm of the season)
+  evidence:
+    page: P3
+    quote: North Rim — OPEN through Nov. 30, 2026 (or the first major snowstorm of the season)
+  verified: true
+- field: high_point_m
+  value: 2510
+  note: Elevation of the North Kaibab trailhead on the North Rim, as stated in metres.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Day Hike Turnaround Points
+  evidence:
+    page: P1
+    quote: North Kaibab Trailhead (8,241 feet / 2,510 m)
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Camping needs a permit; the page does not mention a permit for day use.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Mules & Hikers
+  evidence:
+    page: P1
+    quote: A permit is required for camping in this area.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping only in designated campgrounds, not at large.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Mules & Hikers
+  evidence:
+    page: P1
+    quote: At-large camping is not permitted on the North Kaibab Trail; camp is only permitted in designated campgrounds.
+  verified: true
+- field: trailhead_access
+  value: 'North Rim access is limited and seasonal: open until 30 Nov 2026 or the first big snowstorm.'
+  source_url: https://www.nps.gov/grca/northrimstatus.htm
+  source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: North Rim — OPEN through Nov. 30, 2026 (or the first major snowstorm of the season)
+  evidence:
+    page: P3
+    quote: North Rim — OPEN through Nov. 30, 2026 (or the first major snowstorm of the season)
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Shade temperatures routinely pass 100F (38C); avoid hiking in the middle of the day.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Hike Smart
+  evidence:
+    page: P1
+    quote: Summer temperatures in the shade routinely pass 100°F (38°C).
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: From July to September monsoon storms can bring violent lightning; shelter immediately.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Hike Smart
+  evidence:
+    page: P1
+    quote: From July to September, monsoons can build large, violent lightning storms.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Winter and early spring temperatures can fall below freezing and upper trail sections turn icy; traction devices are recommended.
+  source_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+  source_title: North Kaibab Trail - CLOSED (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Hike Smart
+  evidence:
+    page: P1
+    quote: In winter and early spring, temperatures can drop below 32°F (0°C) and upper portions of this steep trail become dangerously icy.
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Flash floods can strike with no warning, so know the upstream weather and keep an exit plan.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Flash Floods
+  evidence:
+    page: P2
+    quote: Flash floods can occur without warning.
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: Rockfall is common during or after rain or freeze-thaw periods and can come without warning.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Rock Fall
+  evidence:
+    page: P2
+    quote: Rock falls are common during or after rain, or during freeze/thaw events.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: All inner-canyon water is off, so hikers must carry enough water or treat natural sources.
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  source_title: Key Hiking Messages - Critical Updates and Closures - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: 'Water Availability: Trailheads and Inner Canyon'
+  evidence:
+    page: P2
+    quote: With all inner-canyon water turned off, hikers should carry sufficient water for their trip or be prepared to collect and properly treat water from natural sources.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 13
+  failed: 0
+  reasons: {}

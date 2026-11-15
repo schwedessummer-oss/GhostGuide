@@ -1,310 +1,16 @@
 slug: laguna-69
-researched_at: &id001 2026-11-15
+researched_at: 2026-11-15
 facts:
-- field: duration
-  value:
-    min_days: 1
-    max_days: 1
-  note: Recommended time for this route is 1 day.
+- field: official_url
+  value: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Laguna 69
-- field: trailhead_access
-  value: From Huaraz the route passes the Llanganuco control post, Chinancocha and Orconcocha lakes, the Yuraccorral zone and Cebollapampa before the lake. Park visiting hours on the page are 08:30-15:00,
-    Monday to Friday.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Laguna 69
-- field: fee
-  value:
-    name: Huascarán National Park entry (1 day)
-    amount: 30
-    currency: PEN
-    unit: per_person
-    audience: non_resident
-    note: Ticket valid 1 day. General rate (the page labels it 'General').
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (1 day)
-    amount: 12
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Ticket valid 1 day. Peruvian nationals, adults; the standard rate excludes the Laguna 69 and Pico Mateo trekking route.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (1 day)
-    amount: 5
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Ticket valid 1 day. Peruvian nationals, minors 5-16; under 5 free.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (1 day)
-    amount: 5
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Ticket valid 1 day. Local residents, adults, with DNI.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (1 day)
-    amount: 3
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Ticket valid 1 day. Local residents, minors, with DNI.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (2 to 3 days)
-    amount: 60
-    currency: PEN
-    unit: per_person
-    audience: non_resident
-    note: Ticket valid 2 to 3 days. General rate.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (2 to 3 days)
-    amount: 30
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Ticket valid 2 to 3 days. Peruvian nationals, adults.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (2 to 3 days)
-    amount: 15
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Ticket valid 2 to 3 days. Peruvian nationals, minors 5-16.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (2 to 3 days)
-    amount: 15
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Ticket valid 2 to 3 days. Local residents, with DNI.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (4 to 30 days)
-    amount: 150
-    currency: PEN
-    unit: per_person
-    audience: non_resident
-    note: Ticket valid 4 to 30 days. General rate.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (4 to 30 days)
-    amount: 75
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Ticket valid 4 to 30 days. Peruvian nationals, adults.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (4 to 30 days)
-    amount: 35
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Ticket valid 4 to 30 days. Peruvian nationals, minors 5-16.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Huascarán National Park entry (4 to 30 days)
-    amount: 35
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Ticket valid 4 to 30 days. Local residents, with DNI.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas de ingreso vigente
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (1 day)
-    amount: 15
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Special rate for this route, ticket valid 1 day. Peruvian nationals, adults. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (1 day)
-    amount: 8
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Special rate for this route, ticket valid 1 day. Peruvian nationals, minors 5-16. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (1 day)
-    amount: 8
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Special rate for this route, ticket valid 1 day. Local residents, adults and minors, with DNI. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (2 to 3 days)
-    amount: 30
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Special rate for this route, ticket valid 2 to 3 days. Peruvian nationals, adults. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (2 to 3 days)
-    amount: 15
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Special rate for this route, ticket valid 2 to 3 days. Peruvian nationals, minors. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (2 to 3 days)
-    amount: 15
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Special rate for this route, ticket valid 2 to 3 days. Local residents. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (4 to 30 days)
-    amount: 75
-    currency: PEN
-    unit: per_person
-    audience: adult
-    note: Special rate for this route, ticket valid 4 to 30 days. Peruvian nationals, adults. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (4 to 30 days)
-    amount: 35
-    currency: PEN
-    unit: per_person
-    audience: child
-    note: Special rate for this route, ticket valid 4 to 30 days. Peruvian nationals, minors. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
-- field: fee
-  value:
-    name: Laguna 69 and Pico Mateo trekking route entry (4 to 30 days)
-    amount: 35
-    currency: PEN
-    unit: per_person
-    audience: resident
-    note: Special rate for this route, ticket valid 4 to 30 days. Local residents. The page lists no separate general (foreign) rate for this route in the table.
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tarifas para ruta de trekking Laguna 69 y pico Mateo
+  publisher: SERNANP
+  checked_at: 2026-11-15
+  evidence:
+    page: P1
+    quote: Ubicado en la Cordillera Blanca, la más alta del mundo, el Parque Nacional Huascarán
+  verified: true
 - field: best_months
   value:
   - 5
@@ -313,58 +19,92 @@ facts:
   - 8
   - 9
   - 10
-  note: Recommended season stated as May to October.
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
+  publisher: SERNANP
+  checked_at: 2026-11-15
   evidence_heading: Temporada de visita
+  evidence:
+    page: P1
+    quote: Temporada recomendada:De mayo a octubre.
+  verified: true
 - field: season_note
-  value: SERNANP calls May to October the recommended visiting season, with a mostly dry, cold climate and rains from October to April.
+  value: Rainy season in the park runs from October to April.
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Temporada de visita
+  publisher: SERNANP
+  checked_at: 2026-11-15
+  evidence_heading: Temperatura:-2 °C -15 °C.
+  evidence:
+    page: P1
+    quote: Temporada de lluvias:De Octubre a Abril.
+  verified: true
 - field: access_mode
   value: licensed_operator_required
-  note: The page says visiting the park requires a tour operator authorised by SERNANP.
+  note: Visiting the protected area requires going with a SERNANP-authorised tour operator.
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Tipo y horarios de ingreso
-- field: licensed_operator_list_url
-  value: https://visitaareasnaturales.sernanp.gob.pe/wp-content/uploads/2021/12/OO.TT_.-AUTORIZADOS-PNH-ESPANOL_compressed.pdf
-  note: PDF list of authorised tour operators linked from the park page.
+  publisher: SERNANP
+  checked_at: 2026-11-15
+  evidence_heading: 'Tipo de Ingreso:'
+  evidence:
+    page: P1
+    quote: es obligatorio usar operadores turísticos autorizados por el SERNANP
+  verified: true
+- field: nearest_town
+  value:
+    name: Huaraz
+    note: City given as the main access point in the park directions.
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Operadores Turísticos
+  publisher: SERNANP
+  checked_at: 2026-11-15
+  evidence_heading: 'Accesos y distancias:'
+  evidence:
+    page: P1
+    quote: Desde Anta a Huaraz
+  verified: true
 - field: hazard
   value:
     type: cold
-    note: SERNANP gives temperatures of -2 to -15 C and a rainy season from October to April.
+    note: Park temperatures are listed as below freezing to well below freezing.
   source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
   source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Temporada de visita
-- field: official_url
-  value: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
-  source_title: Parque Nacional Huascarán - Sernanp
-  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
-  checked_at: *id001
-  evidence_heading: Parque Nacional Huascarán
+  publisher: SERNANP
+  checked_at: 2026-11-15
+  evidence_heading: Clima:Predominantemente seco y frío.
+  evidence:
+    page: P1
+    quote: Temperatura:-2 °C -15 °C.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Rescues in the Cordillera Blanca are mostly on foot because helicopters often cannot reach the area.
+  source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+  source_title: Safety and security - Peru travel advice - GOV.UKGOV.UK
+  publisher: UK Foreign, Commonwealth & Development Office
+  checked_at: 2026-11-15
+  evidence_heading: Hiking and mountaineering
+  evidence:
+    page: P2
+    quote: Much of the region is inaccessible by helicopter so rescues are usually carried out on foot.
+  verified: true
 - field: hazard
   value:
     type: security_advisory
-    note: The UK government warns that protests in Peru can turn violent and with no notice cause roadblocks and travel disruption, and that local groups can call strikes at short notice.
+    note: Protests in Peru can turn violent and cause roadblocks and travel disruption, often without notice.
   source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
-  source_title: Safety and security - Peru travel advice - GOV.UK
+  source_title: Safety and security - Peru travel advice - GOV.UKGOV.UK
   publisher: UK Foreign, Commonwealth & Development Office
-  checked_at: *id001
+  checked_at: 2026-11-15
   evidence_heading: Political situation
+  evidence:
+    page: P2
+    quote: Demonstrations can become violent and lead to roadblocks, travel disruption
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 8
+  failed: 0
+  reasons: {}

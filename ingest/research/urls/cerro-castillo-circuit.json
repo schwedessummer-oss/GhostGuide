@@ -6,6 +6,10 @@
   {
    "url": "https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/",
    "purpose": "cited"
+  },
+  {
+   "url": "https://www.conaf.cl/regulacion/gestion-forestal-y-ambiental/permisos-sectoriales/",
+   "purpose": "crawled"
   }
  ]
 }

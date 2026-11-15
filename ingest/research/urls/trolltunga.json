@@ -1,0 +1,39 @@
+{
+ "seed_no": 52,
+ "slug": "trolltunga",
+ "name": "Trolltunga",
+ "urls": [
+  {
+   "url": "https://www.trolltunga.com/en",
+   "purpose": "hike info, parking, shuttle, conditions"
+  },
+  {
+   "url": "https://hardangerfjord.com/en/trolltunga",
+   "purpose": "regional tourism board hike page"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/parking-and-transport/shuttle-busses",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/parking-and-transport/parking",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/parking-and-transport/travel-to-odda-and-trolltunga",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/parking-and-transportation",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.trolltunga.com/en/plan-your-hike/prepare-for-your-hike",
+   "purpose": "crawled"
+  }
+ ]
+}

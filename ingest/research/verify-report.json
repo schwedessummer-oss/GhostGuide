@@ -1,0 +1,192 @@
+{
+ "alta-via-1": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 20
+ },
+ "angels-landing": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 16
+ },
+ "berg-lake-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 16
+ },
+ "caminito-del-rey": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "cerro-castillo-circuit": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 14
+ },
+ "chilkoot-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 24
+ },
+ "ciudad-perdida": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 7
+ },
+ "delicate-arch": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 15
+ },
+ "eiger-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 6
+ },
+ "gr20": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "grand-canyon-rim-to-rim": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 13
+ },
+ "grand-canyon-south-kaibab-bright-angel": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "gros-morne-mountain": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "half-dome": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 21
+ },
+ "highline-trail-glacier": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 20
+ },
+ "iceline-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "inca-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 15
+ },
+ "john-muir-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 19
+ },
+ "kalalau-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 21
+ },
+ "laguna-69": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 8
+ },
+ "laguna-de-los-tres": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 22
+ },
+ "mcafee-knob": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 11
+ },
+ "mount-whitney-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 23
+ },
+ "nahuel-huapi-traverse": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 22
+ },
+ "old-rag": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 19
+ },
+ "plain-of-six-glaciers": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 10
+ },
+ "santa-cruz-trek": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 7
+ },
+ "sky-pond-glacier-gorge": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 10
+ },
+ "skyline-trail-mount-rainier": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 19
+ },
+ "teton-crest-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 20
+ },
+ "the-wave-coyote-buttes-north": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 21
+ },
+ "torres-del-paine-w-o": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 12
+ },
+ "tour-du-mont-blanc": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "tre-cime-di-lavaredo-circuit": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 18
+ },
+ "vale-do-pati": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 6
+ },
+ "west-coast-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 26
+ },
+ "wonderland-trail": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 25
+ },
+ "zion-narrows": {
+  "failed": 0,
+  "reasons": {},
+  "verified": 21
+ }
+}

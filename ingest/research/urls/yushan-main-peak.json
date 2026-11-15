@@ -1,0 +1,35 @@
+{
+ "seed_no": 85,
+ "slug": "yushan-main-peak",
+ "name": "Yushan Main Peak",
+ "urls": [
+  {
+   "url": "https://www.ysnp.gov.tw/en",
+   "purpose": "park HQ homepage: permits, alerts"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Trail/7fa5c242-df1a-4a8e-bcab-32dc55b1f7b6",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Folder/EmergencyCareEn",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Trail/382f4797-1eb1-4746-a122-4e13a9e0c7e4",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Folder/NationalParkEn",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/FAQ/E007000",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Folder/MountaineeringEn",
+   "purpose": "crawled"
+  }
+ ]
+}

@@ -1,235 +1,234 @@
 slug: tre-cime-di-lavaredo-circuit
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Le Tre Cime di Lavaredo, una delle meraviglie naturali d’Italia
-
-  - field: route_type
-    value: loop
-    note: The loop starts and ends at Rifugio Auronzo.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Il giro delle Tre Cime di Lavaredo
-
-  - field: duration
-    value: { min_hours: 3, max_hours: 4 }
-    note: Depends on pace and stops.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Il giro delle Tre Cime di Lavaredo
-
-  - field: high_point_m
-    value: 2454
-    note: Forcella Lavaredo, the pass on the loop, is given as 2,454 m. The start at Rifugio Auronzo is at 2,333 m.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Il giro delle Tre Cime di Lavaredo
-
-  - field: best_months
-    value: [6, 7, 8, 9]
-    note: The site gives late June to late September as the best period, when trails are snow-free and huts are open. Spring and autumn may bring closed huts and icy or snowy trails.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: FAQ
-
-  - field: permit_required
-    value: conditional
-    note: Driving up to the car park at Rifugio Auronzo needs an online booking with the vehicle plate. Reaching the trail on foot is described as free.
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prenotazione online
-
-  - field: permit
-    value:
-      name: Tre Cime road and car park ticket (Rifugio Auronzo)
-      kind: vehicle_reservation
-      how_to_apply: Book a slot online on the dedicated portal and enter the vehicle plate, which can be added or changed once until 23:59 the day before. Access at the automated toll barrier is only for complete bookings with a plate.
-      booking_window: "Ticket valid 12 hours from the chosen entry time; plate can be added until 23:59 the day before"
-      official_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-      price: { amount: 40, currency: EUR, unit: per_vehicle, audience: all, note: "car, 2026 rate; other vehicle types differ" }
-      months: [6, 7, 8, 9, 10]
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, car
-      amount: 40
-      currency: EUR
-      unit: per_vehicle
-      audience: all
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-      note: Price table is headed 2026. A camper-van for up to 9 people is charged the car rate.
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, motorcycle
-      amount: 26
-      currency: EUR
-      unit: per_vehicle
-      audience: all
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, caravan or motorhome
-      amount: 60
-      currency: EUR
-      unit: per_vehicle
-      audience: all
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, bus up to 30 seats
-      amount: 80
-      currency: EUR
-      unit: per_vehicle
-      audience: all
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, bus over 30 seats
-      amount: 160
-      currency: EUR
-      unit: per_vehicle
-      audience: all
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: fee
-    value:
-      name: Tre Cime road and car park, vehicle of an Auronzo di Cadore resident
-      amount: 5
-      currency: EUR
-      unit: per_vehicle
-      audience: resident
-      valid_from: 2026-01-01
-      valid_to: 2026-12-31
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Prezzi 2026
-
-  - field: entry_fee_none
-    value: true
-    note: The site calls reaching the Tre Cime entirely on foot free; the charge applies to the toll road and parking.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/
-    source_title: "Come arrivare alle Tre Cime di Lavaredo: in auto, con bus o a piedi"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Come arrivare alle Tre Cime di Lavaredo a piedi (accesso gratuito)
-
-  - field: parking
-    value: The car park is beside Rifugio Auronzo at 2,333 m, reached by an automated toll barrier. The ticket covers parking for 12 hours from the booked time, and longer stays need a further booking.
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
-
-  - field: trailhead_access
-    value: A paved road of about 6 km leaves near Lago d'Antorno and ends at Rifugio Auronzo. It is usually open from late May to late October, but may be closed to traffic for safety in bad weather or road conditions. Winter tyres or chains are advised.
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
-
-  - field: public_transport
-    value: In summer Dolomitibus buses run to Rifugio Auronzo from Auronzo and Cortina. Shuttle 444 from Dobbiaco station runs mid-June to end of September and must be booked. The nearest train station is Calalzo di Cadore, or Dobbiaco on the South Tyrol side.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/
-    source_title: "Come arrivare alle Tre Cime di Lavaredo: in auto, con bus o a piedi"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Come arrivare alle Tre Cime di Lavaredo con i mezzi pubblici
-
-  - field: rule_camping
-    value:
-      value: restricted
-      note: Camping is banned in the car park areas, with fines of 100 to 500 EUR. Sleeping inside a vehicle is allowed, but no tables, chairs or awnings outside.
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: FAQ
-
-  - field: hazard
-    value:
-      type: weather
-      note: In spring and autumn the huts may be closed and trails icy or snowy; in winter the area is covered in snow and ice and suits only equipped or guided visitors.
-    source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
-    source_title: "Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: FAQ
-
-  - field: nearest_town
-    value: { name: Auronzo di Cadore, note: "The toll road leaves from near Lago d'Antorno and Misurina, in this municipality." }
-    source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
-    source_title: "Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare"
-    publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
-    checked_at: 2026-11-15
-    evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
-
-  - field: closure
-    value:
-      status: partially_closed
-      note: The municipality closed the Tre Cime road to vehicles from Monday 9 November 2026 at 08:00. The notice does not say when it reopens.
-      as_of: 2026-11-15
-    source_url: https://www.comune.auronzo.bl.it/it/news/apertura-strada-delle-tre-cime-di-lavaredo-370c1459-3e11-47ca-9ac4-f603b8628ed6
-    source_title: Chiusura della strada delle Tre Cime di Lavaredo
-    publisher: Comune di Auronzo di Cadore
-    checked_at: 2026-11-15
-    evidence_heading: Descrizione
-
+- field: official_url
+  value: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Il giro delle Tre Cime di Lavaredo
+  evidence:
+    page: P1
+    quote: Il Giro delle Tre Cime di Lavaredo è un’escursione ad anello
+  verified: true
+- field: route_type
+  value: loop
+  note: The classic circuit starts and ends at Rifugio Auronzo.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Il giro delle Tre Cime di Lavaredo
+  evidence:
+    page: P1
+    quote: Il Giro delle Tre Cime di Lavaredo è un’escursione ad anello
+  verified: true
+- field: duration
+  value:
+    min_hours: 3
+    max_hours: 4
+  note: Depends on pace and stops.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Il giro delle Tre Cime di Lavaredo
+  evidence:
+    page: P1
+    quote: L’intero giro ad anello dura circa 3–4 ore, a seconda del passo e delle soste lungo il percorso.
+  verified: true
+- field: distance_km
+  value: 10
+  note: Approximate length of the classic loop from Rifugio Auronzo; another answer on the page says 9-10 km.
+  basis: loop
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Rifugio Pian di Cengia (2.528 m)
+  evidence:
+    page: P1
+    quote: Il sentiero ad anello classico intorno alle Tre Cime di Lavaredo partendo dal Rifugio Auronzo è lungo circa 10 km
+  verified: true
+- field: elevation_gain_m
+  value: 400
+  note: Approximate height gain on the classic loop.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Rifugio Pian di Cengia (2.528 m)
+  evidence:
+    page: P1
+    quote: con un dislivello contenuto di circa 400 metri
+  verified: true
+- field: best_months
+  value:
+  - 6
+  - 7
+  - 8
+  - 9
+  note: July and August are busiest; the second half of June and September are quieter with good weather.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Rifugio Pian di Cengia (2.528 m)
+  evidence:
+    page: P1
+    quote: Luglio e agosto sono i mesi più frequentati; giugno (dalla seconda metà) o settembre sono ottime alternative per chi desidera più tranquillità, con meno frequentazione ma ancora con buone condizioni meteo.
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Only driving to the car park needs an online booking; reaching the area on foot is described as free.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Prenotazione online
+  evidence:
+    page: P3
+    quote: L’accesso in auto al parcheggio delle Tre Cime di Lavaredo è consentito solo previa prenotazione online.
+  verified: true
+- field: permit
+  value:
+    name: Tre Cime road and car park booking (Rifugio Auronzo)
+    kind: vehicle_reservation
+    how_to_apply: Book online on the dedicated portal and enter the vehicle plate. The plate can be added or changed once before 23:59 the day before entry. The barrier admits only complete bookings.
+    booking_window: Ticket valid 12 hours from the chosen entry time; plate can be added until 23:59 the day before
+    official_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Prenotazione online
+  evidence:
+    page: P3
+    quote: L’accesso in auto al parcheggio delle Tre Cime di Lavaredo è consentito solo previa prenotazione online.
+  verified: true
+- field: entry_fee_none
+  value: true
+  note: Reaching the Tre Cime entirely on foot is described as free; the charge applies to the toll road and car park.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/
+  source_title: 'Come arrivare alle Tre Cime di Lavaredo: in auto, con bus o a piedi'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Tre Cime di Lavaredo: come arrivare e organizzare la visita'
+  evidence:
+    page: P4
+    quote: Come arrivare alle Tre Cime di Lavaredo a piedi (accesso gratuito)
+  verified: true
+- field: parking
+  value: The large paid car park is at Rifugio Auronzo (2,333 m). Entry is through an automated barrier and only bookings that include a plate number are admitted.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
+  evidence:
+    page: P3
+    quote: Per raggiungere il parcheggio al Rifugio Auronzo è necessario superare un casello di accesso automatizzato e sarà consentito solamente alle prenotazioni complete di numero di targa.
+  verified: true
+- field: trailhead_access
+  value: A paved road of about 6 km leaves from near Lago d’Antorno and ends at the Rifugio Auronzo car park. It is usually open from late May to late October, weather permitting.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
+  evidence:
+    page: P3
+    quote: L’intero tratto è percorribile in auto durante il periodo di apertura stagionale, generalmente da fine maggio a fine ottobre, salvo condizioni meteo avverse.
+  verified: true
+- field: trailhead_access
+  value: The road may be shut to traffic in either direction for safety depending on weather or road surface. Winter tyres or chains are recommended.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
+  evidence:
+    page: P3
+    quote: Si consiglia l’uso di pneumatici invernali e/o catena a bordo.
+  verified: true
+- field: public_transport
+  value: Dolomitibus buses run direct to Rifugio Auronzo from Cortina d’Ampezzo and Auronzo di Cadore, with connections from Calalzo di Cadore, the nearest railway station. Check current timetables.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/
+  source_title: 'Come arrivare alle Tre Cime di Lavaredo: in auto, con bus o a piedi'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Da Auronzo - Linea Dolomitibus
+  evidence:
+    page: P4
+    quote: Il servizio della compagnia Dolomitibus prevede corse dirette da Cortina d’Ampezzo e da Auronzo di Cadore, con coincidenze comode da Calalzo di Cadore, dove si trova la stazione ferroviaria più vicina.
+  verified: true
+- field: public_transport
+  value: Shuttle 444 (Tre Cime Shuttle) links Dobbiaco station with Rifugio Auronzo from mid-June to the end of September; booking is compulsory via Südtirolmobil or local ticket offices.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/
+  source_title: 'Come arrivare alle Tre Cime di Lavaredo: in auto, con bus o a piedi'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Da Dobbiaco – Shuttle 444 (SüdtirolMobil)
+  evidence:
+    page: P4
+    quote: Da metà giugno a fine settembre è attivo un servizio navetta che collega Dobbiaco al Rifugio Auronzo, punto di partenza per il classico giro delle Tre Cime.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping is banned around the car park with fines of 100 to 500 euros. Sleeping inside a vehicle is allowed, but no tables, chairs or awnings outside.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Prenotazione
+  evidence:
+    page: P3
+    quote: 'ATTENZIONE: vige il divieto di campeggio, con sanzioni previste da € 100,00 a € 500,00. Vi invitiamo al rispetto delle regole per tutelare l’ambiente e garantire una buona esperienza a tutti:'
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: In spring and autumn the huts may be shut and trails icy or snowy. In winter the area is under ice and snow and suits only well-equipped or guided visitors.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Rifugio Pian di Cengia (2.528 m)
+  evidence:
+    page: P1
+    quote: In primavera e in autunno, i rifugi potrebbero essere chiusi e i sentieri potrebbero essere ghiacciati o innevati.
+  verified: true
+- field: nearest_town
+  value:
+    name: Auronzo di Cadore
+    note: The access road starts near Lago d’Antorno in this municipality.
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
+  evidence:
+    page: P3
+    quote: che parte in prossimità del Lago d’Antorno, nel comune di Auronzo di Cadore.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The car park was due to close on 9 November, so the toll road is out of use for vehicles. Winter access is on foot, on snowshoes or by snowmobile from Rifugio Antorno if running.
+    as_of: '2026-11-15'
+  source_url: https://auronzo.info/parcheggio-tre-cime-di-lavaredo/
+  source_title: 'Parcheggio Tre Cime di Lavaredo: informazioni, come prenotare'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Accesso al parcheggio Tre Cime di Lavaredo e pedaggio
+  evidence:
+    page: P3
+    quote: Chiusura del parcheggio prevista per il 9 novembre.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 18
+  failed: 0
+  reasons: {}

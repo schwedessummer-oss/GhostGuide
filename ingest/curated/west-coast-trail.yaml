@@ -1,333 +1,353 @@
 slug: west-coast-trail
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: official_url
-    value: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail: Hike of a lifetime"
-
-  - field: distance_km
-    value: 75
-    basis: one_way
-    note: "Parks Canada gives 75 km (47 mi) between Pachena Bay in the north and Gordon River in the south; entering or leaving at Balaats’adt (Nitinaht Village) shortens the trip."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: History of the West Coast Trail
-
-  - field: duration
-    value: { min_days: 6, max_days: 8 }
-    note: "Time in the backcountry for the full trail; it depends on experience, weather and trail conditions and is shorter via Nitinaht. The rough southern 22 km (Gordon River to Walbran Creek) alone usually takes 2-3 days."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Is this hike for you?
-
-  - field: route_type
-    value: point_to_point
-    note: "Walked between the Pachena Bay and Gordon River trailheads, with Balaats’adt (Nitinaht Village) as the mid-point access; no other entry or exit is allowed except in an evacuation."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Planning your West Coast Trail adventure
-
-  - field: season_note
-    value: "Open to overnight hikers from 1 May to 30 September; shut from 7 October to 30 April because of long heavy rain, strong winds, high tides, big waves and short days. Plan at least 2-3 nights from Nitinaht Narrows to Pachena Bay and 4-5 nights to Gordon River."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Planning your West Coast Trail adventure
-
-  - field: permit_required
-    value: "yes"
-    note: "Everyone needs a West Coast Trail permit, even day hikers, who must also attend the orientation and check in after leaving the trail."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Frequently asked questions
-
-  - field: permit
-    value:
-      name: West Coast Trail Backcountry Use Permit
-      kind: quota
-      how_to_apply: "Reserve a start date and entry point (Pachena Bay, Nitinaht or Gordon River) with the Parks Canada Reservation Service online or on 1-877-737-3783. Watch the online Hiker Safety Primer, then attend a pre-hike briefing at your trailhead, where permits, map and tide tables are issued."
-      booking_window: "2026 reservations opened 8 a.m. PT 5 February 2026; bookings close 2 days before departure; no standby spaces"
-      official_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-      months: [5, 6, 7, 8, 9]
-    note: "Daily hiker numbers are capped. Briefings at Gordon River and Pachena Bay run at 10 a.m. and 2 p.m. (from the day before); Nitinaht at 7 a.m. No permit for children under 6, and the trail is not advised for under-12s."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Reservations
-
-  - field: permit
-    value:
-      name: Pacific Rim National Park Reserve entry pass
-      kind: other
-      how_to_apply: "Everyone 18 or older needs a valid park entry pass, carried on the trail, in addition to the WCT permit. Daily passes are sold at park facilities including the WCT orientation centres and at listed local outlets; annual and Discovery passes also online."
-      official_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    note: "Youth aged 17 and under get in free but still need a pass. Entry passes are not paid through the WCT reservation; they can be bought in person at the orientation centres before starting."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: National Park Entry Pass
-
-  - field: fee
-    value: { name: "West Coast Trail fee (backcountry use permit plus orientation)", amount: 208.50, currency: CAD, unit: per_person, audience: all, note: "Per person, per trip. Made up of the 184.75 West Coast Trail Backcountry Use Permit and the 23.75 orientation fee." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: West Coast Trail
-
-  - field: fee
-    value: { name: "Ferry fee - Gordon River", amount: 28.00, currency: CAD, unit: null, audience: all, note: "Listed under the West Coast Trail fees; the schedule does not state the unit." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: West Coast Trail
-
-  - field: fee
-    value: { name: "Ferry fee - Nitinaht Narrows", amount: 28.00, currency: CAD, unit: null, audience: all, note: "Listed under the West Coast Trail fees; the schedule does not state the unit." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: West Coast Trail
-
-  - field: fee
-    value: { name: "Reservation fee (online)", amount: 11.50, currency: CAD, unit: per_application, audience: all, note: "For each online reservation, change or cancellation; the same by phone costs 13.50." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: RESERVATION SERVICES
-
-  - field: fee
-    value: { name: "Daily admission (adult)", amount: 12.25, currency: CAD, unit: per_day, audience: adult, note: "Per adult (18-64) per day; youth 17 and under free." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Daily
-
-  - field: fee
-    value: { name: "Daily admission (senior)", amount: 10.75, currency: CAD, unit: per_day, audience: senior, note: "Per senior (65+) per day." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Daily
-
-  - field: fee
-    value: { name: "Daily admission (family/group)", amount: 24.50, currency: CAD, unit: per_group, audience: all, note: "Per day for up to seven people arriving in one vehicle." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Daily
-
-  - field: fee
-    value: { name: "Annual admission (adult)", amount: 60.50, currency: CAD, unit: per_person, audience: adult, note: "Pacific Rim annual pass for one adult; seniors 51.50, family/group 120.75." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
-    source_title: Fees - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Annual
-
-  - field: parking
-    value: "Unsecured parking is available near each trailhead; staff at the orientation centres can tell you where vehicles may be left."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Transportation to and from the West Coast Trail
-
-  - field: trailhead_access
-    value: "Pachena Bay orientation centre (5 km south of Bamfield) is reached on gravel logging roads from Port Alberni (2 h) or Duncan (3 h). Gordon River orientation centre (5 km north of Port Renfrew) is 2 h from Victoria on Highway 14 or 1.5 h from Duncan by logging road."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Transportation to and from the West Coast Trail
-
-  - field: trailhead_access
-    value: "Balaats’adt (Nitinaht Village), 80 km south-east of Port Alberni, is reached by logging roads. One water taxi a day leaves the village dock at 8 a.m. for Nitinaht Narrows and returns at 4:30 p.m., so a night in the village may be needed; pay the operator directly."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Transportation to and from the West Coast Trail
-
-  - field: public_transport
-    value: "West Coast Trail Express buses run to Pachena Bay from Victoria (5.5 h) and Nanaimo (3.5 h) and to Gordon River from Victoria (2 h); a taxi links Bamfield with the Pachena Bay trailhead. Parks Canada lists these for convenience only and suggests booking ahead."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Transportation to and from the West Coast Trail
-
-  - field: public_transport
-    value: "Ferries run by the Ditidaht and Pacheedaht First Nations cross Gordon River (daily 1 May-7 October, set departures 8:45 a.m.-3:30 p.m.) and Nitinaht Narrows (daily 1 May-7 October, on demand 8:30 a.m.-4:30 p.m.); ferry fees are paid when you reserve."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Ferry crossings and access points
-
-  - field: rule_dogs
-    value: { value: not_allowed, note: "Domestic animals are banned on the trail between Pachena Bay and Gordon River; elsewhere in the West Coast Trail Unit they must be leashed." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/F8E8283D-0FA3-4283-ACB9-8CAA4DF6F81A
-    source_title: "West Coast Trail Unit: AREA CLOSED TO DOMESTIC ANIMALS (Pacific Rim National Park Reserve bulletin)"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail Unit: AREA CLOSED TO DOMESTIC ANIMALS"
-
-  - field: rule_drones
-    value: { value: not_allowed, note: "All Parks Canada places are no-drone zones for recreation; other flights need the Superintendent's approval, and flying without a permit can bring fines of up to $25,000." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/securite-safety
-    source_title: Safety and Guidelines - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Flying for fun
-
-  - field: rule_camping
-    value: { value: restricted, note: "From 1 May to 7 October, backcountry camping is only for hikers who did the WCT orientation and check-in and hold a backcountry use permit (with ferry fees) and, where needed, a park entry permit; trail runners on day trips face the same rules." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45
-    source_title: "West Coast Trail Unit: RESTRICTED ACTIVITY - Backcountry camping (Pacific Rim National Park Reserve bulletin)"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail Unit: RESTRICTED ACTIVITY - Backcountry camping"
-
-  - field: rule_camping
-    value: { value: restricted, note: "No camping at all between km 34 and 38, whether on the beach, dunes, trail, in the forest or along the Cheewhat River." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2677447F-172E-4402-8CCB-F993537A25F9
-    source_title: "West Coast Trail Unit: PROHIBITED ACTIVITY - No camping between km 34-38 (Pacific Rim National Park Reserve bulletin)"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail Unit: PROHIBITED ACTIVITY - No camping between km 34-38"
-
-  - field: rule_fires
-    value: { value: restricted, note: "Only small fires of wrist-thick or thinner driftwood, on beaches below the high tide line; never in the forest. Check for fire bans first and cook on a stove." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "Backcountry etiquette: low impact camping"
-
-  - field: rule_group_size
-    value: { value: restricted, max_group: 10, note: "Groups may have at most 10 hikers; custodial groups may have up to 18." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Planning your West Coast Trail adventure
-
-  - field: hazard
-    value: { type: river_crossing, note: "Some creeks and rivers must be waded; never cross above knee depth, and expect to wait a day or more for floods to fall. Cable cars over rivers may be out of action." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: A safe and enjoyable trip
-
-  - field: hazard
-    value: { type: tides, note: "High tides can make beach sections hard or impossible to pass; use the Tofino tide tables and the WCT map to avoid being cut off at headlands, and watch for large waves and swells near the water." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: A safe and enjoyable trip
-
-  - field: hazard
-    value: { type: weather, note: "Temperate rainforest: about 330 cm of rain a year, frequent fog in July and August and cool summers (about 14 C). Hypothermia and injuries rise sharply during long wet spells." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Are you prepared for a multi-day backcountry hike?
-
-  - field: hazard
-    value: { type: wildlife, note: "Black bears, wolves and cougars use the beaches and trail. Parks Canada strongly recommends at least one person in each group carries bear spray and knows how to use it." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Living with wildlife
-
-  - field: hazard
-    value: { type: remoteness, note: "Help can take over 24 hours to reach you, and cell coverage is patchy, so carry a satellite messenger or VHF radio. Parks Canada evacuates 60-80 seriously injured hikers each season." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Staying safe
-
-  - field: hazard
-    value: { type: other, note: "Damaged structures: this remote Type 3 trail has broken or missing boardwalk, exposed nails, ladders missing rungs, cable cars out of service and fallen trees, and more than 100 ladder systems to climb." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Is this hike for you?
-
-  - field: hazard
-    value: { type: other, note: "Tsunami: if the ground shakes or the sea pulls back fast, head for high ground at once, aiming to climb 20 m within 20 minutes." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: A safe and enjoyable trip
-
-  - field: hazard
-    value: { type: other, note: "Shellfish: do not eat clams, mussels or oysters, as paralytic shellfish poisoning occurs regularly and can kill." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: A safe and enjoyable trip
-
-  - field: nearest_town
-    value: { name: "Bamfield", note: "The northern Pachena Bay trailhead is 5 km south of Bamfield; the southern Gordon River trailhead is 5 km north of Port Renfrew. Both villages have basic services but no banking." }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Transportation to and from the West Coast Trail
-
-  - field: licensed_operator_list_url
-    value: https://parks.canada.ca/pn-np/bc/pacificrim/activ/exploitants-operators
-    note: "Only businesses licensed by the park reserve may operate there; the list names five companies offering guided backpacking on the West Coast Trail."
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/exploitants-operators
-    source_title: Licensed operators - Pacific Rim National Park Reserve
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: Licensed Operators
-
-  - field: closure
-    value: { status: seasonal, note: "Annual closure 7 October-30 April, in force on 2026-11-15. Only day use from the Pachena Bay trailhead to km 8 is allowed, with a park permit, entering and leaving at Pachena Bay the same day; no overnight use.", as_of: 2026-11-15 }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2A8FF4A7-9D2D-4D0F-903F-E32D7F583EFC
-    source_title: "West Coast Trail: AREA CLOSURE - October 7 to April 30 (Pacific Rim National Park Reserve bulletin)"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail: AREA CLOSURE - October 7 to April 30"
-
-  - field: closure
-    value: { status: partially_closed, note: "By Superintendent Order the public may not enter the Carmanah Point or Pachena Point light stations or the land around them.", as_of: 2026-11-15 }
-    source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
-    source_title: "West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve"
-    publisher: Parks Canada
-    checked_at: 2026-11-15
-    evidence_heading: "West Coast Trail: Hike of a lifetime"
+- field: official_url
+  value: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: The West Coast Trail is a multi-day backcountry hike along the west shoreline of Vancouver Island.
+  verified: true
+- field: distance_km
+  value: 75
+  note: End-to-end length between the two trailheads.
+  basis: one_way
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Spanning 75 kilometres from Pachena Bay to Gordon River,
+  verified: true
+- field: duration
+  value:
+    min_days: 6
+    max_days: 8
+  note: A mid-way entry at Nitinaht Village can shorten the trip by a few days.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Most people will spend between 6 and 8 days in the backcountry, when travelling from end-to-end.
+  verified: true
+- field: route_type
+  value: point_to_point
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Spanning 75 kilometres from Pachena Bay to Gordon River,
+  verified: true
+- field: best_months
+  value:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  note: May and June are especially wet.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: The trail is reservable from May to September each year.
+  verified: true
+- field: season_note
+  value: Reservations cover May to September. Overnight use is restricted to the May 1 to October 7 operating season, and the trail is closed outside it.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: October 15, 2026'
+  evidence:
+    page: P6
+    quote: 'WHEN: Every year, from West Coast Trail opening day until closure day. May 1 to October 7 annually.'
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Camping hikers need a backcountry use permit and must complete the orientation and check-in first.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: October 15, 2026'
+  evidence:
+    page: P6
+    quote: obtained a WCT backcountry use permit including applicable ferry fees, and
+  verified: true
+- field: permit
+  value:
+    name: West Coast Trail backcountry use permit
+    kind: other
+    how_to_apply: Reserve a spot through the Parks Canada reservation service, and complete the orientation and check-in at a designated centre before starting.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: 'Animated text: reservation.pc.gc.ca'
+  verified: true
+- field: permit
+  value:
+    name: National Park entry permit (when required)
+    kind: other
+    how_to_apply: Hikers must also hold a valid national park entry permit where one applies.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: October 15, 2026'
+  evidence:
+    page: P6
+    quote: Secured a valid National Park entry permit. (when required)
+  verified: true
+- field: fee
+  value:
+    name: West Coast Trail, per trip (backcountry use permit and orientation)
+    amount: 208.5
+    currency: CAD
+    unit: per_person
+    audience: all
+    note: The fee list marks this as per trip, per person; the amount sits on the line after that label.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail
+  evidence:
+    page: P3
+    quote: $ 208.50
+  verified: true
+- field: fee
+  value:
+    name: Online reservation, modification or cancellation
+    amount: 11.5
+    currency: CAD
+    unit: per_application
+    audience: all
+    note: Charged by the reservation service; the amount sits on the line after that label.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P3
+    quote: $ 11.50
+  verified: true
+- field: trailhead_access
+  value: There are three access points. Nitinaht Village is a mid-way entry that can shorten the trip by a few days.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: There’s also a mid-way entry point at Nitinaht Village, which can shorten your journey by a few days.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Domestic animals are banned on the trail between the Pachena Bay and Gordon River trailheads, at all times until further notice.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/F8E8283D-0FA3-4283-ACB9-8CAA4DF6F81A
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: September 24, 2026'
+  evidence:
+    page: P4
+    quote: domestic animals are prohibited on the West
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Recreational drone flying is not allowed at any Parks Canada place; non-recreational use needs Superintendent permission.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/securite-safety
+  source_title: Safety and Guidelines - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Flying for fun
+  evidence:
+    page: P5
+    quote: All Parks Canada places are “no drone zones” for recreational use. Please leave your drone at home.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Backcountry camping is limited to hikers who completed the orientation and check-in, hold a trail permit with ferry fees, and have a park entry permit when required.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: October 15, 2026'
+  evidence:
+    page: P6
+    quote: 'WHAT: Pursuant to Section 7(1) of the National Parks General Regulations, backcountry camping on the West Coast Trail (WCT) of Pacific Rim National Park Reserve is restricted to visitors who have:'
+  verified: true
+- field: rule_camping
+  value:
+    value: not_allowed
+    note: No camping anywhere between km 34 and 38, including beach, dunes, trail, forest and the Cheewhat River.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2677447F-172E-4402-8CCB-F993537A25F9
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'West Coast Trail Unit: PROHIBITED ACTIVITY - No camping between km 34-38'
+  evidence:
+    page: P7
+    quote: no person shall camp anywhere on the beach, sand dunes, trails, in the forest, or along the Cheewhat River between kilometers 34 and 38 on the West Coast Trail of Pacific Rim National Park Reserve.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: If you are hurt, rescue can take up to a day to arrive. There are several access points, so share a detailed trip plan.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Did you know that if you get injured on the trail, it can take up to 24 hours for help to reach you?
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Mobile coverage on the trail is limited, so carry a satellite messenger or phone and learn to use it.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Lastly, there’s limited cell service on the trail.
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Be ready to wait for floodwaters to drop at river crossings, which can take days.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail Hiker Preparation Guide
+  evidence:
+    page: P1
+    quote: Be prepared to wait for floodwaters to subside at river crossings, which can take days.
+  verified: true
+- field: hazard
+  value:
+    type: tides
+    note: High tides and large waves can create hazardous situations on the shoreline, so use tide tables and the trail map.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/securite-safety
+  source_title: Safety and Guidelines - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Shoreline safety
+  evidence:
+    page: P5
+    quote: This means that high tides, large waves and rolling logs can expose hikers and storm watchers to hazardous situations.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Extreme weather such as prolonged heavy rain, hurricane-force wind and dense wet fog is common; summers are cool and about 330 cm of rain falls yearly.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/securite-safety
+  source_title: Safety and Guidelines - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Weather and climate
+  evidence:
+    page: P5
+    quote: Extreme weather conditions include prolonged and heavy rainfall, hurricane force winds and dense, wet fog.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Wildlife encounters have increased; at least one person per group should carry bear spray and know how to use it.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Pacific Rim National Park Reserve
+  evidence:
+    page: P1
+    quote: Parks Canada strongly recommends that a minimum of one person per group carry bear spray and know how to use it.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The trail has more than 100 ladder systems, deep mud, fast rivers and rough coastal weather, and is hard even for experienced hikers.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Pacific Rim National Park Reserve
+  evidence:
+    page: P1
+    quote: Hikers must climb over 100 ladder systems with heavy packs, trek through deep mud, cross fast-flowing rivers, and face rough West Coast weather, which can include heavy wind and rain.
+  verified: true
+- field: licensed_operator_list_url
+  value: https://parks.canada.ca/pn-np/bc/pacificrim/activ/exploitants-operators
+  note: Guided backcountry hiking is among the licensed services; the page does not make a guide mandatory.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/exploitants-operators
+  source_title: Licensed operators - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Licensed operators
+  evidence:
+    page: P8
+    quote: Only operators who are licensed by Pacific Rim National Park Reserve may operate within the national park reserve.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: The trail is closed every year from October 7 to April 30, with only day use from Pachena Bay to km 8 under a permit and no overnight use.
+    as_of: '2026-11-15'
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2A8FF4A7-9D2D-4D0F-903F-E32D7F583EFC
+  source_title: Bulletins - * - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: December 06, 2024'
+  evidence:
+    page: P2
+    quote: 'WHEN: Every year, from October 7 to April 30, until further notice.'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The Carmanah Point and Pachena Point light stations and grounds are closed to the public by Superintendent Order.
+    as_of: '2026-11-15'
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Pacific Rim National Park Reserve
+  evidence:
+    page: P1
+    quote: Carmanah Point and Pachena Point Light Stations are closed to the public by Superintendent Order.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 26
+  failed: 0
+  reasons: {}

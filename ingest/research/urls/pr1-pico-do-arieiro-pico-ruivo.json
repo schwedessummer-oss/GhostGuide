@@ -1,0 +1,39 @@
+{
+ "seed_no": 64,
+ "slug": "pr1-pico-do-arieiro-pico-ruivo",
+ "name": "PR1 Pico do Arieiro-Pico Ruivo",
+ "urls": [
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/",
+   "purpose": "agency home: trail pages, closures, fee (English)"
+  },
+  {
+   "url": "https://visitmadeira.com",
+   "purpose": "official tourism board"
+  },
+  {
+   "url": "https://visitmadeira.com/pt/onde-ir/madeira/cordilheira-central/pico-ruivo/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/atividades-de-natureza/parques-florestais-e-areas-de-recreio-e-lazer/parque-florestal-do-pico-das-pedras.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/atividades-de-natureza/casas-de-abrigo/informacao-casa-de-abrigo/casa-do-pico-das-pedras.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/fundos/proderam/intervencao-em-area-de-rn2000-afetada-por-incendios-no-pico-dos-esteios.html",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ifcn.madeira.gov.pt/en/fundos/proderam/intervencao-florestal-preventiva-junto-ao-pico-castelo-porto-santo.html",
+   "purpose": "crawled"
+  }
+ ]
+}

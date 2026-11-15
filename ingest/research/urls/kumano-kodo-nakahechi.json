@@ -1,0 +1,43 @@
+{
+ "seed_no": 82,
+ "slug": "kumano-kodo-nakahechi",
+ "name": "Kumano Kodo Nakahechi",
+ "urls": [
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/",
+   "purpose": "hike own page"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/",
+   "purpose": "Kumano Kodo overview, planning"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/",
+   "purpose": "bookings and alerts hub"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/tsugizakura-oji-to-kumano-hongu-taisha/doyukawa-bashi-bus-stop-to-kumano-hongu-taisha/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/2026/09/15/18036/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/maps/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/takijiri-oji-to-tsugizakura-oji/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/tsugizakura-oji-to-kumano-hongu-taisha/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/akagi-goe/",
+   "purpose": "crawled"
+  }
+ ]
+}

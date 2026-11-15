@@ -1,0 +1,33 @@
+seed_no: 59
+slug: mount-olympus-prionia-mytikas
+name: Mount Olympus (Prionia-Mytikas)
+region_group: europe
+countries:
+- GR
+subdivisions: []
+area:
+  name: Olympus National Park
+  wikidata: null
+  official_url: null
+agency:
+  name: NECCA
+  wikidata: null
+hike_wikidata: null
+official_url: https://necca.gov.gr
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: overnight
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: Only agency home verified. No hike-specific official page found; refuge booking (Refuge A) is on the refuge operator's site, not checked.

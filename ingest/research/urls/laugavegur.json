@@ -1,0 +1,47 @@
+{
+ "seed_no": 50,
+ "slug": "laugavegur",
+ "name": "Laugavegur",
+ "urls": [
+  {
+   "url": "https://www.fi.is/en/laugavegur",
+   "purpose": "trail page"
+  },
+  {
+   "url": "https://www.fi.is/en/mountain-huts",
+   "purpose": "hut booking and fees"
+  },
+  {
+   "url": "https://www.fi.is/en",
+   "purpose": "operator home"
+  },
+  {
+   "url": "https://safetravel.is/",
+   "purpose": "alerts, conditions, safety"
+  },
+  {
+   "url": "https://www.fi.is/en/mountain-huts/faq",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fi.is/en/hiking-trails/trails/view/laugavegur",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fi.is/en/hiking-trails/trails/laugavegur",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fi.is/en/mountain-huts/hut-rules-1",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fi.is/en/hiking-trails/trails",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.fi.is/en/publications/the-laugavegur-hiking-trail",
+   "purpose": "crawled"
+  }
+ ]
+}

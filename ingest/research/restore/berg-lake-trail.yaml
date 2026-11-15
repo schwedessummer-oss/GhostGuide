@@ -1,0 +1,82 @@
+slug: berg-lake-trail
+deleted_facts:
+- field: permit
+  value:
+    name: Berg Lake Trail campground reservation
+    kind: overnight
+    how_to_apply: Book a site through the BC Parks backcountry camping reservations; in peak season a booking is mandatory, and some sites are first come first served off-peak.
+    official_url: https://bcparks.ca/reservations/backcountry-camping/berg-lake-trail/
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Highlights in this site
+- field: trailhead_access
+  value: Trail starts at the end of Kinney Lake Road near the park entrance and Welcome Centre, just west of the Alberta border.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Getting there
+- field: nearest_town
+  value:
+    name: Valemount
+    note: Page lists Jasper, Valemount and McBride as the closest communities; a clinic is in Valemount, 35 km from the park.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Getting there
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Leashed dogs only on day hikes; no overnight trips with dogs and no dogs on Snowbird Pass.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Take extra care when bringing animals
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Permanent campfire ban along the whole trail all year; use a stove.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: No campfires
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping only on tent pads or established sites at designated campgrounds.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Camp on designated sites
+- field: hazard
+  value:
+    type: remoteness
+    note: No cell phone service on the trail; rangers may be at Robson Pass.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: No cell phone service
+- field: hazard
+  value:
+    type: weather
+    note: Dangerous conditions can occur after certain weather, especially in winter; the trail is open for winter use.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Prepare for winter conditions
+- field: hazard
+  value:
+    type: wildlife
+    note: Potentially dangerous animals live in the park; make noise on trails and manage food and scents.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Stay safe around wildlife
+- field: hazard
+  value:
+    type: other
+    note: 'Permanent boil-water advisory: treat all water gathered on the trail.'
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Always boil water before use
+- field: hazard
+  value:
+    type: other
+    note: Slippery rocks, cliffs, uneven surfaces, fast-flowing rivers and waterfalls can be dangerous.
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Stay safe
+- field: closure
+  value:
+    status: partially_closed
+    note: Snowbird Pass, a side branch within the park, is closed each year from May 1 to July 1 for wildlife calving.
+    as_of: &id001 2026-11-15
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  evidence_heading: Hiking
+- field: closure
+  value:
+    status: open
+    note: Park page says the trail has been completely repaired after weather closures and welcomes visitors back; it advises checking live advisories before going.
+    as_of: *id001
+  source_url: https://bcparks.ca/mount-robson-park/
+  evidence_heading: Berg Lake Trail

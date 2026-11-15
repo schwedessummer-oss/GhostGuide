@@ -1,0 +1,33 @@
+seed_no: 101
+slug: roys-peak
+name: Roys Peak
+region_group: oceania
+countries:
+- NZ
+subdivisions: []
+area:
+  name: Wanaka
+  wikidata: null
+  official_url: null
+agency:
+  name: Department of Conservation (DOC)
+  wikidata: null
+hike_wikidata: null
+official_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+anchor: null
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: ''
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: ''
+  source_url: null
+  checked_at: '2026-11-15'
+discovery_notes: 2 verified URLs.

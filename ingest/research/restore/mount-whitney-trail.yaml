@@ -1,0 +1,126 @@
+slug: mount-whitney-trail
+deleted_facts:
+- field: difficulty_official
+  value:
+    label: non-technical, but strenuous
+    scale: Inyo National Forest (descriptive, not a graded scale)
+  note: Applies when the route is free of snow.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+- field: season_note
+  value: Outside roughly July to late September the route usually holds snow or ice and becomes a winter mountaineering climb; Inyo NF says to expect ice and snow until early July.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+- field: permit
+  value:
+    name: Mt. Whitney Day Use (Mt. Whitney Zone) permit
+    kind: lottery
+    how_to_apply: Send one application to the annual Recreation.gov lottery (up to 10 alternate dates); winners pay and confirm by the April deadline, then leftover dates go first come, first served. Valid for one calendar day on any Whitney Zone route; quota 100 people a day, 1 May-1 Nov.
+    booking_window: 'Lottery 1 Feb-1 Mar; results 15 Mar; winners must pay by 9 pm PT on 21 Apr; remaining dates open 7:00 am PT on 22 Apr. Non-quota season (2 Nov-30 Apr): unlimited, booked online within 2 weeks of the trip'
+    official_url: https://www.recreation.gov/permits/445860
+    price:
+      amount: 15.0
+      currency: USD
+      unit: per_person
+      audience: all
+      note: per-person reservation fee that lottery winners pay to claim their date
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  evidence_heading: Important Dates
+- field: permit
+  value:
+    name: Mt. Whitney Trail overnight permit
+    kind: lottery
+    how_to_apply: Allocated in the same Recreation.gov lottery as day use. It allows camping along the Mt. Whitney Trail and a summit bid, and can be extended onto the JMT or PCT by adding an exit point and date; it cannot be used for a one-day hike. Quota 60 people a day, 1 May-1 Nov.
+    booking_window: 'Lottery 1 Feb-1 Mar; results 15 Mar; winners must pay by 9 pm PT on 21 Apr; remaining dates open 7:00 am PT on 22 Apr. Non-quota season (2 Nov-30 Apr): unlimited, booked online within 2 weeks of the trip'
+    official_url: https://www.recreation.gov/permits/445860
+    price:
+      amount: 15.0
+      currency: USD
+      unit: per_person
+      audience: all
+      note: per-person reservation fee that lottery winners pay to claim their date
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  evidence_heading: Overnight — Mt. Whitney Trail
+- field: fee
+  value:
+    name: Wilderness permit reservation fee
+    amount: 6.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Charged per permit on top of the per-person fee; no discounts, and interagency passes are not accepted.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Fees
+- field: fee
+  value:
+    name: Mt. Whitney Zone per-person fee
+    amount: 15.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For trips entering the Mt. Whitney Zone; no nightly charge and no age discounts. Mt. Whitney Day Use and Trail Overnight permits are not refundable.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Fees
+- field: trailhead_access
+  value: The trail starts at Whitney Portal on the east side of the Sierra, reached by road 13 miles (21 km) west of Lone Pine.
+  source_url: https://www.nps.gov/seki/planyourvisit/whitney.htm
+  evidence_heading: Trail Routes
+- field: public_transport
+  value: Eastern Sierra Transit (ESTA) runs buses between towns along Highway 395. The trailhead routes it lists are summer services near Mammoth Lakes, Reds Meadow and Bishop Creek; none is listed for Whitney Portal.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Local Transportation in the Eastern Sierra
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs under control are allowed on national forest land, but pets are banned in Sequoia National Park, and the summit lies in the park.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  evidence_heading: Pets
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: The Mt. Whitney area is on Inyo NF's list of places closed to campfires; gas or liquid-fuel stoves may be used, but not stoves burning wood or other solid fuel.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  evidence_heading: Campfire Restrictions
+- field: rule_camping
+  value:
+    value: restricted
+    note: Overnight stays need a permit. Use existing sites at least 100 ft from trails and water; camping is banned at Mirror Lake and Trailside Meadow. Bear-resistant food storage is mandatory in the Mt. Whitney area and solid human waste must be packed out.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  evidence_heading: Camping Restrictions
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 15
+    note: Groups larger than 15 people are prohibited, even when split across separate permits.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  evidence_heading: General Wilderness Restrictions
+- field: hazard
+  value:
+    type: cold
+    note: When snow or ice is on the mountain, safe travel requires winter mountaineering skills and equipment; ice and snow are expected until early July.
+  source_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+  evidence_heading: Mount Whitney Lottery & Permit Reservations
+- field: hazard
+  value:
+    type: altitude
+    note: The Forest Service lists high altitude among the main natural hazards of a Whitney climb and advises building in time to acclimatize.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
+  evidence_heading: Welcome to Mount Whitney
+- field: hazard
+  value:
+    type: lightning
+    note: Lightning storms and high winds are among the natural hazards the Forest Service lists for the mountain.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
+  evidence_heading: Welcome to Mount Whitney
+- field: access_mode
+  value: independent
+  note: Hikers reserve their own permits on Recreation.gov; a permit naming the commercial service is needed only if a guide or pack outfit is used.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Commercial or Organized Groups
+- field: closure
+  value:
+    status: seasonal
+    note: Upper Whitney Portal Road is listed as closed for the annual winter closure.
+    as_of: 2026-11-13
+  source_url: https://www.inyocounty.us/sites/default/files/2026-11/CURRENT%20ROAD%20UPDATE%20%20%2011.13.26.pdf
+  evidence_heading: Upper Whitney Portal Rd - ANNUAL WINTER CLOSURE

@@ -18,6 +18,30 @@
   {
    "url": "https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees",
    "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/mtn/ours-bears/securite-safety/camping-propre-bare-camp",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/kootenay/info/acts/drone",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/securite-safety/securite-safety",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parcs.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/etat-sentiers-trail-conditions",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/jour-day",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry/reservations",
+   "purpose": "crawled"
   }
  ]
 }

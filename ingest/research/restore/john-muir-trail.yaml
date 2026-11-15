@@ -1,0 +1,221 @@
+slug: john-muir-trail
+deleted_facts:
+- field: distance_km
+  value: 339.6
+  basis: one_way
+  note: NPS gives the trail as 211 miles from Yosemite Valley to Mount Whitney; converted to km (x1.609, rounded).
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: John Muir and Pacific Crest Trails
+- field: season_note
+  value: Yosemite says trails can be snow-covered and very hard to follow from about November until May or June, and closed trails may also result from rockfall, ice or fire.
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  evidence_heading: Trails and Wilderness Conditions
+- field: permit
+  value:
+    name: Yosemite wilderness permit, Donohue Pass eligible (JMT)
+    kind: quota
+    how_to_apply: 'Get a Yosemite wilderness permit from one of the two trailheads that allow the full JMT: Happy Isles to Past LYV or Lyell Canyon (both Donohue Pass eligible). Exits over Donohue Pass are capped at 45 people a day: 15 from Happy Isles, 30 from Lyell Canyon.'
+    official_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: John Muir Trail
+- field: permit
+  value:
+    name: Yosemite wilderness permit reservation
+    kind: lottery
+    how_to_apply: Enter the weekly Recreation.gov lottery 24 weeks before your start date; winners hear on Monday and must accept and pay by Thursday. Unclaimed space is first come, first served from about 22 weeks out, and 40% of each quota is released seven days ahead.
+    booking_window: Weekly lottery 24 weeks ahead (application weeks run mid-November to early May); first-come bookings from about 22 weeks to 7 days ahead; week-ahead release at 7 am PDT, up to 3 days before the trip. Reservations only for trips May-October
+    official_url: https://www.nps.gov/yose/planyourvisit/wpres.htm
+    price:
+      amount: 10.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: plus $5 per person if a permit is issued; fees are non-refundable and non-transferable
+  source_url: https://www.nps.gov/yose/planyourvisit/wpres.htm
+  evidence_heading: Pre-Season Reservations
+- field: permit
+  value:
+    name: Inyo National Forest wilderness permit (JMT trips starting on Inyo NF)
+    kind: quota
+    how_to_apply: If your JMT trip begins on Inyo NF, reserve on Recreation.gov by entry trailhead and date; one permit is honoured by all parks and forests on a continuous trip. Trips that end at Whitney Portal must choose the 'Overnight Exiting Mt. Whitney' permit type.
+    booking_window: 'Quota season 1 May-1 Nov: 60% of quota from 6 months before the entry date, 40% added 2 weeks before; same-day booking if space remains'
+    official_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+    price:
+      amount: 6.0
+      currency: USD
+      unit: per_application
+      audience: all
+      note: plus $5 per person, or $15 per person for trips entering the Mt. Whitney Zone or using the Trail Crest exit
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: John Muir Trail
+- field: permit
+  value:
+    name: Mt. Whitney (Trail Crest) exit quota
+    kind: quota
+    how_to_apply: Only for trips that start on Inyo NF and finish down the Mt. Whitney Trail to Whitney Portal; booked together with the entry permit and applies whether or not you summit. Hikers who start in another park or forest are exempt.
+    booking_window: '25 people per entry date: 15 spaces from 6 months before the entry date, 10 added 2 weeks before'
+    official_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Mt. Whitney Permits
+- field: fee
+  value:
+    name: Yosemite wilderness permit processing fee
+    amount: 10.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Non-refundable and non-transferable.
+  source_url: https://www.nps.gov/yose/planyourvisit/wpres.htm
+  evidence_heading: Wilderness Permit Reservations
+- field: fee
+  value:
+    name: Yosemite wilderness permit per-person fee
+    amount: 5.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Charged only if a permit is issued; non-refundable and non-transferable.
+  source_url: https://www.nps.gov/yose/planyourvisit/wpres.htm
+  evidence_heading: Wilderness Permit Reservations
+- field: fee
+  value:
+    name: Inyo NF wilderness permit reservation fee
+    amount: 6.0
+    currency: USD
+    unit: per_application
+    audience: all
+    note: For trips starting on Inyo NF; charged per permit, no extra charge per night; interagency passes not accepted.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Fees
+- field: fee
+  value:
+    name: Inyo NF wilderness per-person fee
+    amount: 5.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For Inyo NF starts outside the Mt. Whitney Zone; $15 per person if the trip enters the zone or uses the Trail Crest exit. Refundable 12+ days before entry.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Fees
+- field: fee
+  value:
+    name: Yosemite private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid seven consecutive days for a non-commercial vehicle with up to 15 passenger seats and everyone in it; nonresident per-person fees still apply. No cash.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Private Vehicle
+- field: fee
+  value:
+    name: Yosemite individual entrance pass
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For people 16 and over arriving on foot, by bike, on horseback or by non-commercial bus; valid seven consecutive days. Ages 15 and under free.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Per Person
+- field: fee
+  value:
+    name: Yosemite nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Non-US residents aged 16+ pay this on top of the standard entrance fee unless admitted with an Annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  evidence_heading: Standard Entrance Pass
+- field: parking
+  value: Long-term parking for the length of the trip is free in Yosemite Valley and Tuolumne Meadows, with no reservation. Trailhead lots have food lockers. Busy areas are hard to park in except early morning or late afternoon.
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: Parking
+- field: trailhead_access
+  value: 'In Yosemite only two trailheads give access to the full JMT: Happy Isles to Past LYV and Lyell Canyon. The road to the Reds Meadow/Devils Postpile trailheads is under construction, so check with Inyo NF before planning to start or finish there.'
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: Reds Meadow/Devils Postpile Road Access Restrictions
+- field: public_transport
+  value: No public transit runs between the two ends. Eastern Sierra Transit buses link Lone Pine with Mammoth Lakes, and the YARTS Highway 120 East bus runs from Mammoth Lakes to Yosemite Valley.
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: Transportation
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are not allowed in Yosemite, Sequoia or Kings Canyon National Parks, all of which the JMT crosses.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/legacy-media/inyo/JMT%20MinImpact%20WildReg.pdf
+  evidence_heading: General Travel Requirements
+- field: rule_drones
+  value:
+    value: restricted
+    note: Drones are prohibited in the Yosemite Wilderness. Drone rules for the national forest and Sequoia & Kings Canyon sections were not stated on the pages checked.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  evidence_heading: General Regulations
+- field: rule_fires
+  value:
+    value: restricted
+    note: Fires only in existing rings where allowed. Banned above 9,600 ft in Yosemite, above 10,000 ft in Ansel Adams Wilderness and along the JMT in Sequoia & Kings Canyon, above 10,000/10,400 ft in John Muir Wilderness, and in listed lower areas.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/legacy-media/inyo/JMT%20MinImpact%20WildReg.pdf
+  evidence_heading: Campfire Regulations
+- field: rule_camping
+  value:
+    value: restricted
+    note: Permit required. Camp on durable ground 100+ ft from water and trail, out of sight of it; none within 4 trail miles of Tuolumne Meadows, Yosemite Valley or Glacier Point, plus other site bans and night limits. Approved bear canisters required in Yosemite and other listed sections.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/legacy-media/inyo/JMT%20MinImpact%20WildReg.pdf
+  evidence_heading: Campsite Selection
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 15
+    note: No more than 15 people per group. Off-trail the limit is 8 in Yosemite and 8 or 12 in Sequoia & Kings Canyon, depending on location.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/legacy-media/inyo/JMT%20MinImpact%20WildReg.pdf
+  evidence_heading: General Travel Requirements
+- field: hazard
+  value:
+    type: lightning
+    note: Thunderstorms and lightning are most common from June to September but can occur in any month.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildpermits.htm
+  evidence_heading: Lightning Safety
+- field: hazard
+  value:
+    type: cold
+    note: Snow usually lies in the park from November through May; winter and spring trips need preparation for snow conditions.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildpermits.htm
+  evidence_heading: Backpacking in Winter and Spring
+- field: hazard
+  value:
+    type: wildlife
+    note: Bears are active throughout Yosemite; store food properly and keep at least 50 yards away, but scare off any bear that comes close.
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  evidence_heading: Seasonal Information
+- field: hazard
+  value:
+    type: other
+    note: Smoke from regional wildfires or prescribed burns can make air quality hazy or smoky at any time.
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  evidence_heading: Fire and Smoke
+- field: nearest_town
+  value:
+    name: Lone Pine
+    note: NPS names Lone Pine as the closest town to Mount Whitney, the trail's southern end.
+  source_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+  evidence_heading: Transportation
+- field: access_mode
+  value: independent
+  note: Hikers reserve their own permits on Recreation.gov; a permit naming the commercial service is needed only if a guide or pack outfit is used.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  evidence_heading: Commercial or Organized Groups
+- field: closure
+  value:
+    status: seasonal
+    note: Tioga Road (Highway 120 through the park) is temporarily closed due to snow; trails not listed as closed are open but may be snowy.
+    as_of: 2026-11-13
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  evidence_heading: Road Status
+- field: closure
+  value:
+    status: seasonal
+    note: All Tuolumne Meadows services are closed for the season, the hikers bus and YARTS have stopped, and overnight parking on Tioga Road has been banned since 15 October.
+    as_of: 2026-11-06
+  source_url: https://www.nps.gov/yose/planyourvisit/wildcond.htm
+  evidence_heading: Tioga Road and Tuolumne Meadows

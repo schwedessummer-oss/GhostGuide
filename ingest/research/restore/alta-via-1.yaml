@@ -1,0 +1,49 @@
+slug: alta-via-1
+deleted_facts:
+- field: hazard
+  value:
+    type: exposure
+    note: In the park's final two stages (Marmol bivouac down to Belluno) the route follows very hard equipped paths with exposed sections; suitable equipment, technical skill and fitness are needed.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  evidence_heading: Alta Via n. 1
+- field: hazard
+  value:
+    type: altitude
+    note: The main route stays around 2,000 m on average, so high-alpine conditions should be expected.
+  source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
+  evidence_heading: Dolomite Alpine Ridgeway No.1
+- field: trailhead_access
+  value: The Braies valley road is regulated in summer; in 2026 it ran 1 July to 15 September, 09:00 to 16:00, with access only by public transport, on foot, by bike or with an online reservation or valid pass. From 16 September there is no restriction. The regulation returns in summer 2027.
+  source_url: https://www.prags.bz/it
+  evidence_heading: Il regolamento stradale in sintesi
+- field: fee
+  value:
+    name: Braies valley combined ticket (road pass, guaranteed parking, 22 EUR restaurant and shop voucher)
+    amount: 44
+    currency: EUR
+    unit: per_day
+    audience: all
+    valid_from: 2026-07-01
+    valid_to: 2026-09-15
+    note: Offered during the road regulation period; the page does not say whether it is per vehicle.
+  source_url: https://www.prags.bz/it
+  evidence_heading: Auto
+- field: parking
+  value: Three paid car parks (P2, P3, P4) are at the lake, 800 m, 300 m and 100 m away. Places are limited. P1 can be booked in advance on some holidays and includes a shuttle.
+  source_url: https://www.prags.bz/it
+  evidence_heading: Arrivo in auto, camper, pullman e moto
+- field: public_transport
+  value: Bus line 442 links Dobbiaco and Villabassa with the lake (timetable 14 June to 12 December 2026). During the road regulation, bus seats on lines 439 and 442 must be reserved and paid online. At the southern end, Bolzano Bellunese connects to Belluno by public transport.
+  source_url: https://www.prags.bz/it
+  evidence_heading: Bus
+- field: public_transport
+  value: To return to the Alta Pusteria, take a bus from Belluno via Tai di Cadore and Cortina to Dobbiaco, then on to the lake. Bus tickets from Dobbiaco to the lake need online booking from 10 July to 10 September.
+  source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
+  evidence_heading: Dolomite Alpine Ridgeway No.1
+- field: closure
+  value:
+    status: seasonal
+    note: The park recommends June to September for its four-stage section. The Braies valley road had no restriction on the date checked, and the regulation is expected again in summer 2027.
+    as_of: 2026-11-15
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+  evidence_heading: Alta Via n. 1

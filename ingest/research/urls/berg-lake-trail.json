@@ -14,6 +14,30 @@
   {
    "url": "https://bcparks.ca/reservations/backcountry-camping/berg-lake-trail/",
    "purpose": "cited"
+  },
+  {
+   "url": "https://bcparks.ca/reservations/backcountry-camping/reservations/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bcparks.ca/reservations/frontcountry-camping/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bcparks.ca/reservations/group-camping/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bcparks.ca/plan-your-trip/visit-responsibly/wildlife-safety/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bcparks.ca/plan-your-trip/visit-responsibly/winter-safety/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bcparks.ca/park-use-permits/",
+   "purpose": "crawled"
   }
  ]
 }

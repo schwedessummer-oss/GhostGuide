@@ -1,0 +1,250 @@
+slug: kalalau-trail
+deleted_facts:
+- field: distance_km
+  value: 35.4
+  basis: round_trip
+  note: Park summary gives a trail length of 22 miles round trip (the trail itself is 11 miles one way to Kalalau Beach); converted to km (x1.609).
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Trail Length
+- field: elevation_gain_m
+  value: 244
+  note: The park's trail summary box lists an elevation gain of 800 ft (converted x0.3048, rounded). The same page gives 800 ft as the climb out of Hanakāpīʻai Valley, so this may not be the cumulative gain for the whole route.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Elevation Gain
+- field: difficulty_official
+  value:
+    label: Difficult
+    scale: Hawaiʻi State Parks
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Difficulty
+- field: season_note
+  value: Temperatures rarely fall below 60°F. May to October usually brings steady trade winds with passing showers; October to May is less predictable. Showers are most frequent at night and early morning, and occasional large storms cause flash floods.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Climate & Seasons
+- field: permit
+  value:
+    name: Nāpali Coast State Wilderness Park camping permit (Kalalau)
+    kind: overnight
+    how_to_apply: Buy online through the State Parks reservation system linked from the trail page (explore.ehawaii.gov) or in person at any State Parks district office. A valid permit also gets you into Hāʻena State Park; show it on arrival.
+    booking_window: Up to 90 days in advance
+    official_url: https://explore.ehawaii.gov/Web/#!park/9
+    price:
+      amount: 35.0
+      currency: USD
+      unit: per_night
+      audience: non_resident
+      note: per person per night; Hawaiʻi residents pay $25 per person per night
+  note: Needed by anyone continuing past Hanakāpīʻai. Stays are capped at 5 nights in the park, with no 2 nights in a row at Hanakoa. Permits often sell out fast, above all in summer; guided commercial camping trips are not allowed.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Camping
+- field: permit
+  value:
+    name: Hāʻena State Park entry reservation
+    kind: day_use
+    how_to_apply: Non-residents book online at gohaena.com before arriving. It covers the day hike along the Kalalau Trail as far as Hanakāpīʻai beach and falls. Holders of a Nāpali Coast camping permit do not need one.
+    booking_window: Up to 30 days in advance
+    official_url: https://gohaena.com
+    price:
+      amount: 5.0
+      currency: USD
+      unit: per_person
+      audience: non_resident
+      note: Hawaiʻi residents free with a Hawaiʻi driver licence or ID; children 3 and under free
+  note: The park has daily visitor limits. Since 19 April 2021 non-residents who drive need both an entry and a parking reservation; parking slots are sold per timeslot. Park hours are 7:00am-7:45pm in summer (from 1 April) and 7:00am-6:45pm in winter.
+  source_url: https://dlnr.hawaii.gov/dsp/parks/kauai/haena-state-park/
+  evidence_heading: Hāʻena State Park
+- field: permit
+  value:
+    name: Hāʻena State Park day parking + entry reservation
+    kind: parking
+    how_to_apply: Book online on Go Hāʻena; reservation dates open at midnight HST 30 days ahead and usually sell out at once. Choose one or more timeslots; all named visitors must arrive together in one car, and adult IDs are checked.
+    booking_window: Opens 30 days before the visit at 12am HST
+    official_url: https://gohaena.com
+    price:
+      amount: 20.0
+      currency: USD
+      unit: per_vehicle
+      audience: non_resident
+      note: per car per timeslot, plus $5 entry per person
+  note: 'Timeslots: 6:30am-12:30pm, 12:30-5:30pm and 4:30pm-sunset. Cancellations made at least 48 hours ahead are refunded minus a 10% fee. Checking 7-8am HST may turn up cancelled spots.'
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Reservation Options
+- field: permit
+  value:
+    name: Hāʻena State Park overnight parking (Kalalau campers)
+    kind: parking
+    how_to_apply: 'Only for Kalalau camping-permit holders: reserve on Go Hāʻena after getting the camping permit, entering its confirmation number, and pay for every day the car is in the lot (one night needs 2 days).'
+    booking_window: Released 90 days in advance
+    official_url: https://gohaena.com/overnight-parking-park-entry/
+  note: The Hāʻena lot is under construction with fewer spaces. Campers may also be dropped off or use the shuttle; Miloliʻi permits do not include Hāʻena entry.
+  source_url: https://gohaena.com/overnight-parking-park-entry/
+  evidence_heading: Reserve Overnight Parking Here
+- field: fee
+  value:
+    name: Nāpali Coast camping fee (non-residents)
+    amount: 35.0
+    currency: USD
+    unit: per_night
+    audience: non_resident
+    note: Charged per person per night.
+  source_url: https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/
+  evidence_heading: Permit Rules
+- field: fee
+  value:
+    name: Nāpali Coast camping fee (Hawaiʻi residents)
+    amount: 25.0
+    currency: USD
+    unit: per_night
+    audience: resident
+    note: Charged per person per night.
+  source_url: https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/
+  evidence_heading: Permit Rules
+- field: fee
+  value:
+    name: Hāʻena State Park entrance fee
+    amount: 5.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Reservation required. Free for Hawaiʻi residents with a Hawaiʻi driver licence or ID and for children 3 and under.
+  source_url: https://dlnr.hawaii.gov/dsp/parks/kauai/haena-state-park/
+  evidence_heading: Park Entrance Fee
+- field: fee
+  value:
+    name: Hāʻena State Park day parking
+    amount: 20.0
+    currency: USD
+    unit: per_vehicle
+    audience: non_resident
+    note: Per car per timeslot, plus $5 entry per person. No discounts; national or other state passes are not accepted.
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Three Options
+- field: fee
+  value:
+    name: Shuttle + entry pass (ages 16+)
+    amount: 45.0
+    currency: USD
+    unit: per_person
+    audience: adult
+    note: Round-trip shuttle including park entry. The page lists $45 from 6/15 ($40 before), without giving the year.
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Three Options
+- field: fee
+  value:
+    name: Shuttle + entry pass (ages 4-15)
+    amount: 25.0
+    currency: USD
+    unit: per_person
+    audience: child
+    note: Round-trip shuttle including park entry; ages 0-3 ride free on a lap.
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Three Options
+- field: parking
+  value: Day parking at Hāʻena State Park is by advance timeslot reservation only and sells out quickly. Parking outside the park breaks the purchase terms; tickets run $200 or more and cars can be towed.
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Three Options
+- field: parking
+  value: Overnight parking in the Hāʻena lot is only for Kalalau permit holders and is bought separately; the lot is under construction with reduced space. Two private overnight options (Wainiha Country Market, The Cliffs at Princeville) are listed, transport not included.
+  source_url: https://gohaena.com/overnight-parking-park-entry/
+  evidence_heading: Overnight Parking Options
+- field: trailhead_access
+  value: The trailhead is inside Hāʻena State Park at the northwest end of Kūhiō Highway (Route 56), about 41 miles or 1.5 hours by car from Līhuʻe Airport. All access to the trail passes through Hāʻena State Park.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: Location
+- field: trailhead_access
+  value: 'From the Hāʻena parking lot or shuttle drop-off it is a 0.33-mile walk to Kēʻē Beach and the Kalalau trailhead. Download your reservation beforehand: there is no cell service.'
+  source_url: https://gohaena.com/conditions/
+  evidence_heading: Plan Your Visit
+- field: public_transport
+  value: A reservable round-trip shuttle (park entry included) runs daily, with the last pickup at the park at 5:40pm; it departs from Waipā Park & Ride or Princeville, and Waipā is the only stop where riders may park. Ticket holders must ride the shuttle and board at the stop they booked.
+  source_url: https://gohaena.com/info-faqs/
+  evidence_heading: Shuttle Information
+- field: public_transport
+  value: The Kauaʻi Bus serves Hanalei; its stop is 0.6 miles from the Waipā Park & Ride shuttle stop. There is no bus service on Sundays.
+  source_url: https://gohaena.com/conditions/
+  evidence_heading: Useful Links
+- field: rule_camping
+  value:
+    value: restricted
+    note: Permits are issued for Kalalau only and are also valid at Hanakoa; those are the only two places to camp on the trail. Maximum 5 consecutive nights, never 2 nights running at Hanakoa. No camping on the helicopter landing pads.
+  source_url: https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/
+  evidence_heading: Permit Rules
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No open fires. Do not take stones from rock walls to build fire rings or shelters; archaeological sites are protected by law.
+  source_url: https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/
+  evidence_heading: Permit Rules
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: The park asks visitors to obey the law and leave pets at home; dogs and cats have killed endangered birds on Nāpali.
+  source_url: https://dlnr.hawaii.gov/dsp/parks/kauai/napali-coast-state-wilderness-park/malama-napali/
+  evidence_heading: Leave your Pets at Home.
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Go Hāʻena's trail guidance for the Hāʻena State Park section of the trail (to Hanakāpīʻai) says no drones and no speakers.
+  source_url: https://gohaena.com/conditions/
+  evidence_heading: Plan Your Visit
+- field: hazard
+  value:
+    type: remoteness
+    note: There are no emergency services and no cell coverage on the Nāpali Coast; so getting help means walking out or signalling a passing boat or helicopter.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: No Emergency Services
+- field: hazard
+  value:
+    type: exposure
+    note: Parts of the trail are narrow with steep drop-offs, and roots, rocks and mud make it uneven or slippery. Wear suitable footwear.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: Trail
+- field: hazard
+  value:
+    type: river_crossing
+    note: Streams can turn into deep, muddy torrents very quickly. Do not attempt flooded streams or fast water above knee height; waiting often works, as levels drop as fast as they rise.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: Crossing Streams
+- field: hazard
+  value:
+    type: flash_flood
+    note: Streams here carry a high risk of sudden flash floods. If levels rise, stay put until it is safe to cross; with no cell service, no rescue is possible while streams are high.
+  source_url: https://gohaena.com/conditions/
+  evidence_heading: Plan Your Visit
+- field: hazard
+  value:
+    type: rockfall
+    note: Keep away from the foot of steep cliffs, narrow canyons and waterfalls; fallen rocks, for example on the beach in front of the Kalalau caves, show the danger.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: Rockslides and Falling Rocks
+- field: hazard
+  value:
+    type: other
+    note: 'Ocean: surf and rip currents at Hanakāpīʻai are changeable and often extremely dangerous, worst with winter high surf. Swimming or wading there is not recommended; drownings happen regularly.'
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: KE’E BEACH TO HANAKAPI’AI (2 miles) – DAY PASSES REQUIRED
+- field: hazard
+  value:
+    type: heat
+    note: The Hanakoa to Kalalau section is dry and open with little shade from the midday sun; permit holders should start early to avoid overexertion in the heat.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: HANAKOA TO KALALAU BEACH (5 miles)
+- field: hazard
+  value:
+    type: other
+    note: 'Tsunami: low beaches such as Hanakāpīʻai and Kalalau are exposed. Head to high ground at once if warned or if the sea suddenly drops, and stay there until officially cleared.'
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: Tsunamis (tidal waves)
+- field: hazard
+  value:
+    type: other
+    note: 'Hunting: goat hunting may be allowed on weekends in August and September, mostly in Kalalau Valley or above the trail between Hanakoa and Kalalau. Stay on the main trails.'
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  evidence_heading: Hunting
+- field: closure
+  value:
+    status: open
+    note: Reopened to permitted overnight camping on 2 Nov 2026 after closures linked to storms Nolo and Lowell; day hiking to Hanakāpīʻai also reopened. Reservations are required for day and overnight use.
+    as_of: 2026-11-12
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  evidence_heading: 11/12/26 – Important updates related to Hurricane Nolo and Hurricane Lowell recovery (site-wide notice banner)
