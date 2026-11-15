@@ -1,0 +1,130 @@
+slug: yr-wyddfa-pyg-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://eryri.gov.wales/visit/yr-wyddfa/
+  note: Park authority page for Yr Wyddfa, the highest mountain in the park.
+  source_url: https://eryri.gov.wales/visit/yr-wyddfa/
+  source_title: Yr Wyddfa | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Yr Wyddfa
+  evidence:
+    page: P1
+    quote: Standing at over 3,000 feet, Yr Wyddfa is the highest mountain in the National Park
+  verified: true
+- field: difficulty_official
+  value:
+    label: difficult
+    scale: Eryri National Park
+  note: Park authority describes the Pyg Track as rocky and difficult with several steep climbs.
+  source_url: https://eryri.gov.wales/
+  source_title: Eryri National Park | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: NATIONAL PARK
+  evidence:
+    page: P4
+    quote: the Pyg Track is a rocky and difficult path with several steep climbs.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping in the park is allowed only at official campsites.
+  source_url: https://eryri.gov.wales/visit/plan-your-visit/
+  source_title: Plan your Visit | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Plan your Visit
+  evidence:
+    page: P2
+    quote: No. You can only camp in official campsites in Eryri National Park.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Barbecues may be lit only in some areas of the park; the park authority points to its barbecues and fires page for current rules.
+  source_url: https://eryri.gov.wales/visit/plan-your-visit/
+  source_title: Plan your Visit | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Plan your Visit
+  evidence:
+    page: P2
+    quote: Barbecues can be lit in some areas of the National Park.
+  verified: true
+- field: public_transport
+  value: Sherpa'r Wyddfa buses serve the Pen y Pass stop, where the Pyg Track and Miners' Track begin.
+  source_url: https://eryri.gov.wales/visit/plan-your-visit/snowdon-sherpa/
+  source_title: Sherpa'r Wyddfa | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Sherpa’r Wyddfa Timetables
+  evidence:
+    page: P8
+    quote: You’ll need to take the Sherpa bus service to Pen y Pass bus stop where you can join both the Pyg and Miners’ Track.
+  verified: true
+- field: public_transport
+  value: From Llanberis to Pen y Pass, take the S1, S2 or S5 Sherpa bus.
+  source_url: https://eryri.gov.wales/visit/plan-your-visit/snowdon-sherpa/
+  source_title: Sherpa'r Wyddfa | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Sherpa’r Wyddfa Timetables
+  evidence:
+    page: P8
+    quote: From Llanberis to Pen y Pass Use either the S1, S2 or S5 Sherpa bus service
+  verified: true
+- field: parking
+  value: Which car park to use depends on the route; for Pen y Pass, avoid verge and lay-by parking on the approach road because it fills quickly.
+  source_url: https://eryri.gov.wales/visit/snowdon/parking-for-snowdon/
+  source_title: Parking for Yr Wyddfa | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Pen y Pass Car Park
+  evidence:
+    page: P6
+    quote: Avoid parking in lay-bys along the road leading to Pen y Pass. These places can get busy very quickly.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The approach road to Pen y Pass is narrow and winding and dangerous in places, so walking along it is discouraged.
+  source_url: https://eryri.gov.wales/visit/snowdon/parking-for-snowdon/
+  source_title: Parking for Yr Wyddfa | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Pen y Pass Car Park
+  evidence:
+    page: P6
+    quote: Avoid walking along the road leading to Pen y Pass. It's a narrow, winding and dangerous road in some places.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: On Yr Wyddfa in winter conditions can change suddenly and the mountain is a demanding environment needing careful preparation.
+  source_url: https://eryri.gov.wales/visit/snowdon/yr-wyddfa-ground-conditions-reports/
+  source_title: Yr Wyddfa Ground Condition Reports | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Where to see the reports?
+  evidence:
+    page: P5
+    quote: Hiking Yr Wyddfa during the winter months requires careful consideration and preparation. The mountain can be a challenging environment during these seasons, and conditions can change suddenly.
+  verified: true
+- field: season_note
+  value: April to September are the busiest summer months in the park.
+  source_url: https://eryri.gov.wales/visit/plan-your-visit/
+  source_title: Plan your Visit | Eryri National Park
+  publisher: Eryri National Park Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Plan your Visit
+  evidence:
+    page: P2
+    quote: Around 4 million people visit Eryri every year with the summer months between April and September being the most popular times.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

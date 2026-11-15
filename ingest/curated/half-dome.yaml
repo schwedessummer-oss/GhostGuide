@@ -285,7 +285,174 @@ facts:
     page: P2
     quote: The Half Dome cables are down for the season. A permit is required to hike to the top of Half Dome when the cables are up.
   verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are banned on park trails including the Vernal Fall route, even if carried.
+  source_url: https://www.nps.gov/yose/planyourvisit/pets.htm
+  source_title: Pets - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Where Pets Are Not Allowed
+  evidence:
+    page: P10
+    quote: On trails, including the trail to Vernal Fall, even if carried (however, pets are allowed on the Wawona Meadow Loop)
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 6
+    note: One lottery application can cover at most six people.
+  source_url: https://www.recreation.gov/permits/234652
+  source_title: Half Dome Permits, Yosemite National Park - Recreation.gov
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Need to Know
+  evidence:
+    page: P5
+    quote: Each application can have up to 6 permits (people).
+  verified: true
+- field: parking
+  value: Trailhead lot is just past Curry Village; Curry Village parking exists too but fills up quickly.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Trailhead and Parking Information
+  evidence:
+    page: P1
+    quote: 'Most people begin the hike from Happy Isles (shuttle stop #16), which is about a half-mile from the trailhead parking lot or about 3/4 of a mile from Curry Village (parking available, but fills quickly). Trailhead parking is just beyond Curry Village.'
+  verified: true
+- field: trailhead_access
+  value: Shuttles do not run before 7 am; earlier arrivals can walk the road, closed to general traffic, from either parking area to the trailhead.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Trailhead and Parking Information
+  evidence:
+    page: P1
+    quote: Shuttle service doesn't begin until 7 am, so if you're arriving prior to then, you can walk on the road (closed to all but authorized vehicles) from either parking area to the trailhead.
+  verified: true
+- field: trailhead_access
+  value: Yosemite will not use a timed entry reservation system in 2026; it manages traffic and parking on the day and encourages weekday visits.
+  source_url: https://www.nps.gov/yose/planyourvisit/reservations.htm
+  source_title: Entrance Reservations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Entrance Reservations
+  evidence:
+    page: P8
+    quote: Yosemite National Park today announced it will no longer use a timed reservation system in 2026. The decision follows a comprehensive evaluation of traffic patterns, parking availability and visitor use during the 2025 season.
+  verified: true
+- field: public_transport
+  value: Greyhound serves Merced, where travellers change to YARTS for the ride into Yosemite Valley.
+  source_url: https://www.nps.gov/yose/planyourvisit/publictransportation.htm
+  source_title: Public Transportation - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Getting to Yosemite
+  evidence:
+    page: P9
+    quote: Greyhound provides bus service to Merced, where you can transfer to YARTS to continue to Yosemite Valley. YARTS also provides limited service to Crane Flat, White Wolf, and Tuolumne Meadows daily during July and August.
+  verified: true
+- field: public_transport
+  value: The free East Valley shuttle serves Curry Village and the eastern Valley trailheads, running about 7 am to 10 pm.
+  source_url: https://www.nps.gov/yose/planyourvisit/publictransportation.htm
+  source_title: Public Transportation - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Yosemite Valley Shuttle System
+  evidence:
+    page: P9
+    quote: 'East Valley shuttle: This route is limited to Yosemite Village, Curry Village, Pines campgrounds, and trailheads in eastern Yosemite Valley. Buses arrive every 8 to 12 minutes from 7 am to 10 pm.'
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Seven consecutive days; covers the vehicle and its occupants.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P7
+    quote: $35.00 This fee is valid for seven consecutive days for a non-commercial car, pickup truck, RV, or van with 15 or fewer passenger seats. This fee covers the vehicle and everyone inside of it. Per-person nonresident fees still apply.
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Seven days; up to two motorcycles and four people in total.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P7
+    quote: $30.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers. Per-person nonresident fees still apply.
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (on foot, bicycle, horse)
+    amount: 20
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Seven consecutive days; ages 15 and under are free.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P7
+    quote: $20.00 This fee is valid for seven consecutive days for people entering on foot, a bicycle, a horse, or a non-commercial bus or van. People 15 years and younger are free.
+  verified: true
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Extra charge for non-US residents aged 16 and over, on top of the entrance fee.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Nonresident Fees
+  evidence:
+    page: P7
+    quote: Each non-US resident aged 16 and older visiting Yosemite National Park must pay a $100 nonresident fee (in addition to the standard entrance fee), unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: fee
+  value:
+    name: Yosemite annual entrance pass
+    amount: 70
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Free entry for 12 months for US citizens and permanent residents.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P7
+    quote: $70.00 Annual pass providing free entrance to Yosemite for 12 months from the date of purchase for US citizens and permanent residents.
+  verified: true
 mechanical_check:
-  verified: 21
+  verified: 33
   failed: 0
   reasons: {}

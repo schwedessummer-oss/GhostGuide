@@ -1,0 +1,100 @@
+slug: kumano-kodo-nakahechi
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/
+  note: Tourism bureau page for the Nakahechi route.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/
+  source_title: Nakahechi – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence_heading: Imperial Route to Kumano
+  evidence:
+    page: P1
+    quote: The Nakahechi Route is the main route that links the three Grand Shrines of Kumano.
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Starts at Tanabe and heads east to the Kumano shrines.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/
+  source_title: Kumano Kodo – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence:
+    page: P2
+    quote: The Nakahechi pilgrimage route starts from Tanabe on the western coast of the Kii Peninsula and traverses east into the mountains towards the Kumano grand shrines.
+  verified: true
+- field: nearest_town
+  value:
+    name: Tanabe
+    note: Western-coast starting town of the route.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/
+  source_title: Kumano Kodo – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence:
+    page: P2
+    quote: The Nakahechi pilgrimage route starts from Tanabe on the western coast of the Kii Peninsula
+  verified: true
+- field: public_transport
+  value: Local buses serve the remote villages with lodging; services run from Kii-Tanabe and Shirahama toward Chikatsuyu, with a separate timetable each direction.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/takijiri-oji-to-tsugizakura-oji/
+  source_title: Takijiri-oji to Tsugizakura-oji – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Buses run from Kii-Tanabe and Shirahama to Chikatsuyu.
+  verified: true
+- field: public_transport
+  value: Extra bus and boat-tour access services run for a limited period in autumn 2026.
+  valid_from: '2026-09-19'
+  valid_to: '2026-12-10'
+  source_url: https://www.tb-kumano.jp/en/
+  source_title: Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence_heading: News ＆ Stories
+  evidence:
+    page: P3
+    quote: Service starts September 19 to December 10, 2026 Limited time service expansion for Kumano Kodo and Traditional Boat Tour access
+  verified: true
+- field: trailhead_access
+  value: A common first day begins at the Takijiri-oji shrine beside the Tonda River.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/takijiri-oji-to-tsugizakura-oji/
+  source_title: Takijiri-oji to Tsugizakura-oji – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: This one-day hike begins at the Takijiri-oji shrine beside the Tonda River
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Mountain terrain; multi-day walkers are asked to prepare properly.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/
+  source_title: Nakahechi – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence_heading: Imperial Route to Kumano
+  evidence:
+    page: P1
+    quote: It is a mountain environment so if your planning to do a multi-day walk please be prepared.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: On the Doyukawa-bashi to Hongu section there is no water or toilet before Hosshinmon-oji; carry enough water.
+  source_url: https://www.tb-kumano.jp/en/kumano-kodo/nakahechi/tsugizakura-oji-to-kumano-hongu-taisha/doyukawa-bashi-bus-stop-to-kumano-hongu-taisha/
+  source_title: Doyukawa-bashi Bus Stop to Kumano Hongu Taisha – Tanabe City Kumano Tourism Bureau
+  publisher: Tanabe City Kumano Tourism Bureau
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: There is no water source until travelers reach the vending machines at Hosshinmon-oji, so bringing enough water at the start is essential. Also, there are no toilets until Hosshinmon-oji.
+  verified: true
+mechanical_check:
+  verified: 8
+  failed: 0
+  reasons: {}

@@ -245,8 +245,104 @@ facts:
     page: P2
     quote: The site will remain open from Tuesday to Sunday, except on December 24, 25, and 31, and January 1
   verified: true
+- field: distance_km
+  value: 7.7
+  basis: one_way
+  note: Whole path including the 4.9 km of approach paths; the boardwalk section itself is shorter.
+  source_url: https://www.caminitodelrey.info/en/your-visit/faq
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: How long is El Caminito?
+  evidence:
+    page: P8
+    quote: The full length of the path El Caminito del Rey is 7.7 km, of which 4.9km are access ways and 2.9km is the stretch between the broadwalk
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones and similar devices are banned because of the bird community, unless the regional environment ministry authorises them.
+  source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: Prohibitions and grounds for expulsion
+  evidence:
+    page: P7
+    quote: the use of drones or similar devices is absolutely prohibited, unless expressly authorized by the competent Regional Ministry for the Environment.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Umbrellas are banned on the walkways, so a raincoat is needed; visitors are warned by email, SMS or Telegram when strong winds are forecast.
+  source_url: https://www.caminitodelrey.info/en/your-visit/prohibitions
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: Prohibitions and grounds for expulsion
+  evidence:
+    page: P7
+    quote: Access with umbrellas in case of rain. The use of a raincoat or similar is mandatory, if applicable.
+  verified: true
+- field: season_note
+  value: Open Tuesday to Sunday all year, except four fixed dates (24, 25, 31 December and 1 January); Mondays are closed unless otherwise announced.
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: Compulsory rules and regulations
+  evidence:
+    page: P2
+    quote: The site will remain open from Tuesday to Sunday, except on December 24, 25, and 31, and January 1, as well as Mondays and any days or periods when its closure is agreed upon.
+  verified: true
+- field: parking
+  value: A second car park (P2) sits near the El Chorro exit in Alora; arrive at least an hour early. It was being refurbished but still usable, with the shuttle stop 300 m away.
+  source_url: https://www.caminitodelrey.info/en/your-visit/faq
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: Access to the Caminito del Rey
+  evidence:
+    page: P8
+    quote: we recommend that you be parked in this parking at least one hour in advance. It is a car park (P2) that is currently being refurbished but is fully operational
+  verified: true
+- field: public_transport
+  value: Visitors can reach the Caminito by train as well as by road, according to the official FAQ.
+  source_url: https://www.caminitodelrey.info/en/your-visit/faq
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: You can come by train or by road
+  evidence:
+    page: P8
+    quote: You can come by train or by road
+  verified: true
+- field: nearest_town
+  value:
+    name: Ardales
+    note: The reception centre is about 6 km from the Ardales crossing; the north access is in Ardales.
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: The entrance to the Caminito del Rey
+  evidence:
+    page: P1
+    quote: 6km away from the Ardales crossing
+  verified: true
+- field: access_mode
+  value: independent
+  source_url: https://www.caminitodelrey.info/en/
+  source_title: Plataforma Oficial de reservas Caminito del Rey
+  publisher: UTE Caminito del Rey (official visitor platform for the Caminito del Rey)
+  checked_at: '2026-11-15'
+  evidence_heading: 10€
+  evidence:
+    page: P1
+    quote: Make the Caminito your own way.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 18
+  verified: 26
   failed: 0
   reasons: {}

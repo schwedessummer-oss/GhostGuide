@@ -346,8 +346,128 @@ facts:
     page: P1
     quote: Carmanah Point and Pachena Point Light Stations are closed to the public by Superintendent Order.
   verified: true
+- field: fee
+  value:
+    name: West Coast Trail Backcountry Use Permit
+    amount: 184.75
+    currency: CAD
+    unit: per_person
+    audience: all
+  note: Permit component of the per-trip trail fee; the unit is not stated for this row.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail
+  evidence:
+    page: P3
+    quote: '| | West Coast Trail Backcountry Use Permit | $ 184.75'
+  verified: true
+- field: fee
+  value:
+    name: West Coast Trail orientation fee
+    amount: 23.75
+    currency: CAD
+    unit: per_person
+    audience: all
+  note: Orientation component of the per-trip trail fee; the unit is not stated for this row.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail
+  evidence:
+    page: P3
+    quote: '| | Orientation Fee | $ 23.75'
+  verified: true
+- field: fee
+  value:
+    name: Ferry fee - Gordon River
+    amount: 28.0
+    currency: CAD
+    audience: all
+  note: Listed with the trail fees; the page does not give a unit.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail
+  evidence:
+    page: P3
+    quote: '| | Ferry Fee – Gordon River | $ 28.00'
+  verified: true
+- field: fee
+  value:
+    name: Ferry fee - Nitinaht Narrows
+    amount: 28.0
+    currency: CAD
+    audience: all
+  note: Listed with the trail fees; the page does not give a unit.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: West Coast Trail
+  evidence:
+    page: P3
+    quote: '| | Ferry Fee - Nitinaht Narrows | $ 28.00'
+  verified: true
+- field: fee
+  value:
+    name: Reservation, modification or cancellation by phone
+    amount: 13.5
+    currency: CAD
+    unit: per_application
+    audience: all
+  note: Phone booking costs more than the online rate.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees
+  source_title: Fees - Pacific Rim National Park Reserve
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P3
+    quote: '| | Reservation, Modification or Cancellation by phone | $ 13.50'
+  verified: true
+- field: season_note
+  value: The page announces the trail as open to overnight visitors from 1 May to 30 September.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: The West Coast Trail will be open to overnight visitors from May 1 to September 30.
+  evidence:
+    page: P1
+    quote: The West Coast Trail will be open to overnight visitors from May 1 to September 30.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: This remote trail has damaged or missing boardwalks, planks, ladders and bridges, plus exposed nails, so expect broken infrastructure.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Is this hike for you?
+  evidence:
+    page: P1
+    quote: This is a remote Type 3 trail and hikers should expect missing or rotten boardwalks, missing planks, exposed nails, non-functioning ladders and bridges
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Wet temperate rainforest climate with heavy rain possible at any time; about 330 cm falls per year, so prepare for cold and wet conditions.
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+  source_title: 'West Coast Trail: Hike of a lifetime - Pacific Rim National Park Reserve'
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Is this hike for you?
+  evidence:
+    page: P1
+    quote: 'A temperate rainforest climate: Rainfall averages 330 cm (130 in.) per year with heavy rainfall possible at any time.'
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 26
+  verified: 34
   failed: 0
   reasons: {}

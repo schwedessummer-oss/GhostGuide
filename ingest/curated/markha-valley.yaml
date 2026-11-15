@@ -1,0 +1,32 @@
+slug: markha-valley
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://leh.nic.in
+  source_url: https://leh.nic.in
+  source_title: District Leh, Union Territory of Ladakh | Land of the Passes | India
+  publisher: Leh District Administration
+  checked_at: '2026-11-15'
+  evidence_heading: Tourist Information
+  evidence:
+    page: P1
+    quote: Tourist Information
+  verified: true
+- field: hazard
+  value:
+    type: altitude
+    note: Leh district's tourist notice calls for two days of acclimatisation for visitors.
+  source_url: https://leh.nic.in
+  source_title: District Leh, Union Territory of Ladakh | Land of the Passes | India
+  publisher: Leh District Administration
+  checked_at: '2026-11-15'
+  evidence_heading: Tourist Information
+  evidence:
+    page: P1
+    quote: Important Update for Domestic Tourists. 48 hours acclimatization for tourists.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 2
+  failed: 0
+  reasons: {}

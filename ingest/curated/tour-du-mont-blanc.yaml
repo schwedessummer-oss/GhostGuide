@@ -227,8 +227,47 @@ facts:
     page: P2
     quote: will be open daily from 25 June to 13 September 2026.
   verified: true
+- field: difficulty_official
+  value:
+    label: Difficult
+    scale: Autour du Mont-Blanc
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes
+  source_title: All routes
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Routes around Mont-Blanc
+  evidence:
+    page: P8
+    quote: Difference in altitude 10.000 mDistance 170,0 kmDifficulty DifficultDuration 240 h
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: 'Vallorcine (France): a municipal order since 2024 bans campfires across the whole commune, day and night.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Vallorcine
+  evidence:
+    page: P3
+    quote: 'Art. 1: Wild camping and campfires are strictly prohibited both day and night throughout the entire municipal area.'
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: 'Vallorcine (France): outside the nature reserve, a tent is allowed for one night only with the landowner''s consent, evening to morning; above 1,700 m camping is allowed by default.'
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Vallorcine
+  evidence:
+    page: P3
+    quote: Above an altitude of 1,700 metres, camping is permitted by default.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 18
+  verified: 21
   failed: 0
   reasons: {}

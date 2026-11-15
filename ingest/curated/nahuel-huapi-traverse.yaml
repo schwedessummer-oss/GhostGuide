@@ -273,8 +273,150 @@ facts:
     page: P5
     quote: tomar la línea 50 en el centro de la ciudad de Bariloche
   verified: true
+- field: permit_required
+  value: 'yes'
+  note: Trekking registration is compulsory and costs nothing; it applies to the routes in this traverse.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Recomendaciones para la montaña
+  evidence:
+    page: P1
+    quote: Completar el registro de trekking, es obligatorio y gratuito.
+  verified: true
+- field: distance_km
+  value: 10
+  basis: one_way
+  note: Distance of the Refugio Frey path from the Lago Gutierrez ranger station; the page heading says one way.
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Duración del recorrido ida y vuelta
+  evidence:
+    page: P5
+    quote: '## Distancia 10 km'
+  verified: true
+- field: permit
+  value:
+    name: Refugio Frey overnight reservation
+    kind: overnight
+    how_to_apply: Book ahead through the refuge website if you want to sleep at Refugio Frey.
+    official_url: https://www.refugiofreybariloche.com
+  source_url: https://nahuelhuapi.gov.ar/refugio-frey-desde-el-lago-gutierrez/
+  source_title: Refugio Frey desde el lago Gutiérrez – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Descripción
+  evidence:
+    page: P5
+    quote: 'Para pernoctar en el refugio es necesario hacer una reserva: www.refugiofreybariloche.com'
+  verified: true
+- field: permit
+  value:
+    name: Refugio San Martin (Laguna Jakob) overnight reservation
+    kind: overnight
+    how_to_apply: The refuge and its camping area both need a prior booking made through the refuge website.
+    official_url: https://www.refugiojakob.com.ar
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: El pernocte puede ser en el refugio o su zona de acampe, ambas con reserva previa www.refugiojakob.com.ar
+  verified: true
+- field: permit
+  value:
+    name: Refugio Italia (Laguna Negra) overnight reservation
+    kind: overnight
+    how_to_apply: The refuge and its camping area both need a prior booking made through the refuge website.
+    official_url: https://refugiolagunanegra.com/
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: El pernocte puede ser en el refugio o su zona de acampe, ambas con reserva previa https://refugiolagunanegra.com/
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Fires are allowed only in signed, designated spots; never leave one unattended, and the park prefers a stove.
+  source_url: https://nahuelhuapi.gov.ar/recomendaciones-y-seguridad/
+  source_title: Recomendaciones y Seguridad – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Cómo transitar el Parque Nacional
+  evidence:
+    page: P11
+    quote: Hacer fuego en lugres habilitados, señalizados con la cartelería específica.
+  verified: true
+- field: trailhead_access
+  value: The Jakob trailhead gate at Tambo de Baez may sometimes be shut; open it to pass and close it again behind you.
+  source_url: https://nahuelhuapi.gov.ar/tambo-de-baez-refugio-san-martin-laguna-jakob
+  source_title: Tambo De Báez – Refugio San Martín (Laguna Jakob) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Tambo De Báez - Refugio San Martín (Laguna Jakob)
+  evidence:
+    page: P7
+    quote: la que puede encontrarse ocasionalmente cerrada. En tal caso, abrirla para acceder y volver a cerrarla.
+  verified: true
+- field: trailhead_access
+  value: Laguna Negra path starts at the Arroyo Goye bridge via the gravel (second) Colonia Suiza entrance; the first, paved entrance does not reach the start.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: (La primera entrada a Colonia Suiza está pavimentada, ese acceso NO llegar al inicio de la senda)
+  verified: true
+- field: public_transport
+  value: 'Alternative for Laguna Negra: bus line 20 to km 18 of Av. Bustillo, then line 13 to the Arroyo Goye bridge.'
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: Otra alternativa puede ser tomar el colectivo línea 20 en Bariloche hasta el km 18 de Av. Bustillo y desde allí combinar con la línea 13 hasta el puente sobre arroyo Goye.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Beside Laguna Negra the ridge walk has more sun exposure; bring sunscreen, hat, sunglasses and plenty of water.
+  source_url: https://nahuelhuapi.gov.ar/arroyo-goye-colonia-suiza-refugio-italia-laguna-negra
+  source_title: Arroyo Goye (Colonia Suiza) – Refugio Italia (Laguna Negra) – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Arroyo Goye (Colonia Suiza) - Refugio Italia (Laguna Negra)
+  evidence:
+    page: P9
+    quote: Tener en cuenta que aquí hay una mayor exposición al sol, por lo que se recomienda llevar protector solar, gorro, lentes y abundante agua.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Park advice is to go out with someone and walk as a group rather than alone.
+  source_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+  source_title: Trekking y Actividades de Montaña – Parque Nacional Nahuel Huapi
+  publisher: Administración de Parques Nacionales (Parque Nacional Nahuel Huapi)
+  checked_at: '2026-11-15'
+  evidence_heading: Recomendaciones para la montaña
+  evidence:
+    page: P1
+    quote: Es mejor salir siempre con alguien y no individualmente.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 22
+  verified: 33
   failed: 0
   reasons: {}

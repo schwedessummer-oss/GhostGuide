@@ -1,0 +1,184 @@
+slug: tongariro-alpine-crossing
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  note: Official DOC page for the crossing, giving route description, conditions and safety advice.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  source_title: 'Tongariro Alpine Crossing: Tongariro National Park, Central North Island region'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: About the track
+  evidence:
+    page: P1
+    quote: This challenging trip begins at 1120 m following a well-formed boardwalk
+  verified: true
+- field: high_point_m
+  value: 1886
+  note: Red Crater is described as the highest point of the crossing.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  source_title: 'Tongariro Alpine Crossing: Tongariro National Park, Central North Island region'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: About the track
+  evidence:
+    page: P1
+    quote: Red Crater, the highest point in the Crossing at 1886 m
+  verified: true
+- field: distance_km
+  value: 19.4
+  basis: one_way
+  note: Day-hike factsheet gives the one-way distance together with the time estimate.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 7 – 8 hr, 19.4 km one way
+  verified: true
+- field: duration
+  value:
+    min_hours: 7
+    max_hours: 8
+  note: Summer day-hike estimate from the DOC factsheet; the winter brochure advises allowing longer.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 7 – 8 hr, 19.4 km one way
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Track starts at Mangatepopo and finishes at the Ketetahi road end, so a transport shuttle is needed.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 19.4 km one way
+  verified: true
+- field: season_note
+  value: The page defines the winter season as May to late October, with alpine conditions, ice and avalanche terrain then.
+  note: DOC treats May to late October as winter, when extra alpine skills and equipment are needed.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  source_title: 'Tongariro Alpine Crossing: Tongariro National Park, Central North Island region'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: Understand if you are ready for the Tongariro Alpine Crossing
+  evidence:
+    page: P1
+    quote: May to late October – winter season
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: The factsheet lists dogs among items not permitted on the track.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: No dogs, bikes or drones
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: The factsheet lists drones among items not permitted on the track.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: No dogs, bikes or drones
+  verified: true
+- field: parking
+  value: Mangatepopo car park is small, unbooked and first come first served, with a time limit for valley visitors; no spaces are offered to people doing the full crossing.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/soda-springs-walk/
+  source_title: 'Soda Springs Walk: Walking and tramping in Tongariro National Park'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: Mangatepopo car park
+  evidence:
+    page: P6
+    quote: Parking at Mangatepopo car park is limited. It is first come, first served and cannot be booked. There is a 4 hour parking limit for visitors to the Mangatepopo Valley.
+  verified: true
+- field: trailhead_access
+  value: The Mangatepopo road end is on State Highway 47, a drive from Whakapapa Village; the track finishes at Ketetahi Road.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/soda-springs-walk/
+  source_title: 'Soda Springs Walk: Walking and tramping in Tongariro National Park'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P6
+    quote: The track starts at the Mangatepopo roadend, 13.4 km from Whakapapa Village on SH 47.
+  verified: true
+- field: public_transport
+  value: DOC advises arranging a shuttle ahead of time rather than turning up; services run from several surrounding towns.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: Plan ahead and book a shuttle
+  verified: true
+- field: hazard
+  value:
+    type: volcanic
+    note: The area is an active volcanic zone and eruptions can happen with no warning.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-day-hikes-factsheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: Volcanic risk. This is an active volcanic area, and
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Ice is expected on the track in the colder months; helmet, crampons and ice axe are advised, and slips cause many injuries.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  source_title: 'Tongariro Alpine Crossing: Tongariro National Park, Central North Island region'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: Dress for cold, windy and icy conditions
+  evidence:
+    page: P1
+    quote: Expect ice on the track between April and October. A helmet, crampons and ice axe are essential, as is competency using them. 38% of tramping injuries are from slipping.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Red Crater is much colder than the valley and wind lowers the felt temperature further.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/central-north-island/places/tongariro-national-park/things-to-do/tracks/tongariro-alpine-crossing/
+  source_title: 'Tongariro Alpine Crossing: Tongariro National Park, Central North Island region'
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence_heading: Dress for cold, windy and icy conditions
+  evidence:
+    page: P1
+    quote: 'On a calm day, Red Crater is at least 10°C colder than Taupō and 5°C colder than the start of the track – subtract another 2°C for every 10 km/h of wind:'
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: Parts of the route cross avalanche terrain; DOC points visitors to the avalanche forecast.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/tongariro-taupo/tongariro-alpine-crossing-winter-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation (New Zealand)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Avalanches – Check the avalanche forecast
+  verified: true
+mechanical_check:
+  verified: 15
+  failed: 0
+  reasons: {}

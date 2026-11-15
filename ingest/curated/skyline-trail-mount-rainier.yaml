@@ -250,8 +250,115 @@ facts:
     page: P2
     quote: At any time during the year the weather can change quickly and unexpectedly.
   verified: true
+- field: trailhead_access
+  value: In winter, from 1 November to 1 May, every vehicle in the park must carry tire chains.
+  source_url: https://www.nps.gov/mora/planyourvisit/road-status.htm
+  source_title: Road Status - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: 'All vehicles are required to carry tire chains when traveling in the park during the winter season: November 1 - May 1.'
+  evidence:
+    page: P5
+    quote: 'All vehicles are required to carry tire chains when traveling in the park during the winter season: November 1 - May 1.'
+  verified: true
+- field: trailhead_access
+  value: In winter the downhill gate at Longmire closes at 4 pm, so the park advises leaving Paradise by 3:30 pm to make it down in time.
+  source_url: https://www.nps.gov/mora/planyourvisit/road-status.htm
+  source_title: Road Status - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For the best viewing experience, click on the "View full screen" link in the lower left corner of the map. Click on any section of road or notification symbol for more information.
+  evidence:
+    page: P5
+    quote: 'Downhill gate closes: 4:00 pm* *Plan to leave Paradise by 3:30 pm to allow enough time to reach the Longmire gate before it closes for the night.'
+  verified: true
+- field: trailhead_access
+  value: No timed-entry reservation is needed anywhere in the park in 2026; the park handles crowding through parking management on the day.
+  source_url: https://www.nps.gov/mora/learn/news/mount-rainier-national-park-will-not-require-timed-entry-reservations-in-2026.htm
+  source_title: Mount Rainier National Park Will Not Require Timed Entry Reservations in 2026 - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Mount Rainier National Park Will Not Require Timed Entry Reservations in 2026
+  evidence:
+    page: P6
+    quote: Mount Rainier National Park will not implement a timed entry reservation for any portion of the park in 2026.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Flying, launching or landing a drone anywhere in the park on NPS land or water is prohibited.
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Planning Your Visit
+  evidence:
+    page: P8
+    quote: Launching, landing, or operating an unmanned aircraft (drone) from or on lands and waters administered by the National Park services within the boundaries of Mount Rainier National Park is prohibited
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: Thunder heard means a storm is within roughly 10 miles; head for safe shelter at once rather than waiting.
+  source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
+  source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Lightning Safety Tips
+  evidence:
+    page: P9
+    quote: If you hear the rumble of thunder, a thunderstorm is within 10 miles (16 km). Do not wait; this is a warning you that you need to get to a safe place immediately. Remember: When Thunder Roars, Go Indoors!
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The Longmire gate on the road up to Paradise shuts every night in winter; the road is checked each morning and may open late or stay shut.
+    as_of: '2026-11-09'
+  source_url: https://www.nps.gov/mora/planyourvisit/road-status.htm
+  source_title: Road Status - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For the best viewing experience, click on the "View full screen" link in the lower left corner of the map. Click on any section of road or notification symbol for more information.
+  evidence:
+    page: P5
+    quote: Regular nightly closures of the gate at Longmire to Paradise are in effect for the winter season.
+  verified: true
+- field: fee
+  value:
+    name: Commercial mini-bus entrance fee (16-25 seats)
+    amount: 100.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Charged only to commercial organisations such as tour companies.
+  source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+  source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P4
+    quote: Commercial Mini-bus (16-25 seats) $100.00
+  verified: true
+- field: fee
+  value:
+    name: Commercial motor coach entrance fee (26+ seats)
+    amount: 200.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Charged only to commercial organisations such as tour companies.
+  source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+  source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P4
+    quote: Commercial Motor Coach (26+ seats) $200.00
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 19
+  verified: 27
   failed: 0
   reasons: {}

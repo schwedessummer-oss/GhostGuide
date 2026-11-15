@@ -1,0 +1,30 @@
+slug: mount-elgon-sasa-sipi
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://ugandawildlife.org/mount-elgon-national-park/
+  note: Park authority page for Mount Elgon National Park.
+  source_url: https://ugandawildlife.org/mount-elgon-national-park/
+  source_title: Mount Elgon
+  publisher: Uganda Wildlife Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: 'Mount Elgon: A Timeless Giant of East Africa'
+  verified: true
+- field: high_point_m
+  value: 4321
+  note: Wagagai Peak is named as the mountain's top.
+  source_url: https://ugandawildlife.org/mount-elgon-national-park/
+  source_title: Mount Elgon
+  publisher: Uganda Wildlife Authority
+  checked_at: '2026-11-15'
+  evidence_heading: 'Key Attractions for Trekkers:'
+  evidence:
+    page: P1
+    quote: Wagagai Peak (4,321m) – The highest point of the mountain
+  verified: true
+mechanical_check:
+  verified: 2
+  failed: 0
+  reasons: {}

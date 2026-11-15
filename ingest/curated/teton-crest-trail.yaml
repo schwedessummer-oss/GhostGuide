@@ -250,8 +250,261 @@ facts:
     page: P2
     quote: Expect heavy snow and freezing temperatures when recreating in the park between October - April.
   verified: true
+- field: season_note
+  value: Backcountry permits are in heavy demand in July and August; walk-up applicants may start queuing around 5 am.
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm
+  source_title: Backcountry Camping FAQs - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Walk-up Permits
+  evidence:
+    page: P4
+    quote: In July and August, the demand is high for backcountry permits.  The average time prospective campers may start lining up is 5:00 am.
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Needed for every overnight backcountry stay; the page lists the Teton Crest Trail zones among the covered areas.
+  source_url: https://www.nps.gov/grte/planyourvisit/back.htm
+  source_title: Backcountry Camping - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Planning Your Backcountry Trip
+  evidence:
+    page: P9
+    quote: Permits are required for all overnight stays in the backcountry, whether the destination is a lakeshore site on Jackson Lake or Leigh Lake, a camping zone along the Teton Crest Trail, a Technical Climbing/Garnet Canyon area site, or a site in the remote Northern Canyons.
+  verified: true
+- field: permit
+  value:
+    name: Grand Teton backcountry camping permit (advance reservation)
+    kind: overnight
+    how_to_apply: Reserve online on Recreation.gov; permits are tied to campsites or zones on specific nights and must be collected in person.
+    booking_window: Peak-season (May-October 2027) reservations open January 11, 2027 at 8 a.m. MST
+    official_url: https://www.recreation.gov/permits/4675342
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advanced Reservations for Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: Advanced reservations for backcountry camping permits for peak season (May 1–October 31, 2027) become available beginning January 11, 2027, at 8 a.m. MST on Recreation.gov.
+  verified: true
+- field: permit
+  value:
+    name: Grand Teton backcountry camping permit (walk-up)
+    kind: overnight
+    how_to_apply: Ask in person at a park backcountry office; walk-up permits are issued only a day or less before the trip starts, and not online or by phone in peak season.
+    booking_window: No earlier than 1 day before the start date
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm
+  source_title: Backcountry Camping FAQs - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Walk-up Permits
+  evidence:
+    page: P4
+    quote: You can get a walk-up permit up to 1 day in advance of the start date of your backcountry camping trip.  For example, if you want to start backpacking on July 31, you may attempt a walk-up permit on July 30 or July 31.
+  verified: true
+- field: permit
+  value:
+    name: Grand Teton winter backcountry camping permit
+    kind: overnight
+    how_to_apply: Phone the backcountry office; rangers discuss conditions and rules and then email the permit.
+    booking_window: Non-peak season, November 1 to April 30
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: Non-Peak Season Permits (November 1–April 30) – Winter backcountry camping permits can be obtained over the phone by calling 307-739-3309.
+  verified: true
+- field: fee
+  value:
+    name: Backcountry camping permit fee
+    amount: 20.0
+    currency: USD
+    unit: per_trip
+    audience: all
+    note: Flat charge for each permit, non-refundable.
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advanced Reservations for Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: 'Permit Fee: $20 flat per permit (non-refundable)'
+  verified: true
+- field: fee
+  value:
+    name: Backcountry nightly camping fee
+    amount: 7.0
+    currency: USD
+    unit: per_night
+    audience: all
+    note: Charged per person for each night; refundable until five days before the permit start date.
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advanced Reservations for Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: 'Nightly Fee: $7 per person, per night (refundable until five days before the permit start date)'
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Seven-day entry for one private non-commercial vehicle.
+  source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P7
+    quote: $35.00 Park entrance fee for 7 days for a private, non-commercial vehicle.
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid seven days; covers up to two private motorcycles with up to four people in total.
+  source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P7
+    quote: $30.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (foot, bicycle, ski)
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Seven-day pass for each visitor aged 16 or over arriving without a vehicle.
+  source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P7
+    quote: $20.00 Park entrance fee for 7 days for each visitor 16 years and older entering by foot, bicycle, ski, etc.
+  verified: true
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Added to the standard entrance fee for non-US residents aged 16 and over, unless they hold an Annual or America the Beautiful Pass.
+  source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Get an entrance pass
+  evidence:
+    page: P7
+    quote: Non-US residents (16 and over) must pay an additional $100 per person fee unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: fee
+  value:
+    name: Grand Teton annual park pass
+    amount: 70.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Annual Grand Teton park entrance pass.
+  source_url: https://www.nps.gov/grte/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P7
+    quote: '## Annual Entrance - Park $70.00'
+  verified: true
+- field: trailhead_access
+  value: Taking the aerial tram from Teton Village shortens the route by about 6.4 km (4 miles) and avoids roughly 730 m (2,400 ft) of climbing; the tram charges a fee.
+  note: 'Converted from miles and feet: 4 mi = 6.4 km, 2400 ft = 732 m.'
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+  source_title: Backcountry Camping Routes and Zones - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Teton Crest Trail (TCT)
+  evidence:
+    page: P1
+    quote: you can save approximately 4 miles and 2400’ of gain by taking the aerial tram from Teton Tillage
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Launching, landing or operating a drone in the park is prohibited.
+  source_url: https://www.nps.gov/grte/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Code of Federal Regulations
+  evidence:
+    page: P8
+    quote: Launching, landing, or operating an unmanned aircraft, such as a drone, is prohibited.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    note: One permit covers a small party only; larger groups of seven to twelve must use designated group campsites.
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: Individual permits can consist of up to six people. Groups of 7-12 people must camp in designated group sites.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Stays are capped at two nights per location (three at Jackson Lake), with seasonal and annual caps on total nights.
+  source_url: https://www.nps.gov/grte/planyourvisit/bcres.htm
+  source_title: Backcountry Camping Permits - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Camping Permits
+  evidence:
+    page: P6
+    quote: The maximum overnight stay per location is two nights, with the exception of Jackson Lake, which is three nights. No person or group is allowed to camp more than 10 nights between June 1 and Labor Day, and not more than 30 nights per year.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Death Canyon Road and Trailhead are listed closed to all use among the November 2026 road construction updates.
+    as_of: '2026-11-03'
+  source_url: https://www.nps.gov/grte/planyourvisit/conditions.htm
+  source_title: Alerts & Current Conditions - Grand Teton National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Road Construction
+  evidence:
+    page: P10
+    quote: Death Canyon Road & Trailhead - Closed to all use.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 20
+  verified: 37
   failed: 0
   reasons: {}

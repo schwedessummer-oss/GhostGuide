@@ -1,0 +1,136 @@
+slug: mount-fuji-yoshida-trail
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.fujisan-climb.jp/en/
+  note: Official climbing site with registration, fee, rules and conditions.
+  source_url: https://www.fujisan-climb.jp/en/
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: the Official Website for Mt. Fuji Climbing
+  verified: true
+- field: closure
+  value:
+    status: closed
+    note: Winter closure on all four trails above the 5th station; the 2026 season is over.
+    as_of: '2026-11-15'
+  source_url: https://www.fujisan-climb.jp/en/
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Mt. Fuji is currently closed. The 2026 Climbing Season has ended.
+  verified: true
+- field: best_months
+  value:
+  - 7
+  - 8
+  - 9
+  note: Climbing is only possible in the summer season; the official dates are announced before each season.
+  source_url: https://www.fujisan-climb.jp/en/things-to-know-before-climbing
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence:
+    page: P6
+    quote: The next climbing season is scheduled for early July to early September 2027.
+  verified: true
+- field: fee
+  value:
+    name: Mt. Fuji hiking fee
+    amount: 4000
+    currency: JPY
+    unit: per_person
+    audience: all
+    note: Flat rate for any age; people with a disability certificate or on school trips can apply in advance for an exemption.
+  source_url: https://www.fujisan-climb.jp/en/faq
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: The fee is a flat rate of 4,000 yen regardless of the climber's age.
+  verified: true
+- field: trailhead_access
+  value: Above the 5th station gate, ascent is closed from 2 PM to 3 AM. Only guests with a mountain hut stay may pass after 2 PM; everyone else must start earlier.
+  source_url: https://www.fujisan-climb.jp/en/faq
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Guests staying at the mountain huts may pass through after 2 PM, but others are not permitted to do so.
+  verified: true
+- field: rule_camping
+  value:
+    value: not_allowed
+    note: Pitching tents is banned in the national park special protection area above the 5th station.
+  source_url: https://www.fujisan-climb.jp/en/things-to-know-before-climbing
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence_heading: No graffiti allowed.
+  evidence:
+    page: P6
+    quote: Tent pitching and bonfires are prohibited.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Bonfires are banned in the national park special protection area above the 5th station.
+  source_url: https://www.fujisan-climb.jp/en/things-to-know-before-climbing
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence_heading: No graffiti allowed.
+  evidence:
+    page: P6
+    quote: Tent pitching and bonfires are prohibited.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Pets may not be left to roam loose on the mountain.
+  source_url: https://www.fujisan-climb.jp/en/things-to-know-before-climbing
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence_heading: Tent pitching and bonfires are prohibited.
+  evidence:
+    page: P6
+    quote: Pets are not allowed to roam freely.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Outside the official season, aid stations and huts are shut, phone coverage is limited and storms are severe, so climbing then is extremely risky.
+  source_url: https://www.fujisan-climb.jp/en/
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence_heading: Mt. Fuji Volcano Information
+  evidence:
+    page: P1
+    quote: Climbing Mount Fuji outside of the official climbing season is extremely dangerous due to factors such as the closure of first-aid centers and mountain huts, loss of cell phone service, and severe weather.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Summit temperatures in summer can feel like midwinter, and wind chill makes it colder still.
+  source_url: https://www.fujisan-climb.jp/en/things-to-know-before-climbing
+  source_title: the Official Website for Mt. Fuji Climbing
+  publisher: Council for Promoting the Appropriate Use of Mt. Fuji
+  checked_at: '2026-11-15'
+  evidence_heading: Weather characteristics of Mt. Fuji
+  evidence:
+    page: P6
+    quote: even in summer, temperatures at the summit can be as cold as mid-winter.
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

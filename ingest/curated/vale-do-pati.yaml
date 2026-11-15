@@ -70,8 +70,30 @@ facts:
     page: P1
     quote: O transporte intermunicipal no entorno do parque é precário, sendo realizado apenas em alguns trechos por vans particulares.
   verified: true
+- field: distance_km
+  value: 40
+  note: Length of the Capão to Mucugê crossing through the Pati valley; the page says 38 km of it lies inside the national park.
+  basis: one_way
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  source_title: Informações Sobre Visitação - Parna da Chapada Diamantina — Instituto Chico Mendes de Conservação da Biodiversidade
+  publisher: Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: 'Distância: 40 km, sendo 38 dentro do Parque Nacional.'
+  verified: true
+- field: trailhead_access
+  value: The Capão to Mucugê crossing begins in the Capão district of Palmeiras, at the hamlet known as Bomba.
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  source_title: Informações Sobre Visitação - Parna da Chapada Diamantina — Instituto Chico Mendes de Conservação da Biodiversidade
+  publisher: Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: A trilha inicia-se no Capão, em Palmeiras, partindo do povoado conhecido como Bomba.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 6
+  verified: 8
   failed: 0
   reasons: {}

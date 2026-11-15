@@ -1,0 +1,155 @@
+slug: milford-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Bookings are open for the 2026/27 season.
+  verified: true
+- field: route_type
+  value: point_to_point
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Walking options
+  evidence:
+    page: P1
+    quote: The Milford Track can only be walked in one direction over 3 nights and 4 days.
+  verified: true
+- field: duration
+  value:
+    min_days: 4
+    max_days: 4
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Walking options
+  evidence:
+    page: P1
+    quote: The Milford Track can only be walked in one direction over 3 nights and 4 days.
+  verified: true
+- field: distance_km
+  value: 53.5
+  basis: one_way
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/fiordland/great-walks-milford-track-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: 'Distance: 53.5 km (one way)'
+  verified: true
+- field: high_point_m
+  value: 1154
+  note: Highest point is the pass shelter on day three.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Day 3 – Mintaro Hut to Dumpling Hut
+  evidence:
+    page: P1
+    quote: the highest point of the track and Omanui/McKinnon Pass Shelter (1154 m)
+  verified: true
+- field: best_months
+  value:
+  - 11
+  - 12
+  - 1
+  - 2
+  - 3
+  - 4
+  note: Great Walks season runs from 1 November to 30 April; last departure 28 April.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Understand if you are ready for the Milford Track
+  evidence:
+    page: P1
+    quote: In the Great Walks season (1 November 2026 – 30 April 2027 last departure 28 April 2027)
+  verified: true
+- field: trailhead_access
+  value: Start is by bus or car from Te Anau to Te Anau Downs, then a boat across the lake to Glade Wharf.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Understand if you are ready for the Milford Track
+  evidence:
+    page: P1
+    quote: From Te Anau, take a bus or private transport to Te Anau Downs (30 minutes), then a boat trip to Glade Wharf at the head of Lake Te Anau (1 hour 15 minutes).
+  verified: true
+- field: public_transport
+  value: At the end, a short boat ride from Sandfly Point reaches Milford Sound, where buses go to Te Anau and Queenstown.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Understand if you are ready for the Milford Track
+  evidence:
+    page: P1
+    quote: Take a boat trip (20 minutes) to Milford Sound/Piopiotahi, where there are bus services back to Te Anau and on to Queenstown.
+  verified: true
+- field: nearest_town
+  value:
+    name: Te Anau
+    note: Transport to the track starts from here.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Understand if you are ready for the Milford Track
+  evidence:
+    page: P1
+    quote: The Milford Track starts on Lake Te Anau.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Conditions change fast; cold, snow, wind and heavy rain are possible in any season.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/milford-track/
+  source_title: 'Milford Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Weather conditions
+  evidence:
+    page: P1
+    quote: Cold temperatures, snow, strong winds and heavy rain can occur at any time of the year.
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: The park brochure warns of avalanche risk on steep slopes along the route.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/fiordland/milford-track-walking-guide-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: slope there is an avalanche risk. There are over 57 avalanche paths,
+  verified: true
+- field: rule_camping
+  value:
+    value: not_allowed
+    note: Camping is banned on the track; walkers use huts.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/fiordland/great-walks-milford-track-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Camping is not last departure 28 April)Riverton/ Kaka Point permitted on the Milford Track.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 12
+  failed: 0
+  reasons: {}

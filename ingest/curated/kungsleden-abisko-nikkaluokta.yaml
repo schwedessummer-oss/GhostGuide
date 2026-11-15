@@ -1,0 +1,91 @@
+slug: kungsleden-abisko-nikkaluokta
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.swedishtouristassociation.com/trails/kungsleden/
+  note: Hut operator page for the Kungsleden trail.
+  source_url: https://www.swedishtouristassociation.com/trails/kungsleden/
+  source_title: Kungsleden – the King’s Trail | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Kungsleden – The King’s Trail in Sweden
+  evidence:
+    page: P4
+    quote: The Kungsleden Trail, the King's Trail, between Abisko and Hemavan is one of the world’s most famous
+  verified: true
+- field: distance_km
+  value: 107
+  note: Abisko to Nikkaluokta total, as stated on the operator's ski-tour page.
+  basis: one_way
+  source_url: https://www.swedishtouristassociation.com/activities/kungsleden-abisko-kebnekaise-on-nordic-backcountry-skis/
+  source_title: Ski touring Abisko–Kebnekaise | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Good to know
+  evidence:
+    page: P3
+    quote: The total length of the trip from Abisko to Nikkaluokta is 107 km
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Trip runs from Abisko to Nikkaluokta.
+  source_url: https://www.swedishtouristassociation.com/activities/kungsleden-abisko-kebnekaise-on-nordic-backcountry-skis/
+  source_title: Ski touring Abisko–Kebnekaise | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Good to know
+  evidence:
+    page: P3
+    quote: The total length of the trip from Abisko to Nikkaluokta is 107 km
+  verified: true
+- field: high_point_m
+  value: 1140
+  note: Tjaktja Pass, named as the trail's highest point.
+  source_url: https://www.swedishtouristassociation.com/activities/kungsleden-abisko-kebnekaise-on-nordic-backcountry-skis/
+  source_title: Ski touring Abisko–Kebnekaise | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Good to know
+  evidence:
+    page: P3
+    quote: Towards the highest point on the King’s Trail – Tjäktja Pass, 1,140 m above sea level.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs must not run loose between 1 March and 20 August; leashes protect nesting birds and reindeer. Check with the park.
+  evidence_heading: Extra care for your dog from 1 March to 20 August
+  source_url: https://www.swedishtouristassociation.com/activities/hiking/traveling-with-dogs/
+  source_title: Travelling with dogs | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P8
+    quote: During this period, dogs must not run loose in nature. Leash requirements are often in place to protect nesting birds, mammals with young, or grazing reindeer. You should contact the national park or nature reserve you plan to visit to check if specific rules apply.
+  verified: true
+- field: trailhead_access
+  value: Common start and end points include Abisko and Nikkaluokta.
+  source_url: https://www.swedishtouristassociation.com/trails/kungsleden/
+  source_title: Kungsleden – the King’s Trail | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Kungsleden – The King’s Trail in Sweden
+  evidence:
+    page: P4
+    quote: Common starting and ending points include Abisko, Vakkotavare, Saltoluokta, Kvikkjokk, Ammarnäs, and Hemavan.
+  verified: true
+- field: public_transport
+  value: A bus runs from Nikkaluokta; departure times change by year, and the transport must be booked separately.
+  source_url: https://www.swedishtouristassociation.com/activities/kungsleden-abisko-kebnekaise-on-nordic-backcountry-skis/
+  source_title: Ski touring Abisko–Kebnekaise | Swedish Tourist Association
+  publisher: Swedish Tourist Association (STF)
+  checked_at: '2026-11-15'
+  evidence_heading: Good to know
+  evidence:
+    page: P3
+    quote: Transport from Nikkaluokta is not included and must be booked independently. The departure times of the bus from Nikkaluokta vary from year to year.
+  verified: true
+mechanical_check:
+  verified: 7
+  failed: 0
+  reasons: {}

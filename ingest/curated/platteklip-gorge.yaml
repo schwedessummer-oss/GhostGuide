@@ -1,0 +1,63 @@
+slug: platteklip-gorge
+researched_at: '2026-11-15'
+facts:
+- field: hazard
+  value:
+    type: heat
+    note: Advice to begin early to avoid peak summer heat and to be off the mountain before dark.
+  note: UK government travel advice on Table Mountain trails.
+  source_url: https://www.gov.uk/foreign-travel-advice/south-africa/safety-and-security
+  source_title: Safety and security - South Africa travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Table Mountain National Park
+  evidence:
+    page: P4
+    quote: start early to avoid peak summer heat and finish before dark
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Trails are demanding and rescuers are called out often, so match the route to your fitness.
+  note: Table Mountain trails described as strenuous.
+  source_url: https://www.gov.uk/foreign-travel-advice/south-africa/safety-and-security
+  source_title: Safety and security - South Africa travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Table Mountain National Park
+  evidence:
+    page: P4
+    quote: Table Mountain trails are strenuous, and mountain rescuers get regular calls to help hikers.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Wildfires are a possible hazard; check the park authority for current guidance.
+  note: Wildfire hazard flagged for Table Mountain.
+  source_url: https://www.gov.uk/foreign-travel-advice/south-africa/safety-and-security
+  source_title: Safety and security - South Africa travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Table Mountain National Park
+  evidence:
+    page: P4
+    quote: Check SANPARKS for the latest guidance including hazards such as wildfires.
+  verified: true
+- field: hazard
+  value:
+    type: security_advisory
+    note: The advice section on attacks in the national park recommends walking in a party of four or more.
+  note: Group-size advice under the park attacks heading.
+  source_url: https://www.gov.uk/foreign-travel-advice/south-africa/safety-and-security
+  source_title: Safety and security - South Africa travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Table Mountain National Park attacks
+  evidence:
+    page: P4
+    quote: hike in groups of 4 or more
+  verified: true
+mechanical_check:
+  verified: 4
+  failed: 0
+  reasons: {}

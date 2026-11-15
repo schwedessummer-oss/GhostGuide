@@ -1,0 +1,201 @@
+slug: roys-peak
+researched_at: &id001 2026-11-15
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Roys Peak Track is a challenging full-day hike near Wānaka in Central Otago. It is one of New Zealand's most popular day hikes because of its panoramic views over Lake Wānaka.
+  verified: true
+- field: elevation_gain_m
+  value: 1200
+  note: Page says the climb is over 1,200 m, so this is a minimum.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: About the track
+  evidence:
+    page: P1
+    quote: Steep climb with over 1,200m elevation gain, high fitness needed
+  verified: true
+- field: high_point_m
+  value: 1578
+  note: Elevation of the summit where the track ends.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: About the track
+  evidence:
+    page: P1
+    quote: Roys Peak Track ends at the summit of Roys Peak, at 1,578 metres elevation.
+  verified: true
+- field: difficulty_official
+  value:
+    label: challenging
+    scale: DOC
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Roys Peak Track is a challenging full-day hike near Wānaka in Central Otago. It is one of New Zealand's most popular day hikes because of its panoramic views over Lake Wānaka.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Track is shut each year from 1 October to 10 November (lambing closure).
+    as_of: 2026-11-15
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: When to go
+  evidence:
+    page: P1
+    quote: 'Spring: Winter conditions can continue into spring, especially frozen ground and cold temperatures. Roys Peak Track is closed from 1 October to 10 November.'
+  verified: true
+- field: entry_fee_none
+  value: true
+  note: General DOC statement that walking on a track carries no fee; huts and campsites may.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/things-to-do/walking-and-tramping/track-categories/
+  source_title: 'Walking track categories: Tracks and walks'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P4
+    quote: There is no fee for walking on a track, however there may be fees for staying in huts and campsites on a track.
+  verified: true
+- field: parking
+  value: Large car park about 6 km west of Wānaka on the left; parking is free but fills up, and roadside parking is not allowed.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Roys Peak Track virtual guide
+  evidence:
+    page: P1
+    quote: Free parking for cars and campervans.
+  verified: true
+- field: trailhead_access
+  value: Drive west from Wānaka along Wānaka-Mount Aspiring Road for roughly 6 km to the car park. You can also walk or cycle from town on non-DOC tracks.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Roys Peak Track virtual guide
+  evidence:
+    page: P1
+    quote: From Wānaka, drive west along the Wānaka – Mount Aspiring Road for about 6 km until you reach the large Roys Peak car park on your left.
+  verified: true
+- field: public_transport
+  value: Shuttle and taxi providers operate; options are online or via the Wānaka isite.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Shuttles and taxis
+  evidence:
+    page: P1
+    quote: Transport providers are available. Find options online or contact the Wānaka isite.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: No campfires; gas cookers permitted in the Stack Conservation Area only, and no fires at all on the private land.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Plan your visit
+  evidence:
+    page: P1
+    quote: Campfires are not allowed. Gas camp cookers are allowed in the Stack Conservation Area, but choose a site that is clear of flammable materials. No fires allowed on the private land.
+  verified: true
+- field: rule_drones
+  value:
+    value: restricted
+    note: Flying a drone needs a permit; without one it is strictly prohibited.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: No drones
+  evidence:
+    page: P1
+    quote: Flying a drone without a permit is strictly prohibited.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: 'General DOC rule: pets are barred from conservation land without permission, with limited exceptions. This hike page does not address dogs itself.'
+  source_url: https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/pets-on-conservation-land
+  source_title: Pets on conservation land
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P5
+    quote: You are not allowed to take a pet into conservation land without DOC permission. This includes national parks, wildlife areas and reserves.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Summer can be very hot with no shade or water on the track; carry water and sun protection.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: When to go
+  evidence:
+    page: P1
+    quote: 'Summer: The track can be very hot in summer, with no shade or water. We recommend bringing plenty of water and sun protection, and avoiding hiking during the hottest part of the day.'
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: Challenging avalanche terrain exists above 1,000 m.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Roys Peak Track in winter
+  evidence:
+    page: P1
+    quote: Roys Peak Track has challenging avalanche terrain above 1, 000 metres. Find out more about this on the New Zealand Avalanche Advisory website or check with the Tititea/Mt Aspiring National Park Visitor Centre.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Upper track is alpine, so sudden changes, rain, snow and cold can happen at any time of year.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: When to go
+  evidence:
+    page: P1
+    quote: The upper parts of Roys Peak Track are in an alpine area. Prepare for sudden weather changes, rain, snow and cold temperatures at any time of year. Check the forecast and change your plans if needed.
+  verified: true
+- field: nearest_town
+  value:
+    name: Wānaka
+    note: Track starts about 6 km from Wānaka.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/otago/places/wanaka-area/things-to-do/roys-peak-track/
+  source_title: 'Roys Peak Track: Wānaka area, Otago region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Roys Peak Track is a challenging full-day hike near Wānaka in Central Otago. It is one of New Zealand's most popular day hikes because of its panoramic views over Lake Wānaka.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 16
+  failed: 0
+  reasons: {}

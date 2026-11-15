@@ -1,0 +1,145 @@
+slug: fishermens-trail
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://rotavicentina.com/en/fishermens-trail/
+  note: Trail page of the association that runs the route.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Fishermen’s Trail includes a total of 13 steps, a total of 226,5 km
+  evidence:
+    page: P3
+    quote: Fishermen’s Trail includes a total of 13 steps, a total of 226,5 km
+  verified: true
+- field: distance_km
+  value: 226.5
+  basis: one_way
+  note: Whole trail across 13 stages; the page writes it as 226,5 km.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Fishermen’s Trail includes a total of 13 steps, a total of 226,5 km
+  evidence:
+    page: P3
+    quote: Fishermen’s Trail includes a total of 13 steps, a total of 226,5 km
+  verified: true
+- field: duration
+  value:
+    min_days: 13
+    max_days: 13
+  note: Thirteen one-day stages, each walkable in either direction.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Stages of the Fishermen's Trail
+  evidence:
+    page: P3
+    quote: 13 one-day stages, which can be walked in both directions
+  verified: true
+- field: best_months
+  value:
+  - 9
+  - 10
+  - 11
+  - 12
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  note: Stages are walkable September to June.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Stages of the Fishermen's Trail
+  evidence:
+    page: P3
+    quote: between the months of September and June
+  verified: true
+- field: season_note
+  value: Stages are promoted for walking from September through June.
+  note: Season window from the trail page.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Stages of the Fishermen's Trail
+  evidence:
+    page: P3
+    quote: between the months of September and June
+  verified: true
+- field: access_mode
+  value: independent
+  note: Signage is designed so walkers can do the route without a guide.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Probably one of the best coastal trails in the world.
+  evidence:
+    page: P3
+    quote: Intuitive signage to make the entire journey in autonomy, both ways.
+  verified: true
+- field: rule_camping
+  value:
+    value: not_allowed
+    note: Wild camping is banned; use campsites.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Probably one of the best coastal trails in the world.
+  evidence:
+    page: P3
+    quote: No wild camping.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 15
+    note: Groups may not exceed fifteen walkers.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Probably one of the best coastal trails in the world.
+  evidence:
+    page: P3
+    quote: Maximum number of 15 people per group.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Cliffs are eroding, so falls are a danger; not advised for anyone with vertigo or fear of heights.
+  note: Combines erosion warning and the vertigo advice.
+  source_url: https://rotavicentina.com/en/fishermens-trail/
+  source_title: Fishermen's Trail - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Probably one of the best coastal trails in the world.
+  evidence:
+    page: P3
+    quote: The cliffs are in a constant process of erosion. Walking along them be careful of the danger of falling.
+  verified: true
+- field: public_transport
+  value: Partner taxis and transfers serve the route, including rides to trailheads, luggage transfers and train stations; the page quotes taxi fares from about one euro per km.
+  note: Transport partners listed on the association site.
+  source_url: https://rotavicentina.com/en/transports/
+  source_title: Transports - Rota Vicentina
+  publisher: Rota Vicentina
+  checked_at: '2026-11-15'
+  evidence_heading: Taxis and Transfers
+  evidence:
+    page: P7
+    quote: Taxis and transfers from the Rota Vicentina network of companies, which allow you to enjoy the region without worry and with greater flexibility.
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

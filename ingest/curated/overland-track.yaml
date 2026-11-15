@@ -1,0 +1,284 @@
+slug: overland-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  note: Main official page for the walk on the Tasmanian parks service site.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: Overland Track
+  evidence:
+    page: P1
+    quote: Overland Track
+  verified: true
+- field: distance_km
+  value: 65
+  basis: one_way
+  note: Stated as one-way track length.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: 6 days one way, 65km one way
+  verified: true
+- field: duration
+  value:
+    min_days: 6
+    max_days: 6
+  note: Typical itinerary is six days; some walkers take longer.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: 6 days one way, 65km one way
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Walked one way, with north to south direction required in the booking season.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: 6 days one way, 65km one way
+  verified: true
+- field: difficulty_official
+  value:
+    label: Grade 4
+    scale: Tasmania Parks and Wildlife Service walking track grade
+  note: Official track grade given on the walk page.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: 'Grade 4: Bushwalking experience recommended.'
+  verified: true
+- field: best_months
+  value:
+  - 10
+  - 11
+  - 12
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  note: Peak booking season; a separate winter registration season exists.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Season runs from 1 October to 31 May (inclusive).
+  verified: true
+- field: season_note
+  value: Booking season runs October to May. A winter registration season runs 1 June to 23 September, for very experienced walkers only.
+  note: Winter walking is possible but the page calls it dangerous for the inexperienced.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/overland-track-walk-options
+  source_title: Overland Track - walk options | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ​Winter walking (June to September inclusive)
+  evidence:
+    page: P4
+    quote: You can register to start your walk between 1 June and 23 September each year.
+  verified: true
+- field: permit_required
+  value: seasonal
+  note: Advance booking applies 1 Oct to 31 May; winter walkers register and hold a parks pass instead.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/overland-track-walk-options
+  source_title: Overland Track - walk options | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: Running the Overland Track
+  evidence:
+    page: P4
+    quote: If you plan to run the Overland Track during the peak season (1 October to 31 May inclusive) you will need to book online, in advance
+  verified: true
+- field: permit
+  value:
+    name: Overland Track Pass
+    kind: quota
+    how_to_apply: Book a departure date online in advance; collect the pass at Cradle Mountain Visitor Centre after a briefing.
+    booking_window: Season 1 October to 31 May
+    price:
+      amount: 312
+      currency: AUD
+      unit: per_person
+      audience: adult
+    months:
+    - 10
+    - 11
+    - 12
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+  note: Daily departures are capped, so book early.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Overland Track Pass Fees apply from 1 October - 31 May inclusive. Adults - $312
+  verified: true
+- field: fee
+  value:
+    name: Overland Track Pass
+    amount: 312
+    currency: AUD
+    unit: per_person
+    audience: adult
+  note: Adult rate during the booking season.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Overland Track Pass Fees apply from 1 October - 31 May inclusive. Adults - $312
+  verified: true
+- field: fee
+  value:
+    name: Overland Track Pass
+    amount: 272
+    currency: AUD
+    unit: per_person
+    audience: child
+  note: Child rate (17 and under) during the booking season.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Children (17 years and under) - $272
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 8
+    note: Each booking covers up to eight people; larger groups need several bookings.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/frequently-asked-questions
+  source_title: Frequently asked questions | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: How many people can I book for?
+  evidence:
+    page: P2
+    quote: You can book for a maximum of 8 people per booking.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: No camping around Lake Windermere itself; the overnight sites sit a short distance from the shore.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/overland-track-walk-notes
+  source_title: Overland Track walk notes | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ​Day 2 – Waterfall Valley to Lake Windermere​
+  evidence:
+    page: P6
+    quote: Camping is not permitted around Lake Windemere
+  verified: true
+- field: public_transport
+  value: A shuttle bus runs from Cradle Mountain Visitor Centre to Dove Lake via Ronny Creek, about 20 minutes one way.
+  note: Shuttle serves the trailhead area.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: Getting there
+  evidence:
+    page: P1
+    quote: The shuttle bus departs from the Visitor Centre stopping at the Ranger Station / Interpretation Centre, then Snake Hill, then Ronny Creek, and finally Dove Lake.
+  verified: true
+- field: trailhead_access
+  value: During the booking season the booking fee includes shuttle access from the visitor centre to the track start.
+  note: Walkers start at Ronny Creek.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/frequently-asked-questions
+  source_title: Frequently asked questions | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: Do I need a Parks Pass or Cradle Mt Shuttle Bus ticket to walk the Overland Track?
+  evidence:
+    page: P2
+    quote: During the booking season (1 October – 31 May), the booking fee covers the park entry fee for the duration of your walk, and shuttle access from the Cradle Mountain Visitor Centre to the start of the track.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Conditions can turn severe cold, wet and windy at any time, including summer.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: The weather can change quickly, and severe cold, wet, and windy conditions can happen at any time of year, even summer.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Large parts of the route are high, exposed plateau in a remote area, so good preparation is essential.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Almost half of the track is above 1000 metres in elevation on exposed plateaus in a remote area.
+  verified: true
+- field: access_mode
+  value: independent
+  note: Most walkers go self-sufficient; guided options also exist.
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track/overland-track-walk-options
+  source_title: Overland Track - walk options | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ​​​​​​​​​​​​Indepe​​ndent walker
+  evidence:
+    page: P4
+    quote: This is how the majority of Overland Track walkers undertake the journey.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Winter registrations are closed for now and reopen in April 2027 for winter 2027.
+    as_of: '2026-11-15'
+  source_url: https://parks.tas.gov.au/explore-our-parks/cradle-mountain/overland-track
+  source_title: Overland Track | Parks & Wildlife Service Tasmania
+  publisher: Tasmania Parks and Wildlife Service
+  checked_at: '2026-11-15'
+  evidence_heading: ContactExpand/Collapse
+  evidence:
+    page: P1
+    quote: Registrations are currently closed and will reopen for winter 2027 in April 2027.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 19
+  failed: 0
+  reasons: {}

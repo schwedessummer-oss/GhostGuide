@@ -127,8 +127,72 @@ facts:
     page: P2
     quote: Human-habituated bears have been frequently spotted in the McAfee Knob Area. Allowing bears access to human food or garbage causes it to lose its fear of humans.
   verified: true
+- field: distance_km
+  value: 12.9
+  basis: round_trip
+  note: Roughly 8 miles from the VA 311 lot, converted to km (x1.609344); the page says just under 8 miles.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: '2026-11-15'
+  evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
+  evidence:
+    page: P1
+    quote: The hike from the VA 311 parking lot to McAfee Knob is just under 8 miles round-trip, with a 1,400 foot gain in altitude, most of it in the final 1.5 miles.
+  verified: true
+- field: elevation_gain_m
+  value: 427
+  note: Climb of 1,400 ft from the VA 311 lot, converted to metres (x0.3048, rounded); most of it comes near the top.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: '2026-11-15'
+  evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
+  evidence:
+    page: P1
+    quote: The hike from the VA 311 parking lot to McAfee Knob is just under 8 miles round-trip, with a 1,400 foot gain in altitude, most of it in the final 1.5 miles.
+  verified: true
+- field: duration
+  value:
+    min_hours: 4
+    max_hours: 6
+  note: Typical time for the round trip from the VA 311 lot.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: '2026-11-15'
+  evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
+  evidence:
+    page: P1
+    quote: Most people take 4 to 6 hours to complete the hike.
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: The club describes a round trip from the VA 311 lot to the Knob.
+  source_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+  source_title: McAfee Knob and Virginia’s Triple Crown | Roanoke Appalachian Trail Club
+  publisher: Roanoke Appalachian Trail Club
+  checked_at: '2026-11-15'
+  evidence_heading: HOW CAN I HIKE TO McAFEE KNOB?
+  evidence:
+    page: P1
+    quote: The hike from the VA 311 parking lot to McAfee Knob is just under 8 miles round-trip, with a 1,400 foot gain in altitude, most of it in the final 1.5 miles.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Flying a drone on NPS land along the trail needs written superintendent approval.
+  source_url: https://www.nps.gov/appa/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Appalachian National Scenic Trail (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Laws & Policies
+  evidence:
+    page: P5
+    quote: Launching, landing, or operating an uncrewed or remotely piloted aircraft from or on lands and waters administered by the National Park Service within the boundaries of the Appalachian National Scenic Trail is prohibited except as approved in writing by the Superintendent.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 11
+  verified: 16
   failed: 0
   reasons: {}

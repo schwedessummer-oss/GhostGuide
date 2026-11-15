@@ -1,0 +1,143 @@
+slug: cliffs-of-moher-coastal-walk
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  note: Official page for the coastal walk and its closure notices.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: 'Cliffs of Moher Coastal Walk: Closures and Safe Walking Information:'
+  verified: true
+- field: distance_km
+  value: 3.5
+  basis: round_trip
+  note: Visitor Centre walk north and south combined; the stated 2.17 miles is the same figure.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: 'Total round-trip distance: 3.5 km or 2.17 miles'
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Walkers go north from the Visitor Centre, then come back the same way; the south viewing platform is a separate there-and-back.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Walk north past O’Brien’s Tower for approximately 1 km to enjoy elevated views of the Atlantic and the Aran Islands. Return the same way (1 km)
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Liscannor to the visitor site is fully shut for safety reasons; no access from Liscannor or from the Experience.
+    as_of: '2026-08-01'
+  note: Southern section closure as stated in the notice dated 1 August 2026.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Safety Notice: Parts of the Cliffs of Moher Coastal Walk Closed.'
+  evidence:
+    page: P4
+    quote: The Coastal Walk from Liscannor to the Cliffs of Moher Experience (6KM or 3.73 miles) is fully closed due to severe safety concerns.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Doolin side open only as far as Surfers Path, where walkers must turn back; no way through to the Experience from Doolin.
+    as_of: '2026-08-01'
+  note: Northern section restriction from the same notice.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Safety Notice: Parts of the Cliffs of Moher Coastal Walk Closed.'
+  evidence:
+    page: P4
+    quote: The northern section (Doolin) is open from Doolin to Surfers Path only, at this point walkers are advised to turn back and remain on the walk back to Doolin.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Walkers must stay inside walls and barriers at the cliff edge.
+  note: Cliff edge is abrupt; barriers mark the safe area.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Safety Notice: Parts of the Cliffs of Moher Coastal Walk Closed.'
+  evidence:
+    page: P4
+    quote: Do NOT go beyond walls or barriers.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The road at Surfers Path is hazardous for walkers and should not be walked on.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Safety Notice: Parts of the Cliffs of Moher Coastal Walk Closed.'
+  evidence:
+    page: P4
+    quote: Avoid walking on the road at Surfers Path, as it is hazardous.
+  verified: true
+- field: trailhead_access
+  value: Walk starts at the Visitor Centre; the main car park is across the road from the Visitor Centre and cliffs.
+  note: Own-words summary of start point and car park position.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/beyond-the-cliffs-places-to-see/cliffs-of-moher-coastal-walk/
+  source_title: Cliffs of Moher Walk, Cliff Walks Ireland | Cliffs Of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Start at the Visitor Centre
+  verified: true
+- field: parking
+  value: The main car park lies on the far side of the road from the Visitor Centre; drive to the admission pod and swap your ticket for a site pass. No cost stated in this source.
+  note: Where to park and how entry works.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/visiting-the-cliffs/parking/
+  source_title: Accessibility at the Cliffs of Moher | Official Site
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P6
+    quote: The main Cliffs of Moher Experience car park is on the opposite side of the road from the Visitor Centre and the Cliffs.
+  verified: true
+- field: public_transport
+  value: A free hop-on hop-off summer shuttle bus (Burren and Cliffs of Moher Explorer) serves the area.
+  note: Summer-only free shuttle.
+  source_url: https://www.cliffsofmoher.ie/en/your-visit/visiting-the-cliffs/parking/
+  source_title: Accessibility at the Cliffs of Moher | Official Site
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence_heading: Burren and Cliffs of Moher Explorer (Summer months only)
+  evidence:
+    page: P6
+    quote: Skip the stress of parking and traffic—ride the Burren and Cliffs Explorer free shuttle bus for a relaxing, eco-friendly adventure.
+  verified: true
+- field: season_note
+  value: The home page lists the site as open daily from 9am to 5pm; booking online is advised.
+  note: Opening hours from the home page banner.
+  source_url: https://www.cliffsofmoher.ie/
+  source_title: Ireland Cliffs, Famous Cliffs in Ireland | Cliffs of Moher
+  publisher: Cliffs of Moher Experience (Clare County Council)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Book online! Open Daily 9am – 5pm
+  verified: true
+mechanical_check:
+  verified: 11
+  failed: 0
+  reasons: {}

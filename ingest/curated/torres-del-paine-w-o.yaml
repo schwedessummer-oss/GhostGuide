@@ -151,8 +151,105 @@ facts:
     page: P1
     quote: 'Dificultad de caminata invernal: cerrado.'
   verified: true
+- field: trailhead_access
+  value: A second route in is the 80 km Lago Porteño road (Y-290) linking Puerto Natales to the park.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: O bien, por el camino Y -290, conocido como Lago Porteño, ruta de 80 kilómetros que comunica a Puerto Natales con el parque.
+  verified: true
+- field: trailhead_access
+  value: The usual approach is the paved 250 km road from Punta Arenas to Puerto Natales, then about 150 km north on Route 9.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: Al parque se puede acceder por camino pavimentado de 250 kilómetros entre Punta Arenas y Puerto Natales y posteriormente 150 km por la Ruta 9 Norte.
+  verified: true
+- field: trailhead_access
+  value: The Río Don Guillermo border crossing at Villa Cerro Castillo is another way in, 52 km from the Sarmiento gate.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: Otra vía de acceso importante la constituye el paso fronterizo Río Don Guillermo, ubicado en Villa Cerro Castillo, a 52 km de la portería Sarmiento.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: Lighting any heat source, including fires, grills, gas stoves and cigarettes, is banned and punishable under Chilean law.
+  source_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+  source_title: Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Torres del Paine
+  evidence:
+    page: P1
+    quote: Encender cualquier fuente de calor (parrillas, fogatas, cocinillas a gas, cigarros, etc.) está prohibido y penado por la Ley 20653, artículo 22.
+  verified: true
+- field: season_note
+  value: In the summer season (October to April) the park is open daily from 07:00 to 21:00, with 21:00 as the last entry; hours can change with weather or safety orders.
+  source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial) | Tur.com | Pases Digitales Parques Nacionales
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Idioma y moneda
+  evidence:
+    page: P2
+    quote: '| Estival | octubre a abril | lunes a domingo | 07:00 a 21:00 | 21:00'
+  verified: true
+- field: season_note
+  value: In 2026 CONAF started the winter season early, on 27 April rather than 1 May, because of the weather.
+  source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
+  source_title: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
+  evidence:
+    page: P4
+    quote: CONAF decidió adelantar desde este lunes 27 de abril la temporada invernal debido a las condiciones climáticas imperantes en la zona
+  verified: true
+- field: permit
+  value:
+    name: Torres del Paine park entry ticket (2027 sales)
+    kind: day_use
+    how_to_apply: Buy the digital ticket on the Pases Parques site; sales for 2027 were paused in November 2026 while prices are updated.
+    booking_window: 2027 tickets on sale from December 2026
+    official_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  source_title: Entrada Parque Nacional Torres Del Paine (Sitio Oficial) | Tur.com | Pases Digitales Parques Nacionales
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: Idioma y moneda
+  evidence:
+    page: P2
+    quote: Pases Parques habilitará la venta de los boletos digitales de 2027 a partir de diciembre de 2026.
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: CONAF says no access regulation will be applied to the Base Torres trail in the 2026 season, though it will keep reviewing this.
+  source_url: https://www.conaf.cl/el-1-de-mayo-entra-en-vigencia-nuevo-sistema-tarifario-para-el-parque-nacional-torres-del-paine/
+  source_title: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine - CONAF
+  publisher: CONAF (Corporación Nacional Forestal)
+  checked_at: '2026-11-15'
+  evidence_heading: El 1°  de mayo entra en vigencia nuevo sistema tarifario para el Parque Nacional Torres del Paine
+  evidence:
+    page: P4
+    quote: durante la temporada 2026 no se implementarán las medidas de regulación del acceso al sendero Base Torres
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 12
+  verified: 20
   failed: 0
   reasons: {}

@@ -73,8 +73,21 @@ facts:
     page: P1
     quote: Walking and hiking on the trails and mountain paths is undertaken at your own responsibility and risk.
   verified: true
+- field: distance_km
+  value: 6.1
+  basis: one_way
+  note: Length listed for the walk between Eigergletscher and Alpiglen stations.
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  source_title: Eiger Trail | jungfrau.ch
+  publisher: Jungfraubahnen Management AG (Jungfrau Railways)
+  checked_at: '2026-11-15'
+  evidence_heading: Where would you like to start your hike?
+  evidence:
+    page: P1
+    quote: 6,1 km
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 6
+  verified: 7
   failed: 0
   reasons: {}

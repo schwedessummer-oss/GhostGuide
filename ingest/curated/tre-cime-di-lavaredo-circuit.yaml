@@ -227,8 +227,30 @@ facts:
     page: P3
     quote: Chiusura del parcheggio prevista per il 9 novembre.
   verified: true
+- field: high_point_m
+  value: 2454
+  note: Forcella Lavaredo, the pass on the standard loop, is the highest point named; the start at Rifugio Auronzo is at 2,333 m.
+  source_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+  source_title: 'Tre Cime di Lavaredo Dolomiti: consigli per organizzare la tua visita'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence_heading: Il giro delle Tre Cime di Lavaredo
+  evidence:
+    page: P1
+    quote: fino alla Forcella Lavaredo ad un’altitudine di 2.454 m
+  verified: true
+- field: season_note
+  value: The car park is expected to reopen around late May 2027 if weather allows, with online bookings opening around late April 2027.
+  source_url: https://auronzo.info/en/parking-tre-cime-di-lavaredo/
+  source_title: 'Tre Cime di Lavaredo car park: information, how to book'
+  publisher: Comune di Auronzo di Cadore (auronzo.info tourism portal)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P6
+    quote: The TRE CIME di Lavaredo car park is expected to reopen around late May 2027, weather conditions permitting. Bookings to reach the car park are expected to open around late April 2027.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 18
+  verified: 20
   failed: 0
   reasons: {}

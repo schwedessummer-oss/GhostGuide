@@ -266,7 +266,227 @@ facts:
     page: P2
     quote: Going-to-the-Sun Road is closed for the season at Avalanche Creek on the west side of the park. On the east side, the closure is located at Jackson Glacier Overlook.
   verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are barred from trails and the backcountry; they are only allowed in developed areas such as roads and campgrounds.
+  source_url: https://www.nps.gov/glac/planyourvisit/pets.htm
+  source_title: Pets - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P8
+    quote: Pets are not permitted on trails, along lake shores outside of developed locations, in the backcountry, or in any building.
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Seven days, non-transferable; winter rate is 25 USD from 1 Nov to 30 Apr.
+  source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
+  source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $35.00 (Winter Rate - $25.00, November 1 to April 30)
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Seven days; up to two motorcycles and four people; winter rate is 20 USD.
+  source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
+  source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $30.00 (Winter Rate - $20.00, November 1 to April 30)
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (on foot or bicycle)
+    amount: 20
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For visitors aged 16 and over without a vehicle; winter rate is 15 USD.
+  source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
+  source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P6
+    quote: $20.00 (Winter Rate - $15.00, November 1 to April 30)
+  verified: true
+- field: fee
+  value:
+    name: Glacier annual pass
+    amount: 70
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Annual entrance pass for the park.
+  source_url: https://www.nps.gov/glac/planyourvisit/fees.htm
+  source_title: Fees & Passes - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P6
+    quote: Annual Entrance - Park $70.00
+  verified: true
+- field: permit
+  value:
+    name: Wilderness camping permit
+    kind: overnight
+    how_to_apply: Pay for the permit online through Recreation.gov or at a wilderness permit office when it is issued.
+    price:
+      amount: 10
+      currency: USD
+      unit: per_trip
+      audience: all
+      note: plus 7 USD per person per night camping fee
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: Summer rate for May to October; winter wilderness camping permits are free.
+  source_url: https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm
+  source_title: how to wilderness permit - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advance vs. Walk-up Permits
+  evidence:
+    page: P10
+    quote: 'May 1–October 31: $10 permit fee and additional $7/night per person camping fee payable upon permit issuance online at Recreation.gov or at a wilderness permit office.'
+  verified: true
+- field: fee
+  value:
+    name: Wilderness permit fee (summer)
+    amount: 10
+    currency: USD
+    unit: per_trip
+    audience: all
+    valid_from: 05-01
+    valid_to: 10-31
+    note: Charged when the permit is issued, May to October.
+  source_url: https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm
+  source_title: how to wilderness permit - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advance vs. Walk-up Permits
+  evidence:
+    page: P10
+    quote: 'May 1–October 31: $10 permit fee and additional $7/night per person camping fee payable upon permit issuance online at Recreation.gov or at a wilderness permit office.'
+  verified: true
+- field: fee
+  value:
+    name: Wilderness camping fee (summer)
+    amount: 7
+    currency: USD
+    unit: per_night
+    audience: all
+    valid_from: 05-01
+    valid_to: 10-31
+    note: Per person per night, charged when the permit is issued.
+  source_url: https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm
+  source_title: how to wilderness permit - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Advance vs. Walk-up Permits
+  evidence:
+    page: P10
+    quote: 'May 1–October 31: $10 permit fee and additional $7/night per person camping fee payable upon permit issuance online at Recreation.gov or at a wilderness permit office.'
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 12
+    note: Wilderness camping party limit; each campsite holds at most four people.
+  source_url: https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm
+  source_title: how to wilderness permit - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Regulations
+  evidence:
+    page: P10
+    quote: The maximum party size allowed is 12. Each wilderness campground has 2-7 campsites. Each campsite is limited to four (4) people.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Staying within 100 yards of bears or wolves is prohibited; carry bear spray and give all animals room.
+  source_url: https://www.nps.gov/glac/planyourvisit/safety.htm
+  source_title: Have Fun and Stay Safe - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: What if I encounter a bear?
+  evidence:
+    page: P12
+    quote: Intentionally approaching, viewing, or engaging in any activity within 100 yards (91 m) of bears or wolves is prohibited.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Snow lingers at higher elevations early in the season; carry map and compass skills, an ice axe and crampons for steep slopes.
+  source_url: https://www.nps.gov/glac/planyourvisit/trailstatusreports.htm
+  source_title: Trail Status Reports - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Trail Status Summary
+  evidence:
+    page: P14
+    quote: Expect snow cover at higher elevations and be prepared with map and compass skills for route finding, and ice axe and crampons for crossing steep slopes.
+  verified: true
+- field: public_transport
+  value: In the 2026 pilot, the last shuttles of the day leave Logan Pass for Apgar at 7:30 pm and for St. Mary at 8:00 pm.
+  source_url: https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm
+  source_title: Logan Pass Shuttle Service 2026 - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Logan Pass Return Times Vary
+  evidence:
+    page: P5
+    quote: Last departure from Logan Pass to Apgar Visitor Center is at 7:30 p.m. Last departure from Logan to St. Mary Visitor Center is at 8:00 p.m. Do not wait until the last departure of the day.
+  verified: true
+- field: trailhead_access
+  value: Going-to-the-Sun Road bans vehicles longer than 21 ft or wider than 8 ft between Avalanche Creek and Rising Sun.
+  source_url: https://www.nps.gov/glac/planyourvisit/directions.htm
+  source_title: Directions, Transportation, & Road Conditions - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Are there restrictions on Going-to-the-Sun Road?
+  evidence:
+    page: P7
+    quote: Vehicles and vehicle combinations longer than 21 feet (including bumpers) or wider than 8 feet (including mirrors) are prohibited between Avalanche Creek and Rising Sun.
+  verified: true
+- field: access_mode
+  value: independent
+  note: The park expects hikers to plan their own trips and take personal responsibility for safety.
+  source_url: https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm
+  source_title: Hiking the Trails - Glacier National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: With over 700 miles of trails in Glacier providing outstanding opportunities for both short hikes and extended backpacking trips, there’s something for everyone.
+  evidence:
+    page: P3
+    quote: Hikers need to assume individual responsibility for planning their trips, staying safe, and reducing their impact on the park. Plan ahead and check out our Leave No Trace page to learn more.
+  verified: true
 mechanical_check:
-  verified: 20
+  verified: 34
   failed: 0
   reasons: {}

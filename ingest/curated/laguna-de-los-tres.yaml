@@ -285,8 +285,43 @@ facts:
     page: P5
     quote: En Zona Norte, el desvío hacia el oeste por RP 41 lleva a la localidad de El Chaltén (95 km asfaltados).
   verified: true
+- field: public_transport
+  value: Long-distance buses from other parts of Argentina and from southern Chile (Punta Arenas, Puerto Natales) arrive at the El Chaltén bus terminal.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar
+  source_title: Horarios / Cómo llegar | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: '2026-11-15'
+  evidence_heading: Puntos de entrada al parque
+  evidence:
+    page: P5
+    quote: Tanto a la terminal de ómnibus de El Calafate como a la de El Chaltén llegan servicios desde diferentes puntos de la Argentina y el sur de Chile (Punta Arenas y Puerto Natales).
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: APN advises always walking with a companion who can fetch help if something goes wrong.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: '2026-11-15'
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: Salí siempre acompañado/a. Si tenés algún inconveniente tu acompañante puede ir a buscar ayuda.
+  verified: true
+- field: trailhead_access
+  value: In winter, snow and ice make studded tyres or approved link chains compulsory on park roads.
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares
+  source_title: Recomendaciones para visitar el Parque Nacional Los Glaciares | Argentina.gob.ar
+  publisher: Administración de Parques Nacionales (APN)
+  checked_at: '2026-11-15'
+  evidence_heading: Recomendaciones para visitar el Parque Nacional Los Glaciares
+  evidence:
+    page: P4
+    quote: En invierno, por presencia de nieve, escarcha y hielo, es obligatorio el uso de cubiertas con clavos y/o cadenas homologadas (de eslabones) para transitar las rutas del Parque Nacional.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 22
+  verified: 25
   failed: 0
   reasons: {}

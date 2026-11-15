@@ -1,0 +1,127 @@
+slug: glendalough-spinc-loop
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.wicklowmountainsnationalpark.ie/
+  note: Park home page for Wicklow Mountains National Park, which includes Glendalough.
+  source_url: https://www.wicklowmountainsnationalpark.ie/
+  source_title: Wicklow - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: Welcome to Wicklow
+  evidence:
+    page: P1
+    quote: Wicklow Mountains National Park stretches across almost 23,000 hectares south of Dublin
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 50
+    note: Groups above 50 people, and special events, need a permit.
+  note: Permit needed for larger groups.
+  source_url: https://www.nationalparks.ie/wicklow/things-to-do/
+  source_title: Things To Do - Wicklow National Park - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: Special Events and Large Groups
+  evidence:
+    page: P8
+    quote: 'Note: Special events, and any group of more than 50 people, will require a permit.'
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Only needed for special events and groups of over 50 walkers.
+  source_url: https://www.nationalparks.ie/wicklow/things-to-do/
+  source_title: Things To Do - Wicklow National Park - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: Special Events and Large Groups
+  evidence:
+    page: P8
+    quote: 'Note: Special events, and any group of more than 50 people, will require a permit.'
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs are to be kept on a lead in the national parks.
+  note: General national parks guidance.
+  source_url: https://www.nationalparks.ie/
+  source_title: National Parks of Ireland - Where Nature Speaks
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: 05 / Protect Nature
+  evidence:
+    page: P2
+    quote: 02 / Respect wildlife and always keep your dogs on a lead.
+  verified: true
+- field: parking
+  value: Free council car park at Laragh, about a 3 km woodland walk along the Green Road to the Upper Lake and the park information office.
+  source_url: https://www.nationalparks.ie/wicklow/parking-in-glendalough/
+  source_title: Parking In Glendalough - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Wicklow County Council operate a FREE car park in Laragh, beside the Woollen Mills and the G.A.A. pitch. There is a 3 km walk through the woods along the Green Road to reach the Upper Lake and the National Park Information Office.
+  verified: true
+- field: parking
+  value: Visitor Centre car park beside the Monastic City is pay-by-machine, coin or card, open 8am to 8pm.
+  source_url: https://www.nationalparks.ie/wicklow/parking-in-glendalough/
+  source_title: Parking In Glendalough - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Machine payment for parking is by coin or card. Opening hours are from 8 a.m. to 8 p.m.
+  verified: true
+- field: parking
+  value: Upper Lake car park sits at the end of the valley road, charges at the entrance and can mean long queues on a narrow road when full.
+  source_url: https://www.nationalparks.ie/wicklow/parking-in-glendalough/
+  source_title: Parking In Glendalough - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: The Upper Lake car park is located right at the end of the road into the valley. Be warned, if this car park is full, you could be stuck in long queues on a narrow road. This car park is managed by Wicklow County Council. There is a parking charge at the entrance.
+  verified: true
+- field: public_transport
+  value: Dublin city bus route 181 (privately run St Kevin's) serves Glendalough; Local Link routes 183 from Arklow and 895 from Sallins also go there.
+  source_url: https://www.wicklowmountainsnationalpark.ie/
+  source_title: Wicklow - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: Upcoming Events
+  evidence:
+    page: P1
+    quote: The valley of Glendalough is accessible by bus. The privately owned St. Kevin’s bus company operates the route 181 service from Dublin city centre to Glendalough
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: White Trail (Spinc and Glenealo Valley) upgrade is under way for roughly 5-6 months from 20 July; trails stay open apart from a day or two of helicopter stone deliveries.
+    as_of: '2026-07-08'
+  source_url: https://www.nationalparks.ie/wicklow/glendalough-trail-works-2026/
+  source_title: Glendalough Trail Works 2026 - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Please note that the trails shall REMAIN OPEN, with the exception of one or two days when we bring in stone by helicopter.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: No lifeguards or approved safe swimming spots in the park; cold lakes and rivers carry risk.
+  source_url: https://www.wicklowmountainsnationalpark.ie/
+  source_title: Wicklow - National Parks of Ireland
+  publisher: National Parks of Ireland
+  checked_at: '2026-11-15'
+  evidence_heading: Swimming in Mountain Lakes and Rivers
+  evidence:
+    page: P1
+    quote: there are no lifeguards or approved safe swimming spots within Wicklow Mountains National Park
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

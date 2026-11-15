@@ -1,0 +1,122 @@
+slug: kings-canyon-rim-walk
+researched_at: 2026-11-15
+facts:
+- field: official_url
+  value: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  note: Northern Territory tourism page for the Rim Walk.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Main navigation
+  evidence:
+    page: P3
+    quote: Kings Canyon Rim Walk
+  verified: true
+- field: distance_km
+  value: 6
+  basis: loop
+  note: Page describes a 6 km loop.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: The Rim Walk is a 6km loop
+  verified: true
+- field: duration
+  value:
+    min_hours: 3
+    max_hours: 4
+  note: Typical completion time stated as three to four hours.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: It usually takes around 3–4 hours to complete.
+  verified: true
+- field: route_type
+  value: loop
+  note: Described as a loop.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: The Rim Walk is a 6km loop
+  verified: true
+- field: difficulty_official
+  value:
+    label: moderate to difficult
+    scale: Grade 4
+  note: Graded moderate to difficult, Grade 4.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: It’s considered moderate to difficult (Grade 4).
+  verified: true
+- field: season_note
+  value: Hotter months run September to April; avoid the middle of the day then. Winter is the most popular season with crisp, cool days.
+  note: Seasonal guidance from the page.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: During the hotter months (September to April), it’s best to avoid walking in the middle of the day and consider shorter alternatives.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: On days forecast to reach 36°C or more, walkers must start before 9am and entry is not allowed after that.
+  note: Heat rule for the walk.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: Kings Canyon Rim Walk
+  evidence:
+    page: P3
+    quote: On days when the temperature is forecast to reach 36°C or higher, walkers must begin the Rim Walk before 9am. Entry to the trail is not permitted after this time for safety reasons.
+  verified: true
+- field: trailhead_access
+  value: Kings Canyon is about a 4 hour drive from Alice Springs and 3.5 hours from Ayers Rock Airport.
+  note: Drive times to the park.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: How do I get to Watarrka NP/Kings Canyon?
+  evidence:
+    page: P3
+    quote: Watarrka NP/Kings Canyon is approx. 4 hours drive from Alice Springs and 3.5 hours drive from Ayers Rock Airport.
+  verified: true
+- field: public_transport
+  value: 'None: the only practical way to get around is your own or a hire vehicle, with no taxis or shuttle buses.'
+  note: No public transport at Kings Canyon.
+  source_url: https://northernterritory.com/uluru-and-surrounds/see-and-do/kings-canyon-rim-walk
+  source_title: Kings Canyon Rim Walk | Northern Territory, AustraliaNorthern TerritorySearchFacebookInstagramXYouTubeTrip AdvisorTiktokTourism & Events NTNorthern Territory Government
+  publisher: Northern Territory Government (Tourism NT)
+  checked_at: 2026-11-15
+  evidence_heading: What’s the best way to get around Watarrka NP/Kings Canyon?
+  evidence:
+    page: P3
+    quote: The only real way to get around Kings Canyon is by driving your own vehicle or a hire car picked up at Alice Springs or Yulara. There are no taxis or shuttle bus services.
+  verified: true
+mechanical_check:
+  verified: 9
+  failed: 0
+  reasons: {}

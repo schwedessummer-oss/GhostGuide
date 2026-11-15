@@ -125,8 +125,207 @@ facts:
     page: P2
     quote: Know that falling trees and tree branches are an ever-present hazard year-round in RMNP.
   verified: true
+- field: fee
+  value:
+    name: 1-day private vehicle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Covers one private vehicle and its passengers for a single day.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $30.00 1-Day Vehicle Entrance Pass. This pass is valid for one private vehicle to enter RMNP for one day only. All passengers inside the vehicle are covered.
+  verified: true
+- field: fee
+  value:
+    name: 7-day private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Covers one vehicle and its passengers for seven consecutive days.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P6
+    quote: $35.00 7-Day Vehicle Entrance Pass. This vehicle entrance pass is valid for one vehicle to enter RMNP for 7 consecutive days. All passengers inside the vehicle are covered.
+  verified: true
+- field: fee
+  value:
+    name: 1-day motorcycle entrance pass
+    amount: 25.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: One-day pass for up to two private motorcycles carrying up to four people.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P6
+    quote: $25.00 Valid for 1 day. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: fee
+  value:
+    name: 1-day per-person entrance pass (on foot or bicycle)
+    amount: 15.0
+    currency: USD
+    unit: per_person
+    audience: all
+  note: For walk-ins, cyclists and non-commercial groups; children under 16 do not need one.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P6
+    quote: $15.00 1-Day Per Person Entrance Pass. This park entrance fee is for individuals, walk-ins, bicycles, and non-commercial groups to enter RMNP for 1-day only.
+  verified: true
+- field: fee
+  value:
+    name: 7-day per-person entrance pass (on foot or bicycle)
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+  note: For walk-ins, cyclists and non-commercial groups, valid seven days in a row.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P6
+    quote: $20.00 7-Day Per Person Entrance Pass. This park entrance fee is for individuals, walk-ins, bicycles, and non-commercial groups to enter RMNP for 7 consecutive days.
+  verified: true
+- field: fee
+  value:
+    name: Rocky Mountain annual park pass
+    amount: 70.0
+    currency: USD
+    unit: per_person
+    audience: all
+  note: Park-specific annual pass; the page lists it under Annual Entrance - Park.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P6
+    quote: '## Annual Entrance - Park $70.00'
+  verified: true
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100.0
+    currency: USD
+    unit: per_person
+    audience: non_resident
+  note: Extra charge for non-US residents aged 16 and over, waived with an annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Get an entrance pass
+  evidence:
+    page: P6
+    quote: Non-US residents (16 and over) must pay an additional $100 per person fee unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: fee
+  value:
+    name: Timed entry reservation processing fee
+    amount: 2.0
+    currency: USD
+    unit: per_application
+    audience: all
+  note: Only cost of a timed entry reservation; it cannot be refunded.
+  source_url: https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm
+  source_title: Timed Entry Permit System - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: How Much Do Timed Entry Reservations Cost?
+  evidence:
+    page: P5
+    quote: The only cost associated with making a timed entry reservation is a non-refundable $2 Recreation.gov processing fee.
+  verified: true
+- field: fee
+  value:
+    name: Hiker Shuttle ticket reservation
+    amount: 2.0
+    currency: USD
+    unit: per_application
+    audience: all
+  note: Fee per booking of up to four riders; riders also need an entrance pass.
+  source_url: https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm
+  source_title: Shuttle Buses and Public Transit - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Make a Reservation for Your Hiker Shuttle Tickets
+  evidence:
+    page: P7
+    quote: Hiker Shuttle Tickets are $2 per reservation. One person can purchase up to 4 tickets per each reservation. You can add up to 2 Hiker Shuttle Reservations to your cart in one transaction, for a total of 8 tickets per person.
+  verified: true
+- field: permit
+  value:
+    name: Timed Entry+ Bear Lake Road reservation
+    kind: timed_entry
+    how_to_apply: Book on Recreation.gov or by phone; arrive within your chosen two-hour window.
+    months:
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    - 10
+  note: Covers the Bear Lake Road corridor in the 2026 season, during stated morning-to-evening hours.
+  source_url: https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm
+  source_title: Timed Entry Permit System - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: When are Timed Entry+ Bear Lake Road Reservations needed to enter Rocky Mountain National Park?
+  evidence:
+    page: P5
+    quote: Timed Entry+ Bear Lake Road Reservations are needed to enter the Bear Lake Road Corridor between the hours of 5 a.m. to 6 p.m. daily beginning on Friday, May 22 through Sunday, October 18, 2026.
+  verified: true
+- field: public_transport
+  value: A ticketed Hiker Shuttle links the Estes Park Visitor Center with the Park & Ride hub on Bear Lake Road; seats are booked on Recreation.gov and it runs only in summer.
+  source_url: https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm
+  source_title: Shuttle Buses and Public Transit - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: 'Hiker Shuttle Route Schedule:'
+  evidence:
+    page: P7
+    quote: 'Hiker Shuttles Depart from the Estes Park Visitor Center at the following times: 8:30 a.m., 9 a.m., 10 a.m., 10:30 a.m., 11:30 a.m., 12 p.m., 1 p.m., and 1:30 p.m.'
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Launching, landing or flying an unmanned aircraft anywhere in the park is banned.
+  source_url: https://www.nps.gov/romo/learn/management/unmanned_aircraft.htm
+  source_title: Unmanned Aircraft Prohibited - Rocky Mountain National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Unmanned Aircraft Prohibited
+  evidence:
+    page: P9
+    quote: Launching, landing, or operating an unmanned aircraft from or on lands and waters administered by the National Park Service within the boundaries of Rocky Mountain National Park is prohibited.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 10
+  verified: 22
   failed: 0
   reasons: {}

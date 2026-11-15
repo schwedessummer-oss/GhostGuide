@@ -1,0 +1,71 @@
+slug: everest-base-camp
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://ntb.gov.np/en/everest
+  note: Tourism board page covering the Everest region and the base camp trek.
+  source_url: https://ntb.gov.np/en/everest
+  source_title: Everest | World's Highest Peak | Nepal Tourism Board
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Mt. Everest (8,848 m)
+  evidence:
+    page: P7
+    quote: do the extremely popular Everest Base Camp Trek to enter a strange world of ice
+  verified: true
+- field: duration
+  value:
+    min_days: 10
+    max_days: 12
+  note: Stated for the Solu to Khumbu itinerary through Sagarmatha National Park, recommended for acclimatisation.
+  source_url: https://ntb.gov.np/en/everest
+  source_title: Everest | World's Highest Peak | Nepal Tourism Board
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Mt. Everest (8,848 m)
+  evidence:
+    page: P7
+    quote: a 10-12 day trek through Solu to the Khumbu and the Sagarmatha National Park is an excellent itinerary both in terms of acclimatization
+  verified: true
+- field: trailhead_access
+  value: Most trekkers fly from Kathmandu to Lukla and then walk up through the Everest region.
+  note: Flight option from the tourism board page.
+  source_url: https://ntb.gov.np/en/everest
+  source_title: Everest | World's Highest Peak | Nepal Tourism Board
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Mt. Everest (8,848 m)
+  evidence:
+    page: P7
+    quote: The journey to Everest or Everest Base Camp begins with a dramatic flight from Kathmandu to Lukla, after which you hike up the Everest region to reach your destination in the
+  verified: true
+- field: trailhead_access
+  value: Walking in from Jiri instead of flying adds roughly ten days to the trip before reaching Namche Bazaar.
+  note: Slower overland alternative.
+  source_url: https://ntb.gov.np/en/everest
+  source_title: Everest | World's Highest Peak | Nepal Tourism Board
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Mt. Everest (8,848 m)
+  evidence:
+    page: P7
+    quote: The option from Jiri will roughly add 10 days to your trip to the famous Sherpa village, Namche Bazaar (3,500m).
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: UK travel advice warns heavy rain or an earthquake could set off landslides and rockfalls in mountain areas of Nepal; its flood notice concerns Rasuwa and the China border.
+  note: Country-level government advice, not specific to the Khumbu trail.
+  source_url: https://www.gov.uk/foreign-travel-advice/nepal
+  source_title: Nepal travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office (UK)
+  checked_at: '2026-11-15'
+  evidence_heading: Flash flood in the Rasuwa district and the Nepal-China border area
+  evidence:
+    page: P3
+    quote: Further heavy rainfall or an earthquake could trigger additional landslides, rockfalls and other hazards, particularly in mountainous areas.
+  verified: true
+mechanical_check:
+  verified: 5
+  failed: 0
+  reasons: {}

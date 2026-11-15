@@ -1,0 +1,222 @@
+slug: great-ocean-walk
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  note: Official page for the walk and its hike-in campsites.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: Stretching more than 100 kilometres from Apollo Bay to the Twelve Apostles
+  verified: true
+- field: distance_km
+  value: 100
+  basis: one_way
+  note: Page says more than 100 km, so 100 is a lower bound.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: Stretching more than 100 kilometres from Apollo Bay to the Twelve Apostles
+  verified: true
+- field: duration
+  value:
+    max_days: 8
+  note: FAQ says to expect walking all day for up to eight days on the full walk.
+  source_url: https://www.parks.vic.gov.au/-/media/project/pv/main/parks/documents/visitor-guides-and-publications/great-otway-national-park/great-otway-national-park-gow-faqs.pdf
+  source_title: PDF
+  publisher: Parks Victoria
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: for up to 8 days
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Apollo Bay to the Twelve Apostles, usually walked west-bound.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: The full Great Ocean Walk is generally walked east to west, from Apollo Bay to the Twelve Apostles
+  verified: true
+- field: difficulty_official
+  value:
+    label: Grade 3
+    scale: Parks Victoria
+  note: Overall average grade for the walk; days 6 and 7 are harder.
+  source_url: https://www.parks.vic.gov.au/-/media/project/pv/main/parks/documents/visitor-guides-and-publications/great-otway-national-park/great-otway-national-park-gow-faqs.pdf
+  source_title: PDF
+  publisher: Parks Victoria
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: Section – Great Ocean Walk campgrounds Distance Approx. Time* Grade 3 overall average.
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Camping at the hike-in campsites needs a booking in advance; no permit for walking is mentioned.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: Campsites are small and must be booked before you walk.
+  verified: true
+- field: permit
+  value:
+    name: Hike-in campsite booking
+    kind: other
+    how_to_apply: Reserve campsites on the trail before setting out.
+    booking_window: Before you walk
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: Campsites are small and must be booked before you walk.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camp only at the dedicated hike-in campsites along the trail, booked in advance.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: with dedicated hike-in campsites along the way. Campsites are small and must be booked before you walk.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 3
+    note: Unpowered hike-in sites hold up to three guests each.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Planning your walk
+  evidence:
+    page: P1
+    quote: Unpowered hike in site | Maximum 3 guests per site
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Parks Victoria says dogs are not allowed in its national and state parks.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park
+  source_title: Great Otway National Park
+  publisher: Parks Victoria
+  checked_at: '2026-11-15'
+  evidence_heading: Great Otway National Park
+  evidence:
+    page: P2
+    quote: While dogs aren’t allowed in our national and state parks
+  verified: true
+- field: parking
+  value: Finishing at the Twelve Apostles visitor centre and leaving a car there means booking parking ahead.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Keerray Woorroong Visitor Centre Parking - Twelve Apostles
+  evidence:
+    page: P1
+    quote: If you are finishing the Great Ocean Walk at the centre and wish to leave a vehicle in the carpark, please book your parking in advance to secure a space at the precinct.
+  verified: true
+- field: nearest_town
+  value:
+    name: Apollo Bay
+    note: Eastern start of the walk.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: Stretching more than 100 kilometres from Apollo Bay to the Twelve Apostles
+  verified: true
+- field: access_mode
+  value: independent
+  note: The page says walkers can go independently or with a licensed operator.
+  source_url: https://www.parks.vic.gov.au/places-to-see/parks/great-otway-national-park/things-to-do/great-ocean-walk
+  source_title: Great Ocean Walk and Hike-in Campsites Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Choose your own adventure
+  evidence:
+    page: P1
+    quote: You can camp along the trail, stay off-walk in nearby accommodation, walk independently, book with a licensed tour operator
+  verified: true
+- field: hazard
+  value:
+    type: tides
+    note: Park FAQ flags tide times, beaches and unbridged river crossings as a safety topic.
+  source_url: https://www.parks.vic.gov.au/-/media/project/pv/main/parks/documents/visitor-guides-and-publications/great-otway-national-park/great-otway-national-park-gow-faqs.pdf
+  source_title: PDF
+  publisher: Parks Victoria
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 'SAFETY: TIDES, BEACHES and UN-BRIDGED RIVER CROSSINGS: Know tide-times!'
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: Aire River to Johanna Beach can feel exposed; check conditions first.
+  source_url: https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Johanna-Beach-Hike-in-Campground
+  source_title: Johanna Beach Hike-in Campground Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Johanna Beach Hike-in Campground
+  evidence:
+    page: P8
+    quote: This section can feel more exposed, so walkers should check conditions before setting out.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: The far western section has remote walking conditions.
+  source_url: https://www.greatoceanroadauthority.vic.gov.au/Land-We-Manage/National-Parks/Great-Otway-National-Park/Great-Ocean-Walk/Ryans-Den-Hike-in-Campground
+  source_title: Ryans Den Hike-in Campground Great Ocean Road Coast and Parks Authority
+  publisher: Great Ocean Road Coast and Parks Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Ryans Den Hike-in Campground
+  evidence:
+    page: P9
+    quote: Continue through the wild western section of the walk, with dramatic coastal views and remote walking conditions.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: FAQ lists bushfire safety as the walker's own responsibility.
+  source_url: https://www.parks.vic.gov.au/-/media/project/pv/main/parks/documents/visitor-guides-and-publications/great-otway-national-park/great-otway-national-park-gow-faqs.pdf
+  source_title: PDF
+  publisher: Parks Victoria
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 'SAFETY: BUSHFIRE - Your safety is your responsibility'
+  verified: true
+mechanical_check:
+  verified: 17
+  failed: 0
+  reasons: {}

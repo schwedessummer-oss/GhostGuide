@@ -291,8 +291,185 @@ facts:
     page: P1
     quote: Swimming is not recommended at Hanakapi’ai Beach due to dangerous rip currents and wave patterns.
   verified: true
+- field: distance_km
+  value: 35.4
+  basis: round_trip
+  note: Round trip listed as 22 miles; converted to km (x1.609344) and rounded.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  source_title: Kalalau Trail – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Kalalau Trail
+  evidence:
+    page: P1
+    quote: 22 miles (round trip)
+  verified: true
+- field: difficulty_official
+  value:
+    label: VERY DIFFICULT
+    scale: Go Hāʻena
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Tips for a safer and more enjoyable visit.
+  evidence:
+    page: P8
+    quote: VERY DIFFICULT, especially for elderly/young due to constant steep ascents and descents which start right at trailhead.
+  verified: true
+- field: season_note
+  value: Conditions are rougher and wetter from October to April, so check the day-of forecast and surf report.
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Park Conditions
+  evidence:
+    page: P8
+    quote: Expect rougher conditions and more rain October through April.
+  verified: true
+- field: permit
+  value:
+    name: Hāʻena overnight parking reservation
+    kind: parking
+    how_to_apply: 'Only for Kalalau camping-permit holders: reserve online with your permit confirmation number and pay for every day the car stays.'
+    booking_window: Released 90 days in advance
+    official_url: https://gohaena.com/overnight-parking-park-entry/
+  source_url: https://gohaena.com/overnight-parking-park-entry/
+  source_title: Overnight Camping Parking - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Reserve Overnight Parking Here​
+  evidence:
+    page: P6
+    quote: Overnight Parking released 90 days in advance.
+  verified: true
+- field: parking
+  value: Do not park outside the state park; it breaks the purchase terms, and tickets run $200 or more with towing possible.
+  source_url: https://gohaena.com/info-faqs/
+  source_title: Info & FAQ's - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Three Options:'
+  evidence:
+    page: P5
+    quote: State park visitors may not park outside the park.  Doing so violates our terms of purchase. Parking tickets are $200+ and cars can be towed from nearby destinations.
+  verified: true
+- field: trailhead_access
+  value: From the Hāʻena lot or shuttle drop-off it is a short walk of about a third of a mile to Kēʻē Beach and the trailhead.
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Tips for a safer and more enjoyable visit.
+  evidence:
+    page: P8
+    quote: Parking lot/shuttle drop-off is a 0.33 miles walk to Kē’ē Beach & Kalalau Trailhead.
+  verified: true
+- field: public_transport
+  value: The Kauaʻi Bus serves Hanalei; its stop is 0.6 miles from the Waipā Park & Ride shuttle stop.
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Useful Links
+  evidence:
+    page: P8
+    quote: Kauai Bus service to Hanalei.  If you don’t have a car, Kauai Bus stop is 0.6 miles from Waipā Park & Ride.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No open fires in the Nāpali Coast camping areas; archaeological rock walls must not be dismantled.
+  source_url: https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/
+  source_title: Special Permit Rules for Nāpali Coast State Park – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Permit Rules
+  evidence:
+    page: P7
+    quote: Open fires are prohibited.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are not allowed in Nāpali Coast State Wilderness Park because they kill endangered birds.
+  source_url: https://dlnr.hawaii.gov/dsp/parks/kauai/napali-coast-state-wilderness-park/malama-napali/
+  source_title: Mālama Nāpali – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Leave your Pets at Home.
+  evidence:
+    page: P9
+    quote: Please obey the law and do not bring pets into the park.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Go Hāʻena guidance bans drones and speakers on the trail.
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Tips for a safer and more enjoyable visit.
+  evidence:
+    page: P8
+    quote: No speakers/drones.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: There is no cell service, and no rescue is possible while streams are high.
+  source_url: https://gohaena.com/conditions/
+  source_title: Park Conditions - Go Hāʻena
+  publisher: Go Hāʻena (Hawaii State Parks access system)
+  checked_at: '2026-11-15'
+  evidence_heading: Tips for a safer and more enjoyable visit.
+  evidence:
+    page: P8
+    quote: No cell service (no hiker rescue during high stream levels).
+  verified: true
+- field: hazard
+  value:
+    type: river_crossing
+    note: Never ford a flooded stream; avoid swift water above knee height and wait for levels to drop.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  source_title: Kalalau Trail Safety Concerns – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Crossing Streams
+  evidence:
+    page: P10
+    quote: Never cross a flooded stream. Hawaii’s gently flowing, clear streams can quickly become deep muddy torrents. Avoid crossing swift flows when the water level is above your knees.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Tsunami risk on low beaches such as Hanakapi‘ai and Kalalau; evacuate to high ground at once if warned.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  source_title: Kalalau Trail Safety Concerns – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Tsunamis (tidal waves)
+  evidence:
+    page: P10
+    quote: Tsunamis are an infrequent, but great hazard on low-lying coastal areas such as Hanakapi’ai and Kalalau beaches.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Goat hunting may occur on weekends in August and September, mostly in Kalalau Valley; stay on main trails.
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/
+  source_title: Kalalau Trail Safety Concerns – Division of State Parks
+  publisher: Hawaii Division of State Parks (DLNR)
+  checked_at: '2026-11-15'
+  evidence_heading: Tsunamis (tidal waves)
+  evidence:
+    page: P10
+    quote: Goat hunting may be permitted on weekends in August and September.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 21
+  verified: 35
   failed: 0
   reasons: {}

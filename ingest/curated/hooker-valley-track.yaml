@@ -1,0 +1,172 @@
+slug: hooker-valley-track
+researched_at: 2026-11-15
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  note: Department of Conservation page for the walk.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: About the walk
+  evidence:
+    page: P1
+    quote: Hooker Valley Track begins at White Horse Hill car park. It leads through the Hooker Valley to Hooker Lake, at the foot of Aoraki/Mount Cook.
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: The track ends at Hooker Lake and walkers return the way they came.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Second swing bridge to Hooker Lake
+  evidence:
+    page: P1
+    quote: Return to the car park the same way you came.
+  verified: true
+- field: fee
+  value:
+    name: White Horse Hill car parking
+    amount: 25
+    currency: NZD
+    unit: per_day
+    audience: all
+    note: Daily rate for a vehicle; payment on arrival, card only.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Car parking fees
+  evidence:
+    page: P1
+    quote: The fees are $2.50 per half hour or $25 a day. If you arrive and leave within 20 minutes, parking is free. If you plan to stay for longer than 20 minutes you must pay on arrival.
+  verified: true
+- field: fee
+  value:
+    name: White Horse Hill car parking (short stay)
+    amount: 2.5
+    currency: NZD
+    unit: per_vehicle
+    audience: all
+    note: Charged for each half hour of parking.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Car parking fees
+  evidence:
+    page: P1
+    quote: The fees are $2.50 per half hour or $25 a day. If you arrive and leave within 20 minutes, parking is free. If you plan to stay for longer than 20 minutes you must pay on arrival.
+  verified: true
+- field: parking
+  value: At White Horse Hill car park at the trailhead. Paid by machine (card only); a short free window applies, and spaces cannot be reserved ahead.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Car parking fees
+  evidence:
+    page: P1
+    quote: Payment machines that accept debit and credit cards are highly visible at each site. Cash payments are not accepted.
+  verified: true
+- field: trailhead_access
+  value: Drive from Aoraki/Mount Cook Village on the Twizel road; Hooker Valley Road is the first left out of the village and ends at the car park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Directions
+  evidence:
+    page: P1
+    quote: White Horse Hill car park is at the end of Hooker Valley Road.
+  verified: true
+- field: nearest_town
+  value:
+    name: Aoraki/Mount Cook Village
+    note: Starting village for the drive to the car park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Directions
+  evidence:
+    page: P1
+    quote: From Aoraki/Mount Cook Village, take SH80 towards Twizel.
+  verified: true
+- field: rule_drones
+  value:
+    value: restricted
+    note: Flying requires a permit; flying without one is prohibited.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P1
+    quote: Flying a drone without a permit is strictly prohibited.
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: The track is routed to stay clear of avalanche paths, so walkers should stay on it.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/canterbury/places/aoraki-mount-cook-national-park/things-to-do/tracks/hooker-valley-track/
+  source_title: 'Hooker Valley Track: Aoraki/Mount Cook National Park, Canterbury region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Avalanche risk
+  evidence:
+    page: P1
+    quote: The track is designed to avoid the risk of avalanche – keep to the tracks.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are banned on conservation land including national parks, even leashed; limited exceptions such as certified disability assist dogs.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/pets-on-conservation-land
+  source_title: Pets on conservation land
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: No pets allowed on conservation land
+  evidence:
+    page: P3
+    quote: No pets or domestic animals are allowed on conservation land including in national parks or wildlife reserves - even if your pet is on a lead, in a harness, carrier or otherwise contained.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Overnight camping in the car park is banned, even with a paid fee or permit.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/paid-car-parks/
+  source_title: 'Paid car parks: Know before you go'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Terms and conditions
+  evidence:
+    page: P7
+    quote: Camping overnight in the car park is not permitted, even if you pay a car park charge or have a permit.
+  verified: true
+- field: permit
+  value:
+    name: General annual car park permit
+    kind: parking
+    how_to_apply: Buy online in advance; machines at the car park do not sell it.
+    price:
+      amount: 60
+      currency: NZD
+      unit: per_vehicle
+      audience: all
+      note: Per year, one vehicle at one site
+  source_url: https://www.doc.govt.nz/parks-and-recreation/know-before-you-go/paid-car-parks/
+  source_title: 'Paid car parks: Know before you go'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: General permit
+  evidence:
+    page: P7
+    quote: A $60 per year permit is available at Punakaiki Pancake Rocks, White Horse Hill, Tasman Glacier and Franz Josef Glacier for any users who do not meet the local use criteria.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 12
+  failed: 0
+  reasons: {}

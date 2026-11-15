@@ -1,0 +1,130 @@
+slug: laugavegur
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.fi.is/en/hiking-trails/trails/view/laugavegur
+  source_url: https://www.fi.is/en/hiking-trails/trails/view/laugavegur
+  source_title: 'Trails: Laugavegur | Ferðafélag Íslands'
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Description
+  evidence:
+    page: P6
+    quote: Take a memorable hike along Iceland's Laugavegur trail.
+  verified: true
+- field: distance_km
+  value: 55
+  basis: one_way
+  note: FAQ gives about 55 km; the trail page header shows 54 km.
+  source_url: https://www.fi.is/en/mountain-huts/faq
+  source_title: Everything you need to know about the Laugavegur huts | Ferðafélag Íslands
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Laugavegur huts FAQ
+  evidence:
+    page: P5
+    quote: The trail is approximately 55 km long.
+  verified: true
+- field: duration
+  value:
+    min_days: 4
+    max_days: 4
+  note: Trail page lists 4 days; FAQ says most hikers spend 5 nights.
+  source_url: https://www.fi.is/en/hiking-trails/trails/view/laugavegur
+  source_title: 'Trails: Laugavegur | Ferðafélag Íslands'
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Trails: Laugavegur'
+  evidence:
+    page: P6
+    quote: 4 days
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Huts are booked one way, from the northern start to the southern end.
+  source_url: https://www.fi.is/en/mountain-huts/faq
+  source_title: Everything you need to know about the Laugavegur huts | Ferðafélag Íslands
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Does it matter in which direction I walk?
+  evidence:
+    page: P5
+    quote: We only book huts from north to south, i.e. from Landmannalaugar to Þórsmörk.
+  verified: true
+- field: best_months
+  value:
+  - 6
+  - 7
+  - 8
+  - 9
+  note: Season runs late June to early September; July and August are the most reliable.
+  source_url: https://www.fi.is/en/mountain-huts/faq
+  source_title: Everything you need to know about the Laugavegur huts | Ferðafélag Íslands
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Laugavegur huts FAQ
+  evidence:
+    page: P5
+    quote: The hiking season usually runs from late June to early September.
+  verified: true
+- field: permit
+  value:
+    name: Landmannalaugar parking reservation
+    kind: parking
+    how_to_apply: Drivers must reserve a space and pay a service fee in advance; details are on the Environment Agency of Iceland site.
+    months:
+    - 6
+    - 7
+    - 8
+    - 9
+  note: Reservation needed for daytime arrivals by car in the stated summer window.
+  source_url: https://www.fi.is/en/hiking-trails/trails/view/laugavegur
+  source_title: 'Trails: Laugavegur | Ferðafélag Íslands'
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Description
+  evidence:
+    page: P6
+    quote: Between June 20th and September 13th, guests driving themselves (in a private or rental car) to Landmannalaugar between 9 AM and 4 PM must reserve parking spaces and pay a service fee prior to arrival.
+  verified: true
+- field: parking
+  value: Self-driving visitors to Landmannalaugar in the summer window must pre-book a space and pay a service fee; outside daytime hours the fee applies without a booking.
+  source_url: https://www.fi.is/en/hiking-trails/trails/view/laugavegur
+  source_title: 'Trails: Laugavegur | Ferðafélag Íslands'
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Description
+  evidence:
+    page: P6
+    quote: The service fee also applies outside these hours, but no reservation is needed.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Weather in Iceland changes constantly, so careful preparation is advised.
+  source_url: https://www.fi.is/en
+  source_title: Ferðafélag Íslands, the Iceland Touring Association owns and runs mountain huts on the Laugavegur trail
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: Publications
+  evidence:
+    page: P3
+    quote: Prepare yourself well for travel in a country where the weather changes constantly
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Wardens may forbid hikers to leave the hut when conditions are unsafe.
+  source_url: https://www.fi.is/en/mountain-huts/faq
+  source_title: Everything you need to know about the Laugavegur huts | Ferðafélag Íslands
+  publisher: Ferðafélag Íslands (Iceland Touring Association)
+  checked_at: '2026-11-15'
+  evidence_heading: What happens if the weather is bad?
+  evidence:
+    page: P5
+    quote: Sometimes they might even forbid you to leave the hut until hiking is safe.
+  verified: true
+mechanical_check:
+  verified: 9
+  failed: 0
+  reasons: {}

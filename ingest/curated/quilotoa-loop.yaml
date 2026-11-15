@@ -1,42 +1,7 @@
 slug: quilotoa-loop
 researched_at: '2026-11-15'
-facts:
-- field: official_url
-  value: https://ecuador.travel/opciones-turisticas-en-pujili/
-  source_url: https://ecuador.travel/opciones-turisticas-en-pujili/
-  source_title: '¡Descubre Pujilí: El Mágico Encanto de lo andino! - Ecuador Travel'
-  publisher: Ecuador Travel (official Ministry of Tourism of Ecuador tourism site)
-  checked_at: '2026-11-15'
-  evidence_heading: Parroquia Zumbahua
-- field: nearest_town
-  value:
-    name: Zumbahua
-    note: The tourism site places the Quilotoa lagoon in Zumbahua parish of Pujilí canton, Cotopaxi, and
-      lists trekking among the activities there.
-  source_url: https://ecuador.travel/opciones-turisticas-en-pujili/
-  source_title: '¡Descubre Pujilí: El Mágico Encanto de lo andino! - Ecuador Travel'
-  publisher: Ecuador Travel (official Ministry of Tourism of Ecuador tourism site)
-  checked_at: '2026-11-15'
-  evidence_heading: Parroquia Zumbahua
-- field: hazard
-  value:
-    type: security_advisory
-    note: UK FCDO says street demonstrations, protests and strikes are common in Ecuador, can happen without
-      warning and can disrupt travel; it also reports a nationwide state of emergency with extra checks.
-     
-  source_url: https://www.gov.uk/foreign-travel-advice/ecuador/safety-and-security
-  source_title: Safety and security - Ecuador travel advice - GOV.UK
-  publisher: Foreign, Commonwealth & Development Office (UK Government)
-  checked_at: '2026-11-15'
-  evidence_heading: Political situation
-- field: hazard
-  value:
-    type: other
-    note: FCDO names Cotopaxi among the provinces where forest fires are frequent in dry, windy and hot
-      conditions.
-  source_url: https://www.gov.uk/foreign-travel-advice/ecuador/safety-and-security
-  source_title: Safety and security - Ecuador travel advice - GOV.UK
-  publisher: Foreign, Commonwealth & Development Office (UK Government)
-  checked_at: '2026-11-15'
-  evidence_heading: Forest fires
-verifier: null
+facts: []
+mechanical_check:
+  verified: 0
+  failed: 0
+  reasons: {}

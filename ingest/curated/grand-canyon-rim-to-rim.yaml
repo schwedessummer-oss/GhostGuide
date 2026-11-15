@@ -165,8 +165,257 @@ facts:
     page: P2
     quote: With all inner-canyon water turned off, hikers should carry sufficient water for their trip or be prepared to collect and properly treat water from natural sources.
   verified: true
+- field: permit
+  value:
+    name: Grand Canyon backcountry permit
+    kind: lottery
+    how_to_apply: Enter the early access lottery on Recreation.gov for the month you want; winners get a login slot to reserve an itinerary, and leftover camp space opens to everyone the following month.
+    booking_window: Lottery closes on the 1st of the month; up to 750 applicants get a slot; remaining space opens on the 1st of the next month
+    official_url: https://www.recreation.gov/permits/4675337
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: When to Apply
+  evidence:
+    page: P5
+    quote: Backcountry reservations are initially offered via an early access lottery on Recreation.gov.
+  verified: true
+- field: fee
+  value:
+    name: Backcountry permit or lottery application
+    amount: 10
+    currency: USD
+    unit: per_application
+    audience: all
+  note: Non-refundable charge for each permit or lottery application.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Permit Cost
+  evidence:
+    page: P5
+    quote: $10 per permit or lottery application
+  verified: true
+- field: fee
+  value:
+    name: Below-rim nightly backcountry charge
+    amount: 15
+    currency: USD
+    unit: per_night
+    audience: all
+  note: Charged per person per night in all below-rim areas; refundable until 30 days before the permit start.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Permit Cost
+  evidence:
+    page: P5
+    quote: a nightly charge of $15 per person for all below rim areas and $4 per person for all above rim areas
+  verified: true
+- field: fee
+  value:
+    name: Above-rim nightly backcountry charge
+    amount: 4
+    currency: USD
+    unit: per_night
+    audience: all
+  note: Charged per person per night in all above-rim areas.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm
+  source_title: Backcountry Permit - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Permit Cost
+  evidence:
+    page: P5
+    quote: a nightly charge of $15 per person for all below rim areas and $4 per person for all above rim areas
+  verified: true
+- field: permit
+  value:
+    name: Special Use Permit for organized group rim-to-rim hikes
+    kind: other
+    how_to_apply: Organized non-commercial groups of 12 to 30 and not-for-profit groups doing rim-to-rim or extended inner-canyon day hikes must obtain this permit from the park.
+    official_url: https://www.nps.gov/grca/getinvolved/sup.htm
+  source_url: https://www.recreation.gov/permits/4675337
+  source_title: Grand Canyon National Park Backcountry Permits, Grand Canyon National Park - Recreation.gov
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon National Park Backcountry Permits
+  evidence:
+    page: P6
+    quote: 'Note: Any organized, non-commercial group of 12-30 participants, or not-for-profit group conducting rim-to-rim, rim-to-rim-to-rim, rim-to-river-to-rim, and/or extended day hikes in the inner canyon must obtain a Special Use Permit.'
+  verified: true
+- field: fee
+  value:
+    name: Special Use Permit application
+    amount: 70
+    currency: USD
+    unit: per_application
+    audience: all
+  note: Paid through pay.gov and attached to the application form.
+  source_url: https://www.nps.gov/grca/getinvolved/sup.htm
+  source_title: Special Use Permits SUP - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Ready to submit an application form?
+  evidence:
+    page: P7
+    quote: Special Use Permit Application Form - Attach the form and the pay.gov receipt of $70 to email.
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Covers one private non-commercial vehicle and its passengers, up to a 15-person van.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P8
+    quote: $35.00 Admits one single, private, non-commercial vehicle and all its passengers, up to a 15 person passenger van. Organized non-commercial groups over 16 passengers require different charges. Commercial groups are not eligible for the vehicle permit.
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Valid seven days for up to two private motorcycles.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P8
+    quote: $30.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: fee
+  value:
+    name: Individual entrance pass
+    amount: 20
+    currency: USD
+    unit: per_person
+    audience: all
+  note: For hikers, cyclists and pedestrians; valid seven days.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P8
+    quote: 'Individual ($20 valid for 7 days): for bicyclists, hikers, and pedestrians.'
+  verified: true
+- field: fee
+  value:
+    name: Nonresident fee
+    amount: 100
+    currency: USD
+    unit: per_person
+    audience: non_resident
+  note: Extra charge for non-US residents aged 16 and over on top of the entrance fee, unless they hold an annual or America the Beautiful pass.
+  source_url: https://www.nps.gov/grca/planyourvisit/fees.htm
+  source_title: Fees & Passes - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Nonresident Fees
+  evidence:
+    page: P8
+    quote: Each non-US resident aged 16 and older visiting Grand Canyon National Park must pay a $100 nonresident fee (in addition to the standard entrance fee)
+  verified: true
+- field: parking
+  value: Backcountry Information Center (lot D) on the South Rim is a short walk from the Bright Angel Trailhead.
+  source_url: https://www.nps.gov/grca/planyourvisit/hiking-faq.htm
+  source_title: Hiking Frequently Asked Questions - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking FAQ
+  evidence:
+    page: P9
+    quote: 'South Rim: Hikers can park at the Backcountry Information Center (parking lot D). It is a short walk over to the Bright Angel Trailhead.'
+  verified: true
+- field: public_transport
+  value: Parking at the South Rim Visitor Center, the Village (Blue) shuttle drops you at Hermit Road Interchange, a short uphill walk to the Bright Angel Trailhead.
+  source_url: https://www.nps.gov/places/000/bright-angel-trail.htm
+  source_title: Bright Angel Trail (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Where to Park
+  evidence:
+    page: P10
+    quote: If you park at the Visitor Center, the Village (Blue) Route shuttle will bring you to Hermit Road Interchange. From there it is just a short walk uphill to Bright Angel Trailhead.
+  verified: true
+- field: trailhead_access
+  value: The North Rim has no fuel; the nearest is at the North Rim Country Store and Jacob Lake.
+  source_url: https://www.nps.gov/grca/northrimstatus.htm
+  source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Frequently Asked Questions
+  evidence:
+    page: P3
+    quote: There is no fuel on the North Rim and is available nearby at the North Rim Country Store and Jacob Lake.
+  verified: true
+- field: season_note
+  value: The North Rim Campground closed on 15 Oct 2026 and is tentatively due to reopen on 15 May 2027.
+  source_url: https://www.nps.gov/grca/northrimstatus.htm
+  source_title: Status of the North Rim - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Frequently Asked Questions
+  evidence:
+    page: P3
+    quote: 'The North Rim Campground has closed for the 2026 season as of Oct. 15, 2026. Tentative reopening date: May 15, 2027.'
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones are banned in Grand Canyon National Park, as in all national parks.
+  source_url: https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm
+  source_title: Backcountry Rules and Regulations - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Additional Regulations and Policies
+  evidence:
+    page: P11
+    quote: Currently, the use of drones is prohibited in Grand Canyon National Park and all national parks.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: In summer the canyon floor can pass 49C (120F); rangers advise avoiding the canyon in those months.
+  source_url: https://www.recreation.gov/permits/4675337
+  source_title: Grand Canyon National Park Backcountry Permits, Grand Canyon National Park - Recreation.gov
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Permit & Season Information
+  evidence:
+    page: P6
+    quote: 'Jun, Jul, and Aug: DANGEROUSLY hot! Temperatures in the bottom of the canyon can exceed 120 F (49 C).'
+  verified: true
+- field: licensed_operator_list_url
+  value: https://www.nps.gov/grca/getinvolved/cua-list.htm
+  note: NPS list of companies with Commercial Use Authorizations for guided below-rim hiking.
+  source_url: https://www.nps.gov/grca/planyourvisit/guided-hikes.htm
+  source_title: Guided Hikes - Grand Canyon National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Backpacking Guide Services
+  evidence:
+    page: P12
+    quote: can be found at www.nps.gov/grca/getinvolved/cua-list.htm.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 13
+  verified: 30
   failed: 0
   reasons: {}

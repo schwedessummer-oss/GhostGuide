@@ -87,8 +87,25 @@ facts:
     page: P3
     quote: el sendero no está señalizado y recorrerlo sin guía es riesgoso.
   verified: true
+- field: fee
+  value:
+    name: Park entrance (tarifa unica de ingreso)
+    amount: 75000
+    currency: COP
+    unit: per_person
+    audience: all
+    note: ICANH calls it the single entrance fee; the page does not spell out the unit, and operators price their tours separately.
+  source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/horarios-y-tarifas
+  source_title: Horarios y tarifas – ICANH Sede electrónica1
+  publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+  checked_at: '2026-11-15'
+  evidence_heading: Horarios y tarifas
+  evidence:
+    page: P2
+    quote: La tarifa única de ingreso al Parque es de $75.000 pesos m/cte.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 7
+  verified: 8
   failed: 0
   reasons: {}

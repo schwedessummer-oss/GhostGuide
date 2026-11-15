@@ -4,19 +4,31 @@ facts:
 - field: hazard
   value:
     type: altitude
-    note: The UK government calls altitude sickness a serious risk in parts of Peru, naming Cusco among them. It does not mention this hike specifically.
+    note: UK government advice calls altitude sickness a serious risk in parts of Peru, naming Cusco among them. The page does not mention this hike specifically.
   source_url: https://www.gov.uk/foreign-travel-advice/peru/health
   source_title: Health - Peru travel advice - GOV.UK
   publisher: UK Foreign, Commonwealth & Development Office
   checked_at: *id001
-  evidence_heading: Health
+  evidence_heading: Vaccine recommendations and health risks
+  evidence:
+    page: P2
+    quote: Altitude sickness is a serious risk in parts of Peru, including Cusco, Puno, the Colca Canyon and Kuelap. Read more about altitude sickness on TravelHealthPro.
+  verified: true
 - field: hazard
   value:
     type: security_advisory
-    note: The UK government warns that protests in Peru can turn violent and with no notice cause roadblocks and travel disruption, and that local groups can call strikes at short notice.
+    note: UK government advice warns that Peruvian protests can turn violent, block roads and disrupt travel without notice.
   source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
   source_title: Safety and security - Peru travel advice - GOV.UK
   publisher: UK Foreign, Commonwealth & Development Office
   checked_at: *id001
   evidence_heading: Political situation
+  evidence:
+    page: P3
+    quote: Demonstrations can become violent and lead to roadblocks, travel disruption, including trains, and suspension of immigration services at land borders.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 2
+  failed: 0
+  reasons: {}

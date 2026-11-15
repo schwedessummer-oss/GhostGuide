@@ -276,7 +276,208 @@ facts:
     page: P2
     quote: The Narrows closes when the Virgin River flow rate is over 150 cubic feet per second and when the National Weather Service issues a Flash Flood Warning.
   verified: true
+- field: elevation_gain_m
+  value: 102
+  note: Page lists the elevation figure for the bottom-up route in both feet and metres; metric value taken as stated.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: 'Elevation: 334 ft (102 m)'
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Covers a private non-commercial vehicle seating 15 or fewer and its occupants for up to a week.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: For Vehicles
+  evidence:
+    page: P4
+    quote: $35.00 Admits private, non-commercial vehicle (15 passenger capacity or less) and all occupants to Zion National Park. Valid for 1-7 days.
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (on foot or bicycle)
+    amount: 20.0
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For one visitor arriving without a car; youth 15 and under are admitted free.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: For Vehicles
+  evidence:
+    page: P4
+    quote: $20.00 Admits one individual with no car to Zion National Park. Typically used for bicyclists, hikers and pedestrians. Youth 15 and under are admitted free. Valid for 1-7 days.
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid for a week; covers up to two private motorcycles and four people in total.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: For Vehicles
+  evidence:
+    page: P4
+    quote: $30.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: trailhead_access
+  value: The bottom-up hike starts at Shuttle Stop 9, Temple of Sinawava, where there are restrooms and a water-filling station.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+  source_title: The Narrows from the Bottom Up - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: The Narrows from the Bottom Up
+  evidence:
+    page: P1
+    quote: 'Starting Location: Temple of Sinawava (Shuttle Stop 9) The trailhead is adjacent to restrooms and a water-filling station.'
+  verified: true
+- field: trailhead_access
+  value: Zion Canyon Scenic Drive is closed to private vehicles from about early March to late November; use the shuttle to reach the Temple of Sinawava.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Zion Canyon Scenic Drive
+  evidence:
+    page: P6
+    quote: The Zion Canyon Scenic Drive is closed to private vehicles approximately from early March through late-November. You can access the Scenic Drive with the Zion Canyon Shuttle System.
+  verified: true
+- field: public_transport
+  value: The shuttle ride from the visitor center to the Temple of Sinawava takes roughly 45 minutes.
+  source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
+  source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Basic Information
+  evidence:
+    page: P5
+    quote: Shuttles take about 45 minutes to drive between the Zion Canyon Visitor Center and the Temple of Sinawava.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets may not use trails (except the Pa'rus Trail) or enter the wilderness; service animals are exempt.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Off-road Vehicles
+  evidence:
+    page: P6
+    quote: Pets are not allowed on trails (with the exception of the Pa'rus Trail) or in the wilderness, with the exception of service animals.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones and other remote-controlled aircraft are banned anywhere in the park.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Aircraft-based Remote-controlled Equipment
+  evidence:
+    page: P6
+    quote: Use of remote-controlled equipment (including but not limited to helicopters, drones, and other aircraft-based equipment) within Zion National Park is prohibited.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 12
+    note: Upstream of the Orderville Canyon junction a group may have at most 12 people.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowsregulations.htm
+  source_title: The Narrows Regulations - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Group Size Limits
+  evidence:
+    page: P7
+    quote: Above the junction of The Narrows and Orderville Canyon, the maximum group size for upstream travel is 12 people.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camp only in designated sites in the three campgrounds, or in designated wilderness areas with a Wilderness Permit; no sleeping in pullouts or lots.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Bicycling
+  evidence:
+    page: P6
+    quote: Camping is allowed in the designated campsites in Watchman, South, and Lava Point Campgrounds, and with a Wilderness Permit in designated areas of the Zion Wilderness.
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Storms far away can cause flash floods that lift the water within minutes; do not enter narrow canyons if bad weather threatens.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowssafety.htm
+  source_title: The Narrows Safety - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Flash Floods
+  evidence:
+    page: P8
+    quote: During a flash flood, the water level rises quickly, within minutes or even seconds.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Winter water temperatures call for a wetsuit or drysuit with warm layers, and ice can form in the canyon.
+  source_url: https://www.nps.gov/zion/planyourvisit/narrowssafety.htm
+  source_title: The Narrows Safety - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Spring and Fall
+  evidence:
+    page: P8
+    quote: Average winter water temperatures range from 38° to 45° Fahrenheit (3° to 7° Celsius).
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Hot summer days in Zion Canyon, with monsoon storms raising flood risk later in summer.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Current Weather in Zion Canyon
+  evidence:
+    page: P2
+    quote: Summer daytime temperatures regularly exceed 100°F (38°C).
+  verified: true
+- field: nearest_town
+  value:
+    name: Springdale
+    note: Town beside the park that is served by the free park shuttle.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: 2026-11-15
+  evidence_heading: Shuttle System
+  evidence:
+    page: P2
+    quote: From early spring to late fall, you can ride free shuttles in Zion Canyon and the town of Springdale.
+  verified: true
 mechanical_check:
-  verified: 21
+  verified: 36
   failed: 0
   reasons: {}

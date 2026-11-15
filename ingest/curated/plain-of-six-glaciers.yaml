@@ -133,8 +133,121 @@ facts:
     page: P2
     quote: There is a non-refundable $3.50 reservation fee if booking online, and $5.50 if booking by telephone.
   verified: true
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 12.75
+    currency: CAD
+    unit: per_person
+    audience: adult
+  note: Adult fare, ages 18-64; reservation fee is extra.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  evidence:
+    page: P2
+    quote: '| * | Adult (18 – 64 years) | $ 12.75 | * | Senior (65+ years) | $ 6.00 | * | Youth (17 and under) | $ 4.00'
+  verified: true
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 6.0
+    currency: CAD
+    unit: per_person
+    audience: senior
+  note: Senior fare, ages 65 and over; reservation fee is extra.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  evidence:
+    page: P2
+    quote: '| * | Adult (18 – 64 years) | $ 12.75 | * | Senior (65+ years) | $ 6.00 | * | Youth (17 and under) | $ 4.00'
+  verified: true
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 4.0
+    currency: CAD
+    unit: per_person
+    audience: child
+  note: Youth fare, ages 17 and under; reservation fee is extra.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Parks Canada Shuttle: Lake Louise and Moraine Lake and Alpine Start'
+  evidence:
+    page: P2
+    quote: '| * | Adult (18 – 64 years) | $ 12.75 | * | Senior (65+ years) | $ 6.00 | * | Youth (17 and under) | $ 4.00'
+  verified: true
+- field: fee
+  value:
+    name: Lake Louise Lakeshore general parking
+    amount: 42.0
+    currency: CAD
+    unit: per_vehicle
+    audience: all
+  note: Parking rate listed for the Lake Louise Lakeshore lot.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P2
+    quote: '| * | Lake Louise Lakeshore - General Parking, per vehicle | $ 42.00'
+  verified: true
+- field: fee
+  value:
+    name: Backcountry camping fee
+    amount: 15.0
+    currency: CAD
+    unit: per_night
+    audience: all
+  note: Charged per person each night in the backcountry; valid across several mountain parks.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Fees
+  evidence:
+    page: P2
+    quote: '## Backcountry Fees | * | Per person, per night | $ 15.00'
+  verified: true
+- field: fee
+  value:
+    name: Banff fire permit
+    amount: 12.0
+    currency: CAD
+    unit: per_day
+    audience: all
+  note: Daily fire permit for Banff campgrounds.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: CAMPING SERVICES
+  evidence:
+    page: P2
+    quote: '| * | Banff - Fire Permit, per day | $ 12.00'
+  verified: true
+- field: parking
+  value: Park only in designated areas; stopping along the road shoulder is banned in Banff National Park.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking/etat-sentiers-trail-conditions
+  source_title: Trail conditions - Banff National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: CAUTION! Avalanche danger
+  evidence:
+    page: P3
+    quote: Vehicle parking is limited to designated areas only. Roadside parking is prohibited. Signage and monitoring will be used throughout the park to inform the public of parking restrictions and encourage compliance.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 10
+  verified: 17
   failed: 0
   reasons: {}

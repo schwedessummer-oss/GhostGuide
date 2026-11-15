@@ -228,8 +228,101 @@ facts:
     page: P1
     quote: L’aventure commence à … Calenzana.
   verified: true
+- field: closure
+  value:
+    status: partially_closed
+    as_of: '2026-11-15'
+  note: The Cirque de la Solitude section is off limits by official order; the bypass created after the 2015 accident is now the registered GR20 route.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: le site est interdit d’accès au public par arrêté préfectoral et communal
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: Hikers died in the Cirque de la Solitude on 10 June 2015 after major rockfalls combined with bad weather; the section was then unmarked and stripped of its equipment.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: des randonneurs y ont perdu la vie suite à des éboulements majeurs conjugués à une météo déplorable
+  verified: true
+- field: public_transport
+  value: At Conca, a shuttle runs on request to Santa Lucia di Porti Vechju and Porti Vechju; the park lists a phone number for it.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: 'Conca : navette sur demande vers Santa Lucia di Porti Vechju et Porti Vechju tel. 04 95 71 46 55'
+  verified: true
+- field: public_transport
+  value: Walkers who stop after the northern half can leave from Vizzavona by train towards Ajaccio or Bastia.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: direction Ajaccio ou Bastia en micheline
+  verified: true
+- field: fee
+  value:
+    name: Breakfast at a refuge (approximate)
+    amount: 10
+    currency: EUR
+    unit: per_person
+    audience: all
+  note: Park gives this as an approximate price; meals are ordered on site only.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Petit-déjeuner environ 10 €
+  verified: true
+- field: fee
+  value:
+    name: Packed lunch at a refuge (approximate)
+    amount: 10
+    currency: EUR
+    unit: per_person
+    audience: all
+  note: Park gives this as an approximate price; meals are ordered on site only.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Panier repas environ 10 €
+  verified: true
+- field: fee
+  value:
+    name: Evening meal at a refuge (approximate)
+    amount: 20
+    currency: EUR
+    unit: per_person
+    audience: all
+  note: Park gives this as an approximate price; meals are ordered on site only.
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  source_title: Parc Naturel Régional de Corse, Randonnée la plus difficile d'Europe
+  publisher: Parc naturel régional de Corse
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Repas du soir environ 20 €
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 18
+  verified: 25
   failed: 0
   reasons: {}

@@ -178,8 +178,55 @@ facts:
     page: P1
     quote: 'Combustible: Coyhaique, a 57 km de la administración. Tener presente la carga oportuna de combustible debido a la distancia.'
   verified: true
+- field: distance_km
+  value: 53.5
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Longitud: 53,5 km.'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The Laguna Castillo trail is closed by resolution and open only with a certified guide, operating under a concession holder.
+    as_of: '2026-11-15'
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: 'Sendero Laguna Castillo: cerrado por resolución, solo habilitado con guia certificado, funcionamiento bajo permisionario.'
+  verified: true
+- field: trailhead_access
+  value: Register at the park administration near Laguna Chiguay (km 57, Ruta 7 Sur) before starting any trail.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: Antes de iniciar un sendero, debes registrarte en la administración del parque (sector de la laguna Chiguay, km 57 de la Ruta 7 Sur).
+  verified: true
+- field: trailhead_access
+  value: In winter, chains are recommended on the public roads outside the park.
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  source_title: Parque Nacional Cerro Castillo - CONAF
+  publisher: Corporación Nacional Forestal (CONAF)
+  checked_at: '2026-11-15'
+  evidence_heading: Parque Nacional Cerro Castillo
+  evidence:
+    page: P1
+    quote: En invierno se recomienda transitar con cadenas por los caminos públicos fuera de la unidad.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 14
+  verified: 18
   failed: 0
   reasons: {}

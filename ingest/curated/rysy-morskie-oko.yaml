@@ -1,0 +1,185 @@
+slug: rysy-morskie-oko
+researched_at: &id001 2026-11-15
+facts:
+- field: official_url
+  value: https://tpn.gov.pl/szlaki-turystyczne/palenica-bialczanska-morskie-oko-i-spacer-wokol-morskiego-oka
+  note: Park page for the Palenica Białczańska to Morskie Oko approach, where the Rysy route begins; it covers the lake walk, not the Rysy summit.
+  source_url: https://tpn.gov.pl/szlaki-turystyczne/palenica-bialczanska-morskie-oko-i-spacer-wokol-morskiego-oka
+  source_title: Palenica Białczańska - Morskie Oko - spacer wokół Morskiego Oka
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Opis trasy
+  evidence:
+    page: P5
+    quote: Wycieczka rozpoczyna się na Palenicy Białczańskiej (990 m n.p.m.). Znajduje się tutaj duży parking, obiekty gastronomiczne, punkty biletowe TPN, oraz postój wozów konnych, które kursują do Polany Włosienicy.
+  verified: true
+- field: parking
+  value: 'Official paid TPN car park in three zones: Palenica Białczańska at the trailhead, a roadside strip up to 1 km away, and Łysa Polana about 1.5 km away. Staff place cars by arrival order; the farthest zone is a 15-20 minute walk from the trail entrance.'
+  note: Driver cannot choose the zone; early arrival gets a space nearer the trail entrance.
+  source_url: https://tpn.gov.pl/parkingi-morskie-oko
+  source_title: Parking Morskie Oko – bilety online, cennik | TPN
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: MIEJSCE PARKOWANIA
+  evidence:
+    page: P2
+    quote: O miejscu zaparkowania decyduje kolejność przyjazdu. Kierowca nie ma możliwości wyboru miejsca parkowania. Samochody są kierowane przez obsługę najpierw na Palenicę Białczańską, następnie na pas drogowy i na Łysą Polanę (czas dojścia do punktu wejścia na szlak to 15-20 min.).
+  verified: true
+- field: parking
+  value: The park advises arriving before 8 am to avoid queues. An e-ticket guarantees a space at any hour, but arrival order still decides which of the three zones you get.
+  note: Paraphrase of the park's early-arrival advice on the Morskie Oko page.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: O czym musisz pamiętać przed kupieniem e-biletu?
+  evidence:
+    page: P4
+    quote: W celu uniknięcia korków dojazdowych rekomendujemy przyjazd przed godziną 8 rano. Posiadając e-bilet, masz gwarancję miejsca dla samochodu niezależnie od godziny dojazdu
+  verified: true
+- field: fee
+  value:
+    name: Car e-ticket for TPN Morskie Oko car parks, lowest online price
+    amount: 36
+    currency: PLN
+    unit: per_vehicle
+    audience: all
+    note: Online price starts here; the park says it varies with season, availability and purchase timing, up to 75 PLN.
+  note: Lower end of the stated online range for a passenger car; no dates or year are given on the page.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Jak kupić bilet na oficjalne parkingi TPN w rejonie Morskiego Oka?
+  evidence:
+    page: P4
+    quote: E-bilet dla samochodu osobowego można kupić online w cenie od 36 do 75 zł
+  verified: true
+- field: fee
+  value:
+    name: Car e-ticket for TPN Morskie Oko car parks, highest online price
+    amount: 75
+    currency: PLN
+    unit: per_vehicle
+    audience: all
+    note: Upper end of the online price range for a passenger car, depending on season and demand.
+  note: Upper end of the stated online range for a passenger car; no dates or year are given on the page.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Jak kupić bilet na oficjalne parkingi TPN w rejonie Morskiego Oka?
+  evidence:
+    page: P4
+    quote: E-bilet dla samochodu osobowego można kupić online w cenie od 36 do 75 zł
+  verified: true
+- field: trailhead_access
+  value: The approach from Palenica Białczańska to the lake follows a road shut to motor traffic since the 1980s and to bicycles since 1998, so it is covered on foot or by horse cart.
+  note: Road closure to vehicles and bikes, as described on the trail page.
+  source_url: https://tpn.gov.pl/szlaki-turystyczne/palenica-bialczanska-morskie-oko-i-spacer-wokol-morskiego-oka
+  source_title: Palenica Białczańska - Morskie Oko - spacer wokół Morskiego Oka
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Opis trasy
+  evidence:
+    page: P5
+    quote: Odcinek od Palenicy Białczańskiej do Morskiego Oka jest zamknięty dla ruchu drogowego w latach 80-tych XX  wieku po tym jak została w kilku miejscach uszkodzona przez osuwiska. W 1998 roku odcinek Palenica-Morskie Oko został zamknięty dla ruchu rowerów. Powodem były liczne kolizje z pieszymi.
+  verified: true
+- field: public_transport
+  value: The Palenica Białczańska / Łysa Polana trailhead can be reached by car or by public transport from Zakopane and nearby towns.
+  note: General access statement from the park.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Wycieczka do Morskiego Oka najlepiej z e-biletem
+  evidence:
+    page: P4
+    quote: można dojechać własnym samochodem lub transportem publicznym z Zakopanego bądź okolicznych miejscowości.
+  verified: true
+- field: public_transport
+  value: TPN operates educational electric minibuses (e-busy) as a way to reach the Morskie Oko area.
+  note: Service described by the park; see the closure fact for its current suspension.
+  source_url: https://tpn.gov.pl/e-busy-do-morskiego-oka
+  source_title: E-busy do Morskiego Oka – bilety, rozkład jazdy | TPN
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: E-busy TPN - edukacyjne busy elektryczne do Morskiego Oka
+  evidence:
+    page: P3
+    quote: E-busy to nowoczesna, ekologiczna i edukacyjna forma dotarcia w rejon Morskiego Oka.
+  verified: true
+- field: public_transport
+  value: E-bus tickets cannot be bought from the driver; they must be booked online or at the TPN information point in Zakopane.
+  note: Ticketing rule for the park e-bus.
+  source_url: https://tpn.gov.pl/e-busy-do-morskiego-oka
+  source_title: E-busy do Morskiego Oka – bilety, rozkład jazdy | TPN
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Czy można kupić bilet u kierowcy?
+  evidence:
+    page: P3
+    quote: Obecnie nie ma możliwości zakupu biletu u kierowcy. Prosimy o wcześniejszą rezerwację online lub w punkcie stacjonarnym.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: TPN electric minibus runs on the Morskie Oko road suspended from 14 November until further notice; the road itself and trails are not stated closed.
+    as_of: *id001
+  note: E-bus service suspended; walking and driving access are not addressed in this notice.
+  source_url: https://tpn.gov.pl/e-busy-do-morskiego-oka
+  source_title: E-busy do Morskiego Oka – bilety, rozkład jazdy | TPN
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Rozkład jazdy e-busów
+  evidence:
+    page: P3
+    quote: Od dnia 14 listopada przejazdy busami elektrycznymi TPN drogą do Morskiego Oka są zawieszone do odwołania.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: From 1 March to 30 November walking on any park trail between dusk and dawn is banned, so plan to be back at the car before sunset.
+  note: Dusk-to-dawn trail ban during the stated months.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Pamiętaj o bezpieczeństwie i przepisach parku narodowego
+  evidence:
+    page: P4
+    quote: Pamiętaj, że id 1 marca do 30 listopada obowiązuje zakaz poruszania się od zmierzchu do świtu po wszystkich szlakach na terenie Parku - wróć do samochodu przed zachodem słońca.
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: The road crosses the Żleb Żandarmerii gully, which often has snow avalanches.
+  note: Avalanche-prone gully on the approach road; frequent snow slides are stated on the trail page.
+  source_url: https://tpn.gov.pl/szlaki-turystyczne/palenica-bialczanska-morskie-oko-i-spacer-wokol-morskiego-oka
+  source_title: Palenica Białczańska - Morskie Oko - spacer wokół Morskiego Oka
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Opis trasy
+  evidence:
+    page: P5
+    quote: Nieco za polaną droga przecina Żleb Żandarmerii. Często schodzą nim lawiny śnieżne, czego efektem jest duże obniżenie górnej granicy lasu.
+  verified: true
+- field: nearest_town
+  value:
+    name: Zakopane
+    note: Over 20 km one way from the Palenica Białczańska / Łysa Polana car park.
+  note: Distance from Zakopane to the trailhead car park, as stated by the park.
+  source_url: https://tpn.gov.pl/morskie-oko-w-pigulce
+  source_title: Morskie Oko w pigułce
+  publisher: Tatrzański Park Narodowy
+  checked_at: *id001
+  evidence_heading: Wycieczka do Morskiego Oka najlepiej z e-biletem
+  evidence:
+    page: P4
+    quote: Z Zakopanego to ponad 20 kilometrów w jedną stronę.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 13
+  failed: 0
+  reasons: {}

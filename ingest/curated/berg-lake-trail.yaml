@@ -208,8 +208,53 @@ facts:
     page: P1
     quote: after extensive repairs to the entire trail
   verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The Snowbird Pass side route is shut every year from 1 May to 1 July for wildlife calving.
+    as_of: '2026-11-15'
+  source_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+  source_title: 'Mount Robson Park: Berg Lake Trail | BC Parks'
+  publisher: BC Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Things to do
+  evidence:
+    page: P1
+    quote: This area is closed annually between May 1 and July 1 to allow for wildlife calving.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 12
+    note: A tent pad sleeps up to six; at most two pads can be booked at once, so a camping party is capped at 12, with at least one person aged 16 or over.
+  source_url: https://bcparks.ca/reservations/backcountry-camping/reservations/
+  source_title: Backcountry camping reservations | BC Parks
+  publisher: BC Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Camping party sizes for the Berg Lake Trail
+  evidence:
+    page: P4
+    quote: You can reserve up to two tent pads at one time, for a maximum total camping party of 12 people (at least one of whom must be 16 or over)
+  verified: true
+- field: fee
+  value:
+    name: Phone reservation, change or cancellation fee
+    amount: 5
+    currency: CAD
+    unit: per_application
+    audience: all
+    note: Charged by the BC Parks call centre; booking online avoids it.
+  source_url: https://bcparks.ca/mount-robson-park/
+  source_title: Mount Robson Park | BC Parks
+  publisher: BC Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Reconciliation with Indigenous Peoples
+  evidence:
+    page: P2
+    quote: There is a $5 fee for reservations, changes, or cancellations made by phone.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 16
+  verified: 19
   failed: 0
   reasons: {}

@@ -1,0 +1,309 @@
+slug: jordan-trail-dana-petra
+researched_at: 2026-11-15
+facts:
+- field: official_url
+  value: https://www.jordantrail.org/dana-to-petra/
+  note: Official Jordan Trail Association page for Region 6, the Dana to Petra section.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: Considered one of the finest multi-day hikes in the world
+  verified: true
+- field: distance_km
+  value: 72.4
+  basis: one_way
+  note: Stated total distance for the four-day Dana to Petra region.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: '4 days Distance: 72.4 km Ascent: 2,825 m Descent: 3,027 m Max Elevation: 1,236 m Min Elevation: 221 m'
+  verified: true
+- field: elevation_gain_m
+  value: 2825
+  note: Stated total ascent for the region.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: '4 days Distance: 72.4 km Ascent: 2,825 m Descent: 3,027 m Max Elevation: 1,236 m Min Elevation: 221 m'
+  verified: true
+- field: high_point_m
+  value: 1236
+  note: Stated maximum elevation for the region.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: '4 days Distance: 72.4 km Ascent: 2,825 m Descent: 3,027 m Max Elevation: 1,236 m Min Elevation: 221 m'
+  verified: true
+- field: duration
+  value:
+    min_days: 4
+    max_days: 4
+  note: The page gives four days for this region.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: '4 days Distance: 72.4 km Ascent: 2,825 m Descent: 3,027 m Max Elevation: 1,236 m Min Elevation: 221 m'
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: The route runs from Dana Biosphere Reserve to Petra, so it is a one-way traverse.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: this section descends from the Dana Biosphere Reserve
+  verified: true
+- field: access_mode
+  value: guide_recommended
+  note: The trail is unmarked and remote, so the association strongly suggests hiring a local guide.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: Little Petra to Petra
+  evidence:
+    page: P4
+    quote: It is therefore our strong recommendation that you hire a local guide for your safety
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: A pass is needed to enter Petra at the end of the route.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: Entry to Petra requires a pass
+  verified: true
+- field: permit
+  value:
+    name: Dana Biosphere Reserve entrance
+    kind: other
+    how_to_apply: Phone the reserve management (0799111434) before entering to arrange and pay the entrance fees.
+  note: Entrance fees for the Dana reserve are paid through its management ahead of entry.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: Please contact Dana Biosphere Reserve management before entering the reserve to pay the entrance fees.
+  verified: true
+- field: permit
+  value:
+    name: Petra entry pass
+    kind: other
+    how_to_apply: Buy the pass at the ticket office at the Nabatean cultural village, with no need to visit the main Wadi Musa office first.
+  note: A newer ticket office near the trail lets hikers buy the Petra pass without going to Wadi Musa.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'REGION 6: DANA TO PETRA'
+  evidence:
+    page: P4
+    quote: Entry to Petra requires a pass, which now can be purchased from the new ticket office at The Nabatean cultural village without having to first visit the main Petra ticket office in Wadi Musa.
+  verified: true
+- field: fee
+  value:
+    name: Petra entry ticket, 1 day
+    amount: 50
+    currency: JOD
+    unit: per_person
+    audience: all
+  note: Ticket price for one day; the page lists 1, 2 and 3 day options and says tickets cannot be bought in advance.
+  source_url: https://www.jordantrail.org/604-little-petra-to-petra/
+  source_title: '604: LITTLE PETRA TO PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Easy'
+  evidence:
+    page: P9
+    quote: Tickets cost 50/55/60JD for 1/2/3 days and can’t buy in advance.
+  verified: true
+- field: fee
+  value:
+    name: Petra entry ticket, 2 days
+    amount: 55
+    currency: JOD
+    unit: per_person
+    audience: all
+  note: Ticket price for two days.
+  source_url: https://www.jordantrail.org/604-little-petra-to-petra/
+  source_title: '604: LITTLE PETRA TO PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Easy'
+  evidence:
+    page: P9
+    quote: Tickets cost 50/55/60JD for 1/2/3 days and can’t buy in advance.
+  verified: true
+- field: fee
+  value:
+    name: Petra entry ticket, 3 days
+    amount: 60
+    currency: JOD
+    unit: per_person
+    audience: all
+  note: Ticket price for three days.
+  source_url: https://www.jordantrail.org/604-little-petra-to-petra/
+  source_title: '604: LITTLE PETRA TO PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Easy'
+  evidence:
+    page: P9
+    quote: Tickets cost 50/55/60JD for 1/2/3 days and can’t buy in advance.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Wild camping is legal everywhere on the route except inside the Dana Reserve, which runs along the canyon to the Feynan area.
+  note: Wild camping is allowed outside the Dana Reserve only.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: Accommodations
+  evidence:
+    page: P4
+    quote: All areas except the Dana Reserve (stretching the length of the canyon, ending around the Feynan area) are legal to wild camp in.
+  verified: true
+- field: trailhead_access
+  value: Dana village can be reached by private transport from Tafila or Qadisiya, which have bus links to Amman; the Dana Reserve can help arrange a taxi.
+  note: How to reach the Dana start point.
+  source_url: https://www.jordantrail.org/601-dana-to-wadi-malaga/
+  source_title: '601: DANA TO WADI MALAGA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Waymarked: No'
+  evidence:
+    page: P7
+    quote: Danavillage can be reached by private transport from nearby Tafila or Qadisiya, which have bus connections with Amman and other major towns. Dana Reserve can help arrange a taxi from there.
+  verified: true
+- field: public_transport
+  value: 'Only Wadi Musa, next to Petra, has public transport: minibuses from Amman or Aqaba, or scheduled JETT tourist buses from Amman. No other trail point has public transit.'
+  note: Public transport is limited to Wadi Musa.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: REGIONAL TRANSPORTATION
+  evidence:
+    page: P4
+    quote: Wadi Musa can be reached by public transportation (minibusses from Amman or Aqaba, or JETT tourist buses from Amman, which run on schedules and are more comfortable but slightly more expensive). No other point on the trail is reachable by public transit
+  verified: true
+- field: nearest_town
+  value:
+    name: Wadi Musa
+    note: Town beside Petra at the end of the route, with hotels, shops and ATMs.
+  note: Wadi Musa is the town next to Petra.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: REGIONAL TRANSPORTATION
+  evidence:
+    page: P4
+    quote: Petra’s neighboring town of Wadi Musa
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: The trail is not waymarked, many sections are remote with limited water, and phone coverage is sometimes absent.
+  note: Unmarked, remote terrain.
+  source_url: https://www.jordantrail.org/dana-to-petra/
+  source_title: Dana to Petra – Jordan Trail
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: Little Petra to Petra
+  evidence:
+    page: P4
+    quote: The Jordan Trail is a newly established trail, and is not marked. It is therefore our strong recommendation that you hire a local guide for your safety as many sections are remote with limited water sources and at times no connectivity.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Little shade on the Dana to Wadi Malaga stage, so dehydration and heat exhaustion are a risk.
+  note: Heat and dehydration risk on day one.
+  source_url: https://www.jordantrail.org/601-dana-to-wadi-malaga/
+  source_title: '601: DANA TO WADI MALAGA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Waymarked: No'
+  evidence:
+    page: P7
+    quote: Dehydration/heat exhaustion – There is very little shade along the stage
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: The Ras Al-Feid to Little Petra day can be hot with little shade; carry plenty of water.
+  note: Heat risk on day three.
+  source_url: https://www.jordantrail.org/603-ras-al-feid-to-little-petra/
+  source_title: '603: RAS AL-FEID TO LITTLE PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Challenging'
+  evidence:
+    page: P8
+    quote: Dehydration/heat exhaustion – Day stage can be hot and is shadeless for much of the route
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Wadi al-Aqlat near the Little Petra back entrance can flood; a shortcut from the water treatment plant avoids it, and Wadi Feid must be crossed on one approach.
+  note: Flash flood risk in wadis on day three.
+  source_url: https://www.jordantrail.org/603-ras-al-feid-to-little-petra/
+  source_title: '603: RAS AL-FEID TO LITTLE PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Challenging'
+  evidence:
+    page: P8
+    quote: Flash flood dangers – Wadi al-Aqlat, the wadi leading to the back entrance of Little Petra, could be susceptible to flash flooding.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: A narrow path above a drop just before the Monastery, since widened and stabilised.
+  note: Exposed section on the final day.
+  source_url: https://www.jordantrail.org/604-little-petra-to-petra/
+  source_title: '604: LITTLE PETRA TO PETRA – Jordan Trail'
+  publisher: Jordan Trail Association
+  checked_at: 2026-11-15
+  evidence_heading: 'Over All Diffculty: Easy'
+  evidence:
+    page: P9
+    quote: There is one section of exposed trail just before the Monastery – a narrow path above a drop.
+  verified: true
+mechanical_check:
+  verified: 22
+  failed: 0
+  reasons: {}

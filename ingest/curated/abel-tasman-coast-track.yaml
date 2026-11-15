@@ -1,0 +1,173 @@
+slug: abel-tasman-coast-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/
+  note: DOC page for the Great Walk with stages, bookings and transport.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/
+  source_title: 'Abel Tasman Coast Track: Abel Tasman National Park, Nelson/Tasman region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Bookings are open for the 2026/27 season.
+  verified: true
+- field: distance_km
+  value: 60
+  basis: one_way
+  note: Whole track, one direction, per the DOC track guide.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-track-guide.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: 'Distance: 60 km (one way)'
+  verified: true
+- field: duration
+  value:
+    min_days: 3
+    max_days: 5
+  note: Stated range for walking the full track.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-track-guide.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: 'Duration: 3 – 5 days'
+  verified: true
+- field: permit
+  value:
+    name: Great Walk hut or campsite booking
+    kind: other
+    how_to_apply: Reserve each hut or campsite night online with DOC before starting; bookings are needed all year round.
+    official_url: https://bookings.doc.govt.nz/Web/Default.aspx
+  note: Hut and campsite stays must be booked ahead; arriving unbooked can mean a penalty fee or being asked to leave.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/
+  source_title: 'Abel Tasman Coast Track: Abel Tasman National Park, Nelson/Tasman region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Places to stay
+  evidence:
+    page: P1
+    quote: There are 4 huts and 18 campsites along the Abel Tasman Coast Track, which must be booked in advance all year round.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Guide dogs are the only exemption mentioned on the park page.
+  note: Dogs are banned across the national park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park
+  source_title: 'Abel Tasman National Park: Places to go in Nelson/Tasman'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Look after the park’s islands
+  evidence:
+    page: P2
+    quote: Dogs are not allowed on the islands and elsewhere in the national park.
+  verified: true
+- field: rule_drones
+  value:
+    value: restricted
+    note: Only with a permit, which is granted only in exceptional circumstances.
+  note: Flying needs a permit that is rarely issued.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-coast-track-trip-sheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Drones cannot be flown over Abel Tasman National Park or Foreshore Reserve without a permit and this would only be granted in exceptional
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Formal fireplaces at named sites only; DOC may ban fires entirely in dry weather.
+  note: Fires limited to designated fireplaces.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-coast-track-trip-sheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: 'Fires are only permitted in the formal fireplaces at Anchorage, Bark Bay, Waiharakeke, Tōtaranui, Mutton Cove, Whariwharangi Bay. Please note: in dry conditions DOC may impose a total fire ban.'
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Designated campsites only; hammocks are not permitted at campsites.
+  note: Camp only at designated campsites.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-coast-track-trip-sheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Camping is only permitted in designated campsites.
+  verified: true
+- field: hazard
+  value:
+    type: tides
+    note: Awaroa Inlet can be crossed only in daylight, from 1 hr 30 min before to 2 hr after low tide; plan the itinerary around tide times.
+  note: Tidal estuary crossing limits the timing of the day.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/
+  source_title: 'Abel Tasman Coast Track: Abel Tasman National Park, Nelson/Tasman region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: You can only cross Awaroa Inlet in daylight, and within 1 hour 30 minutes before and 2 hours after low tide.
+  verified: true
+- field: parking
+  value: {}
+  note: Car parks at the road ends.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/nelson-marlborough/abel-tasman-coast-track-trip-sheet.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: DOC provides a car park at Mārahau, Tōtaranui, Wainui and Awaroa road ends. Secure parking can be arranged at various businesses
+  verified: true
+- field: trailhead_access
+  value: Marahau, the southern gateway, is a sealed road 67 km from Nelson; water taxi, kayak or walking continue from there.
+  note: Southern trailhead access by sealed road.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park/things-to-do/tracks/abel-tasman-coast-track/
+  source_title: 'Abel Tasman Coast Track: Abel Tasman National Park, Nelson/Tasman region'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Marahau is the southern gateway
+  evidence:
+    page: P1
+    quote: It's 67 km from Nelson on sealed road providing access by water taxi, kayak, or walking
+  verified: true
+- field: public_transport
+  value: Regular and on-demand buses serve the park from nearby towns and Nelson, plus launches and water taxis.
+  note: Bus and boat options reach the park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park
+  source_title: 'Abel Tasman National Park: Places to go in Nelson/Tasman'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P2
+    quote: There are regular and on-demand bus services to the park from local towns and from Nelson as well as a launch and water taxi services.
+  verified: true
+- field: nearest_town
+  value:
+    name: Motueka
+    note: The park page also lists Takaka and Kaiteriteri as nearest towns.
+  note: Nearest towns to the park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/nelson-tasman/places/abel-tasman-national-park
+  source_title: 'Abel Tasman National Park: Places to go in Nelson/Tasman'
+  publisher: Department of Conservation
+  checked_at: '2026-11-15'
+  evidence:
+    page: P2
+    quote: the nearest towns are Motueka, Takaka and Kaiteriteri
+  verified: true
+mechanical_check:
+  verified: 13
+  failed: 0
+  reasons: {}

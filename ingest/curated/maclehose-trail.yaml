@@ -1,0 +1,20 @@
+slug: maclehose-trail
+researched_at: '2026-11-15'
+facts:
+- field: hazard
+  value:
+    type: weather
+    note: Hong Kong typhoon season may bring flooding and landslides; follow local warnings.
+  source_url: https://www.gov.uk/foreign-travel-advice/hong-kong/safety-and-security
+  source_title: Safety and security - Hong Kong (SAR of China) travel advice - GOV.UKGOV.UK
+  publisher: UK Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Extreme weather and natural disasters
+  evidence:
+    page: P4
+    quote: Typhoon season runs from May to November in Hong Kong and may cause flooding and landslides.
+  verified: true
+mechanical_check:
+  verified: 1
+  failed: 0
+  reasons: {}

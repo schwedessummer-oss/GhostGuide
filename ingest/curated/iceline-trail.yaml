@@ -228,7 +228,207 @@ facts:
     page: P1
     quote: Ticks, which could carry Lyme disease, may be present in the park.
   verified: true
+- field: fee
+  value:
+    name: Park admission, adult
+    amount: 12.25
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Standard entry rate for ages 18 to 64.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P4
+    quote: '| * | Adult | $ 12.25'
+  verified: true
+- field: fee
+  value:
+    name: Park admission, senior
+    amount: 10.75
+    currency: CAD
+    unit: per_person
+    audience: senior
+    note: Standard entry rate for seniors.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P4
+    quote: '| * | Senior | $ 10.75'
+  verified: true
+- field: fee
+  value:
+    name: Park admission, family/group
+    amount: 24.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Standard group entry rate.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P4
+    quote: '| * | Family/Group | $ 24.50'
+  verified: true
+- field: fee
+  value:
+    name: Parks Canada Discovery Pass, adult
+    amount: 83.5
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Multi-park annual pass.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Parks Canada Discovery Pass
+  evidence:
+    page: P4
+    quote: '| * | Adult | $ 83.50'
+  verified: true
+- field: fee
+  value:
+    name: Backcountry camping fee
+    amount: 15
+    currency: CAD
+    unit: per_night
+    audience: all
+    note: Charged per person for each night in the backcountry.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Fees
+  evidence:
+    page: P4
+    quote: '| * | Per person, per night | $ 15.00'
+  verified: true
+- field: fee
+  value:
+    name: Backcountry permit reservation fee
+    amount: 12.75
+    currency: CAD
+    unit: per_application
+    audience: all
+    note: Charged per permit.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Backcountry Fees
+  evidence:
+    page: P4
+    quote: '| * | Reservation, per permit | $ 12.75'
+  verified: true
+- field: fee
+  value:
+    name: Online backcountry reservation service fee
+    amount: 11.5
+    currency: CAD
+    unit: per_application
+    audience: all
+    note: Applies to making, changing or cancelling a reservation online.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P4
+    quote: '| | Online Reservation, Modification or Cancellation | $ 11.50'
+  verified: true
+- field: fee
+  value:
+    name: Phone backcountry reservation service fee
+    amount: 13.5
+    currency: CAD
+    unit: per_application
+    audience: all
+    note: Applies to making, changing or cancelling a reservation by phone.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees
+  source_title: Fees - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P4
+    quote: '| | Reservation, Modification or Cancellation by phone | $ 13.50'
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Parks Canada bans drone take-off and landing in national parks; this general rule is published on the Kootenay page.
+  source_url: https://parks.canada.ca/pn-np/bc/kootenay/info/acts/drone
+  source_title: Drones or unmanned air vehicles (UAV) - Kootenay National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Recreational drone use – Prohibited
+  evidence:
+    page: P6
+    quote: In Canada’s national parks, the landing and take-off of an unmanned air vehicle (UAV) – also known as a drone – is prohibited.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Stay no more than three consecutive nights in any campground; each tent site takes at most four people and one tent.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Seasonal Avalanche Risk
+  evidence:
+    page: P1
+    quote: The length of stay for any campground cannot be more than 3 consecutive nights.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 10
+    note: A single reservation can cover at most ten people and five tents.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Seasonal Avalanche Risk
+  evidence:
+    page: P1
+    quote: The maximum group size for a reservation is 10 people and 5 tents.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: 'Keep well back from wildlife: farther from bears and other carnivores than from elk, deer and moose. This is a park regulation.'
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Seasonal Avalanche Risk
+  evidence:
+    page: P1
+    quote: Do not approach wildlife. Stay 30m (3 bus lengths) away from elk, deer, and moose. Stay 100m (10 bus lengths) away from bears and other carnivores. This is a park regulation. Offenders may be charged.
+  verified: true
+- field: trailhead_access
+  value: Yoho Valley Road, which leads to the Takakkaw Falls trailhead area, is open only in summer, and its tight switchbacks rule out RVs and trailers.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+  source_title: Backcountry - Yoho National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Where to go
+  evidence:
+    page: P1
+    quote: 'Note: Yoho Valley Road is open seasonally from mid-June through mid-October. Due to tight switchbacks, RVs and trailers are not permitted.'
+  verified: true
 mechanical_check:
-  verified: 18
+  verified: 31
   failed: 0
   reasons: {}

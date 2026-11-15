@@ -1,23 +1,136 @@
 slug: walkers-haute-route
-researched_at: 2026-11-15
+researched_at: '2026-11-15'
 facts:
-  - field: closure
-    value:
-      status: partially_closed
-      note: "This concerns the Europaweg finish variant only. Zermatt Tourismus lists a closed section Springelboden to Eggenstadel (Randa to Täsch) with a marked detour via Attermenzen to Täsch, plus a rockfall detour at Täschgufer going down from Bärgji in Randa to Täsch and back up to Täschalp."
-      as_of: 2026-11-15
-    source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
-    source_title: Europaweg | Zermatt
-    publisher: Zermatt Tourismus
-    checked_at: 2026-11-15
-    evidence_heading: Beschreibung (Aktueller Hinweis)
-  - field: hazard
-    value:
-      type: rockfall
-      note: "On the Europaweg variant the original Grächen to Europahütte line was closed for acute rockfall risk and replaced by a new section opened in July 2021."
-    source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
-    source_title: Europaweg | Zermatt
-    publisher: Zermatt Tourismus
-    checked_at: 2026-11-15
-    evidence_heading: Beschreibung
+- field: distance_km
+  value: 39
+  note: Europaweg finish variant between Grächen and Zermatt only, not the whole Chamonix to Zermatt route.
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Europaweg
+  evidence:
+    page: P1
+    quote: 39 km
+  verified: true
+- field: duration
+  value:
+    min_hours: 6.5
+    max_hours: 7.5
+  note: Europaweg variant, first stage Grächen to Europahütte only.
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Grächen - Herbriggen - Europahütte (6.5 - 7.5 h)
+  verified: true
+- field: duration
+  value:
+    min_hours: 6
+    max_hours: 7
+  note: Europaweg variant, second stage Europahütte to Zermatt only.
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Europahütte - Zermatt (6 - 7 h)
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: 'Europaweg variant only: the Springelboden to Eggenstadel section between Randa and Täsch is shut; a marked detour via Attermenzen leads to Täsch, then on towards Täschalp.'
+    as_of: '2026-11-15'
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Beschreibung
+  evidence:
+    page: P1
+    quote: 'Gesperrter Wegabschnitt: Randa–Täsch: Springelboden–Eggenstadel Umleitung: Ab Springelboden dem markierten Wanderweg über Attermenzen nach Täsch folgen. In Täsch in Richtung Täschalp weitergehen. Dort beginnt wieder die reguläre Route.'
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: 'Europaweg variant: because of rockfall a detour is currently in place at Täschgufer, going down from Bärgji in Randa to Täsch and back up to Täschalp.'
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Aufgrund von Steinschlag ist beim Täschgufer aktuell eine Umleitung drin. Vom Bärgji in Randa geht es hinunter ins Tal bis nach Täsch und dann wieder hoch zur Täschalp.
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: 'Europaweg variant: the original Grächen to Europahütte line was closed for acute rockfall danger and replaced by a new section opened in July 2021.'
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Die Etappe zwischen Grächen und der Europahütte oberhalb Randa wurde im Juli 2021 neu eröffnet. Die ursprüngliche Wegführung musste aufgrund der akuten Felssturzgefahr gesperrt werden.
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: 'Europaweg variant: avoid crossing the long suspension bridge during a thunderstorm because of lightning strike risk.'
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Bei Gewitter die Brücke meiden (Blitzschlag)
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: 'Europaweg variant: the suspension bridge is about half a kilometre of open grating, so a head for heights is an advantage.'
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  source_title: Europaweg | Zermatt
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Bewertung
+  evidence:
+    page: P1
+    quote: Da es auf der Hängebrücke auf einem halben Kilometer über Trittgitter geht, ist es von Vorteil, schwindelfrei zu sein
+  verified: true
+- field: public_transport
+  value: Zermatt is reached by train; from Täsch the last leg is by shuttle train or taxi.
+  source_url: https://zermatt.swiss/en/
+  source_title: 'Zermatt-Matterhorn: Holidays in Switzerland & the Alps'
+  publisher: Zermatt Tourismus
+  checked_at: '2026-11-15'
+  evidence_heading: Getting Here & Around
+  evidence:
+    page: P2
+    quote: Travel to Zermatt is easy and sustainable by train – from Täsch you continue by shuttle train or taxi.
+  verified: true
+- field: public_transport
+  value: At the Chamonix end, the Mont Blanc Express train links to the national rail network (SNCF, TGV, Léman Express) at the St Gervais le Fayet station.
+  source_url: https://www.chamonix.com/infos-et-services/transports/se-deplacer
+  source_title: 'Se déplacer dans la vallée : bus, train, vélo : Chamonix Mont Blanc'
+  publisher: Office de Tourisme de Chamonix-Mont-Blanc
+  checked_at: '2026-11-15'
+  evidence_heading: Train Mont-Blanc express
+  evidence:
+    page: P10
+    quote: Le train Mont Blanc Express est relié au réseau SNCF, TGV et Léman Express (nouveau) à partir de la Gare de St Gervais le Fayet.
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

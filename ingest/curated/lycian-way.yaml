@@ -1,0 +1,132 @@
+slug: lycian-way
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://cultureroutesinturkey.com/the-lycian-way/
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: The Lycian Way is a 760 km, 35-day way-marked footpath around the coast of Lycia in southern Turkey
+  verified: true
+- field: distance_km
+  value: 760
+  basis: one_way
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: The Lycian Way is a 760 km, 35-day way-marked footpath
+  verified: true
+- field: duration
+  value:
+    min_days: 35
+    max_days: 35
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: The Lycian Way is a 760 km, 35-day way-marked footpath
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Runs along the coast between two distant end points.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: around the coast of Lycia in southern Turkey, from Fethiye to Antalya
+  verified: true
+- field: best_months
+  value:
+  - 2
+  - 3
+  - 4
+  - 5
+  - 9
+  - 10
+  - 11
+  note: Spring and autumn are recommended; February is singled out as often warm and sunny.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: Trekking is best in spring or autumn – February-May or September-November.
+  verified: true
+- field: season_note
+  value: Summer is considered too hot for long walks.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: Summer in Lycia is too hot for long walks.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Summer heat makes long walking unsuitable.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: Summer in Lycia is too hot for long walks.
+  verified: true
+- field: trailhead_access
+  value: The western start point is reached about two hours from Dalaman airport; the finish point has daily buses to Antalya.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: The start point, at Ölüdeniz, is 2 hours from Dalaman airport
+  verified: true
+- field: public_transport
+  value: The society says public transport is good along the whole route.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: There is good public transport all along the trail
+  verified: true
+- field: access_mode
+  value: independent
+  note: Page describes independent trekkers finding lodging and camping spots.
+  source_url: https://cultureroutesinturkey.com/the-lycian-way/
+  source_title: Lycian Way | Culture Routes Society
+  publisher: Culture Routes Society
+  checked_at: '2026-11-15'
+  evidence_heading: Lycian Way Background
+  evidence:
+    page: P9
+    quote: Independent trekkers will find plenty of wild camping places with nearby water.
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

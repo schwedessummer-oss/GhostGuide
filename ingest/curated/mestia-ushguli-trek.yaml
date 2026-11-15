@@ -1,0 +1,39 @@
+slug: mestia-ushguli-trek
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://georgia.travel/
+  source_url: https://georgia.travel/
+  source_title: Georgia - Unique Country in Europe | Georgia Travel
+  publisher: Georgian National Tourism Administration
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Georgia - Unique Country in Europe | Georgia Travel
+  verified: true
+- field: trailhead_access
+  value: Mestia is reached by a road drive from Zugdidi of roughly three hours.
+  source_url: https://georgia.travel/cities-towns/mestia
+  source_title: Mestia Land of Myth and Magic | Georgia Travel
+  publisher: Georgian National Tourism Administration
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: The 3-hour-long drive from Zugdidi to Mestia sees the environment change from subtropical to subalpine
+  verified: true
+- field: season_note
+  value: The tourism board says hiking and outdoor activities remain possible in September.
+  source_url: https://georgia.travel/
+  source_title: Georgia - Unique Country in Europe | Georgia Travel
+  publisher: Georgian National Tourism Administration
+  checked_at: '2026-11-15'
+  evidence_heading: 365 Days With Lots To Do
+  evidence:
+    page: P1
+    quote: During September you can still enjoy hiking and outdoor activities
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 3
+  failed: 0
+  reasons: {}

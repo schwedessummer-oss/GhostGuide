@@ -330,8 +330,178 @@ facts:
     page: P2
     quote: It is located north of the Dyea townsite, about 10 miles (16 km) from Skagway, and is accessible by road.
   verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: With the border shut, Parks Canada points hikers to the Canadian stretch as an out-and-back from Bennett, 26 km one way to the pass, with a modest 450 m climb.
+    as_of: '2026-11-15'
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  source_title: Hike the Canadian side - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Hike the Canadian side
+  evidence:
+    page: P3
+    quote: From Bennett, BC, the route travels 26 km one-way to Chilkoot Pass, including a moderate 450-meter elevation gain.
+  verified: true
+- field: fee
+  value:
+    name: Overnight permit, Canadian side only (youth)
+    amount: 23.75
+    currency: CAD
+    unit: per_person
+    audience: child
+    note: Youth rate on the Canadian-side overnight permit.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  source_title: Fees - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Canadian Side Only - Overnight Permit
+  evidence:
+    page: P6
+    quote: '| * | Youth | $ 23.75'
+  verified: true
+- field: fee
+  value:
+    name: Online reservation, change or cancellation (day-use group)
+    amount: 3.5
+    currency: CAD
+    unit: per_group
+    audience: all
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  source_title: Fees - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P6
+    quote: '| | Online Reservation, Modification or Cancellation - Per day use group | $ 3.50'
+  verified: true
+- field: fee
+  value:
+    name: Phone reservation, change or cancellation (day-use group)
+    amount: 5.5
+    currency: CAD
+    unit: per_group
+    audience: all
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees
+  source_title: Fees - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: RESERVATION SERVICES
+  evidence:
+    page: P6
+    quote: '| | Reservation, Modification or Cancellation by phone - Per day use group | $ 5.50'
+  verified: true
+- field: fee
+  value:
+    name: Dyea Campground
+    amount: 10
+    currency: USD
+    unit: per_night
+    audience: all
+    note: Charged per site; no reservations, first come first served.
+  source_url: https://www.nps.gov/klgo/planyourvisit/fees.htm
+  source_title: Fees & Passes - Klondike Gold Rush National Historical Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: 2026 Free Entrance Days in the National Parks
+  evidence:
+    page: P7
+    quote: Camping at the Dyea Campground is $10 per site, per night. Reservations cannot be made and campsites are available on a first come, first served basis.
+  verified: true
+- field: permit
+  value:
+    name: Chilkoot Trail day-use permit (Canadian side)
+    kind: day_use
+    how_to_apply: Contact Parks Canada for the permit; the Log Cabin parking lot and the Bennett area are exempt. Permits cost nothing in the spring and autumn shoulder periods but carry a fee in summer.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/bulletins/0F0A11D7-F1D1-4EBE-8531-AFAD1EA15388
+  source_title: Bulletins - * - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issued: April 30, 2026'
+  evidence:
+    page: P5
+    quote: '*Camping and day-use permits are free of charge from April 15-May 31 and from September 14-October 31. There is a fee for camping and day use permits from June 1-September 13.'
+  verified: true
+- field: public_transport
+  value: Bennett has no road. Reach or leave it by train, chartered aircraft or boat, and arrange the carrier yourself. Using the railway tracks as a path is illegal.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking
+  source_title: Hike the Canadian side - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Hiker safety
+  evidence:
+    page: P3
+    quote: There is no road to Bennett and access is limited to train, air charter or boat only. Accessing Bennett via the train tracks is illegal.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Parks Canada advises leaving pets at home. If brought, keep them leashed and out of the cooking shelters.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/conditions
+  source_title: Permit conditions - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Permit conditions
+  evidence:
+    page: P8
+    quote: 'We recommend you do not take your pets on the trail. However, if you choose to do so: Pets must be kept on a leash at all times Pets are not allowed in cooking shelters'
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Recreational drone flying is banned in national parks and historic sites here; special permits exist only for research or filming.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/aeronefs-aircraft
+  source_title: Flying in and around national parks and historic sites in Yukon and northern British Columbia - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Permits are required
+  evidence:
+    page: P9
+    quote: Recreational use of Unmanned Aerial Vehicles (UAVs, drones) in national parks and historic sites is prohibited. Special permits may be issued for research or filming activities.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No open fires on the trail; bring a backpacking stove and fuel. Shelters below treeline have wood stoves, though firewood may be scarce or damp.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/conditions
+  source_title: Permit conditions - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Permit conditions
+  evidence:
+    page: P8
+    quote: 6. No campfires Open fires are prohibited on the Chilkoot Trail. Bring your own backpacking stove and fuel for cooking. There are wood stoves in most shelters below the treeline, but wood supplies may be scarce and/or wet.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: The section above treeline between Deep Lake and the pass often has severe weather; expect cold, wind, wet or whiteout, and storms are possible in midsummer.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer
+  source_title: Trail Hazards - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Travel conditions
+  evidence:
+    page: P10
+    quote: The section between Deep Lake and Chilkoot Pass is above treeline and frequently experiences severe weather conditions. You should expect wet, cold, windy and/or whiteout conditions;
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: The trail passes through black bear and grizzly habitat; Parks Canada recommends carrying bear spray at all times.
+  source_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ours-bears
+  source_title: Bear safety - Chilkoot Trail National Historic Site
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Bear spray
+  evidence:
+    page: P11
+    quote: Parks Canada recommends carrying bear spray with you at all times on the trail.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 24
+  verified: 36
   failed: 0
   reasons: {}

@@ -1,0 +1,170 @@
+slug: routeburn-track
+researched_at: &id001 2026-11-15
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Located in Mount Aspiring National Park and Fiordland National Park in the Otago and Fiordland regions
+  verified: true
+- field: distance_km
+  value: 33.1
+  basis: one_way
+  note: Official brochure gives the whole track length, one way.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/routeburn-track-brochure.pdf
+  source_title: PDF
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P3
+    quote: 'Distance: 33.1 km (one way)'
+  verified: true
+- field: high_point_m
+  value: 1255
+  note: Harris Saddle is described as the highest point on the track.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Routeburn Falls Hut to Lake Mackenzie Hut
+  evidence:
+    page: P1
+    quote: Climb steadily up the valley, through wetlands and tussock-covered flats, before sidling along the bluffs above Lake Harris to reach the highest point on the track at Harris Saddle/Tarahaka Whakatipu (1,255 m).
+  verified: true
+- field: duration
+  value:
+    min_days: 2
+    max_days: 4
+  note: Brochure gives a range of days; most walkers take 3 days and 2 nights.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/routeburn-track-brochure.pdf
+  source_title: PDF
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P3
+    quote: 'Duration: 2–4 days Great Walks season:'
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: The two ends are far apart by road, so transport is needed at each end.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: The road distance between each end of the track is 325 km – transport is needed at each end.
+  verified: true
+- field: best_months
+  value:
+  - 11
+  - 12
+  - 1
+  - 2
+  - 3
+  - 4
+  note: Great Walks season runs 1 November to 30 April.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: In the Great Walks season (1 November 2026 – 30 April 2027)
+  verified: true
+- field: season_note
+  value: Outside the Great Walks season (May to late October) conditions are harder and alpine skills and equipment are needed.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Brochures
+  evidence:
+    page: P1
+    quote: May to late October (winter season): Walking the track outside the Great Walks season should only be attempted if you have alpine skills, equipment and experience.
+  verified: true
+- field: permit_required
+  value: conditional
+  note: Staying overnight on the track needs hut bookings; the page does not describe a permit for day walking.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track-earland-falls-track/
+  source_title: 'Routeburn Track: Earland Falls Track : Fiordland National Park, Fiordland region'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Note that to stay on the Routeburn Track, hut bookings are required.
+  verified: true
+- field: trailhead_access
+  value: 'Two road ends: Routeburn Shelter, about 25 km from Glenorchy on a partly unsealed road, and The Divide Shelter, about 85 km from Te Anau.'
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: 'Routeburn Track can be accessed from both ends: Routeburn Shelter, 25 km from Glenorchy along a partially unsealed road, and The Divide Shelter, 85 km from Te Anau.'
+  verified: true
+- field: nearest_town
+  value:
+    name: Glenorchy
+    note: Routeburn Shelter end is 25 km from Glenorchy.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: 'Routeburn Track can be accessed from both ends: Routeburn Shelter, 25 km from Glenorchy along a partially unsealed road, and The Divide Shelter, 85 km from Te Anau.'
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: The track crosses complex avalanche terrain, with more than 32 avalanche paths that can send debris onto the valley floor.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Avalanches will be frequent
+  evidence:
+    page: P1
+    quote: The Routeburn Track has a lot of challenging and complex avalanche terrain. Avalanches are frequent. There are over 32 avalanche paths, some of which may bring avalanche debris to the valley floor and have the potential to cross the Routeburn Track.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Very high rainfall in Fiordland; conditions can change fast in any season, with cold, snow, wind and heavy rain possible at any time.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track/
+  source_title: 'Routeburn Track: Fiordland National Park'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence_heading: Weather conditions
+  evidence:
+    page: P1
+    quote: Fiordland National Park experiences very high rainfall (up to 9000 mm per year) and weather conditions can change quickly in any season.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Lake Howden Hut no longer operates after storm damage in 2020.
+    as_of: 2026-11-15
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/routeburn-track-lake-howden-track/
+  source_title: 'Routeburn Track: Lake Howden Track: Northern Fiordland tracks and walks'
+  publisher: New Zealand Department of Conservation
+  checked_at: *id001
+  evidence:
+    page: P8
+    quote: Lake Howden Hut is permanently closed. It was damaged in a storm in early 2020.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 13
+  failed: 0
+  reasons: {}

@@ -1,0 +1,170 @@
+slug: hadrians-wall-path
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  note: Official National Trails page for the path.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  source_title: Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: About the Trail
+  evidence:
+    page: P1
+    quote: The Hadrian’s Wall Path is an 84 mile (135 km) long National Trail
+  verified: true
+- field: distance_km
+  value: 135
+  basis: one_way
+  note: Stated as 84 miles (135 km).
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  source_title: Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: About the Trail
+  evidence:
+    page: P1
+    quote: 'Length: 84 mile (135 km)'
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Coast to coast from Wallsend to Bowness-on-Solway.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  source_title: Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: About the Trail
+  evidence:
+    page: P1
+    quote: The Hadrian’s Wall Path is an 84 mile (135 km) long National Trail stretching coast to coast across northern England, from Wallsend, Newcastle upon Tyne in the east to Bowness-on-Solway in Cumbria on the west coast.
+  verified: true
+- field: duration
+  value:
+    min_days: 6
+    max_days: 7
+  note: Recommended for experienced walkers, excluding extra time at Roman sites.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Exploring the Trail
+  evidence:
+    page: P4
+    quote: If you are an experienced walker then we generally recommend allowing 6 or 7 days to complete the whole Trail
+  verified: true
+- field: best_months
+  value:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  note: May to October.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  source_title: Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: About the Trail
+  evidence:
+    page: P1
+    quote: the best time to walk Hadrian’s Wall Path is between May and October
+  verified: true
+- field: season_note
+  value: Ground is drier and archaeology better protected in this period; accommodation and buses run, but late July to August is busiest.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Top Tips for Enjoying the Trail
+  evidence:
+    page: P4
+    quote: We recommend walking between May and October when the ground is normally dry and the risk of erosion and damage to the underlying archaeology is considerably reduced.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Campsites exist along the Trail, but there is normally no right to wild camp; ask the landowner first.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Top Tips for Enjoying the Trail
+  evidence:
+    page: P4
+    quote: If you plan to camp please note in England and Wales, there are normally no rights for national trail users to wild camp along the way – so seeking the landowner’s permission is recommended.
+  verified: true
+- field: public_transport
+  value: Seasonal AD122 Hadrian's Wall Bus is the main service along the wall and currently runs daily; Newcastle to Carlisle trains stop at Corbridge, Hexham and Haltwhistle.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Top Tips for Enjoying the Trail
+  evidence:
+    page: P4
+    quote: The seasonal AD122 Hadrian’s Wall Bus service is the main route serving Hadrian’s Wall. The bus currently operates daily. Visit https://www.gonortheast.co.uk/ad122/ for times and fares.
+  verified: true
+- field: public_transport
+  value: Trail start at Wallsend is a 10-minute Metro ride from Newcastle station; Metro and buses link the airport and ferry port to it.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Top Tips for Enjoying the Trail
+  evidence:
+    page: P4
+    quote: The start of the Trail is a 10 minute Metro journey from Newcastle Rail Station.
+  verified: true
+- field: trailhead_access
+  value: The A69 between Newcastle and Carlisle runs roughly parallel to the path to its south and is the main driving route.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/trail-information/
+  source_title: Hadrian's Wall Path Map and Information - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Top Tips for Enjoying the Trail
+  evidence:
+    page: P4
+    quote: the A69 between Newcastle and Carlisle runs parallel to Hadrian’s Wall Path (approximately 2-5 miles south) and is the main access route
+  verified: true
+- field: parking
+  value: No parking in Bowness-on-Solway; the official page directs walkers to the No 93 bus there.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/route/
+  source_title: Route Description - Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Route Description
+  evidence:
+    page: P5
+    quote: Also, there is no car parking in Bowness-on-Solway, so please use the No 93 bus to get to or leave the village.
+  verified: true
+- field: hazard
+  value:
+    type: tides
+    note: Solway sections at sea level can flood at high tide; check tide predictions for Silloth.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/route/
+  source_title: Route Description - Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: Route Description
+  evidence:
+    page: P5
+    quote: These areas can be affected by tidal flooding.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Trail is fragile and muddy in wet weather.
+  source_url: https://www.nationaltrail.co.uk/en_GB/trails/hadrians-wall-path/
+  source_title: Hadrian's Wall Path - National Trails
+  publisher: National Trails
+  checked_at: '2026-11-15'
+  evidence_heading: About the Trail
+  evidence:
+    page: P1
+    quote: The Trail is fragile and can become muddy in wet weather
+  verified: true
+mechanical_check:
+  verified: 13
+  failed: 0
+  reasons: {}

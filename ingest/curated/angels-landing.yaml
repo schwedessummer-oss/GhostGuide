@@ -221,8 +221,268 @@ facts:
     page: P2
     quote: The park is open every day of the year, 24 hours a day.
   verified: true
+- field: distance_km
+  value: 8.7
+  basis: round_trip
+  note: 5.4 miles round trip converted at 1.609344 km per mile.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: After you get a permit
+  evidence:
+    page: P1
+    quote: Along this 5.4 mile round-trip hike, you will gain 1,488 feet in elevation.
+  verified: true
+- field: elevation_gain_m
+  value: 454
+  note: 1,488 feet converted to metres at 0.3048 and rounded.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: After you get a permit
+  evidence:
+    page: P1
+    quote: Along this 5.4 mile round-trip hike, you will gain 1,488 feet in elevation.
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Described as a round-trip hike from the Grotto.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: After you get a permit
+  evidence:
+    page: P1
+    quote: Along this 5.4 mile round-trip hike, you will gain 1,488 feet in elevation.
+  verified: true
+- field: duration
+  value:
+    min_hours: 4
+  note: Most hikers need about this long for the whole round trip; some take longer.
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: After you get a permit
+  evidence:
+    page: P1
+    quote: Most hikers take around 4 hours to complete the hike, but some take longer.
+  verified: true
+- field: difficulty_official
+  value:
+    label: strenuous
+    scale: NPS
+  source_url: https://www.nps.gov/thingstodo/hike-angels-landing.htm
+  source_title: Angels Landing (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Angels Landing
+  evidence:
+    page: P3
+    quote: The strenuous, challenging trail follows a steep, narrow ridge
+  verified: true
+- field: season_note
+  value: The permit requirement covers every day and every season of the year, at any hour; lotteries are run quarterly.
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US federal permit system for Zion National Park)
+  checked_at: '2026-11-15'
+  evidence_heading: Need to Know
+  evidence:
+    page: P4
+    quote: Permits are required 24 hours a day, seven days a week to hike any portion of Angels Landing.
+  verified: true
+- field: permit
+  value:
+    name: Angels Landing permit (seasonal lottery)
+    kind: lottery
+    how_to_apply: Apply on Recreation.gov for your season, ranking up to seven preferred days and times; one application can list up to six people.
+    official_url: https://www.recreation.gov/permits/4675326
+  source_url: https://www.recreation.gov/permits/4675326
+  source_title: 'Angels Landing: Winter (Hikes on December 1 - February 28), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US federal permit system for Zion National Park)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Winter (Hikes on December 1 - February 28)'
+  evidence:
+    page: P4
+    quote: When you apply for the Seasonal lottery, you can pick up to 7 days and times or ranges of days and times that you are available to hike.
+  verified: true
+- field: fee
+  value:
+    name: Private vehicle entrance pass
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Covers a private non-commercial vehicle with up to 15 seats and its occupants for up to 7 days.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $35.00 Admits private, non-commercial vehicle (15 passenger capacity or less) and all occupants to Zion National Park. Valid for 1-7 days.
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 30
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid 7 days for up to two private motorcycles with a combined four riders.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $30.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (no vehicle)
+    amount: 20
+    currency: USD
+    unit: per_person
+    audience: all
+    note: For walkers and cyclists entering without a car; youth 15 and under enter free.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P6
+    quote: $20.00 Admits one individual with no car to Zion National Park. Typically used for bicyclists, hikers and pedestrians. Youth 15 and under are admitted free. Valid for 1-7 days.
+  verified: true
+- field: fee
+  value:
+    name: Non-US resident fee
+    amount: 100
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Extra charge on top of entry for visitors aged 16 and over, waived with an Annual or America the Beautiful Pass.
+  source_url: https://www.nps.gov/zion/planyourvisit/fees.htm
+  source_title: Fees & Passes - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Get an entrance pass
+  evidence:
+    page: P6
+    quote: Non-US residents (16 and over) must pay an additional $100 per person fee unless admitted with an Annual or America the Beautiful Pass.
+  verified: true
+- field: trailhead_access
+  value: The scenic road to the Grotto is closed to private cars roughly early March to late November, so use the park shuttle during those months.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Zion Canyon Scenic Drive
+  evidence:
+    page: P9
+    quote: The Zion Canyon Scenic Drive is closed to private vehicles approximately from early March through late-November.
+  verified: true
+- field: public_transport
+  value: The Zion Canyon shuttle line has nine stops, including the Scout Lookout and Angels Landing trailhead stop, and no ticket is needed.
+  source_url: https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm
+  source_title: Zion Canyon Shuttle System - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Zion Canyon Line Schedule
+  evidence:
+    page: P7
+    quote: The Zion Canyon Line (marked with green signs) provides service in Zion Canyon. This route serves 9 locations inside the park.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Drones and other remote-controlled aircraft are banned in the park.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Aircraft-based Remote-controlled Equipment
+  evidence:
+    page: P9
+    quote: Use of remote-controlled equipment (including but not limited to helicopters, drones, and other aircraft-based equipment) within Zion National Park is prohibited.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camp only at designated campgrounds or, with a wilderness permit, in designated wilderness areas; sleeping in pullouts or car parks is banned.
+  source_url: https://www.nps.gov/zion/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Bicycling
+  evidence:
+    page: P9
+    quote: Camping or sleeping in pullouts or parking lots is prohibited.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: No open fires in Zion Wilderness; only gas or liquid-fuel stoves are allowed, and fireworks are always banned.
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  source_title: Current Conditions - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Fire Restrictions
+  evidence:
+    page: P2
+    quote: Fireworks are always prohibited in the park. Fires are never allowed in Zion Wilderness (except for gas or liquid-fueled stoves).
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: Autumn storms can bring flash floods, lightning and high winds, and the trail is very dangerous in storms; check the forecast first.
+  source_url: https://www.recreation.gov/permits/4675325
+  source_title: 'Angels Landing: Fall (Hikes on September 1 – November 30), Zion National Park - Recreation.gov'
+  publisher: Recreation.gov (US federal permit system for Zion National Park)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Angels Landing: Fall (Hikes on September 1 – November 30)'
+  evidence:
+    page: P5
+    quote: storms can potentially cause flash flooding, lightning, snow, sleet, and high winds. This trail is extremely dangerous during storms.
+  verified: true
+- field: permit
+  value:
+    name: Angels Landing permit (day-before lottery)
+    kind: lottery
+    how_to_apply: Enter on Recreation.gov the day before your hike; results are sent that afternoon.
+    booking_window: Day before the hike, 12:01 am to 3 pm Mountain Time
+    official_url: https://www.recreation.gov/permits/4675326
+  source_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+  source_title: Angels Landing Permits & Hiking - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: When to apply
+  evidence:
+    page: P1
+    quote: You can apply for a permit the day before your planned hike. This lottery opens every day at 12:01 am and closes at 3 pm Mountain Time (MT).
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets may use only the Pa'rus Trail, not other trails, wilderness or shuttle buses; service animals are exempt.
+  source_url: https://www.nps.gov/zion/planyourvisit/pets.htm
+  source_title: Pets - Zion National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Please follow the rules of B.A.R.K!
+  evidence:
+    page: P8
+    quote: Pets are not permitted on any other trails, wilderness areas, on shuttle buses, or in public buildings in Zion.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 16
+  verified: 35
   failed: 0
   reasons: {}

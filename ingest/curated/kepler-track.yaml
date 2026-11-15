@@ -1,0 +1,201 @@
+slug: kepler-track
+researched_at: 2026-11-15
+facts:
+- field: official_url
+  value: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  note: DOC page for the Kepler Track in Fiordland National Park.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P1
+    quote: Located in Fiordland National Park and Lake Manapouri area and Lake Te Anau area in the Fiordland region
+  verified: true
+- field: distance_km
+  value: 60.1
+  basis: loop
+  note: Full circuit length as given in DOC's Great Walk brochure.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/great-walks-kepler-track-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P4
+    quote: 'Distance: 60.1 km (loop)'
+  verified: true
+- field: duration
+  value:
+    min_days: 3
+    max_days: 4
+  note: Brochure gives three to four days; the main page says most walkers take four days and three nights.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/great-walks-kepler-track-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P4
+    quote: 'Duration: 3–4 days'
+  verified: true
+- field: route_type
+  value: loop
+  note: Brochure describes the track as a loop.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/great-walks-kepler-track-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P4
+    quote: 'Distance: 60.1 km (loop)'
+  verified: true
+- field: best_months
+  value:
+  - 10
+  - 11
+  - 12
+  - 1
+  - 2
+  - 3
+  - 4
+  note: Great Walks season runs from 27 October to 30 April; outside it facilities are reduced.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: In the Great Walks season (27 October 2026 – 30 April 2027)
+  verified: true
+- field: season_note
+  value: From May to late October conditions can be challenging, so only attempt the track then with the right skills and experience.
+  note: Winter conditions need experience.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P1
+    quote: From May to late October, conditions can be challenging – only attempt if you have the skills and experience.
+  verified: true
+- field: permit_required
+  value: seasonal
+  note: Huts and campsites must be booked well ahead during the Great Walks season.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Places to stay
+  evidence:
+    page: P1
+    quote: There are three huts and two campsites along the Kepler Track, which must be booked well in advance during the Great Walks season.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Sleeping at the Forest Burn and Hanging Valley shelters is banned; stay only at the designated huts and campsites.
+  note: Overnight stays are limited to designated huts and campsites.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Places to stay
+  evidence:
+    page: P1
+    quote: Camping or staying overnight in the shelters at Forest Burn and Hanging Valley is not permitted.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Dogs are not permitted on the track.
+  note: DOC brochure bans dogs.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/kepler-track-walking-guide-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P3
+    quote: vehicles or boats. No dogs or
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Hikers must follow any rules that restrict fires.
+  note: Fire restrictions apply; check current rules.
+  source_url: https://www.doc.govt.nz/globalassets/documents/parks-and-recreation/tracks-and-walks/southland/kepler-track-walking-guide-brochure.pdf
+  source_title: PDF
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P3
+    quote: any rules restricting fires, campsites and shelters. discovered in the Iris Burn valley in 2011 with
+  verified: true
+- field: trailhead_access
+  value: The Kepler Track car park is about 5 km from Te Anau on the Manapouri-Te Anau Highway, then Golf Course Road; walkers can follow the track from the Visitor Centre.
+  note: Access to the main trailhead.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track-carpark-to-luxmore-hut/
+  source_title: 'Kepler Track: Carpark to Luxmore Hut: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence:
+    page: P5
+    quote: 'This track begins from the Kepler Track carpark, which is at the southern end of Lake Te Anau, about 5 km from Te Anau. Private transport: Follow the Manapouri - Te Anau Highway for about 2 km, turn right onto Golf Course Road for another 1.8 km and the carpark is signposted on the right.'
+  verified: true
+- field: public_transport
+  value: Transport between Te Anau and the track ends can be booked in the Great Walks season; otherwise it is a 50 minute walk.
+  note: Transfers apply in the Great Walks season.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: You can book transport between Te Anau and the ends of the tracks, otherwise it's a 50 min walk.
+  verified: true
+- field: nearest_town
+  value:
+    name: Te Anau
+    note: The Kepler Track car park is about 5 km away.
+  note: Trailhead is near Te Anau.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Campsites
+  evidence:
+    page: P1
+    quote: Kepler Track car park: 5 km from Te Anau.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Fiordland gets very high rainfall and conditions change fast; cold, snow, wind and heavy rain can occur year round.
+  note: Rapidly changing weather.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Weather conditions
+  evidence:
+    page: P1
+    quote: Fiordland National Park experiences high rainfall (up to 9,000 mm per year) and weather conditions can change quickly in any season. Cold temperatures, snow, strong winds and heavy rain can occur at any time of the year.
+  verified: true
+- field: hazard
+  value:
+    type: avalanche
+    note: Nine avalanche paths, most able to reach the track, so avalanches are frequent in the cold season.
+  note: Avalanche terrain on the tops.
+  source_url: https://www.doc.govt.nz/parks-and-recreation/places-to-go/fiordland/places/fiordland-national-park/things-to-do/tracks/kepler-track/
+  source_title: 'Kepler Track: Fiordland National Park, Fiordland region'
+  publisher: Department of Conservation
+  checked_at: 2026-11-15
+  evidence_heading: Avalanches will be frequent
+  evidence:
+    page: P1
+    quote: Avalanches are frequent. There are 9 avalanche paths, and most have the potential to cross the track.
+  verified: true
+mechanical_check:
+  verified: 15
+  failed: 0
+  reasons: {}

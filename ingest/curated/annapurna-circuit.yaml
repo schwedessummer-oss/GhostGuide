@@ -1,0 +1,99 @@
+slug: annapurna-circuit
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://ntnc.org.np/project/annapurna-conservation-area-project-acap
+  note: Official page of the body that runs the Annapurna Conservation Area, which contains the trek.
+  source_url: https://ntnc.org.np/project/annapurna-conservation-area-project-acap
+  source_title: Annapurna Conservation Area Project (ACAP) | The National Trust for Nature Conservation (NTNC)
+  publisher: National Trust for Nature Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area Project (ACAP)
+  evidence:
+    page: P4
+    quote: Launched in 1986, the Annapurna Conservation Area Project (ACAP) is the largest undertaking of NTNC.
+  verified: true
+- field: best_months
+  value:
+  - 3
+  - 4
+  - 5
+  - 9
+  - 10
+  - 11
+  note: 'Best seasons given for the Annapurna Conservation Area as a whole: spring and autumn.'
+  source_url: https://ntb.gov.np/en/annapurna-conservation-area
+  source_title: Annapurna Conservation Area | Where Nature and Culture Unite
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area
+  evidence:
+    page: P6
+    quote: 'Best Season: March-May; September-November'
+  verified: true
+- field: fee
+  value:
+    name: Annapurna Conservation Area entrance fee
+    amount: 2000
+    currency: NPR
+    unit: per_person
+    audience: non_resident
+    note: Charged per entry; foreign visitors.
+  note: Foreign visitors pay this at each entry to the conservation area.
+  source_url: https://ntb.gov.np/en/annapurna-conservation-area
+  source_title: Annapurna Conservation Area | Where Nature and Culture Unite
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area
+  evidence:
+    page: P6
+    quote: 'Entrance Fee: Nepalis - Free, SAARC nationals - NPR 200 per person per entry, foreigners - NPR 2,000 per person per entry; Trekking Permit is required for Upper Mustang'
+  verified: true
+- field: fee
+  value:
+    name: Annapurna Conservation Area entrance fee (SAARC nationals)
+    amount: 200
+    currency: NPR
+    unit: per_person
+    audience: non_resident
+    note: Charged per entry; SAARC nationals.
+  note: Reduced rate for visitors from SAARC countries.
+  source_url: https://ntb.gov.np/en/annapurna-conservation-area
+  source_title: Annapurna Conservation Area | Where Nature and Culture Unite
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area
+  evidence:
+    page: P6
+    quote: 'Entrance Fee: Nepalis - Free, SAARC nationals - NPR 200 per person per entry, foreigners - NPR 2,000 per person per entry; Trekking Permit is required for Upper Mustang'
+  verified: true
+- field: trailhead_access
+  value: The conservation area is reached via Pokhara, which is 202 km by road from Kathmandu or a 30 minute flight.
+  note: Access to the area runs through Pokhara.
+  source_url: https://ntb.gov.np/en/annapurna-conservation-area
+  source_title: Annapurna Conservation Area | Where Nature and Culture Unite
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area
+  evidence:
+    page: P6
+    quote: 'Access:  From Pokhara, which is 202 km by road or 30 minutes by air from Kathmandu'
+  verified: true
+- field: nearest_town
+  value:
+    name: Pokhara
+    note: Gateway town; the conservation area headquarters are at Hariyo Kharka in Pokhara.
+  note: Pokhara is named as the access point and the project headquarters location.
+  source_url: https://ntb.gov.np/en/annapurna-conservation-area
+  source_title: Annapurna Conservation Area | Where Nature and Culture Unite
+  publisher: Nepal Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Annapurna Conservation Area
+  evidence:
+    page: P6
+    quote: 'Access:  From Pokhara, which is 202 km by road or 30 minutes by air from Kathmandu'
+  verified: true
+mechanical_check:
+  verified: 6
+  failed: 0
+  reasons: {}

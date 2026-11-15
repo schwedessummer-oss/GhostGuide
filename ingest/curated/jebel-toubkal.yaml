@@ -1,0 +1,47 @@
+slug: jebel-toubkal
+researched_at: 2026-11-15
+facts:
+- field: rule_drones
+  value:
+    value: restricted
+    note: Bringing a drone to Morocco requires prior permission from civil aviation; otherwise fines and confiscation are possible.
+  source_url: https://www.gov.uk/foreign-travel-advice/morocco/safety-and-security
+  source_title: Safety and security - Morocco travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: 2026-11-15
+  evidence_heading: Flying drones
+  evidence:
+    page: P4
+    quote: If you plan to bring a drone to Morocco, you must get permission from the Directorate General for Civil Aviation (in French) to fly a drone. If you do not, you risk fines and confiscation of your equipment.
+  verified: true
+- field: hazard
+  value:
+    type: security_advisory
+    note: UK advice cites an increased terrorism threat in Morocco, with security measures at some tourist sites.
+  source_url: https://www.gov.uk/foreign-travel-advice/morocco/safety-and-security
+  source_title: Safety and security - Morocco travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: 2026-11-15
+  evidence_heading: Terrorism in Morocco
+  evidence:
+    page: P4
+    quote: There is an increased threat linked to the number of Moroccans sympathetic or belonging to Daesh (formerly ISIL) and other extremist groups. Authorities regularly disrupt terrorist cells.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Earthquakes are a country-wide risk in Morocco; a major one occurred in 2023.
+  source_url: https://www.gov.uk/foreign-travel-advice/morocco/safety-and-security
+  source_title: Safety and security - Morocco travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: 2026-11-15
+  evidence_heading: Earthquakes
+  evidence:
+    page: P4
+    quote: Earthquakes are a risk in Morocco. The last major earthquake, in 2023, killed almost 3,000 people.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 3
+  failed: 0
+  reasons: {}

@@ -251,8 +251,246 @@ facts:
     page: P2
     quote: Use caution along rivers and creeks, even as water gets lower. Rocks are slippery even when dry.
   verified: true
+- field: permit
+  value:
+    name: Mt. Whitney Trail Crest exit quota
+    kind: quota
+    how_to_apply: Hikers finishing over Trail Crest down to Whitney Portal book the exit quota with their entry permit on Recreation.gov.
+    booking_window: '25 people per entry date: 15 spaces open 6 months ahead, 10 more 2 weeks ahead'
+    official_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_title: Inyo National Forest | Wilderness Permits | Forest ServiceLock
+  publisher: USDA Forest Service (Inyo National Forest)
+  checked_at: '2026-11-15'
+  evidence_heading: Select a topic below to show or hide its details
+  evidence:
+    page: P4
+    quote: Trail Crest Exit Quota is 25 people per permit entry date. 15 spaces are available starting 6 months in advance of the entry date and 10 spaces are added to the reservation website 2 weeks prior to the entry date.
+  verified: true
+- field: fee
+  value:
+    name: Inyo National Forest wilderness permit reservation
+    amount: 6
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Charged per permit, in addition to the per-person fee.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_title: Inyo National Forest | Wilderness Permits | Forest ServiceLock
+  publisher: USDA Forest Service (Inyo National Forest)
+  checked_at: '2026-11-15'
+  evidence_heading: Select a topic below to show or hide its details
+  evidence:
+    page: P4
+    quote: 'Reserving a wilderness permit costs $6 per permit, plus the following per person fee:'
+  verified: true
+- field: fee
+  value:
+    name: Inyo wilderness per-person fee, Mt. Whitney Zone
+    amount: 15
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Applies to trips entering the Whitney Zone, including the Trail Crest exit.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_title: Inyo National Forest | Wilderness Permits | Forest ServiceLock
+  publisher: USDA Forest Service (Inyo National Forest)
+  checked_at: '2026-11-15'
+  evidence_heading: Select a topic below to show or hide its details
+  evidence:
+    page: P4
+    quote: $15 per person if entering Mt. Whitney Zone
+  verified: true
+- field: fee
+  value:
+    name: Inyo wilderness per-person fee, other areas
+    amount: 5
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Applies to Inyo trips outside the Whitney Zone.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits
+  source_title: Inyo National Forest | Wilderness Permits | Forest ServiceLock
+  publisher: USDA Forest Service (Inyo National Forest)
+  checked_at: '2026-11-15'
+  evidence_heading: Select a topic below to show or hide its details
+  evidence:
+    page: P4
+    quote: $5 per person for all other areas.
+  verified: true
+- field: fee
+  value:
+    name: Yosemite private vehicle entrance
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    note: Valid seven days; covers the vehicle and its occupants.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Vehicles
+  evidence:
+    page: P5
+    quote: $35.00 This fee is valid for seven consecutive days for a non-commercial car, pickup truck, RV, or van with 15 or fewer passenger seats.
+  verified: true
+- field: fee
+  value:
+    name: Yosemite individual entrance (on foot, bike, horse)
+    amount: 20
+    currency: USD
+    unit: per_person
+    audience: all
+    note: Valid seven days; those 15 and younger enter free.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P5
+    quote: $20.00 This fee is valid for seven consecutive days for people entering on foot, a bicycle, a horse, or a non-commercial bus or van.
+  verified: true
+- field: fee
+  value:
+    name: Yosemite nonresident fee
+    amount: 100
+    currency: USD
+    unit: per_person
+    audience: non_resident
+    note: Extra to the entrance fee for visitors 16 and older, unless they hold an Annual or America the Beautiful Pass.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Nonresident Fees
+  evidence:
+    page: P5
+    quote: Each non-US resident aged 16 and older visiting Yosemite National Park must pay a $100 nonresident fee (in addition to the standard entrance fee)
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets are banned in the Yosemite Wilderness; other JMT sections have their own rules.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: General Regulations
+  evidence:
+    page: P7
+    quote: Pets, wheeled vehicles, motorized equipment, and drones are prohibited in the wilderness.
+  verified: true
+- field: rule_drones
+  value:
+    value: restricted
+    note: Drones are banned in the Yosemite Wilderness; rules for other sections of the trail were not checked.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: General Regulations
+  evidence:
+    page: P7
+    quote: Pets, wheeled vehicles, motorized equipment, and drones are prohibited in the wilderness.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: In Yosemite, fires only in existing rings at lower elevation; banned above 9,600 ft (about 2,926 m).
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Campfires
+  evidence:
+    page: P7
+    quote: Campfires are prohibited above 9,600 feet in elevation.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Wilderness permit needed; camp on established sites at least 30 m from water and trail.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Campsite Selection
+  evidence:
+    page: P7
+    quote: Camp at least 100 feet (30 meters/40 paces) from both any water source and trail.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 15
+    note: Up to 15 on trail; 8 for cross-country travel in Yosemite.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: General Regulations
+  evidence:
+    page: P7
+    quote: Maximum group size is 15 people, or 8 people for any cross-country hiking more than ¼ mile off any trail.
+  verified: true
+- field: hazard
+  value:
+    type: cold
+    note: Yosemite snow usually lies from November to May, so shoulder-season trips need winter preparation.
+  source_url: https://www.nps.gov/yose/planyourvisit/wildpermits.htm
+  source_title: Wilderness Permits - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Late October to mid-April
+  evidence:
+    page: P8
+    quote: Snow can usually be found in the park from November through May.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: Regional wildfire or prescribed-burn smoke can degrade air quality in Yosemite at any time.
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  source_title: Current Conditions - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Fire and Smoke
+  evidence:
+    page: P2
+    quote: hazy or smoky conditions are always possible.
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Tioga Road across the park is shut for snow.
+    as_of: '2026-11-13'
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  source_title: Current Conditions - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Tire chains may be required
+  evidence:
+    page: P2
+    quote: Tioga Road (continuation of Highway 120 through the park) Temporarily closed due to snow
+  verified: true
+- field: closure
+  value:
+    status: seasonal
+    note: Tuolumne Meadows services, the hikers bus and YARTS are off for the season.
+    as_of: '2026-11-06'
+  source_url: https://www.nps.gov/yose/planyourvisit/wildcond.htm
+  source_title: Wilderness Conditions - Yosemite National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Tioga Road and Tuolumne Meadows
+  evidence:
+    page: P9
+    quote: All services in Tuolumne Meadows are closed for the season. The hikers bus and YARTS have also stopped operating for the season.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 19
+  verified: 35
   failed: 0
   reasons: {}

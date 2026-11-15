@@ -1,0 +1,134 @@
+slug: kokoda-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.kokodatrackauthority.org
+  note: Papua New Guinea authority that promotes and manages the track.
+  source_url: https://www.kokodatrackauthority.org
+  source_title: Kokoda Track Authority | Trek the Kokoda Trail in Papua New Guinea
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: The Kokoda Track Authority
+  evidence:
+    page: P1
+    quote: The Kokoda Track Authority (KTA) is a Papua New Guinea Special Purpose Authority, commissioned to promote and manage the Kokoda Track for tourists
+  verified: true
+- field: distance_km
+  value: 96
+  note: Length given by the authority for the full track.
+  basis: one_way
+  source_url: https://www.kokodatrackauthority.org/kokoda-track-authority/kokoda-track-information
+  source_title: Kokoda Track Authority | Trek Infomation
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Kokoda Track Information
+  evidence:
+    page: P9
+    quote: The Kokoda Track runs 96 kilometres from Owers’ Corner, on the southern side of the imposing Owen Stanley Range, across the mountains to the Kokoda plateau in the Yodda Valley.
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Runs from Owers Corner in the south to the Kokoda plateau.
+  source_url: https://www.kokodatrackauthority.org/kokoda-track-authority/kokoda-track-information
+  source_title: Kokoda Track Authority | Trek Infomation
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Kokoda Track Information
+  evidence:
+    page: P9
+    quote: The Kokoda Track runs 96 kilometres from Owers’ Corner, on the southern side of the imposing Owen Stanley Range, across the mountains to the Kokoda plateau in the Yodda Valley.
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: All trekkers need a trek permit, independent or with a tour.
+  source_url: https://www.kokodatrackauthority.org
+  source_title: Kokoda Track Authority | Trek the Kokoda Trail in Papua New Guinea
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: Trek Permits For The Kokoda Track
+  evidence:
+    page: P1
+    quote: Kokoda Track Trek Permits must be purchased by all trekkers visiting the Kokoda Track, whether you are undertaking an independent trek or a trek with an organised tour.
+  verified: true
+- field: permit
+  value:
+    name: Kokoda Track Trek Permit
+    kind: trekking_card
+    how_to_apply: Operators include the permit cost in tour prices; an application form is available from the authority.
+    official_url: https://www.kokodatrackauthority.org/x,963,345,0/trek-permits-for-the-kokoda-track.html
+  note: Permit is mandatory for every trekker.
+  source_url: https://www.kokodatrackauthority.org/x,963,345,0/trek-permits-for-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Trek Permits For The Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Kokoda Track Trek Permits must be purchased by all trekkers visiting the Kokoda Track.
+  verified: true
+- field: fee
+  value:
+    name: Charity-fundraiser trek fixed fee
+    amount: 2000
+    currency: PGK
+    unit: per_trip
+    audience: all
+    note: Charged per fundraiser trek; each participant also pays the normal permit fee.
+  source_url: https://www.kokodatrackauthority.org/x,963,345,0/trek-permits-for-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Trek Permits For The Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: K2000 fixed fee per charity-fundraiser trek*
+  verified: true
+- field: access_mode
+  value: licensed_operator_required
+  note: Treks must be arranged through a licensed tour operator.
+  source_url: https://www.kokodatrackauthority.org/x,963,345,0/trek-permits-for-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Trek Permits For The Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Undertaking a trek must be arranged with a licenced Tour Operator in all instances.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    note: Operators must publish a maximum group size; no single number is given.
+  source_url: https://www.kokodatrackauthority.org/x,963,344,0/planning-your-walk-along-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Planning your walk along the Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issues To Consider When Choosing A Tour Operator:'
+  evidence:
+    page: P7
+    quote: Operators are required to advertise the maximum group size .
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The authority discourages walking without an operator because of safety concerns, and requires medical and travel insurance.
+  source_url: https://www.kokodatrackauthority.org/x,963,344,0/planning-your-walk-along-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Planning your walk along the Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: The KTA does not encourage trekkers to walk without a tour operator, due to safety concerns.
+  verified: true
+- field: trailhead_access
+  value: The southern end is at Owers Corner; short treks with a local guide start there and go as far as Ua'ule Creek.
+  source_url: https://www.kokodatrackauthority.org/x,963,344,0/planning-your-walk-along-the-kokoda-track.html
+  source_title: Kokoda Track Authority | Planning your walk along the Kokoda Track
+  publisher: Kokoda Track Authority
+  checked_at: '2026-11-15'
+  evidence_heading: 'Issues To Consider When Choosing A Tour Operator:'
+  evidence:
+    page: P7
+    quote: Short trekking options are a possibility with a local tour guide, starting at Owers Corner at the southern end of the track, leading to the farthest point at Ua'ule Creek.
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

@@ -247,8 +247,109 @@ facts:
     page: P4
     quote: Until then, the main parking lot is closed to all vehicle and pedestrian traffic.
   verified: true
+- field: season_note
+  value: Day-use tickets are needed March 1 to November 30 only; no ticket is required in December, January or February.
+  source_url: https://www.recreation.gov/ticket/10088450/ticket/10088451
+  source_title: Old Rag Day-Use Ticket, Old Rag Mountain Tickets - Recreation.gov
+  publisher: Recreation.gov (National Park Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Need to Know
+  evidence:
+    page: P5
+    quote: Day-use tickets are NOT required for the months of December, January, and February.
+  verified: true
+- field: season_note
+  value: Old Rag gets very busy on weekends, with full parking and waits at narrow scrambles; summer and fall are peak, so a weekday is better.
+  source_url: https://www.nps.gov/places/old-rag.htm
+  source_title: Old Rag Mountain (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Avoid the Crowds
+  evidence:
+    page: P3
+    quote: Old Rag can become very crowded on weekends. At times, the parking lot will be full, and there can be long lines and substantial waits at some of the narrow rock scrambles. During periods of peak visitation (summer and fall)
+  verified: true
+- field: fee
+  value:
+    name: Shenandoah annual park pass
+    amount: 55.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Annual pass for the holder and passengers in one vehicle (up to 4 adults); children under 16 free.
+  source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+  source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P6
+    quote: '## Annual Entrance - Park $55.00'
+  verified: true
+- field: fee
+  value:
+    name: Motorcycle entrance pass
+    amount: 25.0
+    currency: USD
+    unit: per_vehicle
+    audience: all
+  note: Seven-day pass for up to two private motorcycles carrying up to four people.
+  source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+  source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: In-person Purchase Locations
+  evidence:
+    page: P6
+    quote: $25.00 Valid for 7 days. Admits up to 2 private, non-commercial motorcycles with up to 4 total passengers.
+  verified: true
+- field: fee
+  value:
+    name: Per-person entrance pass (on foot or bicycle)
+    amount: 15.0
+    currency: USD
+    unit: per_person
+    audience: all
+  note: For walk-in or cycling visitors aged 16 and over; a family pays no more than the vehicle fee.
+  source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+  source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: For Individuals without a Vehicle
+  evidence:
+    page: P6
+    quote: $15.00 Entry for walk-up or bicycling visitors, when 16 years of age or older (children under 16 are admitted for free). Includes entering the Park by all means other than a private, non-commercial vehicle. A family traveling together shall pay no more than the vehicle fee.
+  verified: true
+- field: rule_drones
+  value:
+    value: not_allowed
+    note: Launching, landing or flying unmanned aircraft on NPS land and water is banned.
+  source_url: https://www.nps.gov/shen/learn/management/lawsandpolicies.htm
+  source_title: Laws & Policies - Shenandoah National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Laws & Policies
+  evidence:
+    page: P7
+    quote: This prohibition applies to the launching, landing, and operation of unmanned aircraft on lands and waters administered by the NPS.
+  verified: true
+- field: permit
+  value:
+    name: Backcountry camping permit
+    kind: overnight
+    how_to_apply: Buy the permit online on Recreation.gov or by phone on the number the park lists.
+  note: Overnight campers in the backcountry need a permit.
+  source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+  source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Other Fees
+  evidence:
+    page: P6
+    quote: Backcountry campers must purchase their permits at recreation.gov or by calling (877) 444-6777. Explore essential information for your backcountry trip.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 19
+  verified: 26
   failed: 0
   reasons: {}

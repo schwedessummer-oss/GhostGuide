@@ -1,0 +1,142 @@
+slug: grand-canyon-track
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  note: Track page on the NSW National Parks site.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: Set out from Grand Canyon carpark near Blackheath and spend a challenging day hiking one very special canyon.
+  verified: true
+- field: distance_km
+  value: 6.3
+  basis: loop
+  note: Listed as a loop.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: 6.3km loop
+  verified: true
+- field: route_type
+  value: loop
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: 6.3km loop
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Creek can flood after heavy rain; canyon walking is advised against before, during and after heavy rain.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: Check the weather before you set out as the creek can flood after heavy rain. Never walk in a canyon before, during, or after heavy rain.
+  verified: true
+- field: closure
+  value:
+    status: open
+    note: Area is always open but can close at times for bad weather or fire danger.
+    as_of: '2026-11-15'
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Park info
+  evidence:
+    page: P1
+    quote: Blackheath area is always open but may have to close at times due to poor weather or fire danger.
+  verified: true
+- field: rule_dogs
+  value:
+    value: not_allowed
+    note: Pets and domestic animals are not permitted; certified assistance animals excepted.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/visitor-info
+  source_title: Grand Canyon track | Visitor info | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Prohibited
+  evidence:
+    page: P4
+    quote: Pets and domestic animals (other than certified assistance animals) are not permitted.
+  verified: true
+- field: parking
+  value: Parking is provided at Grand Canyon carpark, where the track starts; no parking fee is mentioned on the page.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/visitor-info
+  source_title: Grand Canyon track | Visitor info | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Get driving directions
+  evidence:
+    page: P4
+    quote: Parking is available at Grand Canyon carpark.
+  verified: true
+- field: trailhead_access
+  value: From Blackheath, leave the Great Western Highway onto Evans Lookout Road and follow it to Grand Canyon carpark.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/visitor-info
+  source_title: Grand Canyon track | Visitor info | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Get driving directions
+  evidence:
+    page: P4
+    quote: 'Grand Canyon track starts at Grand Canyon carpark in Blue Mountains National Park. To get there from Blackheath: Turn off Great Western Highway into Evans Lookout Road Follow Evans Lookout Road until you reach Grand Canyon carpark'
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Limited mobile reception in the park; reception is needed to call Triple Zero (000).
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track/visitor-info
+  source_title: Grand Canyon track | Visitor info | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Mobile safety
+  evidence:
+    page: P4
+    quote: Please note there is limited mobile phone reception in this park and you’ll need mobile reception to call Triple Zero (000).
+  verified: true
+- field: nearest_town
+  value:
+    name: Blackheath
+    note: Track starts from a carpark near Blackheath.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: Set out from Grand Canyon carpark near Blackheath
+  verified: true
+- field: season_note
+  value: Described as a good walk for cooling off in summer, thanks to the creek and waterfalls.
+  source_url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/grand-canyon-track
+  source_title: Grand Canyon track | NSW National Parks
+  publisher: NSW National Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Grand Canyon track
+  evidence:
+    page: P1
+    quote: The plentiful waterfalls and flowing creek makes it a particularly good walk to cool off in the summer months.
+  verified: true
+mechanical_check:
+  verified: 11
+  failed: 0
+  reasons: {}

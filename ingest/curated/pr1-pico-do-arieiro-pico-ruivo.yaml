@@ -1,0 +1,100 @@
+slug: pr1-pico-do-arieiro-pico-ruivo
+researched_at: '2026-11-15'
+facts:
+- field: high_point_m
+  value: 1862
+  note: Pico Ruivo, the far end of the route, is the highest summit on Madeira.
+  source_url: https://visitmadeira.com/pt/onde-ir/madeira/cordilheira-central/pico-ruivo/
+  source_title: Pico Ruivo - Visit Madeira | Site oficial do Turismo da Madeira
+  publisher: Visit Madeira (Associação de Promoção da Madeira)
+  checked_at: '2026-11-15'
+  evidence_heading: Pico Ruivo
+  evidence:
+    page: P3
+    quote: Com 1862 metros de altitude, é o terceiro ponto mais alto de Portugal e o pico mais elevado do arquipélago.
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Registration or booking applies even to visitors exempt from the fee.
+  source_url: https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html
+  source_title: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  publisher: Instituto das Florestas e Conservação da Natureza, IP-RAM
+  checked_at: '2026-11-15'
+  evidence_heading: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  evidence:
+    page: P4
+    quote: although registration/booking is still required
+  verified: true
+- field: permit
+  value:
+    name: PR1 timed trail booking
+    kind: timed_entry
+    how_to_apply: Reserve an entry time slot for the trail in advance through the regional forestry institute booking system.
+  note: Entry is by scheduled time slot with some tolerance.
+  source_url: https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html
+  source_title: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  publisher: Instituto das Florestas e Conservação da Natureza, IP-RAM
+  checked_at: '2026-11-15'
+  evidence_heading: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  evidence:
+    page: P4
+    quote: we generally allow a reasonable tolerance for entering the trail before or after the scheduled slot
+  verified: true
+- field: fee
+  value:
+    name: PR1 Vereda do Areeiro full trail
+    amount: 10.5
+    currency: EUR
+    unit: per_person
+    audience: all
+    valid_from: '2026-01-01'
+    valid_to: '2026-12-31'
+    note: Charge applies after the full trail reopens; fee for visitors without an operator protocol.
+  note: 2026 rate for the full PR1.
+  source_url: https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html
+  source_title: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  publisher: Instituto das Florestas e Conservação da Natureza, IP-RAM
+  checked_at: '2026-11-15'
+  evidence_heading: 2. Fees
+  evidence:
+    page: P4
+    quote: 'PR1 – Vereda do Areeiro – full trail after reopening (includes PR1.1 – Vereda da Ilha, PR1.2 – Vereda do Pico Ruivo and PR1.3 – Vereda da Encumeada (the last one only when it reopens)): €10.50;'
+  verified: true
+- field: fee
+  value:
+    name: PR1 Vereda do Areeiro up to Pedra Rija viewpoint
+    amount: 4.5
+    currency: EUR
+    unit: per_person
+    audience: all
+    valid_from: '2026-01-01'
+    valid_to: '2026-12-31'
+    note: Short section only.
+  note: 2026 rate for the Pedra Rija section only.
+  source_url: https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html
+  source_title: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  publisher: Instituto das Florestas e Conservação da Natureza, IP-RAM
+  checked_at: '2026-11-15'
+  evidence_heading: 2. Fees
+  evidence:
+    page: P4
+    quote: 'PR1 – Vereda do Areeiro –trail up only to Pedra Rija Viewpoint: €4.50;'
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Fee schedule separates the section to Pedra Rija viewpoint from the full trail, which is priced as applying after reopening.
+  note: Full PR1 appears not yet reopened as of the page.
+  source_url: https://ifcn.madeira.gov.pt/en/atividades-de-natureza/percursos-pedestres-recomendados/faq-s-taxas-percursos-pedestres-classificados/frequently-asked-questions-fees-classified-walking-routes.html
+  source_title: FAQ – New Model of Rates and Reservations for the IFCN's Classified Walking Routes
+  publisher: Instituto das Florestas e Conservação da Natureza, IP-RAM
+  checked_at: '2026-11-15'
+  evidence_heading: 2. Fees
+  evidence:
+    page: P4
+    quote: full trail after reopening
+  verified: true
+mechanical_check:
+  verified: 6
+  failed: 0
+  reasons: {}

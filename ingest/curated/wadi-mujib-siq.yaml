@@ -1,0 +1,79 @@
+slug: wadi-mujib-siq
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  note: Jordan Tourism Board page describing the Mujib reserve and its Siq, Canyon, Malaqi, Ibex and Al-Hidan trails.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Siq Trail
+  evidence:
+    page: P1
+    quote: The trail starts at Mujib Adventure Center where you will take the cantilevered walkway and follow the course of the river between the towering sandstone cliffs to the base of a large waterfall.
+  verified: true
+- field: trailhead_access
+  value: The Siq Trail begins at the Mujib Adventure Center; hikers set off on a raised walkway and follow the river through the gorge up to a big waterfall.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Siq Trail
+  evidence:
+    page: P1
+    quote: The trail starts at Mujib Adventure Center where you will take the cantilevered walkway
+  verified: true
+- field: season_note
+  value: The Siq Trail runs only in summer, depending on weather; contact the service provider to confirm it is available.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Siq Trail
+  evidence:
+    page: P1
+    quote: This activity is only available during the summer; depending on weather conditions. Please contact the service provider to see if the activity is available.
+  verified: true
+- field: season_note
+  value: The Ibex Trail is a winter activity only, subject to weather, and needs a trained guide.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Ibex Trail
+  evidence:
+    page: P1
+    quote: This activity is only available during the winter; depending on weather conditions. Please contact the service provider to see if the activity is available. A trained guide is required.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The Canyon Trail includes a 20 m waterfall descent that is done only with a trained guide supervising.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Canyon Trail
+  evidence:
+    page: P1
+    quote: Shortly after entering the gorge, you will reach the top of a spectacular waterfall 20m, high, which will be negotiated under the watchful eye of a trained guide.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The Malaqi Trail includes swimming in natural pools and a 20 m waterfall descent under guide supervision.
+  source_url: https://en.visitjordan.com/Wheretogo/Wadi-Mujib
+  source_title: Wadi Mujib Jordan – Siq, Canyon & Malaqi Trail Adventures
+  publisher: Jordan Tourism Board
+  checked_at: '2026-11-15'
+  evidence_heading: Malaqi Trail
+  evidence:
+    page: P1
+    quote: you will swim in natural pools before moving on to descend a 20m high waterfall under the supervision of a trained guide.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 6
+  failed: 0
+  reasons: {}

@@ -1,0 +1,19 @@
+slug: yushan-main-peak
+researched_at: 2026-11-15
+facts:
+- field: official_url
+  value: https://www.ysnp.gov.tw/en
+  note: Park headquarters homepage of the agency that manages the area, with trail conditions and alerts.
+  source_url: https://www.ysnp.gov.tw/en
+  source_title: Yushan National Park Headquarters, National Park Service, Ministry of the Interior
+  publisher: Yushan National Park Headquarters, National Park Service, Ministry of the Interior
+  checked_at: 2026-11-15
+  evidence:
+    page: P1
+    quote: Yushan National Park Headquarters, National Park Service, Ministry of the Interior ©2020 All Rights Reserved.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 1
+  failed: 0
+  reasons: {}

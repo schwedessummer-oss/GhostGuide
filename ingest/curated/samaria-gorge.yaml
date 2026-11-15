@@ -1,0 +1,42 @@
+slug: samaria-gorge
+researched_at: &id001 2026-11-15
+facts:
+- field: official_url
+  value: https://samaria-tickets.necca.gov.gr/checkout
+  note: Official site for current Samaria Gorge information and e-tickets; the old park-body website is archived only.
+  source_url: https://www.samaria.gr/en/visit
+  source_title: Visitors – National Park Of Samaria
+  publisher: National Park of Samaria Management Body
+  checked_at: *id001
+  evidence_heading: Samaria National Park
+  evidence:
+    page: P1
+    quote: 'Για πληροφορίες που αφορούν τον Εθνικό Δρυμό (π.χ., έκτακτες ενημερώσεις, ωράριο λειτουργίας, κατηγορίες εισιτηρίων, την διαδρομή, την ασφάλεια, κ.λπ.) καθώς και για την έκδοση ηλεκτρονικών εισιτηρίων, παρακαλούμε να επισκέπτεστε την ιστοσελίδα: https://samaria-tickets.necca.gov.gr/checkout'
+  verified: true
+- field: public_transport
+  value: 'Return trip from Agia Roumeli: ship to Chora Sfakion at 17:30, then bus to Chania at 18:30.'
+  note: Return timetable on the old visitor page (the page itself is no longer updated); confirm current times.
+  source_url: https://www.samaria.gr/en/visit
+  source_title: Visitors – National Park Of Samaria
+  publisher: National Park of Samaria Management Body
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Returning from Ag. Roumeli to Chora Sfakion at 17:30 with the ship. Returning from Chora Sfakion to Chania at 18:30 with the bus.
+  verified: true
+- field: public_transport
+  value: 'Alternative return from Agia Roumeli: ship to Sougia at 17:30, then bus to Chania at 18:15; bus information from KTEL Chanion.'
+  note: Return option via Sougia, with the bus operator's phone line on the same page; times may be out of date.
+  source_url: https://www.samaria.gr/en/visit
+  source_title: Visitors – National Park Of Samaria
+  publisher: National Park of Samaria Management Body
+  checked_at: *id001
+  evidence:
+    page: P1
+    quote: Returning from Ag. Roumeli to Sougia with the ship at 17:30. Returning from  Sougia to Chania at 18:15 with the bus. For more informations contact with KTEL Chanion , 28210-93052
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 3
+  failed: 0
+  reasons: {}

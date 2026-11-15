@@ -1,0 +1,227 @@
+slug: mount-kinabalu
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  note: Sabah Parks climbing and hostel booking guide.
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Choose your hostel. Book your climb. Arrive prepared.
+  verified: true
+- field: high_point_m
+  value: 4095
+  note: Summit elevation as stated by the World Heritage site page.
+  source_url: https://whs.sabahparks.org.my
+  source_title: Home | Kinabalu Park - World Heritage Site
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence:
+    page: P8
+    quote: 4,095mSummit elevation
+  verified: true
+- field: duration
+  value:
+    min_days: 2
+    max_days: 2
+  note: Standard climb package covers one night in a hostel.
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Lemaing & Panalaban · 2 days / 1 night
+  verified: true
+- field: permit_required
+  value: 'yes'
+  note: Climb packages bundle a permit; booking is through the park's online system.
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Hostel Options
+  evidence:
+    page: P7
+    quote: Both packages include one night’s accommodation, three meals, a climbing permit and insurance.
+  verified: true
+- field: permit
+  value:
+    name: Mount Kinabalu climbing permit (hostel package)
+    kind: quota
+    how_to_apply: Reserve a hostel package on the Sabah Parks online portal and pay straight away; slots are limited each day.
+    official_url: https://reservation.sabahparks.org.my/
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Reservations are online only and subject to available slots.
+  verified: true
+- field: permit
+  value:
+    name: Gurkha Hut climbing approval
+    kind: other
+    how_to_apply: Get written approval from Sabah Parks Head Office before the climb, then settle payments at the Kinabalu Park Operation Room.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park/gurkha-hut
+  source_title: Kinabalu Park | Gurkha Hut - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Important visitor information
+  evidence:
+    page: P4
+    quote: Written approval from Sabah Parks Head Office, must be obtained before the climb.
+  verified: true
+- field: rule_group_size
+  value:
+    value: restricted
+    max_group: 3
+    note: Gurkha Hut route is capped per day, and the cap counts the guide.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park/gurkha-hut
+  source_title: Kinabalu Park | Gurkha Hut - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence:
+    page: P4
+    quote: Climbers per day are limited to 3 persons including mountain guide.
+  verified: true
+- field: fee
+  value:
+    name: Park conservation fee, Malaysian adult
+    amount: 10
+    currency: MYR
+    unit: per_person
+    audience: resident
+    note: Entry/conservation charge for Malaysians aged 18 and over.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Park entry & Botanical Garden
+  evidence:
+    page: P1
+    quote: '| Malaysian · 18 years & above | RM 10'
+  verified: true
+- field: fee
+  value:
+    name: Park conservation fee, Malaysian youth
+    amount: 5
+    currency: MYR
+    unit: per_person
+    audience: child
+    note: Entry/conservation charge for Malaysians aged 17 and under.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Park entry & Botanical Garden
+  evidence:
+    page: P1
+    quote: '| Malaysian · 17 years & below | RM 5'
+  verified: true
+- field: fee
+  value:
+    name: Park conservation fee, international adult
+    amount: 50
+    currency: MYR
+    unit: per_person
+    audience: non_resident
+    note: Entry/conservation charge for international visitors aged 18 and over.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Park entry & Botanical Garden
+  evidence:
+    page: P1
+    quote: '| International · 18 years & above | RM 50'
+  verified: true
+- field: fee
+  value:
+    name: Park conservation fee, international youth
+    amount: 25
+    currency: MYR
+    unit: per_person
+    audience: child
+    note: Entry/conservation charge for international visitors aged 17 and under.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Park entry & Botanical Garden
+  evidence:
+    page: P1
+    quote: '| International · 17 years & below | RM 25'
+  verified: true
+- field: fee
+  value:
+    name: Mountain guide
+    amount: 350
+    currency: MYR
+    unit: per_group
+    audience: all
+    note: Guide fee is charged per guide, who can take up to five adults.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Mount Kinabalu climbing
+  evidence:
+    page: P1
+    quote: '| RM 350 | Per guide / 5 adults'
+  verified: true
+- field: fee
+  value:
+    name: Return transport to Timpohon Gate (1-2 climbers)
+    amount: 35
+    currency: MYR
+    unit: per_trip
+    audience: all
+    note: Paid in cash; applies to groups of one or two.
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Guide, Porter & Transport Fees
+  evidence:
+    page: P7
+    quote: Return transport · 1–2 climbers RM35/ return trip
+  verified: true
+- field: fee
+  value:
+    name: Return transport to Timpohon Gate (3+ climbers)
+    amount: 15
+    currency: MYR
+    unit: per_person
+    audience: all
+    note: Paid in cash per person on a return trip; for groups of three or more.
+  source_url: https://www.sabahparks.org.my/index.php/services/mount-kinabalu-climbing
+  source_title: Mount Kinabalu Climbing & Hostel Booking Guide - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: Guide, Porter & Transport Fees
+  evidence:
+    page: P7
+    quote: Return transport · 3 or more climbers RM15/ person / return trip
+  verified: true
+- field: nearest_town
+  value:
+    name: Kota Kinabalu
+    note: The park's headquarters is on the east-coast highway, roughly 92 km from this city.
+  source_url: https://www.sabahparks.org.my/index.php/kinabalu-park
+  source_title: Kinabalu Park - The Official Sabah Parks Website
+  publisher: Sabah Parks
+  checked_at: '2026-11-15'
+  evidence_heading: About Kinabalu Park
+  evidence:
+    page: P1
+    quote: Park Headquarters sits at around 1,520 metres, approximately 92 km from Kota Kinabalu along the east-coast highway.
+  verified: true
+mechanical_check:
+  verified: 15
+  failed: 0
+  reasons: {}

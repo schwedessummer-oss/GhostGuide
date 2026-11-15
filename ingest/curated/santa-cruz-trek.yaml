@@ -90,8 +90,20 @@ facts:
     page: P2
     quote: Political protests in Peru are unpredictable and can escalate quickly.
   verified: true
+- field: high_point_m
+  value: 4750
+  note: Height of the Punta Unión pass, the high point of the circuit as the park describes it.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP
+  checked_at: '2026-11-15'
+  evidence_heading: Circuito de Trekking Santa Cruz – Huaripampa
+  evidence:
+    page: P1
+    quote: Punta Unión 4.750 msnm, nos encontramos con la quebrada Huaripampa. Este circuito nos permite apreciar una fantástica variedad de escenarios e interminables valles andinos y lagunas glaciares.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 7
+  verified: 8
   failed: 0
   reasons: {}

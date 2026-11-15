@@ -234,7 +234,152 @@ facts:
     page: P1
     quote: Do not approach or feed wildlife.
   verified: true
+- field: permit
+  value:
+    name: Primitive Camping Permit (Ferry Gulch campsite)
+    kind: overnight
+    how_to_apply: Book the backcountry zone through Parks Canada's reservation service, then collect the permit in person at a visitor facility or campground kiosk before 4 pm.
+  note: Overnight campers on the mountain trail need this permit plus park entry; Ferry Gulch sits about 2.5 km up the Summit Trail.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/camping/primitive
+  source_title: Primitive Camping - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Two ways to reserve
+  evidence:
+    page: P6
+    quote: Permits must be picked up before 4:00 p.m. at the park Visitor Centre, Discovery Centre, or at the registration kiosks of one of our 5 campgrounds. All campers require a Primitive Camping Permit plus a National Park Entry Permit which must be valid for the entire duration of their stay.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping on the mountain is only at the Ferry Gulch primitive site (open late June to mid October 2026), and it requires a permit plus valid park entry.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/camping/primitive
+  source_title: Primitive Camping - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Two ways to reserve
+  evidence:
+    page: P6
+    quote: All campers require a Primitive Camping Permit plus a National Park Entry Permit which must be valid for the entire duration of their stay.
+  verified: true
+- field: rule_fires
+  value:
+    value: not_allowed
+    note: No campfires at primitive campsites; cook with a portable stove.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/camping/primitive
+  source_title: Primitive Camping - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: 'Park Regulations:'
+  evidence:
+    page: P6
+    quote: Campfires are not permitted at any primitive campsite. Use portable camp stove only.
+  verified: true
+- field: fee
+  value:
+    name: Park admission, adult
+    amount: 12.25
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Standard per-person entry rate for ages 18 to 64.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P2
+    quote: '| * | Adult | $ 12.25'
+  verified: true
+- field: fee
+  value:
+    name: Park admission, senior
+    amount: 10.75
+    currency: CAD
+    unit: per_person
+    audience: senior
+    note: Standard per-person entry rate for seniors.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P2
+    quote: '| * | Senior | $ 10.75'
+  verified: true
+- field: fee
+  value:
+    name: Park admission, family/group
+    amount: 24.5
+    currency: CAD
+    unit: per_group
+    audience: all
+    note: Standard group entry rate.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: ADMISSION
+  evidence:
+    page: P2
+    quote: '| * | Family/Group | $ 24.50'
+  verified: true
+- field: fee
+  value:
+    name: Park admission, winter season, adult
+    amount: 10.0
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Reduced winter-season service fee from 1 Nov to 15 May.
+    valid_from: 11-01
+    valid_to: 05-15
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Daily - Winter Season
+  evidence:
+    page: P2
+    quote: '| * | Adult | $ 10.00'
+  verified: true
+- field: fee
+  value:
+    name: Annual early bird pass, adult
+    amount: 30.5
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Sold in person only until 18 June.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Early Bird
+  evidence:
+    page: P2
+    quote: '| * | Adult | $ 30.50'
+  verified: true
+- field: fee
+  value:
+    name: Parks Canada Discovery Pass, adult
+    amount: 83.5
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Multi-park annual pass.
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/visit/tarifs-fees
+  source_title: Fees - Gros Morne National Park
+  publisher: Parks Canada
+  checked_at: '2026-11-15'
+  evidence_heading: Parks Canada Discovery Pass
+  evidence:
+    page: P2
+    quote: '| * | Adult | $ 83.50'
+  verified: true
 mechanical_check:
-  verified: 18
+  verified: 27
   failed: 0
   reasons: {}

@@ -1,0 +1,71 @@
+slug: mount-triglav
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  note: Park page with current trail and road conditions for visitors.
+  source_url: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  source_title: Current conditions in the park | Triglav National Park
+  publisher: Triglav National Park
+  checked_at: '2026-11-15'
+  evidence_heading: Current conditions in the park area
+  evidence:
+    page: P8
+    quote: Before visiting the park, please check the weather forecast, the current condition of the trails, and road conditions.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Some trail sections and bridges in the Lepena Valley and Šunik Water Grove are shut for maintenance during 2026.
+    as_of: '2026-11-15'
+  source_url: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  source_title: Current conditions in the park | Triglav National Park
+  publisher: Triglav National Park
+  checked_at: '2026-11-15'
+  evidence_heading: Attention
+  evidence:
+    page: P8
+    quote: In 2026, certain sections of the hiking trails and bridges in the Lepena Valley and at the Šunik Water Grove will be closed due to maintenance works. Please pay attention to the signs along the trail.
+  verified: true
+- field: public_transport
+  value: Summer buses run inside the park during the summer season; the park recommends using them.
+  source_url: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  source_title: Current conditions in the park | Triglav National Park
+  publisher: Triglav National Park
+  checked_at: '2026-11-15'
+  evidence_heading: Attention
+  evidence:
+    page: P8
+    quote: During the summer season, summer buses operate in Triglav National Park. We recommend choosing a sustainable option and using public transport. You can find the timetable for summer buses HERE.
+  verified: true
+- field: hazard
+  value:
+    type: rockfall
+    note: Visitors may meet falling rocks and trees, slippery uneven ground and high water; the park cannot guarantee safety.
+  source_url: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  source_title: Current conditions in the park | Triglav National Park
+  publisher: Triglav National Park
+  checked_at: '2026-11-15'
+  evidence_heading: Your safety is your responsibility
+  evidence:
+    page: P8
+    quote: In the natural environment, you may encounter falling rocks and trees, slippery and uneven terrain, sudden changes in weather, high water levels and wild animals. The park authority maintains trails within the scope of its responsibilities and available resources but cannot guarantee your safety. Visitors are responsible for adapting their plans to the weather and trail conditions, choosing trails suited to their abilities, using appropriate equipment, staying on marked trails and acting responsibly.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Mountain weather can change suddenly, so check forecasts and trail conditions before setting out.
+  source_url: https://www.tnp.si/en/visiting-park/latest/actual-conditions/
+  source_title: Current conditions in the park | Triglav National Park
+  publisher: Triglav National Park
+  checked_at: '2026-11-15'
+  evidence_heading: Your safety is your responsibility
+  evidence:
+    page: P8
+    quote: In the natural environment, you may encounter falling rocks and trees, slippery and uneven terrain, sudden changes in weather, high water levels and wild animals. The park authority maintains trails within the scope of its responsibilities and available resources but cannot guarantee your safety. Visitors are responsible for adapting their plans to the weather and trail conditions, choosing trails suited to their abilities, using appropriate equipment, staying on marked trails and acting responsibly.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 5
+  failed: 0
+  reasons: {}

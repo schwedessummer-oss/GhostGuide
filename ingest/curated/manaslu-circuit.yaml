@@ -1,0 +1,43 @@
+slug: manaslu-circuit
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://ntnc.org.np/project/manaslu-conservation-area-project-mcap
+  source_url: https://ntnc.org.np/project/manaslu-conservation-area-project-mcap
+  source_title: Manaslu Conservation Area Project (MCAP) | The National Trust for Nature Conservation (NTNC)
+  publisher: National Trust for Nature Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Manaslu Conservation Area Project (MCAP)
+  evidence:
+    page: P4
+    quote: Manaslu Conservation Area Project (MCAP)
+  verified: true
+- field: trailhead_access
+  value: Jagat, in Sirdibas ward, is the main gateway into the conservation area.
+  source_url: https://ntnc.org.np/project/manaslu-conservation-area-project-mcap
+  source_title: Manaslu Conservation Area Project (MCAP) | The National Trust for Nature Conservation (NTNC)
+  publisher: National Trust for Nature Conservation
+  checked_at: '2026-11-15'
+  evidence_heading: Manaslu Conservation Area Project (MCAP)
+  evidence:
+    page: P4
+    quote: Jagat village of Sirdibas is the main entrance to the MCA.
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: After the August 2026 floods that hit Gorkha and nearby districts, officials warn of more flooding and landslides in mountain areas.
+  source_url: https://www.gov.uk/foreign-travel-advice/nepal
+  source_title: Nepal travel advice - GOV.UKGOV.UK
+  publisher: Foreign, Commonwealth & Development Office
+  checked_at: '2026-11-15'
+  evidence_heading: Flash flood in the Rasuwa district and the Nepal-China border area
+  evidence:
+    page: P3
+    quote: Other areas in Nepal, including Gorkha, Nuwakot and Dhading, have also been affected.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 3
+  failed: 0
+  reasons: {}

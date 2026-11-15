@@ -1,58 +1,154 @@
 slug: sentiero-azzurro
-researched_at: 2026-11-15
+researched_at: &id001 2026-11-15
 facts:
-  - field: official_url
-    value: https://card.parconazionale5terre.it/en/home
-    source_url: https://card.parconazionale5terre.it/en/home
-    source_title: Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: Scegli modalità
-  - field: permit
-    value:
-      name: Cinque Terre Trekking Card
-      kind: trekking_card
-      how_to_apply: Buy the card online from the park's card site, choosing a validity date. It covers the trails, local buses and other park services; the card is valid until midnight on the chosen day.
-      official_url: https://card.parconazionale5terre.it/en/cartaparco
-    source_url: https://card.parconazionale5terre.it/en/cartaparco
-    source_title: Carta Parco - Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: Carta Parco - Trekking Card
-  - field: permit
-    value:
-      name: Cinque Terre Train Card
-      kind: trekking_card
-      how_to_apply: Buy online from the park's card site with a chosen start date. Adds second-class regional trains in the Cinque Terre to the same trail and bus access as the Trekking Card.
-      official_url: https://card.parconazionale5terre.it/en/cartatreno
-    source_url: https://card.parconazionale5terre.it/en/cartatreno
-    source_title: Carta Treno - Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: Carta Treno - Train Card
-  - field: permit
-    value:
-      name: Via dell'Amore access reservation
-      kind: other
-      how_to_apply: Access to Via dell'Amore is limited, so a reservation is needed even with a card. It can be made when buying the card or afterwards, and the site recommends booking online to skip queues.
-      official_url: https://card.parconazionale5terre.it/en/cartaparco
-    source_url: https://card.parconazionale5terre.it/en/cartaparco
-    source_title: Carta Parco - Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: Via dell'Amore access
-  - field: public_transport
-    value: Trains are suspended on 14-15 Nov, 19-20 Dec 2026, 9-10 Jan and 6-7 Feb 2027 for 48 hours between Corniglia and La Spezia, plus Friday and Saturday nights between Levanto and La Spezia (22:30 to 06:30). Check Trenitalia first.
-    source_url: https://card.parconazionale5terre.it/en/home
-    source_title: Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: TRENI SOSPESI / NO TRAINS
-  - field: hazard
-    value: { type: weather, note: "The park says trails and routes can be closed or restricted because of weather and safety, maintenance work, or crowd management at busy times; a card does not override this." }
-    source_url: https://card.parconazionale5terre.it/en/home
-    source_title: Parco Nazionale delle Cinque Terre
-    publisher: Parco Nazionale delle Cinque Terre
-    checked_at: 2026-11-15
-    evidence_heading: Sentieri e percorsi possono essere chiusi o limitati per
+- field: closure
+  value:
+    status: partially_closed
+    note: No trains on weekends 14-15 Nov, 19-20 Dec 2026, 9-10 Jan and 6-7 Feb 2027 between Corniglia and La Spezia, plus Friday/Saturday night gaps on Levanto-La Spezia.
+    as_of: *id001
+  note: Rail suspensions affecting access to the Cinque Terre villages; the trail itself is not stated closed.
+  source_url: https://card.parconazionale5terre.it/en/home
+  source_title: Home | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence_heading: Main menu
+  evidence:
+    page: P1
+    quote: 'NO TRAINS on 14–15 November, 19–20 December 2026, 9–10 January and 6–7 February 2027: for 48 hours between Corniglia and La Spezia; from 10:30 PM to 6:30 AM between Levanto and La Spezia on Friday and Saturday nights.'
+  verified: true
+- field: public_transport
+  value: The Carta Treno card covers second-class regional trains in the Cinque Terre and also gives access to the park trails.
+  note: Card description on the park ticketing site.
+  source_url: https://card.parconazionale5terre.it/en/cartatreno
+  source_title: Carta Treno | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence_heading: Carta Treno
+  evidence:
+    page: P3
+    quote: Regional trains in the Cinque Terre (2nd class) Access to the National Park's trails
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 2 days Adults
+    amount: 17.0
+    currency: EUR
+    unit: per_person
+    audience: adult
+    note: Two-day trekking ticket for adults as listed on the park shop.
+  note: First price shown after the ticket name; page gives no year.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 2 days Adults 17,00 €
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 2 days Family
+    amount: 39.0
+    currency: EUR
+    unit: per_group
+    audience: all
+    note: Two-day family trekking ticket as listed.
+  note: Family ticket price as listed; family composition not given in the quoted lines.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 2 days Family 39,00 €
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 1 day Family
+    amount: 27.1
+    currency: EUR
+    unit: per_group
+    audience: all
+    note: One-day family trekking ticket as listed.
+  note: Family ticket price as listed; family composition not given in the quoted lines.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 1 day Family 27,10 €
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 1 day Senior
+    amount: 8.5
+    currency: EUR
+    unit: per_person
+    audience: senior
+    note: One-day senior trekking ticket as listed.
+  note: Senior one-day price as listed.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 1 day Senior 8,50 €
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 1day Junior
+    amount: 7.0
+    currency: EUR
+    unit: per_person
+    audience: child
+    note: One-day junior trekking ticket as listed.
+  note: Junior (age band not stated in these lines) mapped to the child audience.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 1day Junior 7,00 €
+  verified: true
+- field: fee
+  value:
+    name: Cinque Terre Trekking 2 days Junior
+    amount: 9.7
+    currency: EUR
+    unit: per_person
+    audience: child
+    note: Two-day junior trekking ticket as listed.
+  note: Junior (age band not stated in these lines) mapped to the child audience.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: Cinque Terre Trekking 2 days Junior 9,70 €
+  verified: true
+- field: fee
+  value:
+    name: PN5T Trekking with Via dell'Amore 2 Day Adult Non-Residents
+    amount: 24.5
+    currency: EUR
+    unit: per_person
+    audience: non_resident
+    note: Two-day trekking ticket including Via dell'Amore, non-resident adult.
+  note: Ticket variant that includes the Via dell'Amore section.
+  source_url: https://card.parconazionale5terre.it/en/collection/tickets
+  source_title: Tickets | Parco Nazionale delle Cinque Terre
+  publisher: Parco Nazionale delle Cinque Terre
+  checked_at: *id001
+  evidence:
+    page: P6
+    quote: PN5T Trekking with Via dell'Amore 2 Day Adult Non-Residents 24,50 €
+  verified: true
 verifier: null
+mechanical_check:
+  verified: 9
+  failed: 0
+  reasons: {}

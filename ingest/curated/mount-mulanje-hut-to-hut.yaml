@@ -1,0 +1,20 @@
+slug: mount-mulanje-hut-to-hut
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://visitmalawi.mw/hiking/
+  note: Malawi tourism board hiking page that covers Mount Mulanje and its hut network.
+  source_url: https://visitmalawi.mw/hiking/
+  source_title: Hiking – Visit Malawi
+  publisher: Department of Tourism, Malawi
+  checked_at: '2026-11-15'
+  evidence_heading: Mount Mulanje
+  evidence:
+    page: P4
+    quote: This is Malawi’s very own ‘mountain in the sky’, there is a large area that can be covered on foot and Mulanje Mountain has a network of huts for intrepid explorers to stay in. Marked paths offer a variety of routes and guides and/or porters can be hired which are always available at the foot of the mountain.
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 1
+  failed: 0
+  reasons: {}

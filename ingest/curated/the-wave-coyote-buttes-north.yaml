@@ -284,8 +284,93 @@ facts:
     page: P4
     quote: These routes are unofficial, user generated routes, and visitors have gotten lost or seriously injured trying to follow them.
   verified: true
+- field: trailhead_access
+  value: House Rock Valley Road in Utah, from US 89 to Stateline Campground, is rough, rocky and sandy and not regularly maintained; the park agency suggests high-clearance 4WD or AWD, and it cannot be driven when wet.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  source_title: Coyote Buttes North (The Wave) and South Road Conditions and Safety | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Road Conditions
+  evidence:
+    page: P7
+    quote: We recommend high clearance four-wheel-drive or all-wheel-drive vehicles to navigate rough, rocky and sandy roads. The road is impassable when wet.
+  verified: true
+- field: trailhead_access
+  value: No roads in Vermilion Cliffs National Monument are paved. House Rock Valley Road is a maintained dirt road that may be impassable when wet; other roads need high-clearance 4WD because of deep sand.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  source_title: Vermilion Cliffs National Monument | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Getting Around
+  evidence:
+    page: P8
+    quote: There are no paved roads within the monument. While House Rock Valley Road (BLM 1065) is a maintained dirt road, it may be impassable when wet. You'll need a four-wheel-drive, high clearance vehicle on other roads due to deep sand.
+  verified: true
+- field: hazard
+  value:
+    type: remoteness
+    note: Few route markers, no drinking water and little chance of meeting anyone, so be self-reliant.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  source_title: Coyote Buttes North (The Wave) and South Road Conditions and Safety | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Road Conditions
+  evidence:
+    page: P7
+    quote: Expect the wild! There are few route markers, no drinking water sources, and only occasional contact with other visitors and BLM employees.
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Each person should carry and drink at least a gallon (3.75 litres) of water per day.
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/road-conditions-and-safety
+  source_title: Coyote Buttes North (The Wave) and South Road Conditions and Safety | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Road Conditions
+  evidence:
+    page: P7
+    quote: Carry and drink at least one gallon (3.75 liters) of water per person per day.
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: The monument lists flash floods among its hazards, alongside rough unmarked roads, deep sand and temperature extremes.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  source_title: Vermilion Cliffs National Monument | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Facilities
+  evidence:
+    page: P8
+    quote: Expect rugged and unmarked roads, venomous reptiles and invertebrates, extreme heat or cold, deep sand, and flash floods.
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Venomous reptiles and invertebrates live in the monument.
+  source_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+  source_title: Vermilion Cliffs National Monument | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Facilities
+  evidence:
+    page: P8
+    quote: Expect rugged and unmarked roads, venomous reptiles and invertebrates, extreme heat or cold, deep sand, and flash floods.
+  verified: true
+- field: licensed_operator_list_url
+  value: https://www.blm.gov/documents/arizona/public-room/permits/vermilion-cliffs-srps
+  source_url: https://www.blm.gov/documents/arizona/public-room/permits/vermilion-cliffs-srps
+  source_title: Vermilion Cliffs Special Recreation Permits - Outfitters and Guides | Bureau of Land Management
+  publisher: Bureau of Land Management
+  checked_at: '2026-11-15'
+  evidence_heading: Vermilion Cliffs Special Recreation Permits - Outfitters and Guides
+  evidence:
+    page: P9
+    quote: '## Vermilion Cliffs Special Recreation Permits - Outfitters and Guides Vermilion Cliffs National Monument Special Recreation Permits - Outfitters and Guides'
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 21
+  verified: 28
   failed: 0
   reasons: {}

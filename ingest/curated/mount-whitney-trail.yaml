@@ -308,8 +308,101 @@ facts:
     page: P3
     quote: Ice axes and crampons are needed in spring and early summer, but technical climbing equipment is not usually necessary between mid-July and early October.
   verified: true
+- field: fee
+  value:
+    name: Recreation.gov permit reservation fee
+    amount: 6
+    currency: USD
+    unit: per_application
+    audience: all
+    note: Non-refundable booking fee charged on each permit reservation, separate from the per-person fee.
+  source_url: https://www.recreation.gov/permits/445860
+  source_title: Mt. Whitney, Inyo National Forest - Recreation.gov
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Fee Policy
+  evidence:
+    page: P5
+    quote: A $6.00 non-refundable reservation fee is required for each permit reservation.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: 'Pets are allowed on trips that stay within the National Forest, but they must be under control: on a leash or responding to voice commands.'
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  source_title: Inyo National Forest | Wilderness Regulations | Forest ServiceLock
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Wilderness Regulations
+  evidence:
+    page: P6
+    quote: Dogs or other pets are allowed for trips staying in the National Forest. Dogs should be under control, on leash or responsive to verbal command.
+  verified: true
+- field: hazard
+  value:
+    type: altitude
+    note: The Forest Service names high altitude among the natural hazards of climbing Mt. Whitney.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
+  source_title: PDF
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: 'natural hazards: high altitude;'
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: High winds and lightning are listed among the natural hazards on the mountain.
+  source_url: https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf
+  source_title: PDF
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: the trail; high winds; lightning
+  verified: true
+- field: hazard
+  value:
+    type: wildlife
+    note: Bears are very active at Whitney Portal; keep food and refuse out of cars and tents and never leave food or packs unattended.
+  source_url: https://www.recreation.gov/permits/445860
+  source_title: Mt. Whitney, Inyo National Forest - Recreation.gov
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Need to Know
+  evidence:
+    page: P5
+    quote: There is a high level of bear activity at Whitney Portal. Do not leave food or refuse in your car or tent. Do not leave food or your pack unattended.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Two spots along the Whitney trail, Mirror Lake and Trailside Meadow, are closed to tents; overnight stays also require a wilderness permit.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  source_title: Inyo National Forest | Wilderness Regulations | Forest ServiceLock
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Wilderness Regulations
+  evidence:
+    page: P6
+    quote: no camping at Mirror Lake or Trailside Meadow on the Mt. Whitney trail.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Open fires are barred all year at high elevations south of the Humphreys-Emerson crest line (above 10,400 ft); gas and liquid-fuel stoves remain allowed.
+  source_url: https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations
+  source_title: Inyo National Forest | Wilderness Regulations | Forest ServiceLock
+  publisher: Inyo National Forest (USDA Forest Service)
+  checked_at: '2026-11-15'
+  evidence_heading: Wilderness Regulations
+  evidence:
+    page: P6
+    quote: all areas above 10,400 ft. south of the Mt Humphreys and Mt Emerson ridgeline.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 23
+  verified: 30
   failed: 0
   reasons: {}

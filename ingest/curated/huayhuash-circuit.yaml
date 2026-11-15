@@ -1,12 +1,8 @@
 slug: huayhuash-circuit
 researched_at: 2026-11-15
-facts:
-  - field: official_url
-    value: https://www.gob.pe/institucion/sernanp/noticias/1473735-mas-de-50-operadores-turisticos-de-ancash-conocen-los-avances-de-la-categorizacion-de-la-cordillera-huayhuash
-    note: "SERNANP's latest news on the reserved zone: it is a transitional status, a category is being defined, and tourism rules are to be set later with the campesino communities. No fees, permits or trail details are given."
-    source_url: https://www.gob.pe/institucion/sernanp/noticias/1473735-mas-de-50-operadores-turisticos-de-ancash-conocen-los-avances-de-la-categorizacion-de-la-cordillera-huayhuash
-    source_title: Más de 50 operadores turísticos de Áncash conocen los avances de la categorización de la Cordillera Huayhuash
-    publisher: SERNANP (gob.pe)
-    checked_at: 2026-11-15
-    evidence_heading: Más de 50 operadores turísticos de Áncash conocen los avances de la categorización de la Cordillera Huayhuash
+facts: []
 verifier: null
+mechanical_check:
+  verified: 0
+  failed: 0
+  reasons: {}

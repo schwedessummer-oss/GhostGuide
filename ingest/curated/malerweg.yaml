@@ -1,0 +1,126 @@
+slug: malerweg
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.saechsische-schweiz.de/malerweg
+  source_url: https://www.saechsische-schweiz.de/malerweg
+  source_title: Malerweg Elbsandsteingebirge - 8 Etappen Wanderweg | DEUTSCHLAND
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Die Gesamtlänge des Malerwegs Elbsandsteingebirges ohne Abstecher beträgt ungefähr 116 Kilometer.
+  verified: true
+- field: distance_km
+  value: 116
+  basis: one_way
+  note: Described as a guide value only; measurement methods differ.
+  source_url: https://www.saechsische-schweiz.de/malerweg
+  source_title: Malerweg Elbsandsteingebirge - 8 Etappen Wanderweg | DEUTSCHLAND
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: Die Gesamtlänge des Malerwegs Elbsandsteingebirges ohne Abstecher beträgt ungefähr 116 Kilometer.
+  verified: true
+- field: duration
+  value:
+    min_days: 8
+    max_days: 8
+  note: Eight daily stages is the official split; a faster seven-day option is also mentioned.
+  source_url: https://www.saechsische-schweiz.de/malerweg/etappen
+  source_title: 🚶 MALERWEG ELBSANDSTEINGEBIRGE Etappen – 8 Tagesetappen
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Der Malerweg in 8 Etappen
+  verified: true
+- field: parking
+  value: Paid car parks are listed in Pirna (for example Parkhaus Am Steinplatz) and Stadt Wehlen, with multi-day tickets for walkers.
+  source_url: https://www.saechsische-schweiz.de/malerweg/planen
+  source_title: 🚶 MALERWEG ELBSANDSTEINGEBIRGE PLANEN – Anforderungen, Unterkunft, Anreise & Reisezeit
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence_heading: Wo kann man am Malerweg das Auto parken?
+  evidence:
+    page: P6
+    quote: 'PIRNA: Parkhaus "Am Steinplatz", Am Steinplatz 2, 01796 Pirna'
+  verified: true
+- field: trailhead_access
+  value: By car or motorbike, take the A17 motorway to Pirna.
+  source_url: https://www.saechsische-schweiz.de/malerweg/planen
+  source_title: 🚶 MALERWEG ELBSANDSTEINGEBIRGE PLANEN – Anforderungen, Unterkunft, Anreise & Reisezeit
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence_heading: Vorab reservieren? Mit festem oder wechselndem Quartier?
+  evidence:
+    page: P6
+    quote: mit dem Auto oder Motorrad über die A17 bis Pirna.
+  verified: true
+- field: public_transport
+  value: Regional buses and trains are good enough to start or finish every daily stage from one base town.
+  source_url: https://www.saechsische-schweiz.de/malerweg/faq
+  source_title: ❓Häufige Fragen MALERWEG ELBSANDSTEINGEBIRGE
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence_heading: FAQ - Häufige Fragen rund um den Malerweg
+  evidence:
+    page: P4
+    quote: Das exzellente ÖPNV-Angebot in der Region ermöglicht es, alle Tagesstrecken mit Bus und Bahn zu starten bzw. zu beenden.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: The route can be walked with a dog if you accept small detours.
+  source_url: https://www.saechsische-schweiz.de/malerweg/etappen
+  source_title: 🚶 MALERWEG ELBSANDSTEINGEBIRGE Etappen – 8 Tagesetappen
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence:
+    page: P7
+    quote: Mit kleineren Umwegen ist der Malerweg auch mit Hund wanderbar.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping is possible, but at the campsites located along or near the route.
+  source_url: https://www.saechsische-schweiz.de/malerweg/faq
+  source_title: ❓Häufige Fragen MALERWEG ELBSANDSTEINGEBIRGE
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence_heading: FAQ - Häufige Fragen rund um den Malerweg
+  evidence:
+    page: P4
+    quote: Ist das Zelten entlang des Malerweg möglich? Ja, das ist möglich! Am Malerweg liegen verschiedene Campingplätze.
+  verified: true
+- field: hazard
+  value:
+    type: other
+    note: The national park site warns of danger in areas with dead trees.
+  source_url: https://nationalpark-saechsische-schweiz.de/en/
+  source_title: Welcome to the National Park Saxon Switzerland - Saxon Switzerland National Park
+  publisher: National Park and Forest Administration, Saxon Switzerland National Park
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Dangers in areas with dead trees
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: Forest closure around Amselgrund and Schindergraben near Hohnstein on stage 2; a diversion description is offered.
+    as_of: '2026-11-15'
+  source_url: https://www.saechsische-schweiz.de/malerweg/planen
+  source_title: 🚶 MALERWEG ELBSANDSTEINGEBIRGE PLANEN – Anforderungen, Unterkunft, Anreise & Reisezeit
+  publisher: Tourismusverband Sächsische Schweiz
+  checked_at: '2026-11-15'
+  evidence_heading: Malerweg mit Hund
+  evidence:
+    page: P6
+    quote: Es besteht eine Waldsperrung im Gebiet um den Amselgrund und im Schindergraben bei Hohnstein.
+  verified: true
+mechanical_check:
+  verified: 10
+  failed: 0
+  reasons: {}

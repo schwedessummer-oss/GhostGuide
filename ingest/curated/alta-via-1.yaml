@@ -252,8 +252,52 @@ facts:
     page: P2
     quote: Attualmente non ci sono limitazioni al traffico
   verified: true
+- field: parking
+  value: Three paid car parks (P2, P3, P4) serve Lake Braies, at 800 m, 300 m and 100 m from the water respectively.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Arrivo in auto, camper, pullman e moto
+  evidence:
+    page: P2
+    quote: Al Lago di Braies ci sono 3 parcheggi a pagamento. Il parcheggio P4 dista 100 metri, il P3 300 metri e il P2 800 metri dal lago.
+  verified: true
+- field: parking
+  value: On certain holidays a space in car park P1 can be reserved ahead, with a shuttle to the lake included.
+  source_url: https://www.prags.bz/it
+  source_title: Lago di braies
+  publisher: Prags/Braies tourism organisation (prags.bz)
+  checked_at: '2026-11-15'
+  evidence_heading: Come pianificare il tuo viaggio nella Valle di Braies in modo rilassato e senza stress
+  evidence:
+    page: P2
+    quote: In alternativa, nei seguenti giorni è possibile prenotare in anticipo il parcheggio P1 e usufruire del servizio navetta per il lago
+  verified: true
+- field: public_transport
+  value: 'Return trip to the Braies end: bus from Belluno via Tai di Cadore and Cortina to Dobbiaco, then on to the lake. Dobbiaco-lake tickets need online booking from 10 July to 10 September.'
+  source_url: https://www.suedtirol.info/en/en/experiences-and-events/plp-experiences/experiences-south-tyrol/pdp-experience.smgpoi0f092972176f46d0aee5753e267b960f.dolomite-alpine-ridgeway-no-1.ausserprags-braies-di-fuori
+  source_title: Dolomite Alpine Ridgeway No.1, Ausserprags/Braies di Fuori - Activities and Events in South Tyrol
+  publisher: South Tyrol official tourism website (suedtirol.info)
+  checked_at: '2026-11-15'
+  evidence_heading: Dolomite Alpine Ridgeway No.1
+  evidence:
+    page: P3
+    quote: 'Return to Alta Pusteria: by bus from Belluno via Tai di Cadore and from Cortina back to Dobbiaco and on Pragser Wildsee Lake. The bustickets from Dobbiaco to Pragser Wildsee Lake from 10 july till 10 settembre must be acquired online'
+  verified: true
+- field: season_note
+  value: Park huts normally operate June to September, with other dates possible by arrangement with owners; each has an unattended winter shelter.
+  source_url: https://www.dolomitipark.it/en/visiting-the-park/mountain-huts-and-bivouacs/
+  source_title: Mountain Huts and Shelters – Parco Nazionale Dolomiti Bellunesi
+  publisher: Ente Parco Nazionale Dolomiti Bellunesi
+  checked_at: '2026-11-15'
+  evidence_heading: Mountain Huts and Shelters
+  evidence:
+    page: P9
+    quote: They are open in summer, usually from June to September (openings in any other period can be agreed by directly contacting the owners) and they all feature a winter unattended shelter.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 20
+  verified: 24
   failed: 0
   reasons: {}

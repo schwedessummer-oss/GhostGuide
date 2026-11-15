@@ -194,8 +194,88 @@ facts:
     page: P2
     quote: Arches National Park is generally open 24 hours a day, year-round.
   verified: true
+- field: fee
+  value:
+    name: Southeast Utah parks annual pass
+    amount: 55
+    currency: USD
+    unit: per_vehicle
+    audience: resident
+    note: Annual pass for US residents; covers one private vehicle at Arches, Canyonlands, Natural Bridges and Hovenweep.
+  source_url: https://www.nps.gov/arch/planyourvisit/fees.htm
+  source_title: Fees & Passes - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Annual Entrance - Park
+  evidence:
+    page: P4
+    quote: '## Annual Entrance - Park $55.00'
+  verified: true
+- field: trailhead_access
+  value: In summer many trailhead lots are already full by 7:30 am, so an early start helps.
+  source_url: https://www.nps.gov/arch/planyourvisit/traffic.htm
+  source_title: Traffic & Travel Tips - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: What are the best times to arrive?
+  evidence:
+    page: P7
+    quote: During summer months, many trailhead parking lots fill by 7:30 am.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Leashed pets are allowed only along established roads, in parking areas, campgrounds and picnic areas, so not on the trail itself.
+  source_url: https://www.nps.gov/arch/planyourvisit/pets.htm
+  source_title: Pets - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Where Can I Take my Pet?
+  evidence:
+    page: P8
+    quote: 'Leashed pets may accompany you in the following areas: Along established roads or in parking areas In established campgrounds and picnic areas'
+  verified: true
+- field: hazard
+  value:
+    type: heat
+    note: Carry at least 2-3 litres of water each for frontcountry hikes; heat and lack of shade raise dehydration risk.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  source_title: Safety - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Beat the Heat and Stay Hydrated
+  evidence:
+    page: P10
+    quote: Carrying at least 2-3 liters per person for front country hikes, and 4 liters or more for backcountry, can help you avoid dehydration.
+  verified: true
+- field: hazard
+  value:
+    type: lightning
+    note: After thunder, shelter and wait 30 minutes after the last rumble. A vehicle or building is best; avoid trees and tall rocky outcrops.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  source_title: Safety - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Watch the Weather
+  evidence:
+    page: P10
+    quote: If you hear thunder, seek shelter immediately and wait until you haven’t heard thunder for a least 30 minutes before proceeding.
+  verified: true
+- field: hazard
+  value:
+    type: flash_flood
+    note: Flash floods can strike even in sunshine; never cross flooded washes.
+  source_url: https://www.nps.gov/arch/planyourvisit/safety.htm
+  source_title: Safety - Arches National Park (U.S. National Park Service)Lock
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Watch the Weather
+  evidence:
+    page: P10
+    quote: Flash floods can suddenly occur in the park, even when it’s sunny.
+  verified: true
 verifier: null
 mechanical_check:
-  verified: 15
+  verified: 21
   failed: 0
   reasons: {}

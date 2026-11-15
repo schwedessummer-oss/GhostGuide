@@ -1,0 +1,100 @@
+slug: west-highland-way
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.westhighlandway.org/
+  note: Official West Highland Way website.
+  source_url: https://www.westhighlandway.org/
+  source_title: West Highland Way - Scotland's Best Loved Long Distance Walking RouteAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: Welcome to the Official West Highland Way website!
+  evidence:
+    page: P1
+    quote: Welcome to the Official West Highland Way website!
+  verified: true
+- field: distance_km
+  value: 154
+  note: Page also gives the length as 96 miles.
+  source_url: https://www.westhighlandway.org/the-route/
+  source_title: The West Highland Way Route Map | Route SectionsAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: The Route
+  evidence:
+    page: P7
+    quote: The West Highland Way stretches 96 miles (154 Km) from Milngavie to Fort William
+  verified: true
+- field: route_type
+  value: point_to_point
+  note: Runs from Milngavie to Fort William and is normally walked south to north.
+  source_url: https://www.westhighlandway.org/the-route/
+  source_title: The West Highland Way Route Map | Route SectionsAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: The Route
+  evidence:
+    page: P7
+    quote: The West Highland Way stretches 96 miles (154 Km) from Milngavie to Fort William
+  verified: true
+- field: parking
+  value: No dedicated car park at either end. Parking is outside Milngavie railway station (CCTV, free at present but can fill up); tell the police your plans, or ask B&Bs/hotels, which may charge.
+  source_url: https://www.westhighlandway.org/getting-started/getting-to-from-the-route/
+  source_title: Getting to & from the route - West Highland WayAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: Getting to & from the route
+  evidence:
+    page: P6
+    quote: No dedicated car park exists at either end of the walk. There is parking outside Milngavie railway station with CCTV coverage (currently free but could be busy at peak times)
+  verified: true
+- field: trailhead_access
+  value: From Glasgow city centre the A81 runs north straight to Milngavie, the southern start.
+  source_url: https://www.westhighlandway.org/getting-started/getting-to-from-the-route/
+  source_title: Getting to & from the route - West Highland WayAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: Getting to & from the route
+  evidence:
+    page: P6
+    quote: From Glasgow city centre, the A81 goes north direct to Milngavie.
+  verified: true
+- field: public_transport
+  value: Regular trains run from Glasgow to Milngavie, and from Fort William back to Glasgow.
+  source_url: https://www.westhighlandway.org/getting-started/getting-to-from-the-route/
+  source_title: Getting to & from the route - West Highland WayAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: Getting to & from the route
+  evidence:
+    page: P6
+    quote: Milngavie is well served by regular train services from Glasgow
+  verified: true
+- field: public_transport
+  value: The CityLink Glasgow to Fort William bus has stops along the route, which lets walkers split the trail into shorter sections.
+  source_url: https://www.westhighlandway.org/getting-started/getting-to-from-the-route/
+  source_title: Getting to & from the route - West Highland WayAccessibility ToolsGrayscaleHigh ContrastNegative ContrastLight BackgroundLinks UnderlineReadable FontReset
+  publisher: West Highland Way Management Group
+  checked_at: '2026-11-15'
+  evidence_heading: Getting to & from the route
+  evidence:
+    page: P6
+    quote: The CityLink bus from Glasgow to Fort William also stops along the route at Inverarnan, Crianlarich, Tyndrum, Bridge of Orchy, Glen Coe and Ballachullish
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Inside the park camping management zones, camping from March to September is limited to bookable sites or permit areas; outside the zones, responsible camping follows the Scottish Outdoor Access Code.
+  source_url: https://www.lochlomond-trossachs.org/park-information/camping-management-zones/
+  source_title: PDF
+  publisher: Loch Lomond & The Trossachs National Park Authority
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: 'People may camp responsibly anywhere outside of the purple area in accordance with the Scottish Outdoor Access Code: https://www.outdooraccess-scotland.scot/ From March to September, people camping inside the purple area can only do so at a camping'
+  verified: true
+verifier: null
+mechanical_check:
+  verified: 8
+  failed: 0
+  reasons: {}

@@ -1,0 +1,395 @@
+slug: trolltunga
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.trolltunga.com/en
+  note: Official Trolltunga website with trail conditions, parking and shuttle information.
+  source_url: https://www.trolltunga.com/en
+  source_title: Trolltunga official website – Norway’s Most Awesome Adventure
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Good to know about the trip
+  evidence:
+    page: P1
+    quote: 'You can park your car at one of the three designated parking areas: P1 Tyssedal, P2 Skjeggedal, or P3 Mågelitopp.'
+  verified: true
+- field: distance_km
+  value: 27
+  basis: round_trip
+  note: Distance from the P2 Skjeggedal main trailhead; shorter from P3, longer from P1.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking Time & Distances
+  evidence:
+    page: P7
+    quote: 'From P2 Skjeggedal: 8–12 hours (27 km round trip)'
+  verified: true
+- field: duration
+  value:
+    min_hours: 8
+    max_hours: 12
+  note: Estimated hiking time from P2 Skjeggedal.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking Time & Distances
+  evidence:
+    page: P7
+    quote: 'From P2 Skjeggedal: 8–12 hours (27 km round trip)'
+  verified: true
+- field: elevation_gain_m
+  value: 1200
+  note: Total ascent figure given for the P2 Skjeggedal start.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P2 Skjeggedal – Main Trailhead
+  evidence:
+    page: P4
+    quote: 'Elevation: 415 metres above sea level Ascent: 800 m Total ascent: 1200 m'
+  verified: true
+- field: high_point_m
+  value: 1180
+  note: Height of Trolltunga itself above sea level.
+  source_url: https://www.trolltunga.com/en
+  source_title: Trolltunga official website – Norway’s Most Awesome Adventure
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Planning your hike?
+  evidence:
+    page: P1
+    quote: The hike to Trolltunga (1180 m) is long and demanding
+  verified: true
+- field: route_type
+  value: out_and_back
+  note: Distances are quoted as round trips along the same trail.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking Time & Distances
+  evidence:
+    page: P7
+    quote: 'From P2 Skjeggedal: 8–12 hours (27 km round trip)'
+  verified: true
+- field: difficulty_official
+  value:
+    label: demanding
+    scale: Trolltunga official website
+  source_url: https://www.trolltunga.com/en
+  source_title: Trolltunga official website – Norway’s Most Awesome Adventure
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Planning your hike?
+  evidence:
+    page: P1
+    quote: The hike to Trolltunga (1180 m) is long and demanding
+  verified: true
+- field: best_months
+  value:
+  - 6
+  - 7
+  - 8
+  - 9
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking seasons
+  evidence:
+    page: P7
+    quote: During the summer season, from June 1st to September 30th, experienced hikers can hike on their own.
+  verified: true
+- field: season_note
+  value: Experienced hikers may go unguided in the summer season from June to the end of September; outside it a guided hike is advised.
+  note: Summer season defines when unguided hiking is advised.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking seasons
+  evidence:
+    page: P7
+    quote: During the summer season, from June 1st to September 30th, experienced hikers can hike on their own. For the rest of the year, we recommend a guided hike.
+  verified: true
+- field: access_mode
+  value: guide_recommended
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Hiking seasons
+  evidence:
+    page: P7
+    quote: For the rest of the year, we recommend a guided hike.
+  verified: true
+- field: permit
+  value:
+    name: P3 Mågelitopp parking reservation
+    kind: parking
+    how_to_apply: Reserve a space in advance through the official booking link on the parking page; spaces are limited.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Parking at Trolltunga
+  evidence:
+    page: P3
+    quote: P3 Mågelitopp requires a reservation during the high season, as it fills up quickly.
+  verified: true
+- field: fee
+  value:
+    name: P1 Tyssedal parking, same day
+    amount: 330
+    currency: NOK
+    unit: per_vehicle
+    audience: all
+    note: Day rate at the lowest car park; all vehicles pay.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P1 Tyssedal
+  evidence:
+    page: P4
+    quote: Same day (until midnight) – NOK 330
+  verified: true
+- field: fee
+  value:
+    name: P2 Skjeggedal parking, same day (road toll included)
+    amount: 550
+    currency: NOK
+    unit: per_vehicle
+    audience: all
+    note: Day rate at the main trailhead car park.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P2 Skjeggedal – Main Trailhead
+  evidence:
+    page: P4
+    quote: Same day (until midnight) – NOK 550
+  verified: true
+- field: fee
+  value:
+    name: P3 Mågelitopp parking, same day
+    amount: 600
+    currency: NOK
+    unit: per_vehicle
+    audience: all
+    note: Day rate at the private upper car park, booked ahead.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P3 Mågelitopp
+  evidence:
+    page: P4
+    quote: Same day (until midnight) – NOK 600
+  verified: true
+- field: fee
+  value:
+    name: Skjeggedalsvegen road toll
+    amount: 220
+    currency: NOK
+    unit: per_vehicle
+    audience: all
+    note: Toll paid at the P2 machine before driving to P3; not included in P3 price.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P3 Mågelitopp
+  evidence:
+    page: P4
+    quote: NB. Before driving up to P3 Mågelitopp, you must pay the road toll (NOK 220) in the parking machine at P2 Skjeggedal.
+  verified: true
+- field: fee
+  value:
+    name: Odda to P2 Skjeggedal shuttle, return
+    amount: 400
+    currency: NOK
+    unit: per_person
+    audience: all
+    note: Estimated price for the Odda Buss return ticket.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Odda to P2 Skjeggedal
+  evidence:
+    page: P3
+    quote: 'Odda–P2 Skjeggedal (return ticket): NOK 400 (estimated price) –Odda Buss only'
+  verified: true
+- field: fee
+  value:
+    name: P2 to P3 shuttle uphill, adult
+    amount: 150
+    currency: NOK
+    unit: per_person
+    audience: adult
+    note: One-way adult fare; listed under 2026 prices.
+    valid_from: '2026-01-01'
+    valid_to: '2026-12-31'
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P2 Skjeggedal – P3 Mågelitopp (Uphill)
+  evidence:
+    page: P3
+    quote: 'Adults: NOK 150 (one way)'
+  verified: true
+- field: fee
+  value:
+    name: P2 to P3 shuttle uphill, child
+    amount: 50
+    currency: NOK
+    unit: per_person
+    audience: child
+    note: One-way child fare; listed under 2026 prices.
+    valid_from: '2026-01-01'
+    valid_to: '2026-12-31'
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: P2 Skjeggedal – P3 Mågelitopp (Uphill)
+  evidence:
+    page: P3
+    quote: 'Children (4–12 years): NOK 50 (one way)'
+  verified: true
+- field: parking
+  value: Three car parks serve the hike. P1 Tyssedal and P2 Skjeggedal need no advance booking, while the upper private P3 Mågelitopp requires a reservation in high season. Start early.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Parking at Trolltunga
+  evidence:
+    page: P3
+    quote: P3 Mågelitopp requires a reservation during the high season, as it fills up quickly. P1 Tyssedal and P2 Skjeggedal do not require advance booking, but we recommend starting your hike early in the day.
+  verified: true
+- field: trailhead_access
+  value: Drive Rv13 to Tyssedal near Odda, then follow the Trolltunga signs up the toll road to P2 Skjeggedal; P3 is a short drive beyond.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/parking
+  source_title: Parking | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: By car to Trolltunga
+  evidence:
+    page: P4
+    quote: Follow route RV13 to Tyssedal, 6 km from the centre of Odda. Turn right and follow the signs to Trolltunga. It will take about 30 minutes by car from Odda to Skjeggedal.
+  verified: true
+- field: public_transport
+  value: Summer shuttle buses link Odda with the lower car parks, and a second shuttle runs from P2 up to the top car park.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/shuttle-busses
+  source_title: Shuttle buses to Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Shuttle buses to Trolltunga
+  evidence:
+    page: P3
+    quote: There are shuttle buses between Odda, P1 Tyssedal and P2 Skjeggedal. From P2 Skjeggedal you can take a second bus up to P3 Mågelitopp, the uppermost parking lot.
+  verified: true
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs must be on a leash in the municipality during the warm half of the year, and all year in the cabin areas at Åsen and Mågelitopp.
+  source_url: https://www.trolltunga.com/en
+  source_title: Trolltunga official website – Norway’s Most Awesome Adventure
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: safe hike
+  evidence:
+    page: P1
+    quote: In the municipality of Ullensvang, dogs must be kept on a leash between 1 April and 31 October. In the cabin areas Åsen and Mågelitopp, dogs must be kept on a leash throughout the year.
+  verified: true
+- field: rule_fires
+  value:
+    value: restricted
+    note: Campfires are banned from mid-April to mid-September.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/prepare-for-your-hike
+  source_title: Prepare for your hike | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Good advice for the mountain hike
+  evidence:
+    page: P8
+    quote: Don’t light campfires between April 15th and September 15th.
+  verified: true
+- field: rule_camping
+  value:
+    value: restricted
+    note: Camping is not permitted at the trailhead.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/prepare-for-your-hike
+  source_title: Prepare for your hike | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Good advice for the mountain hike
+  evidence:
+    page: P8
+    quote: No camping at the trailhead.
+  verified: true
+- field: hazard
+  value:
+    type: weather
+    note: Mountain weather changes fast even when sunny, so windproof and waterproof clothing plus food and water are needed.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/prepare-for-your-hike
+  source_title: Prepare for your hike | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Are you prepared for the hike to Trolltunga?
+  evidence:
+    page: P8
+    quote: The weather can change quickly, even on sunny days, so remember to bring windproof and waterproof clothing, as well as enough food and water.
+  verified: true
+- field: hazard
+  value:
+    type: exposure
+    note: The site warns hikers to keep back from the drop-off edge at the rock formation.
+  source_url: https://www.trolltunga.com/en/plan-your-hike/the-hike-to-trolltunga
+  source_title: The hike to Trolltunga  | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Memories of a waterfall...
+  evidence:
+    page: P7
+    quote: Stay back from the edge!
+  verified: true
+- field: nearest_town
+  value:
+    name: Odda
+    note: Odda lies in Ullensvang Municipality, Vestland County.
+  source_url: https://www.trolltunga.com/en/parking-and-transport/travel-to-odda-and-trolltunga
+  source_title: Travel to Odda and Trolltunga | Trolltunga official website
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Where is Trolltunga?
+  evidence:
+    page: P5
+    quote: The nearest town is Odda, which is part of Ullensvang Municipality in Vestland County.
+  verified: true
+- field: closure
+  value:
+    status: partially_closed
+    note: The access road to the trailhead is shut overnight during rockslide protection work and open by day in the summer season.
+    as_of: '2026-11-15'
+  source_url: https://www.trolltunga.com/en
+  source_title: Trolltunga official website – Norway’s Most Awesome Adventure
+  publisher: Trolltunga official website (trolltunga.com)
+  checked_at: '2026-11-15'
+  evidence_heading: Night closure
+  evidence:
+    page: P1
+    quote: The road is fully closed from 21:00 to 06:00 while rockslide protection work continues.
+  verified: true
+mechanical_check:
+  verified: 28
+  failed: 0
+  reasons: {}
