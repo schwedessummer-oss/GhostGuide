@@ -87,8 +87,3 @@ h3 {
     scroll-behavior: auto !important;
   }
 }
-
-/* High-legibility mode for the active-hike screen in bright sunlight. */
-.high-contrast {
-  --color-muted: #2f3531;
-}

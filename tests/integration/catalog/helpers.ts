@@ -99,10 +99,10 @@ export async function addCommonsPhoto(
   const license = opts.license ?? "CC-BY-SA-4.0";
   const record = await addSourceRecord(tx, { source: "commons", license });
   const [photo] = await tx<{ id: string }[]>`
-    insert into public.photos (origin, file_page_url, image_url, title, author, license_code, attribution_text,
+    insert into public.photos (origin, file_page_url, image_url, title, author, license_url, license_code, attribution_text,
                                license_evidence, source_record_id, retrieved_at, status)
     values ('commons', ${`https://commons.wikimedia.org/wiki/File:Test_${uniq()}.jpg`}, 'https://upload.wikimedia.org/test.jpg',
-            'Half Dome', 'A. Photographer', ${license}, ${`A. Photographer, ${license}, via Wikimedia Commons`},
+            'Half Dome', 'A. Photographer', 'https://creativecommons.org/licenses/test/', ${license}, ${`A. Photographer, ${license}, via Wikimedia Commons`},
             ${tx.json({ LicenseShortName: license })}, ${record}, now(), ${opts.status ?? "published"}::public.photo_status)
     returning id`;
   await tx`

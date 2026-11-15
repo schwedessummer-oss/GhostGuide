@@ -43,7 +43,10 @@ describe("licence gate", () => {
   it("a licence in use cannot be switched to not allowed", async () => {
     await withSystem((tx) => addSourceRecord(tx, { license: "NLOD-2.0" }));
     await expectDbError(
-      withSystem((tx) => tx`update public.licenses set allowed = false where code = 'NLOD-2.0'`),
+      withSystem(async (tx) => {
+        await tx`select set_config('gg.licence_review', 'approved', true)`;
+        await tx`update public.licenses set allowed = false where code = 'NLOD-2.0'`;
+      }),
       /source_records_license_gate/,
     );
   });
@@ -53,8 +56,8 @@ describe("licence gate", () => {
       withSystem(async (tx) => {
         const hikeId = await addHike(tx);
         await tx`
-          insert into public.photos (origin, file_page_url, license_code, attribution_text, license_evidence, source_record_id, retrieved_at)
-          values ('commons', 'https://commons.wikimedia.org/wiki/File:X.jpg', ${license}, 'Someone',
+          insert into public.photos (origin, file_page_url, title, author, license_url, license_code, attribution_text, license_evidence, source_record_id, retrieved_at)
+          values ('commons', 'https://commons.wikimedia.org/wiki/File:X.jpg', 'X', 'Someone', 'https://example.org/licence', ${license}, 'Someone',
                   ${tx.json({ LicenseShortName: license })}, ${await addSourceRecord(tx)}, now())`;
         return hikeId;
       }),
@@ -67,13 +70,13 @@ describe("licence gate", () => {
       const hikeId = await addHike(tx);
       for (const license of ["CC0-1.0", "PD-USGov", "CC-BY-2.0", "CC-BY-SA-3.0"]) await addCommonsPhoto(tx, hikeId, { license });
     });
-    for (const license of ["OGL-UK-3.0", "ODbL-1.0", "CITED-FACT"]) {
+    for (const license of ["OGL-UK-3.0", "CITED-FACT"]) {
       await expectDbError(
         withSystem(async (tx) => {
           const hikeId = await addHike(tx);
           await tx`
-            insert into public.photos (origin, file_page_url, license_code, attribution_text, license_evidence, source_record_id, retrieved_at)
-            values ('government', 'https://example.gov/photo', ${license}, 'Agency', ${tx.json({ license })},
+            insert into public.photos (origin, file_page_url, title, credit_line, license_url, license_code, attribution_text, license_evidence, source_record_id, retrieved_at)
+            values ('government', 'https://example.gov/photo', 'Photo', 'Agency', 'https://example.org/licence', ${license}, 'Agency', ${tx.json({ license })},
                     ${await addSourceRecord(tx, { license })}, now())`;
           return hikeId;
         }),

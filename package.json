@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
-    "@types/geojson": "^7946.0.16",
     "@types/node": "^22.20.5",
     "@types/pngjs": "^6.0.5",
     "@types/react": "^19",

@@ -50,7 +50,7 @@ src/
     db.ts                 withUser / withAnon / withSystem
     auth/                 session, RBAC, tokens
     jobs/                 queue, periodic, registry, handlers/<slice>.ts
-    audit.ts  log.ts  rate-limit.ts  flags.ts  integration-log.ts
+    audit.ts  log.ts  rate-limit.ts  flags.ts
     providers/http.ts     provider HTTP client (User-Agent, throttling, retries)
     geo/  weather/       elevation sampling, sun times, geodesy; weather clients (unused by pages)
     admin/                admin use-cases (RBAC-checked, audited)
@@ -143,7 +143,6 @@ await enqueueJob(tx, kind, payload, { dedupKey: `${area}:${entity}:${id}` }); //
 
 ## Cross-cutting helpers
 - `recordAudit(tx, actor, action, entityType, entityId, metadata)` — every sensitive staff action.
-- `recordIntegrationEvent({providerKind, providerKey, operation, outcome, …})` — every provider call (incl. simulated).
 - `checkRateLimit(key, limit, windowSec)` — auth and public APIs.
 - `isEnabled(key)` — feature flags (`src/server/flags.ts`; none are defined today).
 - `log.info/warn/error(event, data)` — redacts secrets, contact details, coordinates.
