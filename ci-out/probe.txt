@@ -1,0 +1,167 @@
+== https://overpass-api.de/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 200
+Connected as: 339869122
+Current time: 2026-11-15T00:35:45Z
+Announced endpoint: lambert.openstreetmap.de/
+Rate limit: 2
+2 slots available now.
+Currently running queries (pid, space limit, time limit, start time):
+
+== https://overpass-api.de/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+HTTP 406
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://lz4.overpass-api.de/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 200
+Connected as: 339869122
+Current time: 2026-11-15T00:36:09Z
+Announced endpoint: lambert.openstreetmap.de/
+Rate limit: 2
+2 slots available now.
+Currently running queries (pid, space limit, time limit, start time):
+
+== https://lz4.overpass-api.de/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+HTTP 406
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://z.overpass-api.de/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 502
+# 502 Gateway Timeout
+
+This Overpass API server is currently at capacity. All query workers are busy
+and the request queue is full.
+
+## What to do
+
+Retry your request using exponential backoff: wait a short interval, then retry.
+If the request fails again, double the wait time and retry again.
+
+## F
+== https://z.overpass-api.de/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+HTTP 406
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://overpass.private.coffee/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+curl: (28) Operation timed out after 60000 milliseconds with 0 bytes received
+HTTP 000
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://overpass.private.coffee/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+curl: (28) Operation timed out after 60000 milliseconds with 0 bytes received
+HTTP 000
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://overpass.kumi.systems/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+curl: (28) Operation timed out after 60000 milliseconds with 0 bytes received
+HTTP 000
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://overpass.kumi.systems/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+curl: (28) Operation timed out after 60001 milliseconds with 0 bytes received
+HTTP 000
+<html>
+<head><title>406 Not Acceptable</title></head>
+<body>
+<center><h1>406 Not Acceptable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+== https://maps.mail.ru/osm/tools/overpass/api/status | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 200
+Connected as: 339869122
+Current time: 2026-11-15T00:40:21Z
+Announced endpoint: none
+Rate limit: 0
+Currently running queries (pid, space limit, time limit, start time):
+
+== https://maps.mail.ru/osm/tools/overpass/api/status | UA=GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app
+HTTP 200
+Connected as: 339869122
+Current time: 2026-11-15T00:40:36Z
+Announced endpoint: none
+Rate limit: 0
+Currently running queries (pid, space limit, time limit, start time):
+
+== POST interpreter overpass-api.de
+HTTP 502
+# 502 Gateway Timeout
+
+This Overpass API server is currently at capacity. All query workers are busy
+and the request queue is full.
+
+## What to do
+
+Retry your request using exponential backoff: wait a short interval, then retry.
+If the request fails again, double the wait time and retry again.
+
+## For heavy or automated use
+
+This public endpoint is intended for browser-based and human-operated too
+== POST interpreter private.coffee
+curl: (28) Operation timed out after 90001 milliseconds with 0 bytes received
+HTTP 000
+# 502 Gateway Timeout
+
+This Overpass API server is currently at capacity. All query workers are busy
+and the request queue is full.
+
+## What to do
+
+Retry your request using exponential backoff: wait a short interval, then retry.
+If the request fails again, double the wait time and retry again.
+
+## For heavy or automated use
+
+This public endpoint is intended for browser-based and human-operated too
+== https://download.geofabrik.de/europe/andorra-latest.osm.pbf.md5 | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 200
+30fa78a14e5e26c76b3d576127729658  andorra-latest.osm.pbf
+
+== https://planet.openstreetmap.org/ | UA=GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)
+HTTP 200
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Planet OSM</title>
+  <link href="https://planet.openstreetmap.org/style.css" rel="stylesheet" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ </head>
+ <body>
+<img id="logo" src="h
