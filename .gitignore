@@ -45,3 +45,4 @@ next-env.d.ts
 /.data/
 /test-results/
 /playwright-report/
+ingest/.research-cache/
