@@ -7,7 +7,7 @@ import { CheckField, SelectField } from "@/components/admin/fields";
 import { requirePermission } from "@/server/auth";
 import { can } from "@/server/auth/rbac";
 import { isDemoMode } from "@/config/env";
-import { integrationSummary, JOB_STATUSES, listFailedWebhooks, listIntegrationEvents, listJobs, type IntegrationEventRow, type JobRow, type WebhookRow } from "@/server/admin/jobs";
+import { integrationSummary, JOB_STATUSES, listIntegrationEvents, listJobs, type IntegrationEventRow, type JobRow } from "@/server/admin/jobs";
 import { parsePage, sp } from "@/server/admin/common";
 import { cancelJobAction, retryJobAction, runDueJobsAction } from "./actions";
 
@@ -19,11 +19,10 @@ export default async function JobsPage({ searchParams }: PageProps<"/admin/jobs"
   const filters = { status: sp(q.status) ?? "dead", kind: sp(q.kind) };
   const page = parsePage({ limit: sp(q.limit), offset: sp(q.offset) });
   const canIntegrations = can(user.roles, "integrations.view");
-  const [jobs, events, summary, webhooks] = await Promise.all([
+  const [jobs, events, summary] = await Promise.all([
     listJobs(user, { status: filters.status === "all" ? undefined : filters.status, kind: filters.kind }, page),
     canIntegrations ? listIntegrationEvents(user, { outcome: "failure" }, parsePage({ limit: 20 })) : null,
     canIntegrations ? integrationSummary(user) : null,
-    canIntegrations ? listFailedWebhooks(user, parsePage({ limit: 20 })) : null,
   ]);
 
   return (
@@ -82,56 +81,38 @@ export default async function JobsPage({ searchParams }: PageProps<"/admin/jobs"
         <Pagination basePath="/admin/jobs" params={filters} total={jobs.total} limit={jobs.limit} offset={jobs.offset} />
       </Section>
 
-      {canIntegrations && events && summary && webhooks ? (
-        <>
-          <Section id="integrations" title="Integration health (24 h)" description="Every provider call is logged, including simulated ones.">
-            {summary.length ? (
-              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-                {summary.map((s) => (
-                  <li key={`${s.providerKind}-${s.outcome}`} className="flex items-center justify-between rounded-xl border border-sand-200 bg-surface px-4 py-3">
-                    <span className="font-semibold">{s.providerKind.replace(/_/g, " ")}</span>
-                    <span className="flex items-center gap-2">
-                      <StatusBadge status={s.outcome} /> {s.n}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-muted">No provider calls in the last 24 hours.</p>
-            )}
-            <div className="mt-4">
-              <DataTable<IntegrationEventRow>
-                caption="Recent integration failures"
-                rows={events.rows}
-                rowKey={(e) => e.id}
-                empty="No integration failures recorded."
-                columns={[
-                  { header: "When", cell: (e) => <When at={e.createdAt} /> },
-                  { header: "Provider", cell: (e) => `${e.providerKind} · ${e.providerKey}` },
-                  { header: "Operation", cell: (e) => e.operation },
-                  { header: "Entity", cell: (e) => (e.entityType ? `${e.entityType} ${e.entityId?.slice(0, 8) ?? ""}` : "—") },
-                  { header: "Error", cell: (e) => <span className="text-red-ink">{e.error ?? "—"}</span> },
-                ]}
-              />
-            </div>
-          </Section>
-
-          <Section id="webhooks" title="Failed webhook deliveries" description="Provider webhooks that could not be processed. Providers redeliver automatically; processing is idempotent per event id.">
-            <DataTable<WebhookRow>
-              caption="Failed webhook events"
-              captionHidden
-              rows={webhooks.rows}
-              rowKey={(w) => w.id}
-              empty="No failed webhooks."
+      {canIntegrations && events && summary ? (
+        <Section id="integrations" title="Integration health (24 h)" description="Every provider call is logged, including simulated ones.">
+          {summary.length ? (
+            <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
+              {summary.map((s) => (
+                <li key={`${s.providerKind}-${s.outcome}`} className="flex items-center justify-between rounded-xl border border-sand-200 bg-surface px-4 py-3">
+                  <span className="font-semibold">{s.providerKind.replace(/_/g, " ")}</span>
+                  <span className="flex items-center gap-2">
+                    <StatusBadge status={s.outcome} /> {s.n}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-muted">No provider calls in the last 24 hours.</p>
+          )}
+          <div className="mt-4">
+            <DataTable<IntegrationEventRow>
+              caption="Recent integration failures"
+              rows={events.rows}
+              rowKey={(e) => e.id}
+              empty="No integration failures recorded."
               columns={[
-                { header: "Received", cell: (w) => <When at={w.receivedAt} /> },
-                { header: "Event", cell: (w) => <span className="break-all">{w.provider} · {w.type}<span className="block font-mono text-xs text-muted">{w.eventId}</span></span> },
-                { header: "Attempts", cell: (w) => w.attempts },
-                { header: "Error", cell: (w) => <span className="text-red-ink">{w.error ?? "—"}</span> },
+                { header: "When", cell: (e) => <When at={e.createdAt} /> },
+                { header: "Provider", cell: (e) => `${e.providerKind} · ${e.providerKey}` },
+                { header: "Operation", cell: (e) => e.operation },
+                { header: "Entity", cell: (e) => (e.entityType ? `${e.entityType} ${e.entityId?.slice(0, 8) ?? ""}` : "—") },
+                { header: "Error", cell: (e) => <span className="text-red-ink">{e.error ?? "—"}</span> },
               ]}
             />
-          </Section>
-        </>
+          </div>
+        </Section>
       ) : null}
     </>
   );

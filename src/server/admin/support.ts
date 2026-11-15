@@ -15,8 +15,6 @@ export interface TicketRow {
   priority: (typeof TICKET_PRIORITIES)[number];
   userId: string | null;
   customerEmail: string | null;
-  tripId: string | null;
-  bookingId: string | null;
   assignedTo: string | null;
   assigneeEmail: string | null;
   createdAt: Date;
@@ -43,7 +41,7 @@ export async function listTickets(user: SessionUser, f: { status?: string; prior
   const assigned = f.assigned === "me" ? user.id : f.assigned === "unassigned" ? "unassigned" : f.assigned && isUuid(f.assigned) ? f.assigned : null;
   const assignee = assigned && assigned !== "unassigned" ? assigned : null;
   const rows = await staffTx(user, (tx) => tx<(TicketRow & { total: number })[]>`
-    select st.id, st.subject, st.body, st.status, st.priority, st.user_id, cp.email as customer_email, st.trip_id, st.booking_id,
+    select st.id, st.subject, st.body, st.status, st.priority, st.user_id, cp.email as customer_email,
            st.assigned_to, ap.email as assignee_email, st.created_at, st.updated_at, count(*) over()::int as total
     from public.support_tickets st
     left join public.profiles cp on cp.id = st.user_id

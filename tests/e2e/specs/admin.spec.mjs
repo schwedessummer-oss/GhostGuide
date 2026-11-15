@@ -1,37 +1,21 @@
 /**
- * Admin slice — end-to-end spec (node:test + Playwright).
+ * Admin shell — end-to-end spec (node:test + Playwright).
  *
  * Covers:
- *  - every /admin page (incl. trail edit sub-pages and detail pages) loads for admin@ with
- *    no error boundary, no console errors and no horizontal scrolling at 390 px;
+ *  - every /admin page (incl. the customer detail page) loads for admin@ with no error
+ *    boundary, no console errors and no horizontal scrolling at 390 px;
  *  - RBAC: signed-out → login (with the deep link kept), a customer gets /forbidden,
- *    support@ cannot open pricing / flags, operator@ cannot manage flags / staff, editor@ can
- *    approve in-review narration only once a source is set;
- *  - a closure created in admin shows on the public trail page and removes the trail from
- *    /plan results; ending it restores both;
- *  - GeoJSON route upload: a valid file (built from the trail's seeded geometry, read from
- *    the e2e database) validates and activates; an invalid one shows its errors and offers
- *    no activation;
- *  - a pricing-rule edit updates the live preview and the customer's checkout quote;
- *  - the addon_meal_pack flag hides the add-on at checkout and is audit-logged;
+ *    support@ and operator@ only see and open the sections their permissions allow;
  *  - a dead job is re-queued from /admin/jobs and then runs;
  *  - staff role grant + revoke (takes effect on the next request), the last admin role
  *    cannot be removed (even from a stale page), and the audit log records all of it;
- *  - admin action confirmations stay announced (aria-live) after the page re-renders;
- *  - a full closure lists the paid bookings on its days (or says there are none);
- *  - availability: saving a day with an empty capacity override keeps the trail default
- *    (it used to store capacity 0 and close the day);
- *  - add-ons: an admin creates an (inactive) add-on and edits its daily capacity; audited;
- *  - overview shows the background job runner's health;
- *  - form errors use plain language (no internal field keys); the audit filter lists the
- *    exact action codes.
+ *  - admin action confirmations stay announced (aria-live) after the page re-renders
+ *    without the form that sent them (a revoked role);
+ *  - overview shows the background job runner's health; the audit filter lists the exact
+ *    action codes.
  *
- * Independence: the spec signs up its own customer (unique email per run), mutates only
- * trails no other spec mutates (Hollow Pine Ridge, Miner's Meadow Loop), scopes its pricing
- * rule to one trail, re-activates IDENTICAL route coordinates (same geometry checksum), and
- * restores every global change (flags, closure, rule, roles, narration) in `after` even
- * when a test fails. The seeded in-review narration is only used for the refusal path
- * (nothing is approved on it); the approval itself runs on a narration this spec creates.
+ * Independence: the spec signs up its own customer (unique email per run) and restores
+ * every global change (staff roles) in `after` even when a test fails.
  *
  * Notes on the app's rendering that the helpers account for:
  *  - admin pages stream behind `src/app/admin/loading.tsx`; React reveals the real content
@@ -43,19 +27,13 @@
  */
 import { test, before, after } from "node:test";
 import assert from "node:assert/strict";
-import { createHash, randomUUID } from "node:crypto";
-import { spawnSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { BASE, login, newBrowser, runJobs } from "../helpers.mjs";
 
-const TZ = "America/Los_Angeles";
 const ADMIN = "admin@demo.ghostguide.test";
 const SUPPORT = "support@demo.ghostguide.test";
 const OPERATOR = "operator@demo.ghostguide.test";
-const EDITOR = "editor@demo.ghostguide.test";
 const HIKER = "hiker@demo.ghostguide.test";
-const CLOSE_TRAIL = { slug: "hollow-pine-ridge", name: "Hollow Pine Ridge" };
-const PRICE_TRAIL = { slug: "miners-meadow-loop", name: "Miner's Meadow Loop" };
-const SEEDED_NARRATION = "Creek insects (draft)";
 const CUSTOMER_PASSWORD = "qa-admin-pass-123";
 const NAV = 30_000;
 const UI = 15_000;
@@ -67,29 +45,6 @@ const fakeIp = () => `10.${(parseInt(run.slice(0, 2), 16) % 250) + 1}.${(parseIn
 // ---------------------------------------------------------------------------
 // helpers
 // ---------------------------------------------------------------------------
-function regionToday() {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
-}
-function addDays(iso, n) {
-  const d = new Date(`${iso}T12:00:00Z`);
-  d.setUTCDate(d.getUTCDate() + n);
-  return d.toISOString().slice(0, 10);
-}
-const dow = (iso) => new Date(`${iso}T12:00:00Z`).getUTCDay();
-function nextDow(iso, target) {
-  let d = iso;
-  while (dow(d) !== target) d = addDays(d, 1);
-  return d;
-}
-const randInt = (min, max) => min + Math.floor(Math.random() * (max - min + 1));
-const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-function cents(text) {
-  const t = text.replace(/\s/g, "");
-  const neg = /^[-−]/.test(t);
-  const n = Math.round(Number(t.replace(/[^0-9.]/g, "")) * 100);
-  return neg ? -n : n;
-}
-
 async function newCtx(browser, viewport = { width: 1280, height: 900 }) {
   return browser.newContext({ viewport, baseURL: BASE, extraHTTPHeaders: { "x-forwarded-for": fakeIp() } });
 }
@@ -120,11 +75,6 @@ async function gotoOk(page, path) {
   assert.ok(res.status() < 400, `${path} -> HTTP ${res.status()}`);
   await ready(page);
   return res;
-}
-
-async function reloadReady(page) {
-  await page.reload({ timeout: NAV });
-  await ready(page);
 }
 
 async function staffPage(browser, email, viewport) {
@@ -158,21 +108,6 @@ async function assertText(locator, re, timeout = UI) {
       assert.fail(`Expected ${re} in:\n${actual.slice(0, 2500)}`);
     });
 }
-
-/**
- * A status badge (or any element) whose text is exactly `text`. (Playwright matches `hasText`
- * against textContent, where adjacent table cells run together, so `\b` regexes are unreliable.)
- */
-async function badge(scope, text, timeout = UI) {
-  await scope
-    .getByText(text, { exact: true })
-    .first()
-    .waitFor({ timeout })
-    .catch(async () => assert.fail(`Expected a "${text}" badge in:\n${(await scope.first().innerText({ timeout: 2_000 }).catch(() => "<no element>")).slice(0, 1500)}`));
-}
-
-/** The page's AdminHeader (title + status badge). */
-const pageHeader = (page) => page.locator("main header").filter({ has: page.locator("h1") }).first();
 
 const isActionPost = (r) => r.request().method() === "POST" && Boolean(r.request().headers()["next-action"]);
 
@@ -217,19 +152,6 @@ async function expectForbidden(page, path) {
   await assertText(page.locator("main"), /You don't have access to this page/);
 }
 
-/** Admin trail id from the admin trails list. */
-async function adminTrailId(page, name) {
-  await gotoOk(page, "/admin/trails");
-  const href = await page.getByRole("link", { name, exact: true }).first().getAttribute("href", { timeout: UI });
-  assert.match(href, /^\/admin\/trails\/[0-9a-f-]{36}$/);
-  return href.split("/").pop();
-}
-
-function planUrl(date, slug) {
-  const q = new URLSearchParams({ experience: "some", fitness: "moderate", pace: "steady", hours: "8", date, start: "08:30", party: "2", trail: slug });
-  return `/plan/results?${q}`;
-}
-
 /**
  * Audit rows for the given filters, newest first, parsed from /admin/audit:
  * { action, actor, entityType, entityId, metadata }.
@@ -255,52 +177,6 @@ async function auditRows(page, filters) {
 }
 const fmtRows = (rows) => rows.map((r) => `${r.action} ${r.actor} ${r.entityType}:${r.entityId} ${JSON.stringify(r.metadata)}`).join("\n");
 
-async function readQuote(page, tableName = "Price quote") {
-  const table = page.getByRole("table", { name: tableName });
-  await table.waitFor({ timeout: UI });
-  const rows = await table.locator("tbody tr").evaluateAll((trs) =>
-    trs.map((tr) => {
-      const th = tr.querySelector("th");
-      const td = tr.querySelector("td");
-      const sub = th?.querySelector("span")?.textContent ?? "";
-      return { label: (th?.textContent ?? "").replace(sub, "").trim(), amount: (td?.textContent ?? "").trim() };
-    }),
-  );
-  return rows.filter((r) => r.label !== "Total").map((r) => ({ label: r.label, cents: cents(r.amount) }));
-}
-
-/** Select the <option> whose text starts with `prefix`. */
-async function selectByTextStart(select, prefix) {
-  const value = await select.locator("option").evaluateAll((os, p) => os.find((o) => o.textContent.trim().startsWith(p))?.value ?? null, prefix);
-  assert.ok(value, `no option starting with "${prefix}"`);
-  await select.selectOption(value);
-}
-
-/** Save a trip for `trail` from the personalized results and return its id. */
-async function saveTrip(page, trail, date) {
-  await gotoOk(page, planUrl(date, trail.slug));
-  const save = page.getByRole("button", { name: `Save this trip (${trail.name})` }).first();
-  await save.waitFor({ timeout: NAV });
-  await Promise.all([page.waitForURL(/\/trips\/[0-9a-f-]{36}$/, { timeout: NAV }), save.click()]);
-  return new URL(page.url()).pathname.split("/").pop();
-}
-
-async function openCheckout(page, tripId, { date, party = 2, addons = "" }) {
-  const q = new URLSearchParams({ date, party: String(party) });
-  if (addons) q.set("addons", addons);
-  await gotoOk(page, `/trips/${tripId}/checkout?${q}`);
-  await page.getByRole("table", { name: "Price quote" }).getByText(`Self-guided experience × ${party}`).waitFor({ timeout: UI });
-}
-
-/** Seeded route coordinates for Hollow Pine Ridge, read from the e2e database (E2E_DATABASE_URL). */
-function seededGeometry() {
-  const url = process.env.E2E_DATABASE_URL;
-  assert.ok(url, "E2E_DATABASE_URL is not set (run.mjs sets it)");
-  const r = spawnSync("psql", [url, "-Atc", `select geometry::text from public.trails where slug = '${CLOSE_TRAIL.slug}'`], { encoding: "utf8" });
-  assert.equal(r.status, 0, `psql failed: ${r.stderr}`);
-  return JSON.parse(r.stdout.trim());
-}
-
 // ---------------------------------------------------------------------------
 // fixtures + cleanup registry
 // ---------------------------------------------------------------------------
@@ -310,7 +186,6 @@ let customerCtx;
 let customer;
 let customerEmail;
 const cleanups = []; // [label, async fn(adminPage)]
-const today = regionToday();
 
 before(async () => {
   browser = await newBrowser();
@@ -321,7 +196,7 @@ before(async () => {
 });
 
 after(async () => {
-  // Restore global state even if tests failed (other slice specs share this database).
+  // Restore global state even if tests failed (other specs share this database).
   for (const [label, fn] of cleanups.reverse()) {
     try {
       await fn(admin);
@@ -339,29 +214,13 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
   const { ctx, page } = await staffPage(browser, ADMIN, { width: 390, height: 844 });
   const errors = watchErrors(page);
   try {
-    const trailId = await adminTrailId(page, CLOSE_TRAIL.name);
     const paths = [
       ["/admin", "Overview"],
-      ["/admin/trails", "Trails"],
-      ["/admin/trails/new", "New draft trail"],
-      [`/admin/trails/${trailId}`, CLOSE_TRAIL.name],
-      [`/admin/trails/${trailId}/geometry`, CLOSE_TRAIL.name],
-      [`/admin/trails/${trailId}/sources`, CLOSE_TRAIL.name],
-      [`/admin/trails/${trailId}/closures`, CLOSE_TRAIL.name],
-      [`/admin/trails/${trailId}/pois`, CLOSE_TRAIL.name],
-      [`/admin/trails/${trailId}/permits`, CLOSE_TRAIL.name],
-      ["/admin/content", "Narration review"],
       ["/admin/customers", "Customers"],
-      ["/admin/bookings", "Bookings"],
-      ["/admin/gear", "Gear lockers"],
-      ["/admin/fulfillment", "Partner fulfillment"],
+      ["/admin/support", "Support tickets"],
       ["/admin/jobs", "Jobs & integrations"],
       ["/admin/data", "Trail data"],
-      ["/admin/pricing", "Pricing"],
-      ["/admin/availability", "Availability"],
       ["/admin/flags", "Feature flags"],
-      ["/admin/permits", "Permits"],
-      ["/admin/support", "Support tickets"],
       ["/admin/staff", "Staff roles"],
       ["/admin/audit", "Audit log"],
     ];
@@ -374,25 +233,22 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
     };
     for (const [path, h1] of paths) await visit(path, h1);
 
-    // Detail pages reached through the lists.
-    for (const [list, sel] of [
-      ["/admin/bookings", 'main a[href^="/admin/bookings/"]'],
-      ["/admin/customers", 'main a[href^="/admin/customers/"]'],
-      ["/admin/content", 'main a[href^="/admin/content/"]'],
-      ["/admin/support", 'main a[href^="/admin/support/"]'],
-    ]) {
-      await gotoOk(page, list);
-      const link = page.locator(sel).first();
-      if (list === "/admin/support" && !(await link.count())) continue; // tickets may be handled inline
-      await link.waitFor({ timeout: UI });
-      await visit(await link.getAttribute("href"));
-    }
+    // The customer detail page, reached through the list.
+    await gotoOk(page, `/admin/customers?q=${encodeURIComponent(HIKER)}`);
+    const link = page.locator('main a[href^="/admin/customers/"]').first();
+    await link.waitFor({ timeout: UI });
+    await visit(await link.getAttribute("href"));
+    await assertText(page.locator("main"), /Support tickets/);
+
+    // No flags are defined in this version: the page says so instead of showing an empty list.
+    await gotoOk(page, "/admin/flags");
+    await assertText(page.locator("main"), /No feature flags are defined/);
 
     // Mobile admin menu exposes every section to an admin.
     await gotoOk(page, "/admin");
     await page.getByText("Admin menu").click();
     const nav = page.getByRole("navigation", { name: "Admin sections" }).first();
-    for (const label of ["Overview", "Bookings", "Trails", "Pricing", "Jobs & integrations", "Feature flags", "Staff roles", "Audit log"]) {
+    for (const label of ["Overview", "Customers", "Support", "Jobs & integrations", "Trail data", "Feature flags", "Staff roles", "Audit log"]) {
       await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
     }
     // Simulated integrations are labeled on the overview.
@@ -412,9 +268,9 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
     const ctx = await newCtx(browser);
     const page = await ctx.newPage();
     try {
-      await page.goto("/admin/pricing");
+      await page.goto("/admin/staff");
       await page.waitForURL((u) => u.pathname === "/login", { timeout: NAV });
-      assert.equal(new URL(page.url()).searchParams.get("next"), "/admin/pricing", "the deep link must survive the login redirect");
+      assert.equal(new URL(page.url()).searchParams.get("next"), "/admin/staff", "the deep link must survive the login redirect");
     } finally {
       await ctx.close();
     }
@@ -422,22 +278,22 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
 
   await t.test("a customer gets /forbidden for /admin and admin sub-pages", async () => {
     await expectForbidden(customer, "/admin");
-    await expectForbidden(customer, "/admin/pricing");
+    await expectForbidden(customer, "/admin/staff");
     await expectForbidden(customer, "/admin/customers");
   });
 
-  await t.test("support@ cannot open pricing/flags and never sees phone numbers or coordinates", async () => {
+  await t.test("support@ cannot open flags, staff, audit or jobs and never sees phone numbers or coordinates", async () => {
     const { ctx, page } = await staffPage(browser, SUPPORT);
     const errors = watchErrors(page);
     try {
       await gotoOk(page, "/admin");
       await page.getByRole("heading", { level: 1, name: "Overview" }).waitFor({ timeout: UI });
       const nav = page.getByRole("navigation", { name: "Admin sections" }).last();
-      for (const label of ["Customers", "Bookings", "Support"]) await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
-      for (const label of ["Pricing", "Feature flags", "Staff roles", "Audit log", "Jobs & integrations"]) {
+      for (const label of ["Customers", "Support"]) await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
+      for (const label of ["Feature flags", "Staff roles", "Audit log", "Jobs & integrations", "Trail data"]) {
         assert.equal(await nav.getByRole("link", { name: label, exact: true }).count(), 0, `support@ should not see "${label}" in the admin menu`);
       }
-      for (const p of ["/admin/pricing", "/admin/flags", "/admin/staff", "/admin/audit"]) await expectForbidden(page, p);
+      for (const p of ["/admin/flags", "/admin/staff", "/admin/audit", "/admin/jobs"]) await expectForbidden(page, p);
 
       // Customer detail: no phone numbers / precise coordinates in the page.
       await gotoOk(page, `/admin/customers?q=${encodeURIComponent(HIKER)}`);
@@ -455,16 +311,16 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
     }
   });
 
-  await t.test("operator@ cannot manage flags, staff, pricing or the audit log, but can run jobs", async () => {
+  await t.test("operator@ cannot manage flags, staff or the audit log, but can run jobs", async () => {
     const { ctx, page } = await staffPage(browser, OPERATOR);
     try {
       await gotoOk(page, "/admin");
       const nav = page.getByRole("navigation", { name: "Admin sections" }).last();
       await nav.getByRole("link", { name: "Jobs & integrations", exact: true }).waitFor({ timeout: UI });
-      for (const label of ["Feature flags", "Staff roles", "Pricing", "Audit log"]) {
+      for (const label of ["Feature flags", "Staff roles", "Audit log"]) {
         assert.equal(await nav.getByRole("link", { name: label, exact: true }).count(), 0, `operator@ should not see "${label}"`);
       }
-      for (const p of ["/admin/flags", "/admin/staff", "/admin/pricing", "/admin/audit"]) await expectForbidden(page, p);
+      for (const p of ["/admin/flags", "/admin/staff", "/admin/audit"]) await expectForbidden(page, p);
       await gotoOk(page, "/admin/jobs");
       await page.getByRole("heading", { level: 1, name: "Jobs & integrations" }).waitFor({ timeout: UI });
     } finally {
@@ -474,385 +330,7 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
 });
 
 // ---------------------------------------------------------------------------
-// 3. Narration approval requires a source (editor@)
-// ---------------------------------------------------------------------------
-test("editor@ can approve in-review narration only after a source is set; approved narration reaches the public trail page", { timeout: 240_000 }, async (t) => {
-  const { ctx, page } = await staffPage(browser, EDITOR);
-  const errors = watchErrors(page);
-  const openNarration = async (title) => {
-    await gotoOk(page, "/admin/content?status=in_review");
-    const link = page.getByRole("link", { name: title, exact: true });
-    await link.waitFor({ timeout: UI });
-    await Promise.all([page.waitForURL(/\/admin\/content\/[0-9a-f-]{36}$/, { timeout: NAV }), link.click()]);
-    await ready(page);
-    return page.url().split("/").pop();
-  };
-  /** Bypass the browser's required-field check so the server's own validation is exercised. */
-  const dropRequired = () => page.evaluate(() => document.querySelectorAll("#review form [required]").forEach((el) => el.removeAttribute("required")));
-  try {
-    await t.test("seeded in-review narration without a source cannot be approved (browser and server)", async () => {
-      await openNarration(SEEDED_NARRATION);
-      await assertText(page.locator("main"), /None — required for approval/);
-      const source = page.locator("#ap-source");
-      assert.equal(await source.inputValue(), "", "no source preselected");
-      // Browser validation blocks the empty submit.
-      await page.getByRole("button", { name: "Approve narration" }).click();
-      assert.equal(await source.evaluate((el) => el.validity.valueMissing), true);
-      // Bypass the browser check: the server must still refuse.
-      await dropRequired();
-      await submitAndExpect(page.locator("#review"), "Approve narration", /Choose the source this narration is based on/);
-      await reloadReady(page);
-      await assertText(pageHeader(page), /in review/i);
-    });
-
-    const title = `QA narration ${run}`;
-    let narrationId;
-    await t.test("own narration: submitted without source → refused without one → approved with source", async () => {
-      await gotoOk(page, "/admin/content");
-      await page.locator("#n-trail").selectOption({ label: CLOSE_TRAIL.name });
-      await page.locator("#n-title").fill(title);
-      await page.locator("#n-transcript").fill(`Demonstration narration written by the admin e2e spec (${run}). Pines here are fictional.`);
-      await page.locator("#n-submit").check();
-      // Saving redirects to the new narration's detail page.
-      await Promise.all([page.waitForURL(/\/admin\/content\/[0-9a-f-]{36}$/, { timeout: NAV }), page.getByRole("button", { name: "Save narration", exact: true }).click()]);
-      await ready(page);
-      narrationId = page.url().split("/").pop();
-      cleanups.push([
-        "retire QA narration",
-        async (p) => {
-          await gotoOk(p, `/admin/content/${narrationId}`);
-          if ((await p.locator("#rt-confirm").count()) === 0) return;
-          await p.locator("#rt-confirm").check();
-          await submit(p.locator("#retire"), "Retire narration");
-        },
-      ]);
-      await assertText(pageHeader(page), /in review/i);
-      await assertText(page.locator("main"), /None — required for approval/);
-
-      // No source yet → the server refuses even with the browser check bypassed.
-      await page.locator("#ap-cite").fill(`QA citation ${run}`);
-      await dropRequired();
-      await submitAndExpect(page.locator("#review"), "Approve narration", /Choose the source this narration is based on/);
-      await reloadReady(page);
-      await assertText(pageHeader(page), /in review/i);
-
-      // With a source → approved.
-      const sourceOptions = await page.locator("#ap-source option").evaluateAll((os) => os.map((o) => o.value).filter(Boolean));
-      assert.ok(sourceOptions.length > 0, "at least one source to cite");
-      await page.locator("#ap-source").selectOption(sourceOptions[0]);
-      await page.locator("#ap-cite").fill(`QA citation ${run}`);
-      await submit(page.locator("#review"), "Approve narration");
-      await assertText(pageHeader(page), /approved/i);
-      await reloadReady(page);
-      await assertText(pageHeader(page), /approved/i);
-      assert.equal(await page.locator("#review").count(), 0, "approved narration offers no approve form");
-    });
-
-    await t.test("the approved, cited narration is listed on the public trail page", async () => {
-      await gotoOk(customer, `/trails/${CLOSE_TRAIL.slug}`);
-      const stops = customer.locator("section", { has: customer.getByRole("heading", { name: /Audio narration stops/ }) });
-      await assertText(stops.locator("li"), new RegExp(`${esc(title)}[\\s\\S]*Source: QA citation ${run}`));
-    });
-
-    await t.test("audit log records the approval with the actor", async () => {
-      const rows = await auditRows(admin, { action: "narration.approved", entityId: narrationId });
-      assert.ok(rows.length >= 1 && rows[0].actor.includes(EDITOR), `narration.approved by editor@ expected:\n${fmtRows(rows)}`);
-    });
-
-    // Retire now (also registered as a cleanup in case this step fails).
-    await t.test("retiring removes it from the public trail page", async () => {
-      await gotoOk(page, `/admin/content/${narrationId}`);
-      await page.locator("#rt-confirm").check();
-      await submit(page.locator("#retire"), "Retire narration");
-      await assertText(pageHeader(page), /retired/i);
-      await gotoOk(customer, `/trails/${CLOSE_TRAIL.slug}`);
-      assert.equal(await customer.getByText(title).count(), 0, "retired narration is no longer public");
-    });
-    assert.deepEqual(errors, [], `console errors:\n${errors.join("\n")}`);
-  } finally {
-    await ctx.close();
-  }
-});
-
-// ---------------------------------------------------------------------------
-// 4. Closures affect the public trail page and /plan
-// ---------------------------------------------------------------------------
-test("a closure created in admin shows on the public trail page and excludes the trail from /plan; ending it restores both", { timeout: 240_000 }, async (t) => {
-  const trailId = await adminTrailId(admin, CLOSE_TRAIL.name);
-  const date = nextDow(addDays(today, randInt(10, 40)), 3); // a Wednesday a few weeks out
-  const reason = `QA closure ${run}: footbridge out (demonstration)`;
-  const closureCard = () => admin.locator("#list li").filter({ hasText: reason });
-
-  await t.test("before: the trail fits and can be saved", async () => {
-    await gotoOk(customer, planUrl(date, CLOSE_TRAIL.slug));
-    await assertText(customer.locator("main"), new RegExp(`${esc(CLOSE_TRAIL.name)} fits your answers`));
-    await customer.getByRole("button", { name: `Save this trip (${CLOSE_TRAIL.name})` }).first().waitFor({ timeout: UI });
-  });
-
-  await t.test("admin creates an open-ended 'closed' closure", async () => {
-    await gotoOk(admin, `/admin/trails/${trailId}/closures`);
-    await admin.locator("#cl-new-sev").selectOption("closed");
-    await admin.locator("#cl-new-reason").fill(reason);
-    cleanups.push([
-      "end QA closure",
-      async (p) => {
-        await gotoOk(p, `/admin/trails/${trailId}/closures`);
-        const card = p.locator("#list li").filter({ hasText: reason }).filter({ has: p.getByRole("button", { name: "End now" }) });
-        if (await card.count()) await submit(card.first(), "End now");
-      },
-    ]);
-    await submitAndExpect(admin.locator("#new"), "Save closure", /Closure saved\. The trail is unavailable for recommendations and new bookings/);
-    await assertText(closureCard(), /active/i);
-    // A full closure lists the paid bookings on its days (each links to its booking page).
-    await assertText(closureCard(), /No upcoming paid bookings fall on days this closure covers|upcoming paid bookings? \(\d+ hikers?\) on closed days/);
-    const links = closureCard().getByRole("link", { name: "Open booking" });
-    for (const href of await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")))) assert.match(href, /^\/admin\/bookings\/[0-9a-f-]{36}$/);
-  });
-
-  await t.test("public trail page shows the closure and its reason", async () => {
-    await gotoOk(customer, `/trails/${CLOSE_TRAIL.slug}`);
-    const alert = customer.getByRole("region", { name: "Closures and advisories" });
-    await assertText(alert, new RegExp(`Closed[\\s\\S]*${esc(reason)}`));
-    await assertText(customer.locator("main"), /Currently closed: personalize for a date after the closure ends/);
-  });
-
-  await t.test("/plan excludes the closed trail with the closure reason and offers no save button", async () => {
-    await gotoOk(customer, planUrl(date, CLOSE_TRAIL.slug));
-    await assertText(customer.locator("main"), new RegExp(`${esc(CLOSE_TRAIL.name)} doesn't fit your answers`));
-    await assertText(customer.locator("main"), new RegExp(`Fully closed on ${date}: ${esc(reason)}`));
-    assert.equal(await customer.getByRole("button", { name: `Save this trip (${CLOSE_TRAIL.name})` }).count(), 0);
-  });
-
-  await t.test("ending the closure restores the trail page and /plan", async () => {
-    await gotoOk(admin, `/admin/trails/${trailId}/closures`);
-    await submit(closureCard().filter({ has: admin.getByRole("button", { name: "End now" }) }).first(), "End now");
-    await assertText(closureCard(), /ended/i);
-    assert.equal(await closureCard().getByRole("button", { name: "End now" }).count(), 0, "an ended closure offers no End now button");
-    await gotoOk(customer, `/trails/${CLOSE_TRAIL.slug}`);
-    assert.equal(await customer.getByText(reason).count(), 0, "ended closure no longer shown publicly");
-    await gotoOk(customer, planUrl(date, CLOSE_TRAIL.slug));
-    await assertText(customer.locator("main"), new RegExp(`${esc(CLOSE_TRAIL.name)} fits your answers`));
-  });
-
-  await t.test("closure.created and closure.ended are audit-logged for the trail", async () => {
-    const rows = await auditRows(admin, { action: "closure.", entityId: trailId });
-    assert.ok(rows.some((r) => r.action === "closure.created" && r.actor.includes(ADMIN)), `closure.created missing:\n${fmtRows(rows)}`);
-    assert.ok(rows.some((r) => r.action === "closure.ended"), `closure.ended missing:\n${fmtRows(rows)}`);
-  });
-});
-
-// ---------------------------------------------------------------------------
-// 5. GeoJSON route upload
-// ---------------------------------------------------------------------------
-test("GeoJSON route upload: a valid file validates and activates; an invalid one shows errors and cannot be activated", { timeout: 240_000 }, async (t) => {
-  const trailId = await adminTrailId(admin, CLOSE_TRAIL.name);
-  const geometry = seededGeometry();
-  const sha = (buf) => createHash("sha256").update(buf).digest("hex");
-  const fileRow = (checksum) => admin.locator("#files tr").filter({ hasText: `${checksum.slice(0, 12)}…` });
-  const upload = async (name, buffer) => {
-    await admin.locator('#upload input[type="file"]').setInputFiles({ name, mimeType: "application/geo+json", buffer });
-    const [res] = await Promise.all([
-      admin.waitForResponse((r) => r.request().method() === "POST" && r.url().endsWith(`/admin/trails/${trailId}/geometry/upload`), { timeout: NAV }),
-      admin.locator("#upload").getByRole("button", { name: "Upload and validate" }).click(),
-    ]);
-    return res;
-  };
-
-  await gotoOk(admin, `/admin/trails/${trailId}/geometry`);
-  const checksumBefore = await admin.locator("#current dd.font-mono").getAttribute("title");
-
-  await t.test("valid Feature (seeded coordinates) → valid → Activate → active, same geometry checksum", async () => {
-    const valid = Buffer.from(JSON.stringify({ type: "Feature", properties: { name: `QA route ${run}` }, geometry }, null, 1));
-    await upload(`qa-${run}.geojson`, valid);
-    await expectStatus(admin, /Valid route \(\d+\.\d{2} km\)\. Review it, then activate it/, NAV);
-    const row = fileRow(sha(valid));
-    await badge(row, "valid");
-    await submit(row, "Activate");
-    await assertText(fileRow(sha(valid)), /Active[\s\S]*In use/);
-    await reloadReady(admin);
-    await assertText(fileRow(sha(valid)), /Active[\s\S]*In use/);
-    const checksumAfter = await admin.locator("#current dd.font-mono").getAttribute("title");
-    assert.match(checksumAfter, /^[0-9a-f]{64}$/);
-    if (checksumBefore && /^[0-9a-f]{64}$/.test(checksumBefore)) assert.equal(checksumAfter, checksumBefore, "same coordinates → same geometry checksum");
-  });
-
-  await t.test("invalid LineString → invalid with errors, no Activate button", async () => {
-    const [lng, lat] = geometry.coordinates[0];
-    const invalid = Buffer.from(JSON.stringify({ type: "LineString", coordinates: [[lng, lat], [lng + 0.2, lat + 0.1]], qa: run }));
-    await upload(`qa-bad-${run}.geojson`, invalid);
-    await expectStatus(admin, /INVALID and cannot be activated/, NAV);
-    const row = fileRow(sha(invalid));
-    await badge(row, "invalid");
-    await assertText(row, /Cannot be activated/);
-    assert.equal(await row.getByRole("button", { name: "Activate" }).count(), 0, "invalid files offer no activation");
-    assert.ok((await row.locator("li").count()) >= 1, "validation errors are listed");
-    await assertText(row.locator("li"), /Gap of \d+ m between vertices|differs from declared/);
-  });
-
-  await t.test("a file that is not JSON is rejected with a clear error", async () => {
-    await upload(`qa-junk-${run}.geojson`, Buffer.from(`not json ${run}`));
-    await expectStatus(admin, /not valid JSON/, NAV);
-  });
-
-  await t.test("uploads and activation are audit-logged", async () => {
-    const rows = await auditRows(admin, { action: "route_file.", entityId: trailId });
-    assert.ok(rows.some((r) => r.action === "route_file.activated"), `route_file.activated missing:\n${fmtRows(rows)}`);
-    const uploads = rows.filter((r) => r.action === "route_file.uploaded");
-    assert.ok(uploads.some((r) => r.metadata?.status === "valid") && uploads.some((r) => r.metadata?.status === "invalid"), `valid + invalid uploads expected:\n${fmtRows(rows)}`);
-  });
-});
-
-// ---------------------------------------------------------------------------
-// 6. Pricing rule edit → live preview + customer checkout quote
-// ---------------------------------------------------------------------------
-test("pricing rule edit changes the live preview and the customer's checkout quote", { timeout: 240_000 }, async (t) => {
-  const ruleName = `QA fee ${run}`;
-  const date = nextDow(addDays(today, randInt(21, 70)), 2); // a Tuesday 3–10 weeks out
-  const ruleDetails = () => admin.locator("#rules details").filter({ has: admin.locator("summary", { hasText: ruleName }) });
-  const previewTable = () => admin.getByRole("table", { name: "Every line of the quote" });
-  const previewLine = async () => (await readQuote(admin, "Every line of the quote")).find((l) => l.label.startsWith(ruleName));
-  const deleteRule = async (p) => {
-    const d = p.locator("#rules details").filter({ has: p.locator("summary", { hasText: ruleName }) });
-    if (!(await d.count())) return;
-    if (!(await d.evaluate((el) => el.open))) await d.locator("summary").click();
-    await d.getByLabel(/Delete permanently/).check();
-    await submit(d, "Delete rule");
-  };
-  let tripId;
-
-  await t.test("admin creates a flat fee scoped to one trail", async () => {
-    await gotoOk(admin, "/admin/pricing");
-    cleanups.push([
-      "delete QA pricing rule",
-      async (p) => {
-        await gotoOk(p, "/admin/pricing");
-        await deleteRule(p);
-      },
-    ]);
-    await admin.locator("#rule-new-name").fill(ruleName);
-    await admin.locator("#rule-new-kind").selectOption("flat_fee");
-    await admin.locator("#rule-new-value").fill("700");
-    await admin.locator("#rule-new-scope").selectOption("trail");
-    // No trail chosen yet: the server explains in plain language (no internal field keys).
-    await submitAndExpect(admin.locator("#rules"), "Create rule", /Choose the trail this rule applies to/);
-    const errorText = (await admin.getByRole("status").filter({ hasText: /Choose the trail/ }).first().innerText()).trim();
-    assert.doesNotMatch(errorText, /trailId|[a-z][A-Z]\w*:/, `form error shows an internal field key: ${errorText}`);
-    await admin.locator("#rule-new-trail").selectOption({ label: PRICE_TRAIL.name });
-    await submitAndExpect(admin.locator("#rules"), "Create rule", /Pricing rule created/);
-    await ruleDetails().waitFor({ timeout: UI });
-    await assertText(ruleDetails().locator("summary"), new RegExp(`\\$7\\.00 per booking · trail: ${esc(PRICE_TRAIL.name)}`));
-  });
-
-  await t.test("live preview shows the rule, then the edited value without a reload", async () => {
-    await selectByTextStart(admin.getByLabel("Trail", { exact: true }), `${PRICE_TRAIL.name} (`);
-    await admin.getByLabel("Hike date", { exact: true }).fill(date);
-    await admin.getByLabel("Party size", { exact: true }).fill("2");
-    await assertText(previewTable(), new RegExp(esc(ruleName)));
-    assert.equal((await previewLine())?.cents, 700);
-
-    await ruleDetails().locator("summary").click();
-    await ruleDetails().getByLabel("Value (% or cents for flat fee)").fill("1234");
-    await submitAndExpect(ruleDetails(), "Save rule", /Pricing rule saved/);
-    // Preview state (trail/date) is kept and the new value is applied.
-    await admin.waitForFunction(
-      (name) => [...document.querySelectorAll("table tr")].some((tr) => tr.textContent.includes(name) && tr.textContent.includes("$12.34")),
-      ruleName,
-      { timeout: UI },
-    );
-    assert.equal((await previewLine())?.cents, 1234);
-    // Other trails are not affected.
-    await selectByTextStart(admin.getByLabel("Trail", { exact: true }), `${CLOSE_TRAIL.name} (`);
-    await previewTable().waitFor({ timeout: UI });
-    assert.equal(await previewLine(), undefined, "a trail-scoped rule does not apply to other trails");
-  });
-
-  await t.test("customer checkout quote for that trail shows the edited fee and the total adds up", async () => {
-    tripId = await saveTrip(customer, PRICE_TRAIL, date);
-    await openCheckout(customer, tripId, { date, party: 2 });
-    const lines = await readQuote(customer);
-    const fee = lines.find((l) => l.label.startsWith(ruleName));
-    assert.ok(fee, `fee line missing: ${JSON.stringify(lines)}`);
-    assert.equal(fee.cents, 1234);
-    const totalText = await customer.getByRole("table", { name: "Price quote" }).locator("tfoot tr").first().locator("td").innerText();
-    assert.equal(cents(totalText), lines.reduce((s, l) => s + l.cents, 0), "total equals the sum of the lines");
-  });
-
-  await t.test("pricing changes are audit-logged with before/after", async () => {
-    const rows = await auditRows(admin, { action: "pricing.rule_" });
-    const created = rows.find((r) => r.action === "pricing.rule_created" && r.metadata?.name === ruleName);
-    assert.ok(created, `pricing.rule_created for ${ruleName} missing:\n${fmtRows(rows)}`);
-    const updated = rows.find((r) => r.action === "pricing.rule_updated" && r.entityId === created.entityId);
-    assert.ok(updated, `pricing.rule_updated for ${ruleName} missing:\n${fmtRows(rows)}`);
-    assert.equal(updated.metadata?.before?.value, 700, "audit keeps the value before the edit");
-    assert.equal(updated.metadata?.after?.value, 1234, "audit keeps the value after the edit");
-    assert.ok(updated.actor.includes(ADMIN));
-  });
-
-  await t.test("deleting the rule removes it and its fee from checkout", async () => {
-    await gotoOk(admin, "/admin/pricing");
-    await deleteRule(admin);
-    await ruleDetails().waitFor({ state: "detached", timeout: UI });
-    await openCheckout(customer, tripId, { date, party: 2 });
-    assert.ok(!(await readQuote(customer)).some((l) => l.label.startsWith(ruleName)), "fee line gone after delete");
-  });
-});
-
-// ---------------------------------------------------------------------------
-// 7. Feature flag: addon_meal_pack
-// ---------------------------------------------------------------------------
-test("turning addon_meal_pack off hides the meal pack at checkout; the toggle is audit-logged", { timeout: 240_000 }, async (t) => {
-  const date = nextDow(addDays(today, randInt(21, 70)), 4); // a Thursday
-  const flagCard = () => admin.locator("li").filter({ has: admin.locator("code", { hasText: /^addon_meal_pack$/ }) });
-  const tripId = await saveTrip(customer, PRICE_TRAIL, date);
-  const mealBox = () => customer.getByRole("checkbox", { name: /Trail meal pack/ });
-
-  await t.test("with the flag on, the meal pack is offered", async () => {
-    await openCheckout(customer, tripId, { date });
-    await mealBox().waitFor({ timeout: UI });
-  });
-
-  await t.test("admin turns the flag off", async () => {
-    cleanups.push([
-      "turn addon_meal_pack back on",
-      async (p) => {
-        await gotoOk(p, "/admin/flags");
-        const card = p.locator("li").filter({ has: p.locator("code", { hasText: /^addon_meal_pack$/ }) });
-        if (await card.getByRole("button", { name: "Turn on" }).count()) await submit(card, "Turn on");
-      },
-    ]);
-    await gotoOk(admin, "/admin/flags");
-    await badge(flagCard(), "On");
-    await submitAndExpect(flagCard(), "Turn off", /addon_meal_pack turned off/);
-    await flagCard().getByRole("button", { name: "Turn on" }).waitFor({ timeout: UI });
-    await badge(flagCard(), "Off");
-    await assertText(flagCard(), new RegExp(`Last changed[\\s\\S]*by ${esc(ADMIN)}`));
-  });
-
-  await t.test("checkout no longer offers or prices the meal pack, even when requested in the URL", async () => {
-    await openCheckout(customer, tripId, { date, addons: "meal-pack" });
-    assert.equal(await mealBox().count(), 0, "meal pack checkbox hidden");
-    assert.ok(!(await readQuote(customer)).some((l) => /meal pack/i.test(l.label)), "no meal pack line in the quote");
-    await customer.getByRole("checkbox", { name: /gear locker/i }).waitFor({ timeout: UI }); // other add-ons still offered
-  });
-
-  await t.test("turning it back on restores the offer", async () => {
-    await gotoOk(admin, "/admin/flags");
-    await submitAndExpect(flagCard(), "Turn on", /addon_meal_pack turned on/);
-    await openCheckout(customer, tripId, { date });
-    await mealBox().waitFor({ timeout: UI });
-  });
-
-  await t.test("both toggles are in the audit log with from/to and the actor", async () => {
-    const rows = await auditRows(admin, { action: "flag.toggled", entityId: "addon_meal_pack" });
-    assert.ok(rows.length >= 2, `expected 2 flag.toggled rows, got ${rows.length}`);
-    assert.deepEqual(rows[0].metadata, { from: false, to: true }, `newest toggle should be off → on:\n${fmtRows(rows)}`);
-    assert.deepEqual(rows[1].metadata, { from: true, to: false }, `previous toggle should be on → off:\n${fmtRows(rows)}`);
-    assert.ok(rows[0].actor.includes(ADMIN) && rows[1].actor.includes(ADMIN));
-  });
-});
-
-// ---------------------------------------------------------------------------
-// 8. Dead job retry
+// 3. Dead job retry
 // ---------------------------------------------------------------------------
 test("a dead job is re-queued from /admin/jobs, then runs", { timeout: 180_000 }, async (t) => {
   await gotoOk(admin, "/admin/jobs"); // default filter: dead
@@ -885,7 +363,7 @@ test("a dead job is re-queued from /admin/jobs, then runs", { timeout: 180_000 }
 });
 
 // ---------------------------------------------------------------------------
-// 10. Staff roles
+// 4. Staff roles (and confirmations that outlive their form)
 // ---------------------------------------------------------------------------
 test("staff roles: grant then revoke (effective on the next request); the last admin cannot be removed", { timeout: 240_000 }, async (t) => {
   const memberCard = (page, email) => page.locator("#staff > ul > li").filter({ has: page.getByText(email, { exact: true }) }).first();
@@ -917,17 +395,19 @@ test("staff roles: grant then revoke (effective on the next request); the last a
     await assertText(memberCard(admin, customerEmail), /support[\s\S]*granted[\s\S]*by admin@demo\.ghostguide\.test/);
     await gotoOk(customer, "/admin");
     await customer.getByRole("heading", { level: 1, name: "Overview" }).waitFor({ timeout: UI });
-    await expectForbidden(customer, "/admin/pricing"); // support only
+    await expectForbidden(customer, "/admin/flags"); // support only
   });
 
   await t.test("unknown emails are refused", async () => {
     await grant(`nobody-${run}@example.test`, "support", /No account with that email/);
   });
 
-  await t.test("revoking support takes /admin away again", async () => {
+  await t.test("revoking support takes /admin away again; the confirmation outlives the removed form", async () => {
     await gotoOk(admin, "/admin/staff");
     await revoke(admin, customerEmail, "support");
     await memberCard(admin, customerEmail).waitFor({ state: "detached", timeout: UI });
+    // The revoke form is gone with the role, but the success is still announced (aria-live).
+    await expectStatus(admin, /Revoked support\./, 5_000);
     await expectForbidden(customer, "/admin");
   });
 
@@ -978,121 +458,14 @@ test("staff roles: grant then revoke (effective on the next request); the last a
 });
 
 // ---------------------------------------------------------------------------
-// 11. Confirmations survive the re-render (a11y: aria-live feedback for every action)
-// ---------------------------------------------------------------------------
-test("admin action confirmations stay announced after the page re-renders (closure end)", { timeout: 120_000 }, async () => {
-  const trailId = await adminTrailId(admin, CLOSE_TRAIL.name);
-  const reason = `QA advisory ${run}: confirmation probe (demonstration)`;
-  await gotoOk(admin, `/admin/trails/${trailId}/closures`);
-  await admin.locator("#cl-new-sev").selectOption("advisory");
-  await admin.locator("#cl-new-reason").fill(reason);
-  const card = () => admin.locator("#list li").filter({ hasText: reason });
-  cleanups.push([
-    "end QA advisory",
-    async (p) => {
-      await gotoOk(p, `/admin/trails/${trailId}/closures`);
-      const c = p.locator("#list li").filter({ hasText: reason }).filter({ has: p.getByRole("button", { name: "End now" }) });
-      if (await c.count()) await submit(c.first(), "End now");
-    },
-  ]);
-  await submitAndExpect(admin.locator("#new"), "Save closure", /Closure saved/);
-  await submit(card().filter({ has: admin.getByRole("button", { name: "End now" }) }).first(), "End now");
-  await assertText(card(), /ended/i);
-  // Correct behavior: the success message is still announced in an aria-live region even
-  // though the End-now form is no longer rendered for an ended closure.
-  await expectStatus(admin, /Closure ended/, 5_000);
-});
-
-// ---------------------------------------------------------------------------
-// 12. Availability: an empty capacity override means "trail default", never 0
-// ---------------------------------------------------------------------------
-test("availability: saving a day with an empty capacity override keeps the trail default", { timeout: 120_000 }, async () => {
-  const trailId = await adminTrailId(admin, PRICE_TRAIL.name);
-  const day = addDays(today, 27);
-  const note = `QA note ${run} (capacity probe)`;
-  const url = `/admin/availability?trail=${trailId}`;
-  const dayForm = (p) => p.locator("details").filter({ has: p.locator(`#av-${day}-cap`) });
-  const openDay = async (p) => {
-    const d = dayForm(p);
-    await d.waitFor({ timeout: UI });
-    if (!(await d.evaluate((el) => el.open))) await d.locator("summary").click();
-    return d;
-  };
-  cleanups.push([
-    "clear QA availability note",
-    async (p) => {
-      await gotoOk(p, url);
-      const d = await openDay(p);
-      await d.locator(`#av-${day}-cap`).fill("");
-      await d.locator(`#av-${day}-note`).fill("");
-      if (await d.locator(`#av-${day}-blk`).isChecked()) await d.locator(`#av-${day}-blk`).uncheck();
-      await submit(d, "Save day");
-    },
-  ]);
-  await gotoOk(admin, url);
-  const caption = await admin.locator("main table caption").first().textContent();
-  const defaultCap = Number(/default capacity (\d+) hikers\/day/.exec(caption ?? "")?.[1]);
-  assert.ok(defaultCap > 0, `default capacity not found in caption: ${caption}`);
-
-  const d = await openDay(admin);
-  await d.locator(`#av-${day}-cap`).fill("");
-  await d.locator(`#av-${day}-note`).fill(note);
-  await submitAndExpect(d, "Save day", new RegExp(`${day} saved \\(capacity ${defaultCap}\\)`));
-  await gotoOk(admin, url);
-  const row = admin.locator("main table tbody tr").filter({ has: admin.locator(`#av-${day}-cap`) });
-  await assertText(row, new RegExp(`Note: ${esc(note)}`));
-  assert.equal(await admin.locator(`#av-${day}-cap`).inputValue(), "", "no override was stored");
-  assert.doesNotMatch(await row.innerText(), /\(override\)|Full|Blocked/, "the day keeps the default capacity and stays bookable");
-});
-
-// ---------------------------------------------------------------------------
-// 13. Add-on configuration (admin only; audited)
-// ---------------------------------------------------------------------------
-test("add-ons: admin creates an inactive add-on and edits its daily capacity; both are audit-logged", { timeout: 120_000 }, async () => {
-  const code = `qa-pack-${run}`;
-  const name = `QA snack pack ${run}`;
-  await gotoOk(admin, "/admin/pricing");
-  const create = admin.locator("form").filter({ has: admin.locator("#ad-new-code") });
-  await create.locator("#ad-new-code").fill(code);
-  await create.locator("#ad-new-kind").selectOption("meal_pack");
-  await create.locator("#ad-new-name").fill(name);
-  await create.locator("#ad-new-price").fill("4.50");
-  await create.locator("#ad-new-unit").selectOption("per_booking");
-  await create.locator("#ad-new-cap").fill("");
-  // inactive: never offered to customers (other specs share this database)
-  await create.locator("#ad-new-active").uncheck();
-  await submitAndExpect(create, "Create add-on", new RegExp(`Add-on “${esc(name)}” created`));
-
-  await gotoOk(admin, "/admin/pricing");
-  const item = admin.locator("#addons details").filter({ has: admin.locator("summary", { hasText: `code ${code}` }) });
-  await item.waitFor({ timeout: UI });
-  await assertText(item.locator("summary"), /Inactive[\s\S]*\$4\.50 per booking · no daily limit · all regions/);
-  await item.locator("summary").click();
-  const cap = item.getByLabel("Daily capacity (units per day)");
-  await cap.fill("12");
-  await submitAndExpect(item, "Save add-on", new RegExp(`${esc(name)} saved`));
-  await gotoOk(admin, "/admin/pricing");
-  await assertText(admin.locator("#addons details summary").filter({ hasText: `code ${code}` }), /12\/day/);
-
-  const rows = await auditRows(admin, { action: "pricing.addon_" });
-  const created = rows.find((r) => r.action === "pricing.addon_created" && r.metadata?.code === code);
-  assert.ok(created, `pricing.addon_created missing:\n${fmtRows(rows)}`);
-  assert.equal(created.metadata.active, false);
-  const updated = rows.find((r) => r.action === "pricing.addon_updated" && r.entityId === created.entityId);
-  assert.ok(updated, `pricing.addon_updated missing:\n${fmtRows(rows)}`);
-  assert.equal(updated.metadata.before.dailyCapacity, null);
-  assert.equal(updated.metadata.after.dailyCapacity, 12);
-});
-
-// ---------------------------------------------------------------------------
-// 14. Overview job-runner health, audit filter labels
+// 5. Overview job-runner health, audit filter labels
 // ---------------------------------------------------------------------------
 test("overview shows job-runner health; audit filter shows exact codes", { timeout: 120_000 }, async () => {
   await gotoOk(admin, "/admin");
   const runnerRow = admin.locator("main li").filter({ hasText: "Background job runner" });
   await assertText(runnerRow, /On schedule|Delayed/);
   if ((await runnerRow.innerText()).includes("Delayed")) {
-    await assertText(admin.locator("#alerts"), /Background jobs have not run (for \d+ min|yet in this deployment) — refunds, partner requests and checkout holds are delayed/);
+    await assertText(admin.locator("#alerts"), /Background jobs have not run (for \d+ min|yet in this deployment) — background work is delayed/);
   }
   assert.doesNotMatch(await admin.locator("#alerts").innerText(), /\(s\)/, "alert titles are pluralized properly");
 

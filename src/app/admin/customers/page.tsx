@@ -40,8 +40,6 @@ export default async function CustomersPage({ searchParams }: PageProps<"/admin/
             ),
           },
           { header: "Email", cell: (c) => c.email ?? "—" },
-          { header: "Trips", cell: (c) => c.tripCount },
-          { header: "Bookings", cell: (c) => c.bookingCount },
           { header: "Joined", cell: (c) => <When at={c.createdAt} /> },
         ]}
       />

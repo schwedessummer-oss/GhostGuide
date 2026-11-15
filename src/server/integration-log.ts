@@ -3,8 +3,8 @@ import { withSystem, type Tx } from "@/server/db";
 import { redactString } from "@/server/log";
 
 export interface IntegrationEvent {
-  providerKind: string; // payments | weather | gear_locker | shuttle | meal_pack | satellite_device | storage | catalog providers
-  providerKey: string; // stripe | demo | nws | ...
+  providerKind: string; // e.g. weather
+  providerKey: string; // e.g. nws | demo
   operation: string;
   outcome: "success" | "failure" | "simulated";
   entityType?: string;

@@ -6,10 +6,9 @@ import { redact, redactString } from "@/server/log";
 import { assertCan, auditInSystemTx, fail, guarded, ok, staffTx, systemTx, type ActionResult, type Page, type Paged } from "./common";
 
 /**
- * Retry queue and integration health. `jobs` and `webhook_events` are
- * server-only tables (no API-role access), so they are read and written as
- * trusted code after the permission check; integration_events is read under
- * RLS.
+ * Retry queue and integration health. `jobs` is a server-only table (no
+ * API-role access), so it is read and written as trusted code after the
+ * permission check; integration_events is read under RLS.
  */
 export const JOB_STATUSES = ["dead", "failed", "queued", "running", "succeeded", "cancelled"] as const;
 
@@ -128,25 +127,4 @@ export async function integrationSummary(user: SessionUser): Promise<{ providerK
     select provider_kind, outcome, count(*)::int as n, max(created_at) as last_at
     from public.integration_events where created_at > now() - interval '24 hours'
     group by provider_kind, outcome order by provider_kind, outcome`);
-}
-
-export interface WebhookRow {
-  id: string;
-  provider: string;
-  eventId: string;
-  type: string;
-  status: string;
-  attempts: number;
-  error: string | null;
-  receivedAt: Date;
-  processedAt: Date | null;
-}
-
-export async function listFailedWebhooks(user: SessionUser, page: Page): Promise<Paged<WebhookRow>> {
-  assertCan(user, "integrations.view");
-  const rows = await systemTx((tx) => tx<(WebhookRow & { total: number })[]>`
-    select id, provider, event_id, type, status, attempts, error, received_at, processed_at, count(*) over()::int as total
-    from public.webhook_events where status = 'failed'
-    order by received_at desc limit ${page.limit} offset ${page.offset}`);
-  return { rows: rows.map((r) => ({ ...r, error: r.error ? redactString(r.error) : null })), total: rows[0]?.total ?? 0, ...page };
 }

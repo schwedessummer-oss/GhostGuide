@@ -18,10 +18,11 @@ import {
 
 /**
  * SIMULATED payment provider for demo mode. No money moves. Sessions live in
- * public.demo_checkout_sessions; the simulated payment page
- * (/checkout/demo/[sessionId]) builds Stripe-shaped events, signs them with
- * HMAC-SHA256(AUTH_SECRET) and POSTs them to /api/webhooks/demo-payments,
- * which runs the exact same processor as the Stripe webhook.
+ * public.demo_checkout_sessions; settleDemoSession() builds Stripe-shaped
+ * events, signed with HMAC-SHA256(AUTH_SECRET), for the same webhook
+ * processor as Stripe's. The simulated payment page (/checkout/demo/[id])
+ * and the webhook routes were removed with the single-trail booking flow;
+ * the order checkout (docs/PLAN.md, Phase 6) brings them back.
  *
  * Every entry point calls assertSimulationAllowed("payments"), so a live
  * deployment can never "take" a simulated payment.

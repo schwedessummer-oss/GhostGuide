@@ -1,14 +1,13 @@
 import "server-only";
 import { withAnon } from "@/server/db";
 
-/** Known feature flags (seeded). Unknown keys evaluate to false. */
-export const FLAGS = {
-  checkout_enabled: "Allow customers to start checkout",
-  addon_gear_locker: "Offer gear-locker add-on",
-  addon_shuttle: "Offer shuttle add-on",
-  addon_meal_pack: "Offer meal-pack add-on",
-  addon_satellite_device: "Offer satellite-communicator rental add-on",
-} as const;
+/**
+ * Known feature flags (key → description), each backed by a row in
+ * public.feature_flags. Unknown keys evaluate to false. None are defined at
+ * the moment: add an entry here, and seed its row, when a feature needs a
+ * switch.
+ */
+export const FLAGS = {} as const satisfies Record<string, string>;
 
 export type FlagKey = keyof typeof FLAGS;
 

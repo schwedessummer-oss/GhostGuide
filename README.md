@@ -2,9 +2,10 @@
 
 A minimalist website for **finding, planning and booking the world's best hikes**, with strict data
 licensing. It is being rebuilt to the approved plan in [`docs/PLAN.md`](docs/PLAN.md). The earlier
-"hiking companion" (safety check-ins, GPS hike screen, offline downloads, AI explanations) has been
-removed; it is preserved on the `archive/v0-hiking-companion` branch and the `v0-hiking-companion`
-tag.
+"hiking companion" (safety check-ins, GPS hike screen, offline downloads, AI explanations, the
+fictional "Ghost Ridge" demo region with its trip planner, single-trail bookings, partner add-ons
+and permit tracking) has been removed; it is preserved on the `archive/v0-hiking-companion` branch
+and the `v0-hiking-companion` tag.
 
 **What runs today (from the earlier Phase 1, real data):**
 
@@ -23,10 +24,9 @@ tag.
 - **Admin "Trail data" view:** provider health, API usage and estimated cost, coverage and retries,
   and moderation.
 
-Still from the earlier MVP, working on the **fictional demo region** (development fixtures, hidden
-in production): trip planning and booking/checkout (payments simulated). The demo region, its
-booking flow and the live OSM loading are removed in later passes of Phase 2 (see
-[`docs/PLAN.md`](docs/PLAN.md) §2).
+Not yet rebuilt: trips, booking and checkout (Phases 5 and 6 of [`docs/PLAN.md`](docs/PLAN.md)).
+Only the Stripe Checkout adapter (`src/integrations/payments`) is kept for Phase 6. Live OSM
+loading is removed in a later pass of Phase 2 (§2).
 
 > **Honesty rules.**
 > - Data is never invented. When a provider has no value, the UI says so. When a provider fails,
@@ -42,16 +42,16 @@ booking flow and the live OSM loading are removed in later passes of Phase 2 (se
 |---|---|
 | App | Next.js 16 App Router (React 19, TypeScript strict, Tailwind 4), `proxy.ts` for Supabase sessions. No service worker: `public/sw.js` only removes the one older versions installed |
 | Data | Supabase Postgres 17 + **PostGIS** (local: PostgreSQL 16 + PostGIS 3.4 with a small Supabase shim). Row-level security on every table |
-| DB access | `withUser` (RLS as `authenticated`), `withAnon` (public reads), `withSystem` (trusted jobs/webhooks), on postgres.js |
+| DB access | `withUser` (RLS as `authenticated`), `withAnon` (public reads), `withSystem` (trusted server code: jobs, cron), on postgres.js |
 | Trail data | `TrailDataProvider` interface (`src/server/trails/providers/**`): OSM via Overpass, RIDB. Normalized → enriched → `catalog_trails` / `catalog_pois` |
 | On-demand loading | 0.25° tile grid (`catalog_tiles`). A search requests missing tiles → deduplicated jobs plus immediate after-response loading. Global cap of 2 concurrent Overpass downloads |
 | Enrichment | AWS Terrain Tiles elevation (smoothed gain/loss, measured from the trailhead), Tobler duration incl. out-and-back totals, SAC/effort difficulty, trailhead (OSM trailhead → parking → route start), features and amenities from nearby POIs, admin names (Nominatim reverse), time zone, stable SEO slugs, cross-tile merging |
 | Maps | MapLibre GL JS + OpenFreeMap vector tiles (no API key); terrain hillshade on wide maps only |
 | Weather | MET Norway Locationforecast (cached, honoring `Expires`/`If-Modified-Since`), NWS alerts (US); sun times computed locally |
-| Jobs | Postgres queue. `/api/cron/jobs` runs fast commerce and housekeeping jobs; `/api/cron/catalog` runs slow trail downloads. Both are triggered every minute by Supabase pg_cron (`npm run setup:cron`) |
+| Jobs | Postgres queue. `/api/cron/jobs` runs fast housekeeping jobs; `/api/cron/catalog` runs slow trail downloads. Both are triggered every minute by Supabase pg_cron (`npm run setup:cron`) |
 | Provider calls | One client (`src/server/providers/http.ts`): identifying User-Agent, timeouts, retries, global throttles, daily usage accounting |
 
-More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (data access, jobs, commerce) and
+More: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (data access, jobs, admin) and
 [`docs/INTEGRATIONS.md`](docs/INTEGRATIONS.md) (every provider, its license, caching and cost).
 
 ## Local setup
@@ -83,7 +83,7 @@ npm run jobs:run -- --watch
 ```
 
 - `npm run db:reset` creates the database, applies the migrations (plus the local shim) and seeds
-  the demo data.
+  the demo accounts (no trail data: trails come from the catalog).
 - `npm run dev` serves the app on http://localhost:3000. Open `/explore` and search any place.
 - `npm run jobs:run -- --watch` runs background jobs in a second terminal (a stand-in for cron).
 
@@ -102,9 +102,9 @@ Demo accounts (local only; password from `SEED_DEMO_PASSWORD`, default `ghostgui
 | `hiker@demo.ghostguide.test` | customer |
 | `hiker2@demo.ghostguide.test` | customer |
 | `admin@demo.ghostguide.test` | admin (everything) |
-| `operator@demo.ghostguide.test` | operations: bookings, gear, fulfillment, jobs, trail data |
-| `editor@demo.ghostguide.test` | content editor: curated trails, narration approval |
-| `support@demo.ghostguide.test` | customer support (customers, bookings, tickets) |
+| `operator@demo.ghostguide.test` | operations: customers, support, jobs, trail data |
+| `editor@demo.ghostguide.test` | content editor (admin overview only until the data-review page arrives) |
+| `support@demo.ghostguide.test` | customer support (customers, tickets) |
 
 ## Environment variables
 
@@ -117,7 +117,6 @@ whether it is server-only or public (`NEXT_PUBLIC_*`). Phase 1 needs **no paid k
 - Provider base URLs (`OVERPASS_URLS`, `NOMINATIM_URL`, `METNO_URL`, `NWS_URL`, `TERRAIN_TILES_URL`,
   `NEXT_PUBLIC_MAP_STYLE_URL`): change them to move to self-hosted or commercial instances; the tests
   point them at mocks.
-- `SHOW_DEMO_FIXTURES`: shows the fictional region. Off by default in production builds.
 
 ## Database and migrations
 
@@ -132,7 +131,7 @@ Migrations live in `supabase/migrations` as plain SQL.
 
 | Runner | Kinds | Trigger |
 |---|---|---|
-| `/api/cron/jobs` (60 s) | checkout holds, payment reconciliation, refunds, partner fulfilment, permit reminders, rate-limit purges | pg_cron every minute, plus a daily Vercel cron as a safety net |
+| `/api/cron/jobs` (60 s) | `ops.purge_rate_limits` (daily) and any other non-catalog job | pg_cron every minute, plus a daily Vercel cron as a safety net |
 | `/api/cron/catalog` (300 s) | `catalog.ingest_tile`, `catalog.refresh_stale` (hourly), `catalog.purge_caches` (daily) | pg_cron every minute |
 
 Schedule both runners once from your computer:
@@ -161,10 +160,8 @@ MET Norway data under CC BY 4.0), with attribution in each fixtures README.
 ## Deployment
 
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for Supabase + Vercel setup: environment variables,
-migrations, the cron runners, Supabase Auth URLs and Stripe webhooks.
-
-Payments today are one-time Stripe Checkout for demo bookings, with signed, idempotent webhooks.
-Subscriptions (Ghost+), entitlements and the customer portal are Phase 5.
+migrations, the cron runners and Supabase Auth URLs. Nothing takes payments today: the order
+checkout with Stripe (test mode) is Phase 6.
 
 ## Not an emergency service
 
@@ -178,5 +175,5 @@ Ghost Guide does not track or monitor hikers and cannot contact Search and Rescu
 - [`docs/IMPLEMENTATION_CHECKLIST.md`](docs/IMPLEMENTATION_CHECKLIST.md): done / simulated / deferred, by phase
 - [`docs/INTEGRATIONS.md`](docs/INTEGRATIONS.md): every provider (license, caching, cost, status)
 - [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md): data and platform limitations
-- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md): Supabase + Vercel, cron, Stripe
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md): Supabase + Vercel, cron
 - [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md): before real customers

@@ -14,27 +14,31 @@ export default async function FlagsPage() {
   return (
     <>
       <AdminHeader title="Feature flags" description="Turn features on or off without a deploy. Changes apply to new requests immediately and are recorded in the audit log." />
-      <ul className="space-y-3">
-        {flags.map((f) => (
-          <li key={f.key}>
-            <Card className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-              <div>
-                <p className="flex flex-wrap items-center gap-2">
-                  <code className="font-semibold">{f.key}</code>
-                  <StatusBadge status={f.enabled ? "active" : "retired"} label={f.enabled ? "On" : "Off"} />
-                  {!f.known ? <span className="text-xs text-muted">(not read by this version of the app)</span> : null}
-                </p>
-                <p className="text-sm text-muted">{f.description}</p>
-                <p className="text-xs text-muted">
-                  Last changed <When at={f.updatedAt} />
-                  {f.updatedByEmail ? ` by ${f.updatedByEmail}` : ""}
-                </p>
-              </div>
-              <ActionForm action={setFlagAction.bind(null, f.key, !f.enabled)} submitLabel={f.enabled ? "Turn off" : "Turn on"} variant={f.enabled ? "secondary" : "primary"} compact />
-            </Card>
-          </li>
-        ))}
-      </ul>
+      {flags.length ? (
+        <ul className="space-y-3">
+          {flags.map((f) => (
+            <li key={f.key}>
+              <Card className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div>
+                  <p className="flex flex-wrap items-center gap-2">
+                    <code className="font-semibold">{f.key}</code>
+                    <StatusBadge status={f.enabled ? "active" : "retired"} label={f.enabled ? "On" : "Off"} />
+                    {!f.known ? <span className="text-xs text-muted">(not read by this version of the app)</span> : null}
+                  </p>
+                  <p className="text-sm text-muted">{f.description}</p>
+                  <p className="text-xs text-muted">
+                    Last changed <When at={f.updatedAt} />
+                    {f.updatedByEmail ? ` by ${f.updatedByEmail}` : ""}
+                  </p>
+                </div>
+                <ActionForm action={setFlagAction.bind(null, f.key, !f.enabled)} submitLabel={f.enabled ? "Turn off" : "Turn on"} variant={f.enabled ? "secondary" : "primary"} compact />
+              </Card>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="rounded-xl border border-dashed border-sand-300 bg-surface p-6 text-center text-muted">No feature flags are defined.</p>
+      )}
     </>
   );
 }

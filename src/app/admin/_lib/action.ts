@@ -23,8 +23,4 @@ export function str(fd: FormData, key: string): string {
   return typeof v === "string" ? v : "";
 }
 
-export function strs(fd: FormData, key: string): string[] {
-  return fd.getAll(key).filter((v): v is string => typeof v === "string");
-}
-
 export const checked = (fd: FormData, key: string) => fd.get(key) === "on" || fd.get(key) === "true";

@@ -1,15 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Bookmark, CloudSun, Map as MapIcon, Route, Search, TriangleAlert } from "lucide-react";
+import { ArrowRight, Bookmark, CloudSun, Map as MapIcon, Route, Search } from "lucide-react";
 import { Container } from "@/components/ui";
-import { TrailCard, type TrailCardData } from "@/components/discover/trail-card";
 import { NearMeLink } from "@/components/explore/near-me-link";
-import { showDemoFixtures } from "@/config/env";
-import { getLaunchRegion, listTrails } from "@/server/catalog/trails";
-import { log } from "@/server/log";
-
-// Static, regenerated hourly (it can list demo-region trails from the database).
-export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: { absolute: "Ghost Guide — find a hike, plan the day" },
@@ -34,18 +27,6 @@ const VALUES = [
   },
 ] as const;
 
-async function demoRegionTrails(): Promise<{ trails: TrailCardData[]; regionName: string } | null> {
-  if (!showDemoFixtures()) return null;
-  try {
-    const region = await getLaunchRegion();
-    const trails = (await listTrails(region.id)).filter((t) => t.status === "published");
-    return { trails: trails.slice(0, 3), regionName: region.name };
-  } catch (err) {
-    log.warn("landing.demo_trails_failed", { error: err instanceof Error ? err.message : String(err) });
-    return null;
-  }
-}
-
 /** Decorative ridgelines (solid fills, no images). */
 function Ridges({ className }: { className?: string }) {
   return (
@@ -58,8 +39,7 @@ function Ridges({ className }: { className?: string }) {
   );
 }
 
-export default async function HomePage() {
-  const demo = await demoRegionTrails();
+export default function HomePage() {
   return (
     <>
       <section className="relative overflow-hidden bg-forest-900 text-white">
@@ -133,36 +113,6 @@ export default async function HomePage() {
           </p>
         </Container>
       </section>
-
-      {demo && demo.trails.length ? (
-        <section aria-labelledby="demo-heading" className="border-t border-sand-200 bg-sand-100 py-14">
-          <Container>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div className="max-w-2xl">
-                <p className="inline-flex items-center gap-1.5 rounded-full bg-amber-bg px-3 py-1 text-sm font-semibold text-amber-ink ring-1 ring-[#f1d9b0]">
-                  <TriangleAlert aria-hidden className="size-4" /> Development fixtures
-                </p>
-                <h2 id="demo-heading" className="mt-3 text-2xl font-bold">
-                  Demo region (fictional): {demo.regionName}
-                </h2>
-                <p className="mt-2 text-muted">
-                  These trails do not exist. They demonstrate trip planning and booking, and are not for navigation.
-                </p>
-              </div>
-              <Link href="/trails" className="inline-flex min-h-11 items-center gap-1 font-semibold text-forest-800 underline-offset-2 hover:underline">
-                All demo trails <ArrowRight aria-hidden className="size-4" />
-              </Link>
-            </div>
-            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {demo.trails.map((t) => (
-                <li key={t.slug}>
-                  <TrailCard trail={t} />
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </section>
-      ) : null}
     </>
   );
 }

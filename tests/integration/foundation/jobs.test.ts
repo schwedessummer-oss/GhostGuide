@@ -42,13 +42,13 @@ describe("durable job queue", () => {
   it("retries failures with backoff and dead-letters after max attempts", async () => {
     const kind = uniqueKind();
     const { id } = await enqueueJob(null, kind, {}, { maxAttempts: 2 });
-    const handlers = { [kind]: async () => { throw new Error("partner timeout"); } };
+    const handlers = { [kind]: async () => { throw new Error("provider timeout"); } };
     const s1 = await runDueJobs(handlers, { kinds: [kind] });
     expect(s1.retried).toBe(1);
     let [job] = await sql()`select status, attempts, run_at > now() as delayed, last_error from public.jobs where id = ${id}`;
     expect(job.status).toBe("queued");
     expect(job.delayed).toBe(true);
-    expect(job.lastError).toMatch(/partner timeout/);
+    expect(job.lastError).toMatch(/provider timeout/);
     // make it due again and fail a second time -> dead
     await sql()`update public.jobs set run_at = now() where id = ${id}`;
     const s2 = await runDueJobs(handlers, { kinds: [kind] });
@@ -63,8 +63,8 @@ describe("durable job queue", () => {
 
   it("cancels superseded queued jobs by dedup-key prefix", async () => {
     const kind = uniqueKind();
-    const prefix = `booking:${randomUUID()}:`;
-    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}fulfillment`, runAt: new Date(Date.now() + 3600_000) });
+    const prefix = `order:${randomUUID()}:`;
+    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}followup`, runAt: new Date(Date.now() + 3600_000) });
     await enqueueJob(null, kind, {}, { dedupKey: `${prefix}refund`, runAt: new Date(Date.now() + 7200_000) });
     const cancelled = await withSystem((tx) => cancelQueuedJobs(tx, prefix));
     expect(cancelled).toBe(2);

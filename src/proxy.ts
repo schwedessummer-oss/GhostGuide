@@ -68,7 +68,7 @@ export function lowerCaseTrailPath(pathname: string): string | null {
 
 export const config = {
   matcher: [
-    // Skip static assets, the service worker, webhooks and cron endpoints.
-    "/((?!_next/static|_next/image|favicon.ico|sw.js|manifest.webmanifest|icons/|api/webhooks|api/cron|.*\\.(?:svg|png|jpg|jpeg|gif|webp|mp3|json)$).*)",
+    // Skip static assets, the service worker and cron endpoints.
+    "/((?!_next/static|_next/image|favicon.ico|sw.js|manifest.webmanifest|icons/|api/cron|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json)$).*)",
   ],
 };

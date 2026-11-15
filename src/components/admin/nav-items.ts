@@ -8,43 +8,15 @@ export interface AdminNavItem {
   permission: Permission;
 }
 
-export type AdminIcon =
-  | "overview"
-  | "trails"
-  | "content"
-  | "customers"
-  | "bookings"
-  | "availability"
-  | "pricing"
-  | "fulfillment"
-  | "gear"
-  | "permits"
-  | "support"
-  | "jobs"
-  | "flags"
-  | "staff"
-  | "audit";
+export type AdminIcon = "overview" | "trails" | "customers" | "support" | "jobs" | "flags" | "staff" | "audit";
 
 export const ADMIN_NAV: { group: string; items: AdminNavItem[] }[] = [
   {
     group: "Operations",
     items: [
       { href: "/admin", label: "Overview", icon: "overview", permission: "admin.access" },
-      { href: "/admin/bookings", label: "Bookings", icon: "bookings", permission: "bookings.view" },
-      { href: "/admin/fulfillment", label: "Fulfillment", icon: "fulfillment", permission: "fulfillment.manage" },
-      { href: "/admin/gear", label: "Gear lockers", icon: "gear", permission: "gear.manage" },
-      { href: "/admin/availability", label: "Availability", icon: "availability", permission: "inventory.manage" },
       { href: "/admin/customers", label: "Customers", icon: "customers", permission: "customers.view" },
       { href: "/admin/support", label: "Support", icon: "support", permission: "support.manage" },
-    ],
-  },
-  {
-    group: "Catalog",
-    items: [
-      { href: "/admin/trails", label: "Trails", icon: "trails", permission: "trails.manage" },
-      { href: "/admin/content", label: "Narration review", icon: "content", permission: "trails.manage" },
-      { href: "/admin/permits", label: "Permits", icon: "permits", permission: "permits.manage" },
-      { href: "/admin/pricing", label: "Pricing", icon: "pricing", permission: "pricing.manage" },
     ],
   },
   {

@@ -11,7 +11,7 @@ export interface RateLimitResult {
 /**
  * Fixed-window rate limiter backed by Postgres, so limits hold across
  * serverless instances. `key` should include the scope and the subject,
- * e.g. `checkout:user:<id>`.
+ * e.g. `trails:detail:ip:<subject>`.
  */
 export async function checkRateLimit(key: string, baseLimit: number, windowSec: number): Promise<RateLimitResult> {
   const limit = baseLimit * env().RATE_LIMIT_SCALE;

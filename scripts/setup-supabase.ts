@@ -5,9 +5,8 @@
  *
  * Asks for the secret key, the database password and a demo password; finds
  * the project's connection pooler address by itself; writes .env.local
- * (git-ignored); checks the database; creates the private storage bucket;
- * and loads the demo data. Nothing is sent anywhere except your own
- * Supabase project.
+ * (git-ignored); checks the database; and creates the demo accounts.
+ * Nothing is sent anywhere except your own Supabase project.
  */
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -94,7 +93,7 @@ async function tryConnect(url: string): Promise<Attempt> {
   try {
     const [row] = await sql<{ tables: number }[]>`
       select count(*)::int as tables from information_schema.tables
-      where table_schema = 'public' and table_name in ('trails', 'trips', 'bookings')`;
+      where table_schema = 'public' and table_name in ('profiles', 'staff_roles', 'jobs')`;
     return { ok: true, tables: row.tables };
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
@@ -215,20 +214,15 @@ async function main() {
     DATABASE_URL: databaseUrl,
     DATABASE_SSL: "true",
     AUTH_PROVIDER: "supabase",
-    STORAGE_PROVIDER: "supabase",
     SEED_DEMO_PASSWORD: demoPassword,
   };
   writeFileSync(ENV_FILE, Object.entries(values).map(([k, v]) => `${k}=${v}`).join("\n") + "\n", "utf8");
   say(`\n✓ Saved settings to .env.local (this file stays on your computer; git ignores it).`);
   say(`  Project: ${supabaseUrl}`);
 
-  // ---- storage bucket + demo data ------------------------------------------
+  // ---- demo accounts ----------------------------------------------------------
   const env = { ...process.env, ...values };
-  if (!run("Creating the private file bucket", "npx tsx scripts/setup-supabase-storage.ts", env)) {
-    process.exitCode = 1;
-    return;
-  }
-  if (!run("Loading the demo trails and demo accounts", "npm run -s db:seed", env)) {
+  if (!run("Creating the demo accounts", "npm run -s db:seed", env)) {
     process.exitCode = 1;
     return;
   }

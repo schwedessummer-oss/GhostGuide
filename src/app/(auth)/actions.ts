@@ -13,7 +13,7 @@ export type AuthFormState = { error?: string } | undefined;
 
 /** Only allow same-origin paths after sign-in (see src/lib/safe-redirect.ts). */
 function safeNext(next: FormDataEntryValue | null): string {
-  return safeRedirectPath(next, "/trips");
+  return safeRedirectPath(next, "/saved");
 }
 
 async function clientKey() {

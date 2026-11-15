@@ -25,16 +25,12 @@ const schema = z.object({
   DATABASE_SSL: bool.default(false),
 
   AUTH_PROVIDER: z.enum(["demo", "supabase"]).default("demo"),
-  /** HMAC secret for demo sessions, demo webhooks and access codes. */
+  /** HMAC secret for demo sessions and simulated payment webhooks. */
   AUTH_SECRET: z.string().min(32).default("dev-only-insecure-secret-change-me-0123456789"),
 
   NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string().optional(),
   SUPABASE_SECRET_KEY: z.string().optional(),
-
-  STORAGE_PROVIDER: z.enum(["local", "supabase"]).default("local"),
-  LOCAL_STORAGE_DIR: z.string().default(".data/storage"),
-  SUPABASE_STORAGE_BUCKET: z.string().default("trail-media"),
 
   PAYMENTS_PROVIDER: z.enum(["demo", "stripe"]).default("demo"),
   STRIPE_SECRET_KEY: z.string().optional(),
@@ -81,14 +77,8 @@ const schema = z.object({
    * (provider terms; ingestion moves to the offline ingest/ pipeline).
    */
   CATALOG_INLINE_INGEST: bool.default(false),
-  /**
-   * Show the fictional demo region (curated trails, demo bookings) in discovery.
-   * Default: on in development/test, off in production builds.
-   */
-  SHOW_DEMO_FIXTURES: bool.optional(),
 
   CRON_SECRET: z.string().min(16).default("dev-only-cron-secret"),
-  LAUNCH_REGION_SLUG: z.string().default("demo-ghost-ridge"),
   /** Multiplies every rate limit. Automated tests only; must be 1 in live mode. */
   RATE_LIMIT_SCALE: z.coerce.number().int().min(1).max(1000).default(1),
 });
@@ -144,18 +134,9 @@ export function resetEnvCache() {
 export const isDemoMode = () => env().APP_MODE === "demo";
 
 /**
- * Whether the fictional demo region (development fixtures) is shown in
- * discovery. Production experiences use only real provider data.
- */
-export function showDemoFixtures(): boolean {
-  const e = env();
-  return e.SHOW_DEMO_FIXTURES ?? e.NODE_ENV !== "production";
-}
-
-/**
  * Throw if a simulated integration is about to run in live mode. Simulated
  * adapters call this so a misconfigured production deploy fails loudly rather
- * than pretending to take a payment or book a partner service.
+ * than pretending to take a payment or serving simulated data.
  */
 export function assertSimulationAllowed(integration: string) {
   if (env().APP_MODE === "live") {
@@ -169,8 +150,6 @@ export function integrationStatus() {
   return {
     mode: e.APP_MODE,
     auth: e.AUTH_PROVIDER === "supabase" ? "live" : "simulated",
-    storage: e.STORAGE_PROVIDER === "supabase" ? "live" : "local",
-    payments: e.PAYMENTS_PROVIDER === "stripe" ? "live (Stripe test/live keys)" : "simulated",
     trailData: "live (OpenStreetMap via Overpass, loaded on demand)",
     usFacilities: e.RIDB_API_KEY ? "live (Recreation.gov RIDB)" : "not configured (needs RIDB_API_KEY)",
     geocoding: "live (Nominatim, OpenStreetMap)",
@@ -178,6 +157,5 @@ export function integrationStatus() {
     maps: "live (MapLibre + OpenFreeMap vector tiles)",
     trailWeather: "live (MET Norway forecasts; NWS alerts in the US)",
     weather: e.WEATHER_PROVIDER === "nws" ? "live (api.weather.gov)" : "simulated",
-    partners: "simulated (no partner APIs integrated)",
   } as const;
 }

@@ -4,7 +4,6 @@ import { withSystem, withUser, type JsonValue, type Tx } from "@/server/db";
 import { can, type Permission } from "@/server/auth/rbac";
 import type { SessionUser } from "@/server/auth";
 import { log, redact, redactString } from "@/server/log";
-import { localDateInZone, localTimeInZone, zonedTimeToUtc } from "@/lib/time";
 
 /**
  * Shared plumbing for admin use-cases.
@@ -13,9 +12,9 @@ import { localDateInZone, localTimeInZone, zonedTimeToUtc } from "@/lib/time";
  * RBAC permission first (throws ForbiddenError), then runs:
  *  - `staffTx(user, fn)`  — as the `authenticated` role (RLS applies), for
  *                           catalog/config tables whose policies admit staff;
- *  - `systemTx(fn)`       — as the owner role, ONLY for lifecycle / server-only
- *                           tables (jobs, gear_reservations, trip_permits,
- *                           weather_snapshots…) after the permission check.
+ *  - `systemTx(fn)`       — as the owner role, ONLY for server-only tables
+ *                           (jobs, staff_roles listings…) after the
+ *                           permission check.
  * Audit entries are appended in the same transaction as the change.
  */
 export class ForbiddenError extends Error {
@@ -29,10 +28,6 @@ export class ForbiddenError extends Error {
 
 export function assertCan(user: SessionUser | null | undefined, permission: Permission): asserts user is SessionUser {
   if (!user?.id || !can(user.roles, permission)) throw new ForbiddenError(permission);
-}
-
-export function hasRole(user: SessionUser, ...roles: string[]): boolean {
-  return user.roles.some((r) => roles.includes(r));
 }
 
 export type ActionResult<D = undefined> =
@@ -232,66 +227,8 @@ export function isUuid(v: unknown): v is string {
   return uuidSchema.safeParse(v).success;
 }
 
-/** Optional trimmed text: "" -> null. */
-export const optionalText = (max: number) =>
-  z
-    .string()
-    .trim()
-    .max(max)
-    .transform((v) => (v === "" ? null : v))
-    .nullish()
-    .transform((v) => v ?? null);
-
-export { blankAsNull, notBlank } from "./number-fields";
-
 export const requiredText = (min: number, max: number, label = "This field") =>
   z.string().trim().min(min, `${label} is required${min > 1 ? ` (at least ${min} characters)` : ""}.`).max(max, `${label} is too long.`);
 
-export const httpUrl = z
-  .string()
-  .trim()
-  .max(2000)
-  .refine((v) => {
-    try {
-      const u = new URL(v);
-      return u.protocol === "https:" || u.protocol === "http:";
-    } catch {
-      return false;
-    }
-  }, "Enter a full http(s) URL.");
-
-export const httpsUrl = z
-  .string()
-  .trim()
-  .max(2000)
-  .refine((v) => {
-    try {
-      return new URL(v).protocol === "https:";
-    } catch {
-      return false;
-    }
-  }, "Official links must use https://.");
-
 /** "YYYY-MM-DD" calendar date. */
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD.").refine((v) => !Number.isNaN(Date.parse(`${v}T00:00:00Z`)), "Not a real date.");
-
-/** "YYYY-MM-DDTHH:MM" (datetime-local, wall clock in `timeZone`) → UTC Date. */
-export function localDateTimeToUtc(value: string, timeZone: string): Date | null {
-  const m = /^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2})$/.exec(value.trim());
-  if (!m) return null;
-  try {
-    const d = zonedTimeToUtc(m[1], m[2], timeZone);
-    return Number.isNaN(d.getTime()) ? null : d;
-  } catch {
-    return null;
-  }
-}
-
-/** UTC instant → "YYYY-MM-DDTHH:MM" wall clock in `timeZone` (for datetime-local inputs). */
-export function utcToLocalInput(value: Date | string | null, timeZone: string): string {
-  if (!value) return "";
-  const d = new Date(value);
-  return `${localDateInZone(d, timeZone)}T${localTimeInZone(d, timeZone)}`;
-}
-
-export const localDateTime = z.string().trim().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/, "Use the date and time picker (YYYY-MM-DDTHH:MM).");

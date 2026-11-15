@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: "Ghost Guide",
     description: "Find real trails with honest distance, climb and time estimates, and plan your hike.",
     id: "/",
-    start_url: "/trips",
+    start_url: "/explore",
     scope: "/",
     display: "standalone",
     orientation: "portrait",

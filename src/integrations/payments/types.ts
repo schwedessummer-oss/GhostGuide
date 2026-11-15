@@ -1,6 +1,7 @@
 /**
- * Provider-agnostic payment interfaces. Business logic (src/server/commerce)
- * only ever sees these types; provider SDKs stay inside src/integrations/payments.
+ * Provider-agnostic payment interfaces. Checkout code only ever sees these
+ * types; provider SDKs stay inside src/integrations/payments. No checkout uses
+ * them yet: the order checkout arrives in Phase 6 (docs/PLAN.md).
  */
 export type PaymentProviderName = "stripe" | "demo";
 

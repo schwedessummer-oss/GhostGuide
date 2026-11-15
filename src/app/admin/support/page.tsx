@@ -20,7 +20,6 @@ export default async function SupportPage({ searchParams }: PageProps<"/admin/su
   const page = parsePage({ limit: sp(q.limit), offset: sp(q.offset) });
   const [data, staff] = await Promise.all([listTickets(user, filters, page), listAssignableStaff(user)]);
   const canCustomers = can(user.roles, "customers.view");
-  const canBookings = can(user.roles, "bookings.view");
 
   return (
     <>
@@ -61,15 +60,6 @@ export default async function SupportPage({ searchParams }: PageProps<"/admin/su
                     "Unknown customer"
                   )}{" "}
                   · opened <When at={t.createdAt} /> · {t.assigneeEmail ? `assigned to ${t.assigneeEmail}` : "unassigned"}
-                  {t.bookingId && canBookings ? (
-                    <>
-                      {" "}
-                      ·{" "}
-                      <Link className="underline" href={`/admin/bookings/${t.bookingId}`}>
-                        booking
-                      </Link>
-                    </>
-                  ) : null}
                 </p>
                 <p className="mt-2 whitespace-pre-wrap break-words">{t.body}</p>
                 <ActionForm action={updateTicketAction.bind(null, t.id)} submitLabel="Update ticket" compact inline className="mt-3">

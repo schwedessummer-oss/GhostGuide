@@ -9,13 +9,7 @@ import { enqueueJob } from "./queue";
  * Handlers for these kinds live in src/server/jobs/handlers/*.ts.
  */
 export const PERIODIC_JOBS: { kind: string; everyMinutes: number }[] = [
-  { kind: "bookings.expire_holds", everyMinutes: 5 },
-  { kind: "payments.reconcile", everyMinutes: 60 },
   { kind: "ops.purge_rate_limits", everyMinutes: 60 * 24 },
-  // Safety net for the self-rescheduling daily permit reminder run (ops
-  // handler). A second run on the same day is a no-op: reminders are
-  // deduplicated per trip/permit/day.
-  { kind: "permits.remind", everyMinutes: 60 * 24 },
   // Trail catalog (run by /api/cron/catalog, never by the general job runner):
   // enqueue due tile refreshes/retries, and purge expired provider caches.
   { kind: "catalog.refresh_stale", everyMinutes: 60 },

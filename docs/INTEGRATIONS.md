@@ -27,41 +27,32 @@ instances without code changes.
 | Database schema, RLS, column grants | `supabase/migrations/*.sql` | Verified on PostgreSQL 16 with a local shim of Supabase's `auth` schema; integration tests cover cross-user isolation. Not yet applied to a hosted Supabase project. |
 | Demo authentication | scrypt passwords + HMAC-signed cookie | For local demos only (`AUTH_PROVIDER=demo`). |
 | Background jobs | Postgres job table, `/api/cron/jobs`, `npm run jobs:run` | Dedup keys, `SKIP LOCKED` claiming, backoff, dead-letter, operator retry. |
-| Recommendations & itineraries | `src/domain/recommendation.ts`, `itinerary.ts` | Deterministic rules; no AI. |
-| Pricing | `src/domain/pricing.ts` | Transparent rules (weekend, holiday, high demand, group, flat fee). |
-| Booking state, inventory, idempotent webhook processing | `src/server/commerce/**` | Exercised through the simulated payment provider, which uses the same processor as Stripe. |
 | Service-worker kill switch | `public/sw.js` | Deletes the old offline worker's `gg-*` caches, unregisters itself and reloads open tabs. The app registers no worker. |
-| Local object storage | `src/integrations/storage` (local) | HMAC-signed expiring media URLs. |
 
 ## Implemented against vendor docs, NOT verified with live credentials
 | Integration | Env to enable | What was tested |
 |---|---|---|
 | Supabase Auth (`@supabase/ssr`, `proxy.ts`, `getClaims`) | `AUTH_PROVIDER=supabase` + keys | Running on the hosted preview (Supabase project + Vercel); sign-in flows are covered by the demo-auth e2e suite, not by automated tests against Supabase. |
-| Supabase Storage | `STORAGE_PROVIDER=supabase` | Never ran against a project. |
-| Stripe Checkout (test mode) + signed webhooks | `PAYMENTS_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Webhook signature verification unit-tested with stripe-node's own signing helpers; session/refund API calls never executed. |
+| Stripe Checkout (test mode) adapter (`src/integrations/payments`) | `PAYMENTS_PROVIDER=stripe`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Webhook signature verification unit-tested with stripe-node's own signing helpers; session/refund API calls never executed. No checkout or webhook route uses the adapter until Phase 6. |
 | National Weather Service forecast adapter (`src/integrations/weather`) | `WEATHER_PROVIDER=nws` | Mocked-fetch tests only (US locations). No page uses it since the marketing-draft workflow was removed. Trail pages use MET Norway + NWS alerts (above) regardless of this setting. |
 | Vercel Cron / Supabase pg_cron trigger | `vercel.json`, `supabase/cron/schedule-job-runner.sql` | Endpoint verified locally; schedulers not deployed. |
 
 ## Simulated (demo adapters, labeled "Simulated" in the UI)
 | Integration | Behavior |
 |---|---|
-| Payments | `/checkout/demo/[sessionId]` page; outcomes are delivered as HMAC-signed webhooks through the real processor (duplicate delivery button included). Refuses to run when `APP_MODE=live`. |
+| Payments (adapter only) | Demo checkout sessions and HMAC-signed, Stripe-shaped events (`src/integrations/payments/demo.ts`). No page or route uses it until Phase 6. Refuses to run when `APP_MODE=live`. |
 | Weather adapter (`WEATHER_PROVIDER=demo`, unused by pages) | Deterministic forecast marked simulated, with fetched-at time. Trail pages always use real forecasts. |
-| Gear lockers | Reserves seeded gear items; derives a 6-digit access code (HMAC, never stored in clear); return/maintenance flows. |
-| Shuttle | Quotes require customer confirmation of pickup, price and time before a (simulated) ride request. |
-| Meal packs | Order/cancel; deterministic failure injection for demos. |
-| Satellite communicator rental | Reserves a device from inventory; states clearly that Ghost Guide provides no SOS service. |
-| Demo region (development fixture) | Fictional region and trails with synthetic geometry, marked "not for navigation"; shown only when `SHOW_DEMO_FIXTURES` is on (off in production). Real trails come from the catalog above. |
 
 ## Deferred (not built)
-- Live partner adapters (locker vendors, shuttle/rideshare, meal suppliers, satellite-device rental companies, onX or other mapping apps). Each needs official API documentation, a commercial agreement and credentials before building; see `src/integrations/partners/README.md`.
+- Partner booking providers (`PLAN.md` §3, Phase 6: a mock provider first). Each live provider needs official API documentation, a commercial agreement and credentials before building.
 - Google Places / ratings for nearby services (cost and 30-day caching limits; OSM POIs are used, with "ratings not available" stated).
 - Global official weather alerts outside the US (no free, licensable aggregate feed integrated yet; e.g. MeteoAlarm for Europe is a candidate).
-- Machine-learning pricing (rules only until there is enough booking data).
 - Error-monitoring vendor (e.g. Sentry); structured redacted logs are ready for a log drain.
 - Automated permit purchasing (intentionally never: no queue, CAPTCHA or purchase-limit bypass).
 
 ## Removed (Phase 2 clean-up)
 Safety check-ins and notifications (Twilio, Resend, demo), the GPS hike screen and simulator, offline trip
-downloads, and AI explanations (Anthropic) with the marketing-draft workflow. They can be recovered from the
-`archive/v0-hiking-companion` branch.
+downloads, and AI explanations (Anthropic) with the marketing-draft workflow (pass 1). The fictional demo region,
+the recommendation/itinerary rules, single-trail bookings (pricing, inventory, payment processing, reconciliation,
+refunds), local/Supabase object storage, the partner add-on adapters (gear lockers, shuttle, meal packs, satellite
+devices) and permit tracking (pass 2). They can be recovered from the `archive/v0-hiking-companion` branch.

@@ -15,9 +15,9 @@ const render = (el: ReactElement) => renderToStaticMarkup(h(AppRouterContext.Pro
 const hrefs = (html: string) => [...html.matchAll(/<a [^>]*href="([^"]+)"[^>]*>/g)].map((m) => m[1]);
 
 describe("site chrome server HTML", () => {
-  it("header: the four destinations, Sign in and Create an account; no Admin or Sign out", () => {
+  it("header: the three destinations, Sign in and Create an account; no Admin or Sign out", () => {
     const html = render(h(SiteHeaderNav));
-    expect(hrefs(html).slice(0, 6)).toEqual(["/", "/explore", "/trips", "/saved", "/login", "/login"]);
+    expect(hrefs(html).slice(0, 5)).toEqual(["/", "/explore", "/saved", "/login", "/login"]);
     expect(html).toContain(">Sign in<");
     expect(html).toContain(">Create an account<");
     expect(html).not.toContain("/admin");
@@ -26,6 +26,6 @@ describe("site chrome server HTML", () => {
 
   it("tab bar: Profile signs in", () => {
     const html = render(h(TabBar));
-    expect(hrefs(html)).toEqual(["/explore", "/trips", "/saved", "/login"]);
+    expect(hrefs(html)).toEqual(["/explore", "/saved", "/login"]);
   });
 });

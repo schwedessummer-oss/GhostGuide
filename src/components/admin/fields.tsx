@@ -4,7 +4,7 @@ import type { ComponentProps, ReactNode } from "react";
 /*
  * Compact, labeled form fields for admin forms (server-component safe).
  * Every input has a visible <label>; ids must be unique on the page, so
- * callers derive them from the record id (e.g. `poi-${id}-name`).
+ * callers derive them from the record id (e.g. `tk-${id}-status`).
  */
 const control =
   "block w-full min-h-11 rounded-xl border border-sand-300 bg-surface px-3 py-2 text-base text-ink placeholder:text-muted/70 focus:border-forest-600";
@@ -104,77 +104,6 @@ export function CheckField({ id, label, className, ...props }: ComponentProps<"i
   );
 }
 
-/** Single-choice radio group; each whole option row is a ≥44px tap target. */
-export function RadioGroup({
-  idPrefix,
-  legend,
-  name,
-  options,
-  defaultValue,
-  required,
-}: {
-  idPrefix: string;
-  legend: ReactNode;
-  name: string;
-  options: readonly { value: string; label: ReactNode; hint?: ReactNode }[];
-  defaultValue?: string;
-  required?: boolean;
-}) {
-  return (
-    <fieldset className="space-y-1">
-      <legend className="text-sm font-semibold text-ink">{legend}</legend>
-      {options.map((o) => (
-        <label key={o.value} htmlFor={`${idPrefix}-${o.value}`} className="flex min-h-11 cursor-pointer items-start gap-3 py-2">
-          <input
-            id={`${idPrefix}-${o.value}`}
-            type="radio"
-            name={name}
-            value={o.value}
-            defaultChecked={defaultValue === o.value}
-            required={required}
-            aria-describedby={o.hint ? `${idPrefix}-${o.value}-hint` : undefined}
-            className="mt-0.5 size-5 shrink-0 accent-forest-700"
-          />
-          <span>
-            <span className="block">{o.label}</span>
-            {o.hint ? (
-              <span id={`${idPrefix}-${o.value}-hint`} className="block text-xs text-muted">
-                {o.hint}
-              </span>
-            ) : null}
-          </span>
-        </label>
-      ))}
-    </fieldset>
-  );
-}
-
 export function Hidden({ name, value }: { name: string; value: string | number }) {
   return <input type="hidden" name={name} value={value} />;
-}
-
-/** A visually grouped set of checkboxes sharing one name (multi-select). */
-export function CheckGroup({
-  idPrefix,
-  legend,
-  name,
-  options,
-  selected,
-}: {
-  idPrefix: string;
-  legend: ReactNode;
-  name: string;
-  options: readonly string[];
-  selected: readonly string[];
-}) {
-  return (
-    <fieldset className="space-y-1">
-      <legend className="text-sm font-semibold text-ink">{legend}</legend>
-      <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
-        {options.map((o) => (
-          <CheckField key={o} id={`${idPrefix}-${o}`} name={name} value={o} defaultChecked={selected.includes(o)} label={o.replace(/_/g, " ")} />
-        ))}
-      </div>
-    </fieldset>
-  );
 }

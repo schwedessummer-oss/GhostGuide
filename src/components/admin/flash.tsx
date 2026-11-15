@@ -7,10 +7,10 @@ import { usePathname } from "next/navigation";
  * Layout-level confirmation for admin actions.
  *
  * A successful admin action refreshes the page, and many forms render only
- * in the state they change (e.g. "End now" on an active closure), so the
- * form — and the result message inside it — unmounts in the same commit as
- * the result. This live region lives in the persistent admin layout, so the
- * confirmation (and any warnings) is still shown and announced.
+ * in the state they change (e.g. "Revoke" on a staff role, gone once
+ * revoked), so the form — and the result message inside it — unmounts in the
+ * same commit as the result. This live region lives in the persistent admin
+ * layout, so the confirmation (and any warnings) is still shown and announced.
  */
 export interface AdminFlashMessage {
   message: string;

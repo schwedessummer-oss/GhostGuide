@@ -7,23 +7,12 @@ export type StaffRole = (typeof STAFF_ROLES)[number];
 
 export const PERMISSIONS = {
   "admin.access": ["admin", "operator", "content_editor", "support"],
-  "trails.manage": ["admin", "operator", "content_editor"],
-  "content.approve": ["admin", "content_editor"],
-  "closures.manage": ["admin", "operator", "content_editor"],
   "customers.view": ["admin", "operator", "support"],
-  "bookings.view": ["admin", "operator", "support"],
-  "bookings.cancel": ["admin", "operator"],
-  "bookings.refund": ["admin", "operator"],
-  "gear.manage": ["admin", "operator"],
-  "fulfillment.manage": ["admin", "operator"],
   "jobs.manage": ["admin", "operator"],
   "integrations.view": ["admin", "operator"],
   /** Trail-catalog data: ingestion status, retries, moderation (hide a trail). */
   "catalog.manage": ["admin", "operator"],
-  "pricing.manage": ["admin"],
-  "inventory.manage": ["admin", "operator"],
   "flags.manage": ["admin"],
-  "permits.manage": ["admin", "operator", "content_editor"],
   "support.manage": ["admin", "operator", "support"],
   "audit.view": ["admin"],
   "staff.manage": ["admin"],

@@ -1,17 +1,16 @@
 # Deployment guide (Supabase + Vercel)
 
 This takes the project from a local demo to a **private preview** on Vercel backed
-by Supabase. Everything runs in demo mode (simulated payments and partners)
+by Supabase. Everything runs in demo mode (simulated providers are labelled)
 until you configure real providers.
 
-> Nothing here has been run against your accounts yet: no Supabase, Vercel,
-> Stripe or Mapbox credentials were available while this was built. The steps
+> Nothing here has been run against your accounts yet: no Supabase or Vercel
+> credentials were available while this was built. The steps
 > follow current vendor documentation; verify each one as you go.
 
 ## 0. Prerequisites
 - Node.js ≥ 20.19 (22 LTS recommended), npm.
-- A Supabase project (free tier is fine for a preview), a Vercel account, and
-  optionally a Stripe account in **test mode** and a Mapbox account.
+- A Supabase project (free tier is fine for a preview) and a Vercel account.
 - Supabase CLI (`npm i -g supabase` or `npx supabase`) for applying migrations.
 
 ## 1. Supabase project
@@ -34,18 +33,16 @@ until you configure real providers.
 5. **API keys**: Project settings → API keys: copy the *publishable* key
    (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) and a *secret* key (`SUPABASE_SECRET_KEY`, server-only).
 6. **Defense in depth**: the app does not use the Data API (PostgREST) — it talks to Postgres
-   directly and uses Supabase only for Auth and Storage. RLS and column grants already protect
+   directly and uses Supabase only for Auth. RLS and column grants already protect
    every table, but you can also remove `public` from *Exposed schemas* (API settings).
-7. **Storage**: `NEXT_PUBLIC_SUPABASE_URL=… SUPABASE_SECRET_KEY=… npx tsx scripts/setup-supabase-storage.ts`
-   creates the private `trail-media` bucket.
-8. **Seed demo data (optional, for a demo preview)**:
+7. **Seed demo accounts (optional, for a demo preview)**:
    ```bash
    DATABASE_URL=<session or direct connection string> DATABASE_SSL=true AUTH_PROVIDER=supabase \
    NEXT_PUBLIC_SUPABASE_URL=… SUPABASE_SECRET_KEY=… SEED_DEMO_PASSWORD='<choose one>' npm run db:seed
    ```
-   This creates fictional demo trails and demo staff accounts (`admin@demo.ghostguide.test`, …)
-   through the Supabase Auth admin API. **Do not seed demo accounts into a production project.**
-9. **Staff roles** for real staff: insert rows into `public.staff_roles` (SQL editor) or use
+   This creates demo customer and staff accounts (`admin@demo.ghostguide.test`, …) through the
+   Supabase Auth admin API, and no trail data. **Do not seed demo accounts into a production project.**
+8. **Staff roles** for real staff: insert rows into `public.staff_roles` (SQL editor) or use
    `/admin/staff` once one admin exists:
    `insert into public.staff_roles (user_id, role) select id, 'admin' from auth.users where email = 'you@company.com';`
 
@@ -65,16 +62,14 @@ until you configure real providers.
    | `DATABASE_URL` | Supabase transaction pooler URL |
    | `DATABASE_TRANSACTION_POOLER` / `DATABASE_SSL` | `true` / `true` |
    | `AUTH_PROVIDER` | `supabase` |
-   | `AUTH_SECRET` | `openssl rand -hex 32` (signs demo sessions, demo webhooks, locker codes) |
+   | `AUTH_SECRET` | `openssl rand -hex 32` (signs demo sessions and simulated payment webhooks) |
    | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` | from Supabase |
-   | `STORAGE_PROVIDER` | `supabase` |
    | `CRON_SECRET` | random ≥ 16 chars (Vercel sends it as `Authorization: Bearer …` to cron routes) |
-   | `PAYMENTS_PROVIDER` | `demo`, or `stripe` with keys below |
+   | `PAYMENTS_PROVIDER` | `demo` (no checkout uses the payments adapter until Phase 6) |
    | `WEATHER_PROVIDER` | `demo` or `nws`: the `src/integrations/weather` adapter, unused since marketing drafts were removed (trail pages always use real MET Norway + NWS data) |
    | `DATA_PROVIDER_USER_AGENT` | `GhostGuide/1.0 (+https://<your-domain>; <contact email>)`. Required by OSM/Nominatim, MET Norway and NWS policies. Without it, the app sends `GhostGuide/0.1 (+<site URL>)` |
    | `RIDB_API_KEY` | optional, free: US federal facilities (ridb.recreation.gov → Profile → API Keys) |
    | `OVERPASS_URLS`, `NOMINATIM_URL`, … | optional: only to switch to self-hosted/commercial instances (defaults are the public services) |
-   | `SHOW_DEMO_FIXTURES` | leave unset in production (the fictional demo region stays hidden) |
 
    **If Supabase's Vercel integration is connected**, it adds `POSTGRES_*` and `SUPABASE_*` variables
    (plus `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) but
@@ -87,16 +82,14 @@ until you configure real providers.
    for Preview (and Production while in demo).
 4. Deploy. Visit `/status` to confirm which integrations are live vs simulated.
 
-## 3. Background jobs (required for bookings and trail data)
+## 3. Background jobs (required for trail data)
 - Two runners:
-  - `/api/cron/jobs` (60 s): commerce and housekeeping jobs (holds, reconciliation, refunds, partner
-    fulfilment, permit reminders).
+  - `/api/cron/jobs` (60 s): housekeeping jobs (rate-limit purges).
   - `/api/cron/catalog` (300 s): trail-data downloads, stale refresh and cache purge, kept separate
-    so slow provider downloads never delay a refund or partner request.
+    so slow provider downloads never delay other background work.
 - `vercel.json` registers a **daily** cron on `/api/cron/jobs` (allowed on every plan; Hobby
   plans reject anything more frequent).
-- Refunds, partner requests, expired checkout holds and trail refreshes should run within about a
-  **minute**. Either:
+- Trail refreshes and queued jobs should run within about a **minute**. Either:
   - **Supabase pg_cron + pg_net (works on any Vercel plan)**: run `npm run setup:cron` on your
     computer. It reads `DATABASE_URL` and `CRON_SECRET` from `.env.local`, checks that the deployed
     site accepts the secret, stores the site URL and secret in Supabase Vault, and schedules both
@@ -110,25 +103,13 @@ until you configure real providers.
   `{"ok":true,…}`. Admin → Jobs shows queued/dead jobs.
 - Note: Vercel only runs cron jobs on **Production** deployments.
 
-## 4. Stripe (test mode)
-1. Dashboard (test mode) → Developers → API keys: `STRIPE_SECRET_KEY=sk_test_…`.
-2. Webhooks → add endpoint `https://<domain>/api/webhooks/stripe` with events
-   `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
-   `checkout.session.async_payment_failed`, `checkout.session.expired`, `charge.refunded`.
-   Copy the signing secret to `STRIPE_WEBHOOK_SECRET`.
-3. Set `PAYMENTS_PROVIDER=stripe`. Local testing:
-   `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
-4. Test with card `4242 4242 4242 4242`. Bookings are confirmed **only** by the signed webhook
-   (the success page just shows status); missed webhooks are recovered by the
-   `payments.reconcile` job.
-
-## 5. Maps
+## 4. Maps
 Maps use MapLibre GL JS with OpenFreeMap vector tiles (free, no key) and AWS terrain hillshade on wide maps (set `NEXT_PUBLIC_MAP_TERRAIN_TILES_URL=off` to disable it).
 To use another provider (MapTiler, Stadia, self-hosted Protomaps), set
 `NEXT_PUBLIC_MAP_STYLE_URL` to its MapLibre style URL (public value) and rebuild. The app never
 stores basemap tiles.
 
-## 6. Local demo (no credentials)
+## 5. Local demo (no credentials)
 ```bash
 cp .env.example .env.local   # then set AUTH_SECRET and CRON_SECRET
 # Postgres 15+ on 127.0.0.1:54322 (or change DATABASE_URL)

@@ -3,8 +3,8 @@ import { env } from "@/config/env";
 import { generateSitemaps } from "./sitemap";
 
 /**
- * robots.txt: everything public may be crawled; private, per-user and
- * transactional areas may not. Lists every sitemap file (see sitemap.ts).
+ * robots.txt: everything public may be crawled; private and per-user areas
+ * may not. Lists every sitemap file (see sitemap.ts).
  *
  * /login and /signup are deliberately NOT disallowed: they are noindex
  * pages, and a crawler has to fetch a page to see its noindex (a disallowed
@@ -13,7 +13,7 @@ import { generateSitemaps } from "./sitemap";
  */
 export const revalidate = 3600;
 
-const DISALLOW = ["/admin", "/api", "/account", "/trips", "/saved", "/checkout", "/bookings"];
+const DISALLOW = ["/admin", "/api", "/account", "/saved"];
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const base = env().NEXT_PUBLIC_APP_URL.replace(/\/+$/, "");

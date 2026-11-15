@@ -34,10 +34,10 @@ describe("password hashing", () => {
 
 describe("RBAC", () => {
   it("grants by role and denies customers", () => {
-    expect(can(["admin"], "pricing.manage")).toBe(true);
-    expect(can(["operator"], "pricing.manage")).toBe(false);
-    expect(can(["support"], "bookings.refund")).toBe(false);
-    expect(can(["operator"], "bookings.refund")).toBe(true);
+    expect(can(["admin"], "flags.manage")).toBe(true);
+    expect(can(["operator"], "flags.manage")).toBe(false);
+    expect(can(["support"], "jobs.manage")).toBe(false);
+    expect(can(["operator"], "jobs.manage")).toBe(true);
     expect(can([], "admin.access")).toBe(false);
     expect(can(undefined, "admin.access")).toBe(false);
   });

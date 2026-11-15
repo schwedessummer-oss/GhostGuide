@@ -11,11 +11,8 @@ export const metadata: Metadata = { title: "Overview" };
 const INTEGRATION_LABELS: Record<string, string> = {
   mode: "App mode",
   auth: "Authentication",
-  storage: "File storage",
-  payments: "Payments",
   maps: "Maps",
   weather: "Weather",
-  partners: "Partner services",
 };
 
 export default async function AdminOverviewPage() {
@@ -61,7 +58,6 @@ export default async function AdminOverviewPage() {
                 hint={k.hint}
                 href={k.href}
                 tone={k.tone}
-                badge={k.simulated ? <SimulatedBadge label="Simulated payments" /> : null}
               />
             ))}
           </div>
@@ -73,7 +69,7 @@ export default async function AdminOverviewPage() {
       <Section
         title="Integration status"
         id="integrations"
-        description="Which services are live and which are simulated in this deployment. Simulated services never contact real people or partners."
+        description="Which services are live and which are simulated in this deployment. Simulated services never contact real people."
       >
         <Card className="p-0 sm:p-0">
           <ul className="divide-y divide-sand-200">

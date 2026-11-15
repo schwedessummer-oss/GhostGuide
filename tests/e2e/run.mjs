@@ -168,16 +168,12 @@ try {
     AUTH_PROVIDER: "demo",
     PAYMENTS_PROVIDER: "demo",
     WEATHER_PROVIDER: "demo",
-    STORAGE_PROVIDER: "local",
-    LOCAL_STORAGE_DIR: ".data/e2e-storage",
     NEXT_PUBLIC_APP_URL: baseUrl,
     DATABASE_URL: dbUrl,
     AUTH_SECRET: "e2e-secret-0123456789abcdef0123456789abcdef",
     CRON_SECRET: "e2e-cron-secret-0123456789",
     // The suite signs in many times from one IP; production limits stay at x1.
     RATE_LIMIT_SCALE: "50",
-    // The fictional demo region (bookings, admin specs) is a development fixture.
-    SHOW_DEMO_FIXTURES: "true",
     // Real-data providers → local mocks (server URLs read at runtime, map URLs inlined by the build).
     ...mockProviderEnv(mock.url),
     // Provider policies require an identifying User-Agent; the mocks record what is sent.

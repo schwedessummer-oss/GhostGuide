@@ -3,8 +3,8 @@ import { safeRedirectPath } from "@/lib/safe-redirect";
 
 describe("safeRedirectPath (post-sign-in redirects)", () => {
   it("keeps same-origin paths with query and hash", () => {
-    expect(safeRedirectPath("/plan/results?trail=a&x=1#card-a")).toBe("/plan/results?trail=a&x=1#card-a");
-    expect(safeRedirectPath("/trips")).toBe("/trips");
+    expect(safeRedirectPath("/trail/us/south-carolina/table-rock-trail?units=metric#map")).toBe("/trail/us/south-carolina/table-rock-trail?units=metric#map");
+    expect(safeRedirectPath("/saved")).toBe("/saved");
   });
   it.each([
     "//evil.example",
@@ -19,11 +19,11 @@ describe("safeRedirectPath (post-sign-in redirects)", () => {
     "",
     "/%0a/evil.example".replace("%0a", "\n"),
   ])("rejects %j", (value) => {
-    expect(safeRedirectPath(value)).toBe("/trips");
+    expect(safeRedirectPath(value)).toBe("/saved");
   });
   it("rejects non-strings and absurd lengths", () => {
-    expect(safeRedirectPath(null)).toBe("/trips");
-    expect(safeRedirectPath(undefined)).toBe("/trips");
-    expect(safeRedirectPath(`/${"a".repeat(5000)}`)).toBe("/trips");
+    expect(safeRedirectPath(null)).toBe("/saved");
+    expect(safeRedirectPath(undefined)).toBe("/saved");
+    expect(safeRedirectPath(`/${"a".repeat(5000)}`)).toBe("/saved");
   });
 });

@@ -147,7 +147,7 @@ export async function signUpWithPassword(email: string, password: string, fullNa
   const { data, error } = await supabase.auth.signUp({
     email: normalized,
     password,
-    options: { data: { full_name: fullName }, emailRedirectTo: `${env().NEXT_PUBLIC_APP_URL}/trips` },
+    options: { data: { full_name: fullName }, emailRedirectTo: `${env().NEXT_PUBLIC_APP_URL}/saved` },
   });
   if (error) return { ok: false, error: error.message };
   if (data.session && data.user?.id) await setOwnerHintCookie(data.user.id);

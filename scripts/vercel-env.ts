@@ -98,13 +98,10 @@ async function main() {
     ["DATABASE_SSL", "true"],
     ["DATABASE_POOL_MAX", "3"],
     ["AUTH_PROVIDER", "supabase"],
-    ["STORAGE_PROVIDER", "supabase"],
-    ["SUPABASE_STORAGE_BUCKET", local.SUPABASE_STORAGE_BUCKET || "trail-media"],
     ["AUTH_SECRET", authSecret],
     ["CRON_SECRET", cronSecret],
     ["PAYMENTS_PROVIDER", "demo"],
     ["WEATHER_PROVIDER", "demo"],
-    ["LAUNCH_REGION_SLUG", "demo-ghost-ridge"],
   ];
   const selected = secretsOnly ? vars.filter(([k]) => SECRET_KEYS.includes(k)) : vars;
   const block = selected.map(([k, v]) => `${k}=${v}`).join("\n");

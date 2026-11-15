@@ -6,7 +6,7 @@ import { log } from "@/server/log";
  * Durable Postgres-backed job queue.
  *
  *  - Enqueue inside the same transaction as the state change that requires
- *    it (outbox pattern), so a committed booking always has its fulfillment
+ *    it (outbox pattern), so a committed change always has its follow-up
  *    job and a rolled-back one never does.
  *  - `dedupKey` makes enqueue idempotent: a second enqueue with the same key
  *    is a no-op, even across concurrent requests / webhook redeliveries.
@@ -16,7 +16,7 @@ import { log } from "@/server/log";
  *    marked `dead` and surfaces in the admin retry queue.
  *  - A job stuck in `running` (crashed worker) is reclaimed after
  *    LOCK_TIMEOUT. Handlers therefore MUST be idempotent and re-check current
- *    state (e.g. a booking's status) before acting.
+ *    state before acting.
  */
 export interface Job<P = Record<string, unknown>> {
   id: number;

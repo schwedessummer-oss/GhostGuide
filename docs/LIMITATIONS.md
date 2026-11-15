@@ -48,7 +48,7 @@ safety check-ins were removed (see `docs/PLAN.md` §2).
   a region is named, the old path permanently redirects to the new one.
 - **Maps:** terrain shading is drawn only on wide maps (768 px or more) from zoom 10, never on
   Explore or when the browser asks to save data.
-- **Caching:** trail and home pages are cached and rebuilt at most once an hour, and only when
+- **Caching:** trail pages are cached and rebuilt at most once an hour, and only when
   someone visits: the first visit after the hour still gets the older copy (for a rarely viewed
   trail it can be days old) and starts the rebuild. Live parts (forecast, daylight, nearby services,
   Save) load in the browser and are never part of the cached page, and the page shows the sync time

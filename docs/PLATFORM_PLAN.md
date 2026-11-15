@@ -4,9 +4,10 @@ _Last updated: 2026-11-12._
 
 > **Superseded (historical record).** The owner approved a new product brief on 14 Nov 2026; the
 > current plan is [`PLAN.md`](PLAN.md). Phases 2–5 below will not be built: the safety check-ins
-> (Ghost Guard), the GPS hike screen, offline downloads, AI explanations and the marketing drafts
-> described here have been removed from the code (preserved on the `archive/v0-hiking-companion`
-> branch).
+> (Ghost Guard), the GPS hike screen, offline downloads, AI explanations, the marketing drafts, the
+> "Ghost Ridge" demo region with its trip planner, single-trail bookings, partner add-ons and permit
+> tracking described here have been removed from the code (preserved on the
+> `archive/v0-hiking-companion` branch).
 
 Ghost Guide is the companion for the **whole outdoor trip**:
 

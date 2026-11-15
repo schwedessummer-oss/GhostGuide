@@ -9,7 +9,7 @@ export { WebhookSignatureError, PaymentProviderError } from "./types";
 
 const instances: Partial<Record<PaymentProviderName, PaymentProvider>> = {};
 
-/** A provider by name (bookings remember which provider took their payment). */
+/** A provider by name (a payment remembers which provider took it). */
 export function getPaymentProviderByName(name: string): PaymentProvider {
   if (name !== "stripe" && name !== "demo") throw new Error(`Unknown payment provider: ${name}`);
   if (!instances[name]) instances[name] = name === "stripe" ? new StripePaymentProvider() : new DemoPaymentProvider();

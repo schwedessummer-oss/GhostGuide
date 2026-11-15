@@ -2,7 +2,7 @@ import Link from "next/link";
 import clsx from "clsx";
 import type { ReactNode } from "react";
 import { Lock } from "lucide-react";
-import { Badge, SimulatedBadge } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { formatAge } from "@/lib/format";
 import { formatAdminDateTime } from "./time";
 
@@ -15,66 +15,23 @@ export { formatAdminDateTime };
 type Tone = "neutral" | "forest" | "amber" | "red" | "blue";
 
 const STATUS_TONES: Record<string, Tone> = {
-  // trails / content
+  // catalog trails and tiles
   published: "forest",
-  approved: "forest",
-  draft: "neutral",
-  in_review: "blue",
-  rejected: "red",
-  retired: "neutral",
-  archived: "neutral",
   closed: "red",
-  partial: "amber",
-  advisory: "blue",
-  valid: "forest",
-  invalid: "red",
+  retired: "neutral",
   pending: "neutral",
-  // bookings
-  pending_payment: "blue",
-  confirmed: "forest",
-  cancellation_requested: "amber",
-  cancelled: "neutral",
-  refund_pending: "amber",
-  refunded: "neutral",
-  payment_failed: "red",
-  expired: "neutral",
-  needs_attention: "red",
-  succeeded: "forest",
-  partially_refunded: "amber",
-  requested: "blue",
-  // fulfillment
-  awaiting_customer: "amber",
-  completed: "forest",
-  failed: "red",
-  quote_pending: "neutral",
-  quoted: "amber",
-  // trips / flags
-  active: "blue",
-  // jobs / integrations
+  // jobs / integrations / flags
   queued: "blue",
   running: "blue",
+  succeeded: "forest",
+  failed: "red",
   dead: "red",
+  cancelled: "neutral",
   simulated: "amber",
   success: "forest",
   failure: "red",
-  processed: "forest",
-  received: "blue",
-  ignored: "neutral",
-  // gear
-  available: "forest",
-  reserved: "blue",
-  checked_out: "amber",
-  maintenance: "amber",
-  online: "forest",
-  offline: "red",
-  picked_up: "blue",
-  returned: "forest",
-  // permits / tickets
-  not_started: "neutral",
-  applied: "blue",
-  obtained: "forest",
-  denied: "red",
-  not_required: "neutral",
+  active: "blue",
+  // support tickets
   open: "blue",
   resolved: "neutral",
   urgent: "red",
@@ -85,10 +42,6 @@ const STATUS_TONES: Record<string, Tone> = {
 
 export function StatusBadge({ status, label }: { status: string; label?: string }) {
   return <Badge tone={STATUS_TONES[status] ?? "neutral"}>{label ?? status.replace(/_/g, " ")}</Badge>;
-}
-
-export function DemoBadge() {
-  return <SimulatedBadge label="Demo data" />;
 }
 
 export function Restricted({ children }: { children?: ReactNode }) {
@@ -158,17 +111,12 @@ export function Age({ at, staleAfterMin, label }: { at: Date | string | null | u
   );
 }
 
-export function KpiCard({ label, value, hint, href, tone = "neutral", badge }: { label: string; value: ReactNode; hint?: ReactNode; href?: string; tone?: "neutral" | "amber" | "red"; badge?: ReactNode }) {
+export function KpiCard({ label, value, hint, href, tone = "neutral" }: { label: string; value: ReactNode; hint?: ReactNode; href?: string; tone?: "neutral" | "amber" | "red" }) {
   const body = (
     <>
       <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{label}</dt>
       <dd className={clsx("mt-1 text-2xl font-bold", tone === "red" ? "text-red-ink" : tone === "amber" ? "text-amber-ink" : "text-ink")}>{value}</dd>
-      {hint || badge ? (
-        <dd className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">
-          {hint}
-          {badge}
-        </dd>
-      ) : null}
+      {hint ? <dd className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted">{hint}</dd> : null}
     </>
   );
   const cls = clsx("block rounded-xl border bg-surface p-4", tone === "red" ? "border-[#f5c6c1]" : tone === "amber" ? "border-[#f1d9b0]" : "border-sand-200");
@@ -194,9 +142,4 @@ export function KeyValue({ items }: { items: [ReactNode, ReactNode][] }) {
       ))}
     </dl>
   );
-}
-
-export function money(cents: number | null | undefined, currency = "usd") {
-  if (cents === null || cents === undefined) return "—";
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: currency.toUpperCase() }).format(cents / 100);
 }

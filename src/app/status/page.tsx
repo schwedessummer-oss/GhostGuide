@@ -9,8 +9,6 @@ export const dynamic = "force-dynamic";
 const LABELS: Record<string, string> = {
   mode: "App mode",
   auth: "Authentication",
-  storage: "File storage",
-  payments: "Payments",
   trailData: "Trail data",
   usFacilities: "US facilities and permits (Recreation.gov)",
   geocoding: "Place search",
@@ -18,7 +16,6 @@ const LABELS: Record<string, string> = {
   maps: "Maps",
   trailWeather: "Weather on trail pages",
   weather: "Weather provider (WEATHER_PROVIDER)",
-  partners: "Partner services (lockers, shuttle, meals, satellite rental)",
 };
 
 export default async function StatusPage() {
@@ -33,7 +30,7 @@ export default async function StatusPage() {
       <Card className="mb-6">
         <h2 className="text-lg font-bold">Background jobs</h2>
         <p className="mt-1 text-[0.95rem] text-muted">
-          Refunds, partner requests, payment checks and expired checkout holds are handled by a background job runner that should run about once a
+          Housekeeping work, such as clearing expired rate-limit records, is handled by a background job runner that should run about once a
           minute.
         </p>
         <p className="mt-3 flex flex-wrap items-center gap-2">

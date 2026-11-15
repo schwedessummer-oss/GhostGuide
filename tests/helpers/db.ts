@@ -31,16 +31,3 @@ export async function createCustomer(label = "test"): Promise<SessionUser> {
   const [u] = await withSystem((tx) => tx<{ id: string }[]>`insert into auth.users (email) values (${email}) returning id`);
   return { id: u.id, email, roles: [], isStaff: false };
 }
-
-export async function trailBySlug(slug: string) {
-  const [t] = await sql()<{ id: string; regionId: string; dailyCapacity: number; basePriceCents: number }[]>`
-    select id, region_id, daily_capacity, base_price_cents from public.trails where slug = ${slug}`;
-  if (!t) throw new Error(`Trail ${slug} not found`);
-  return t;
-}
-
-/** A date string N days from today (YYYY-MM-DD, UTC). */
-export function daysFromNow(n: number): string {
-  const d = new Date(Date.now() + n * 86_400_000);
-  return d.toISOString().slice(0, 10);
-}

@@ -1,9 +1,9 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 
 /**
- * Small HMAC helpers shared by demo sessions, demo webhooks and locker access
- * codes. Pure functions (secret passed in) so they are unit
- * testable without the Next.js runtime.
+ * Small HMAC helpers for demo sessions and constant-time secret checks.
+ * Pure functions (secret passed in) so they are unit testable without the
+ * Next.js runtime.
  */
 export function hmac(secret: string, data: string): string {
   return createHmac("sha256", secret).update(data).digest("base64url");

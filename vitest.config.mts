@@ -39,8 +39,6 @@ export default defineConfig({
             AUTH_PROVIDER: "demo",
             PAYMENTS_PROVIDER: "demo",
             WEATHER_PROVIDER: "demo",
-            STORAGE_PROVIDER: "local",
-            LOCAL_STORAGE_DIR: ".data/test-storage",
             AUTH_SECRET: "test-secret-0123456789abcdef0123456789abcdef",
             CRON_SECRET: "test-cron-secret-0123456789",
             DATABASE_URL: TEST_DATABASE_URL,
