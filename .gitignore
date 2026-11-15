@@ -45,3 +45,6 @@ next-env.d.ts
 /.data/
 /test-results/
 /playwright-report/
+
+# ingest raw-response cache (never committed)
+/ingest/.cache/

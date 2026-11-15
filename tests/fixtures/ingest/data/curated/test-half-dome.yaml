@@ -1,0 +1,307 @@
+slug: test-half-dome
+researched_at: '2026-11-15'
+facts:
+# 0
+- field: official_url
+  value: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: A permit is required to hike Half Dome when the cables are up
+  evidence:
+    page: P1
+    quote: If you plan to hike Half Dome, you must have a permit.
+  verified: true
+# 1
+- field: distance_km
+  value: 22.4
+  basis: round_trip
+  note: Low end of the stated 22.4-26.2 km round-trip range.
+  source_url: https://www.nps.gov/yose/planyourvisit/valleyhikes.htm
+  source_title: Yosemite Valley Day Hikes - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Yosemite Valley Day Hikes
+  evidence:
+    page: P3
+    quote: 22.4 km-26.2 km (round trip)
+  verified: true
+# 2
+- field: elevation_gain_m
+  value: 1475
+  note: Stated as 4,800 ft / 1,475 m in the valley hikes table.
+  source_url: https://www.nps.gov/yose/planyourvisit/valleyhikes.htm
+  source_title: Yosemite Valley Day Hikes - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Yosemite Valley Day Hikes
+  evidence:
+    page: P3
+    quote: 4800 ft / 1475 m
+  verified: true
+# 3
+- field: high_point_m
+  value: 2682
+  note: 8,800 ft converted to metres (x0.3048).
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Introduction
+  evidence:
+    page: P1
+    quote: 8,800 feet above sea level
+  verified: true
+# 4
+- field: duration
+  value: { min_hours: 10, max_hours: 12 }
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Introduction
+  evidence:
+    page: P1
+    quote: Most hikers take 10 to 12 hours to hike to Half Dome and back
+  verified: true
+# 5 (months out of order on purpose: the loader sorts them)
+- field: best_months
+  value: [10, 5, 6, 7, 8, 9]
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Half Dome Cables
+  evidence:
+    page: P1
+    quote: The Half Dome cables usually go back up the Friday before the last Monday in May (Memorial Day)
+  verified: true
+# 6
+- field: season_note
+  value: The permit season follows the cable season, roughly late May to mid-October.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Half Dome Cables
+  evidence:
+    page: P1
+    quote: come down the day after the second Monday in October
+  verified: true
+# 7
+- field: permit_required
+  value: seasonal
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  source_title: Half Dome Permits for Day Hikers - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Half Dome Permits for Day Hikers
+  evidence:
+    page: P4
+    quote: Permits to hike to the top of Half Dome are required seven days per week when the cables are up
+  verified: true
+# 8
+- field: permit
+  value:
+    name: Half Dome day-hiker permit (preseason lottery)
+    kind: lottery
+    how_to_apply: Apply on Recreation.gov during the March window; results come by email in mid-April.
+    booking_window: 1-31 March (eastern time)
+    official_url: https://www.recreation.gov/permits/234652
+    price: { amount: 10.00, currency: USD, unit: per_application, audience: all, note: Plus a per-person fee if awarded. }
+    months: [10, 5, 6, 7, 8, 9]
+  source_url: https://www.nps.gov/yose/planyourvisit/hdpermits.htm
+  source_title: Half Dome Permits for Day Hikers - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Preseason Lottery
+  evidence:
+    page: P4
+    quote: The application period for this lottery is from March 1 through March 31 (eastern time).
+  verified: true
+# 9
+- field: fee
+  value:
+    name: Park entrance
+    amount: 35
+    currency: USD
+    unit: per_vehicle
+    audience: all
+    valid_from: '2026-01-01'
+    valid_to: '2026-12-31'
+    note: Covers everyone in one private vehicle for seven days.
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-14'
+  evidence_heading: Entrance Fees
+  evidence:
+    page: P5
+    quote: Private Vehicle $35
+  verified: true
+# 10
+- field: rule_dogs
+  value: { value: not_allowed, note: Pets may not go on the trail beyond the valley floor. }
+  source_url: https://www.nps.gov/yose/planyourvisit/pets.htm
+  source_title: Pets - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Where pets are not allowed
+  evidence:
+    page: P6
+    quote: Pets are not allowed on trails
+  verified: true
+# 11
+- field: rule_group_size
+  value: { value: restricted, max_group: 15, note: Wilderness groups are capped in size. }
+  source_url: https://www.nps.gov/yose/planyourvisit/wildregs.htm
+  source_title: Wilderness Regulations - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Group size
+  evidence:
+    page: P7
+    quote: The maximum group size is 15 people
+  verified: true
+# 12
+- field: hazard
+  value: { type: lightning, note: Do not climb the cables if storms are near. }
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Safety
+  evidence:
+    page: P1
+    quote: Do not attempt to climb the cables if there are storm clouds anywhere in the sky
+  verified: true
+# 13
+- field: hazard
+  value: { type: exposure, note: The final section climbs a steep granite slope on cables. }
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Half Dome Cables
+  evidence:
+    page: P1
+    quote: The last 400 feet to the summit are steep
+  verified: true
+# 14
+- field: closure
+  value: { status: seasonal, note: The cables are down for the winter., as_of: '2026-11-15' }
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  source_title: Current Conditions - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Half Dome
+  evidence:
+    page: P8
+    quote: Half Dome cables are down
+  verified: true
+# 15
+- field: parking
+  value: Park at the trailhead parking lot near Curry Village and walk to Happy Isles.
+  source_url: https://www.nps.gov/yose/planyourvisit/parking.htm
+  source_title: Parking - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Yosemite Valley
+  evidence:
+    page: P9
+    quote: Trailhead parking is available
+  verified: true
+# 16
+- field: public_transport
+  value: The free valley shuttle stops at Happy Isles.
+  source_url: https://www.nps.gov/yose/planyourvisit/publictransportation.htm
+  source_title: Public Transportation - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Yosemite Valley Shuttle
+  evidence:
+    page: P10
+    quote: The free Yosemite Valley shuttle
+  verified: true
+# 17 (a second public_transport fact: kept out, the first one wins)
+- field: public_transport
+  value: Regional buses run to the valley from nearby towns.
+  source_url: https://www.nps.gov/yose/planyourvisit/bus.htm
+  source_title: Bus - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: YARTS
+  evidence:
+    page: P11
+    quote: YARTS provides bus service
+  verified: true
+# 18 (failed verification: never loaded)
+- field: trailhead_access
+  value: Walk from the shuttle stop to the trailhead.
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: Happy Isles
+  verified: false
+  verify_reason: quote does not support the value
+# 19 (not an official source: invalid, and the source is logged as skipped)
+- field: hazard
+  value: { type: heat, note: Hot afternoons in summer. }
+  source_url: https://www.alltrails.com/trail/us/california/half-dome-trail
+  source_title: Half Dome Trail
+  publisher: AllTrails
+  checked_at: '2026-11-15'
+  evidence:
+    page: P99
+    quote: hot
+  verified: true
+# 20 (more decimals than USD allows: invalid)
+- field: fee
+  value: { name: Bad fee, amount: 12.345, currency: USD, unit: per_person, audience: all }
+  source_url: https://www.nps.gov/yose/planyourvisit/fees.htm
+  source_title: Fees & Passes - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P5
+    quote: "$12.345"
+  verified: true
+# 21 and 22 (contradicting route types: neither is loaded)
+- field: route_type
+  value: out_and_back
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P1
+    quote: hike to Half Dome and back
+  verified: true
+- field: route_type
+  value: loop
+  source_url: https://www.nps.gov/yose/planyourvisit/valleyhikes.htm
+  source_title: Yosemite Valley Day Hikes - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence:
+    page: P3
+    quote: loop
+  verified: true
+# 23
+- field: nearest_town
+  value: { name: Yosemite Valley, note: Lodging and stores near the trailhead. }
+  source_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+  source_title: Half Dome Day Hike - Yosemite National Park (U.S. National Park Service)
+  publisher: National Park Service
+  checked_at: '2026-11-15'
+  evidence_heading: Getting there
+  evidence:
+    page: P1
+    quote: from Yosemite Valley
+  verified: true
+verifier: null
+mechanical_check: { verified: 22, failed: 1, reasons: {} }

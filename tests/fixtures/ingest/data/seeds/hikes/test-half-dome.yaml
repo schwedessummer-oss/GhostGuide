@@ -1,0 +1,38 @@
+seed_no: 9001
+slug: test-half-dome
+name: Half Dome (test)
+alt_names: [Half Dome Trail]
+route_variant: Mist Trail and John Muir Trail from Happy Isles
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-CA]
+area:
+  name: Yosemite National Park
+  wikidata: Q180402
+  official_url: https://www.nps.gov/yose/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q96053096
+official_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+anchor:
+  lat: 37.729926
+  lon: -119.559051
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 16315186, name: "Half Dome Cables and Trail", via: wikidata_P402 }
+  confidence: unknown
+  notes: ""
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "Cables are removed for the winter."
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  checked_at: 2026-11-15
+discovery_notes: "Research-tool bookkeeping: accepted and ignored."

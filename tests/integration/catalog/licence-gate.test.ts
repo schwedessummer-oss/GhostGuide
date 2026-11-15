@@ -90,7 +90,7 @@ describe("licence gate", () => {
       withSystem((tx) => tx`
         insert into public.photos (origin, file_page_url, license_code, attribution_text, license_evidence, source_record_id, retrieved_at)
         select 'commons', 'https://commons.wikimedia.org/wiki/File:Y.jpg', 'CC0-1.0', '  ', '{}'::jsonb, id, now()
-        from public.source_records limit 1`),
+        from public.source_records where license_code <> 'ODbL-1.0' order by created_at limit 1`),
       /photos_attribution_text_check/,
     );
     await expectDbError(

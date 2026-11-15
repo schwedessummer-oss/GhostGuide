@@ -17,8 +17,9 @@ branch and the `v0-hiking-companion` tag.
   staff roles and the audit log.
 - `/status`: what is live versus simulated in a deployment, and the job runner's health.
 
-No page calls an external data provider. The hike catalog will be loaded by an offline ingestion
-pipeline (Phase 2 of [`docs/PLAN.md`](docs/PLAN.md)), never by visitors' requests. Browse and hike
+No page calls an external data provider. The hike catalog is loaded by the offline ingestion
+pipeline in [`ingest/`](ingest/README.md) (Phase 2 of [`docs/PLAN.md`](docs/PLAN.md)), never by
+visitors' requests. Browse and hike
 pages, community features, trips and checkout follow in Phases 3 to 6.
 
 Kept for later phases, but not used by any page yet:
@@ -69,6 +70,9 @@ npm run dev
   hike data.
 - `npm run dev` serves the app on http://localhost:3000.
 - `npm run jobs:run -- --watch` runs background jobs in a second terminal (a stand-in for cron).
+- `npm run ingest -- check` / `load` / `publish` / `report` validates and loads the curated hike
+  data into the database (see [`ingest/README.md`](ingest/README.md)). It runs on a laptop or in CI,
+  never in the app.
 
 Demo accounts (local only; password from `SEED_DEMO_PASSWORD`, default `ghostguide-demo`):
 
@@ -108,13 +112,14 @@ moved to the new schema at go-live with `scripts/db/archive-v0-hosted.sql`, then
 | Command | What it runs |
 |---|---|
 | `npm run typecheck` / `npm run lint` | `next typegen` + `tsc`; ESLint |
-| `npm run test:unit` | pure logic: geo, elevation and sun math, weather parsing, navigation, env, security helpers, … |
-| `npm run test:integration` | Postgres + PostGIS: RLS, jobs, the session route, the provider client and weather caches, admin |
+| `npm run test:unit` | pure logic: geo, elevation and sun math, weather parsing, navigation, env, security helpers, ingest schemas, licence mapper and HTTP client, … |
+| `npm run test:integration` | Postgres + PostGIS: RLS, jobs, the session route, the provider client and weather caches, admin, the ingest loader and publish gate |
 | `npm run test:e2e` | production build + headless Chromium: the public site (home, links, 410s, sitemap, sign-in) and the admin area |
 | `npm run verify` | typecheck + lint + all Vitest tests + production build |
 
 Tests never call real providers. The fixtures are recorded real responses (MET Norway data under
-CC BY 4.0, NWS alerts, AWS terrain tiles), with attribution in each fixtures README.
+CC BY 4.0, NWS alerts, AWS terrain tiles) and a small ingest data directory, with attribution in
+each fixtures README.
 
 ## Deployment
 
