@@ -1,0 +1,15 @@
+{
+ "seed_no": 44,
+ "slug": "eiger-trail",
+ "name": "Eiger Trail",
+ "urls": [
+  {
+   "url": "https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.jungfrau.ch/en-gb/arrival-at-station-car-parks/",
+   "purpose": "cited"
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "seed_no": 40,
+ "slug": "gr20",
+ "name": "GR20",
+ "urls": [
+  {
+   "url": "https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.pnr-resa.corsica",
+   "purpose": "cited"
+  }
+ ]
+}

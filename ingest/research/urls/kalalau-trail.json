@@ -1,0 +1,47 @@
+{
+ "seed_no": 10,
+ "slug": "kalalau-trail",
+ "name": "Kalalau Trail",
+ "urls": [
+  {
+   "url": "https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://explore.ehawaii.gov/Web/#!park/9",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://gohaena.com",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://dlnr.hawaii.gov/dsp/parks/kauai/haena-state-park/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://gohaena.com/info-faqs/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://gohaena.com/overnight-parking-park-entry/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://dlnr.hawaii.gov/dsp/camping-lodging/special-permit-rules-for-napali-coast-state-park/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://gohaena.com/conditions/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://dlnr.hawaii.gov/dsp/parks/kauai/napali-coast-state-wilderness-park/malama-napali/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/kalalau-trail-safety-concerns/",
+   "purpose": "cited"
+  }
+ ]
+}

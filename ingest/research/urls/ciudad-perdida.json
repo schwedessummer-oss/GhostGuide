@@ -1,0 +1,27 @@
+{
+ "seed_no": 35,
+ "slug": "ciudad-perdida",
+ "name": "Ciudad Perdida",
+ "urls": [
+  {
+   "url": "https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/horarios-y-tarifas",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/como-llegar",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/informacion-para-la-visita",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/colombia/regional-risks",
+   "purpose": "cited"
+  }
+ ]
+}

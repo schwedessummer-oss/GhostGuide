@@ -1,0 +1,39 @@
+{
+ "seed_no": 3,
+ "slug": "zion-narrows",
+ "name": "The Narrows",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/thenarrows.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/zion-canyon-shuttle-system.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/learn/management/lawsandpolicies.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/narrowsregulations.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/zion/planyourvisit/narrowssafety.htm",
+   "purpose": "cited"
+  }
+ ]
+}

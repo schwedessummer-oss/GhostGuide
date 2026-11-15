@@ -1,0 +1,43 @@
+{
+ "seed_no": 16,
+ "slug": "sky-pond-glacier-gorge",
+ "name": "Sky Pond",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/trail_conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/plan-your-summer-trip-to-rocky.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/learn/management/rmnp_compendium.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/planyourvisit/pets.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/romo/learn/management/unmanned_aircraft.htm",
+   "purpose": "cited"
+  }
+ ]
+}

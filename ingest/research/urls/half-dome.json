@@ -1,0 +1,51 @@
+{
+ "seed_no": 1,
+ "slug": "half-dome",
+ "name": "Half Dome",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/halfdome.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/valleyhikes.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/hdpermits.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.recreation.gov/permits/234652",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/hdwildpermits.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/reservations.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/publictransportation.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/pets.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/safety.htm",
+   "purpose": "cited"
+  }
+ ]
+}

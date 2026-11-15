@@ -1,0 +1,27 @@
+{
+ "seed_no": 33,
+ "slug": "laguna-de-los-tres",
+ "name": "Laguna de los Tres (Fitz Roy)",
+ "urls": [
+  {
+   "url": "https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.argentina.gob.ar/parquesnacionales/losglaciares/tarifas",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.argentina.gob.ar/parquesnacionales/tarifas",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/recomendaciones-para-visitar-el-parque-nacional-los-glaciares",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.argentina.gob.ar/parquesnacionales/losglaciares/como-llegar",
+   "purpose": "cited"
+  }
+ ]
+}

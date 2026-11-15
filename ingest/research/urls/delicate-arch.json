@@ -1,0 +1,55 @@
+{
+ "seed_no": 8,
+ "slug": "delicate-arch",
+ "name": "Delicate Arch",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/delicate-arch.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/hours.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/parking.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/learn/news/news02182026.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/traffic.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/pets.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/learn/management/compendium.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/safety.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/physical-mobility.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/arch/planyourvisit/basicinfo.htm",
+   "purpose": "cited"
+  }
+ ]
+}

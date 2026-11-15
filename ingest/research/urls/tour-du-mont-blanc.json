@@ -1,0 +1,23 @@
+{
+ "seed_no": 39,
+ "slug": "tour-du-mont-blanc",
+ "name": "Tour du Mont Blanc",
+ "urls": [
+  {
+   "url": "https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/accomodations/bivouac",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment",
+   "purpose": "cited"
+  }
+ ]
+}

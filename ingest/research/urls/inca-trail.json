@@ -1,0 +1,31 @@
+{
+ "seed_no": 25,
+ "slug": "inca-trail",
+ "name": "Inca Trail (Classic)",
+ "urls": [
+  {
+   "url": "https://www.machupicchu.gob.pe/camino-inka/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gob.pe/institucion/culturacusco/noticias/1052354-ministerio-de-cultura-hoy-se-inicio-las-reservas-para-los-ingresos-a-la-red-de-caminos-inka-en-2025",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://tuboleto.cultura.pe",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.culturacusco.gob.pe/noticia/imagen/con-proceso-publico-y-transparente-se-inicio-la-venta-de-entradas-para-la-llaqta-de-machupicchu-y-para-la-red-de-caminos-inka-2026/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/peru/safety-and-security",
+   "purpose": "cited"
+  }
+ ]
+}

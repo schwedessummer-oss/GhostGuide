@@ -1,0 +1,23 @@
+{
+ "seed_no": 42,
+ "slug": "tre-cime-di-lavaredo-circuit",
+ "name": "Tre Cime di Lavaredo circuit",
+ "urls": [
+  {
+   "url": "https://auronzo.info/tre-cime-di-lavaredo-dolomiti/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.comune.auronzo.bl.it/it/news/apertura-strada-delle-tre-cime-di-lavaredo-370c1459-3e11-47ca-9ac4-f603b8628ed6",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://auronzo.info/parcheggio-tre-cime-di-lavaredo/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://auronzo.info/tre-cime-di-lavaredo-come-arrivare/",
+   "purpose": "cited"
+  }
+ ]
+}

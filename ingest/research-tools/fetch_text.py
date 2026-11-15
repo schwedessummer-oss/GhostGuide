@@ -104,6 +104,26 @@ def fetch(url: str, refresh: bool):
     return rec
 
 
+def page_text(rec):
+    """Readable text of a fetched record ('' if none). PDFs via pdftotext."""
+    if rec.get("pdf") and rec.get("pdf_path"):
+        import subprocess
+        try:
+            out = subprocess.run(["pdftotext", "-layout", rec["pdf_path"], "-"], capture_output=True, timeout=60).stdout.decode("utf-8", "replace")
+        except Exception:
+            return "", ""
+        out = re.sub(r"[ \t\r\f\v]+", " ", out)
+        return re.sub(r"\n\s*\n+", "\n", out).strip(), "PDF"
+    if not rec.get("body"):
+        return "", ""
+    p = _Text()
+    p.feed(rec["body"])
+    text = html.unescape("".join(p.out))
+    text = re.sub(r"[ \t\r\f\v]+", " ", text)
+    text = re.sub(r"\n\s*\n+", "\n", text).strip()
+    return text, p.title.strip()
+
+
 def main():
     args = sys.argv[1:]
     if not args:
@@ -114,6 +134,10 @@ def main():
     mx = int(args[args.index("--max") + 1]) if "--max" in args else 40000
     rec = fetch(url, "--refresh" in args)
     print(f"URL: {rec.get('url')}\nSTATUS: {rec.get('status')}")
+    if "--head" in args:
+        text, title = page_text(rec)
+        print(f"TITLE: {title}\nTEXT_CHARS: {len(text)}")
+        return
     if rec.get("pdf"):
         print(f"PDF saved at {rec.get('pdf_path')} (extract with: pdftotext <path> - | head)")
         return

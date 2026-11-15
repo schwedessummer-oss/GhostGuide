@@ -1,0 +1,39 @@
+{
+ "seed_no": 18,
+ "slug": "west-coast-trail",
+ "name": "West Coast Trail",
+ "urls": [
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2A8FF4A7-9D2D-4D0F-903F-E32D7F583EFC",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/visit/tarifs-fees",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/F8E8283D-0FA3-4283-ACB9-8CAA4DF6F81A",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/securite-safety",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/6F9E8E5E-90C4-46AA-8AED-64C5FADCBD45",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2677447F-172E-4402-8CCB-F993537A25F9",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/pacificrim/activ/exploitants-operators",
+   "purpose": "cited"
+  }
+ ]
+}

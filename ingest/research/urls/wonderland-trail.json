@@ -1,0 +1,51 @@
+{
+ "seed_no": 12,
+ "slug": "wonderland-trail",
+ "name": "Wonderland Trail",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/wilderness-permit-faqs.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/wilderness-permit.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.recreation.gov/permits/4675317",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/road-status.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/directions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/wilderness-guidelines-and-regulations.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/hiking-safety.htm",
+   "purpose": "cited"
+  }
+ ]
+}

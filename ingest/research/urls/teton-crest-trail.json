@@ -1,0 +1,47 @@
+{
+ "seed_no": 13,
+ "slug": "teton-crest-trail",
+ "name": "Teton Crest Trail",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/bc_knowbeforeyougo.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/backcountry-faqs.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.recreation.gov/permits/4675342",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/bcres.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/learn/management/lawsandpolicies.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/back.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grte/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  }
+ ]
+}

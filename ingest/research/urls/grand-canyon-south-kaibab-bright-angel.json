@@ -1,0 +1,55 @@
+{
+ "seed_no": 4,
+ "slug": "grand-canyon-south-kaibab-bright-angel",
+ "name": "South Kaibab to Bright Angel via Phantom Ranch",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/places/000/south-kaibab-trail.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/key-messages.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/hiking-faq.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/trail-distances.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/backcountry-permit.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.recreation.gov/permits/4675337",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/getinvolved/sup.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/shuttle-buses.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/backcountry-regs.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/day-hiking.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/grca/planyourvisit/guided-hikes.htm",
+   "purpose": "cited"
+  }
+ ]
+}

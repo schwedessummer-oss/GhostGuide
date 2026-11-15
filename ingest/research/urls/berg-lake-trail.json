@@ -1,0 +1,19 @@
+{
+ "seed_no": 21,
+ "slug": "berg-lake-trail",
+ "name": "Berg Lake Trail",
+ "urls": [
+  {
+   "url": "https://bcparks.ca/mount-robson-park/berg-lake-trail/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://bcparks.ca/mount-robson-park/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://bcparks.ca/reservations/backcountry-camping/berg-lake-trail/",
+   "purpose": "cited"
+  }
+ ]
+}

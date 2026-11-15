@@ -1,0 +1,19 @@
+{
+ "seed_no": 48,
+ "slug": "sentiero-azzurro",
+ "name": "Sentiero Azzurro",
+ "urls": [
+  {
+   "url": "https://card.parconazionale5terre.it/en/home",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://card.parconazionale5terre.it/en/cartaparco",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://card.parconazionale5terre.it/en/cartatreno",
+   "purpose": "cited"
+  }
+ ]
+}

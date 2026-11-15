@@ -1,0 +1,39 @@
+{
+ "seed_no": 46,
+ "slug": "caminito-del-rey",
+ "name": "Caminito del Rey",
+ "urls": [
+  {
+   "url": "https://www.caminitodelrey.info/en/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/mandatory-standards",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/access-route",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/tickets/buy",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/parking-shuttle-bus-crv",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/pets",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/prohibitions",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminitodelrey.info/en/your-visit/faq",
+   "purpose": "cited"
+  }
+ ]
+}

@@ -89,6 +89,9 @@ facts:
     publisher: National Park Service
     checked_at: 2026-11-15
     evidence_heading: Half Dome Permits for Day Hikers   # heading/section on the page where it is stated
+    evidence:                                            # INTERNAL ONLY, never published
+      page: P2                                           # page id in ingest/research/packs/<slug>.md
+      quote: "Permits to hike to the top of Half Dome are required seven days per week when the cables are up"   # exact text from the page (<= 300 chars) that states the fact
   - field: permit
     value:
       name: Half Dome day-hiker permit
@@ -132,22 +135,18 @@ verifier: null                      # filled by the verification pass
 | `closure` | `{ status: open \| seasonal \| partially_closed \| closed, note, as_of }` | Current alerts and closures. |
 | `official_url` | URL | Canonical official page for the hike. |
 
-### Verification pass
+### Verification (mechanical, then a light consistency pass)
 
-An independent verifier re-reads every cited page and, for each fact:
-- **Supported:** keeps it and sets `verified: true`.
-- **Wrong:** corrects it from the page and sets `verified: true`.
-- **Not supported:** deletes it.
+Facts are extracted from **evidence packs** (`ingest/research/packs/<slug>.md`, built by `build_packs.py` from cached official pages). Every fact must carry `evidence.quote`: an exact, contiguous piece of text from one `[Pn Lm]` line of the pack, which is text from the page at `source_url`. The quote is internal evidence for verification and is never shown on the site.
 
-It also checks that no `note` copies the page's wording. Then it sets:
+`verify_facts.py` then checks every fact mechanically:
+- The quote really is on the cached page.
+- Every number in the value appears in the quote, or is a miles→km or feet→m conversion of one.
+- No 10-word run of our wording is copied from the page.
+- The source is not a banned site.
 
-```yaml
-verifier:
-  checked_at: 2026-11-15
-  facts_kept: 12
-  facts_corrected: 1
-  facts_removed: 2
-  notes: ""
-```
+Passing facts get `verified: true`; failing ones get `verified: false` plus `verify_reason`.
+
+A final cheap consistency pass reads only (field, value, quote) triples and flags values the quote does not actually support; those are set to `verified: false`.
 
 The pipeline loads only facts with `verified: true`.

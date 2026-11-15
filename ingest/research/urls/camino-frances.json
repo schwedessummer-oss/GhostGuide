@@ -1,0 +1,23 @@
+{
+ "seed_no": 45,
+ "slug": "camino-frances",
+ "name": "Camino Franc\u00e9s",
+ "urls": [
+  {
+   "url": "https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://oficinadelperegrino.com/en/pilgrimage/the-compostela/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://oficinadelperegrino.com/en/pilgrimage/the-credencial/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/en/discover/the-way-at-the-present/1.4.2.-the-network-of-public-hostels",
+   "purpose": "cited"
+  }
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "seed_no": 20,
+ "slug": "iceline-trail",
+ "name": "Iceline Trail",
+ "urls": [
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/etat-sentiers-trail-conditions",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/visit/~/media/1f9c98dd11aa4280b395af5050debb77.ashx",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/pn-np/bc/yoho/visit/tarifs-fees",
+   "purpose": "cited"
+  }
+ ]
+}

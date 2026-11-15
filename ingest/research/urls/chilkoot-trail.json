@@ -1,0 +1,55 @@
+{
+ "seed_no": 17,
+ "slug": "chilkoot-trail",
+ "name": "Chilkoot Trail",
+ "urls": [
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/activ/randonnee-cdn-hiking",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/permis-permits",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/bulletins/0F0A11D7-F1D1-4EBE-8531-AFAD1EA15388",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/tarifs-fees",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/klgo/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/conditions",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/regles-rules/aeronefs-aircraft",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ete-summer",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/securite-safety/ours-bears",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://parks.canada.ca/lhn-nhs/yt/chilkoot/visit/guides",
+   "purpose": "cited"
+  }
+ ]
+}

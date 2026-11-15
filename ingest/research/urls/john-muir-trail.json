@@ -1,0 +1,43 @@
+{
+ "seed_no": 6,
+ "slug": "john-muir-trail",
+ "name": "John Muir Trail",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/jmt.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/wpres.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.fs.usda.gov/sites/nfs/files/legacy-media/inyo/JMT%20MinImpact%20WildReg.pdf",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/wildregs.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/wildpermits.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/yose/planyourvisit/wildcond.htm",
+   "purpose": "cited"
+  }
+ ]
+}

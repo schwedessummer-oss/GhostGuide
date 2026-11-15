@@ -1,0 +1,63 @@
+{
+ "seed_no": 7,
+ "slug": "highline-trail-glacier",
+ "name": "Highline Trail",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/places/highline-trailhead.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/park-alerts-glac.json",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/hikingthetrails.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/visiting-loganpass-2026.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/shuttle-service-2026.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/directions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/pets.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/learn/management/lawsandpolicies.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/how-to-wilderness-permit.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/learn/management/compendium.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/safety.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/glac/planyourvisit/trailstatusreports.htm",
+   "purpose": "cited"
+  }
+ ]
+}

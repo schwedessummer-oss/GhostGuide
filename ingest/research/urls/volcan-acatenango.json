@@ -1,0 +1,23 @@
+{
+ "seed_no": 23,
+ "slug": "volcan-acatenango",
+ "name": "Volc\u00e1n Acatenango",
+ "urls": [
+  {
+   "url": "http://www.conap.gob.gt",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://insivumeh.gob.gt/insivumeh-mantiene-monitoreo-permanente-ante-fase-eruptiva-del-volcan-de-fuego/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/guatemala/safety-and-security",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/guatemala",
+   "purpose": "cited"
+  }
+ ]
+}

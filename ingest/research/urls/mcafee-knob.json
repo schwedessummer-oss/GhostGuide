@@ -1,0 +1,27 @@
+{
+ "seed_no": 15,
+ "slug": "mcafee-knob",
+ "name": "McAfee Knob",
+ "urls": [
+  {
+   "url": "https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/appa/park-alerts-appa.json",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/appa/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/appa/learn/management/compendium.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/appa/learn/management/lawsandpolicies.htm",
+   "purpose": "cited"
+  }
+ ]
+}

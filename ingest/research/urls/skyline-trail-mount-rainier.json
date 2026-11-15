@@ -1,0 +1,43 @@
+{
+ "seed_no": 11,
+ "slug": "skyline-trail-mount-rainier",
+ "name": "Skyline Trail",
+ "urls": [
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/skyline-trail.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/paradise.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/fees.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/road-status.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/learn/news/mount-rainier-national-park-will-not-require-timed-entry-reservations-in-2026.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/directions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/conditions.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/mora/planyourvisit/hiking-safety.htm",
+   "purpose": "cited"
+  }
+ ]
+}

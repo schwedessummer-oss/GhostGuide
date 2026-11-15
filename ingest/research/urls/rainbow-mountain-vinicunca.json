@@ -1,0 +1,19 @@
+{
+ "seed_no": 30,
+ "slug": "rainbow-mountain-vinicunca",
+ "name": "Rainbow Mountain (Vinicunca)",
+ "urls": [
+  {
+   "url": "https://www.peru.travel/",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/peru/health",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/peru/safety-and-security",
+   "purpose": "cited"
+  }
+ ]
+}

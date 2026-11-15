@@ -1,0 +1,35 @@
+{
+ "seed_no": 5,
+ "slug": "mount-whitney-trail",
+ "name": "Mount Whitney Trail",
+ "urls": [
+  {
+   "url": "https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.inyocounty.us/sites/default/files/2026-11/CURRENT%20ROAD%20UPDATE%20%20%2011.13.26.pdf",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.nps.gov/seki/planyourvisit/whitney.htm",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.fs.usda.gov/r05/inyo/permits/wilderness-permits",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.recreation.gov/permits/445860",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.fs.usda.gov/r05/inyo/permits/wilderness-regulations",
+   "purpose": "cited"
+  },
+  {
+   "url": "https://www.fs.usda.gov/sites/nfs/files/publication/Hiking%20The%20Mt.%20Whitney%20Trail.pdf_0.pdf",
+   "purpose": "cited"
+  }
+ ]
+}
