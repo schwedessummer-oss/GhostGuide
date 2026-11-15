@@ -54,7 +54,8 @@ src/
     providers/http.ts     provider HTTP client (User-Agent, throttling, retries)
     geo/  weather/       elevation sampling, sun times, geodesy; weather clients (unused by pages)
     admin/                admin use-cases (RBAC-checked, audited)
-supabase/migrations/      SQL migrations (Supabase CLI compatible)
+supabase/migrations/      SQL migrations (Supabase CLI compatible): the Phase 2 schema
+supabase/migrations_v0/   retired v0 migrations (applied on the hosted DB, never run again)
 db/local/                 local-only Supabase shim (auth schema, roles)
 scripts/                  db migrate/reset, seed, local job runner
 tests/unit|integration|e2e
@@ -83,22 +84,28 @@ await withSystem((tx) => …);   // trusted code ONLY, bypasses RLS — authoriz
   roles**; write them in `withSystem` inside a use-case that has already
   authorized the actor.
 - Customers can write their own profiles (limited columns).
-- The current migrations still create tables for removed features (the OSM trail catalog and its caches, saved trails, check-ins,
-  emergency contacts, hike sessions and locations, downloads, trip shares,
-  marketing drafts, the demo region's regions/trails/POIs/narrations/permits,
-  trips, bookings, payments, refunds, add-ons, gear, fulfillments, pricing
-  rules). No code reads or writes them; the Phase 2 schema (`docs/PLAN.md` §3)
-  replaces them.
+- Catalog, provenance and `osm` tables are read-only for API roles: anon and
+  authenticated may only SELECT published hikes and the rows that belong to them.
+  Ingestion and the admin data-review page write through `withSystem`.
+- Licence gate: content tables carry `license_code` plus `license_allowed`
+  (always true) with a composite foreign key to `licenses (code, allowed)`, so
+  rows under NC, ND, proprietary or unknown licences are rejected by the
+  database. Photos have a second, stricter gate on `licenses.photo_ok`.
+- OSM-derived values (geometry, points, length, elevation) live only in schema
+  `osm`; hike pages read `public.hike_public`, which labels each value with its
+  source and licence.
 - Row locks: `select … for update` inside `withSystem` for state transitions.
 - Return 404 (not 403) when a customer asks for a resource they don't own.
 
 ### Migrations
-- The core schema is `20261105000000_core_schema.sql`. **Do not edit it.**
-- Additive migrations per slice use their own prefix:
-  discover `20261105001xxx_`, commerce `20261105002xxx_`, hike `20261105003xxx_`,
-  safety `20261105004xxx_`, admin `20261105005xxx_`.
+- Migrations start at `20261115000000_baseline.sql`. Add new ones with a later
+  timestamp; never edit an applied migration.
   Every new table: enable RLS, add policies, and set grants explicitly
   (default privileges for API roles are revoked).
+- The baseline is written with guarded statements (IF NOT EXISTS, guarded
+  ALTERs, grants reset explicitly) so it also applies on the hosted database
+  after `scripts/db/archive-v0-hosted.sql`; keep later changes to baseline
+  tables guarded the same way until go-live.
 - Apply locally: `npm run db:migrate` (or `npm run db:reset` to rebuild + seed).
 
 ## Auth & authorization

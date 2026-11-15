@@ -88,8 +88,17 @@ whether it is server-only or public (`NEXT_PUBLIC_*`). Nothing needs a paid key.
 
 ## Database and migrations
 
-Migrations live in `supabase/migrations` as plain SQL. They still create tables for removed
-features; the Phase 2 schema (`docs/PLAN.md` §3) replaces them.
+Migrations live in `supabase/migrations` as plain SQL: the Phase 2 schema (`docs/PLAN.md` §3 and
+§4). `20261115000000_baseline.sql` holds the platform tables (profiles, staff roles, audit log, jobs,
+rate limits, provider usage); the others add provenance and the licence gate (`licenses`,
+`data_sources`, `source_records`), the catalog (`hikes`, `hike_facts`, fees, rules, permits, …), the
+OpenStreetMap data in its own `osm` schema, photos, the publish gate, and public read access
+(row-level security plus the `hike_public` view). The database rejects any record, photo or excerpt
+whose licence is not allowed, and refuses to publish a hike without a name, country, official URL and
+a route or trailhead.
+
+The retired v0 migrations are in `supabase/migrations_v0` (see its README). The hosted database is
+moved to the new schema at go-live with `scripts/db/archive-v0-hosted.sql`, then these migrations.
 
 - **Local:** `npm run db:migrate` (or `db:reset`).
 - **Supabase:** `supabase db push`, or apply each file in order.

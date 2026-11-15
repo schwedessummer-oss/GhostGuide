@@ -4,6 +4,8 @@ import postgres from "postgres";
 
 export const ROOT = path.resolve(__dirname, "../..");
 export const MIGRATIONS_DIR = path.join(ROOT, "supabase/migrations");
+/** The retired v0 schema. Never applied by db:migrate / db:reset; used only to test the go-live archive. */
+export const MIGRATIONS_V0_DIR = path.join(ROOT, "supabase/migrations_v0");
 export const LOCAL_SHIM = path.join(ROOT, "db/local/00_supabase_shim.sql");
 
 export function loadEnv() {
@@ -32,9 +34,9 @@ export function connect(url = databaseUrl()) {
  * prefixes) restricts which files apply — used so parallel workstreams can
  * test against their own databases without each other's in-progress files.
  */
-export function migrationFiles(): string[] {
+export function migrationFiles(dir = MIGRATIONS_DIR): string[] {
   const only = (process.env.MIGRATIONS_ONLY ?? "").split(",").map((s) => s.trim()).filter(Boolean);
-  return readdirSync(MIGRATIONS_DIR)
+  return readdirSync(dir)
     .filter((f) => f.endsWith(".sql"))
     .filter((f) => !only.length || only.some((prefix) => f.startsWith(prefix)))
     .sort();
@@ -45,7 +47,7 @@ export function migrationFiles(): string[] {
  * Supabase shim is applied first. On Supabase, use `supabase db push` instead
  * (this runner also works there but tracks versions in its own table).
  */
-export async function migrate(url = databaseUrl(), log = console.log) {
+export async function migrate(url = databaseUrl(), log = console.log, dir = MIGRATIONS_DIR) {
   const sql = connect(url);
   try {
     const [{ hasAuth }] = await sql<{ hasAuth: boolean }[]>`select to_regclass('auth.users') is not null as "hasAuth"`;
@@ -57,11 +59,11 @@ export async function migrate(url = databaseUrl(), log = console.log) {
     await sql`create schema if not exists ggmeta`;
     await sql`create table if not exists ggmeta.schema_migrations (version text primary key, applied_at timestamptz not null default now())`;
     const applied = new Set((await sql<{ version: string }[]>`select version from ggmeta.schema_migrations`).map((r) => r.version));
-    for (const file of migrationFiles()) {
+    for (const file of migrationFiles(dir)) {
       const version = file.replace(/\.sql$/, "");
       if (applied.has(version)) continue;
       log(`Applying ${file}`);
-      const body = readFileSync(path.join(MIGRATIONS_DIR, file), "utf8");
+      const body = readFileSync(path.join(dir, file), "utf8");
       await sql.begin(async (tx) => {
         await tx.unsafe(body).simple();
         await tx`insert into ggmeta.schema_migrations (version) values (${version})`;

@@ -26,8 +26,11 @@ until you configure real providers.
    npx supabase link --project-ref <your-project-ref>
    npx supabase db push
    ```
-   The Phase 1 migrations (`20261112*`) enable **PostGIS** in the `extensions` schema (available
-   on every Supabase plan). They are additive.
+   The baseline migration enables **PostGIS** in the `extensions` schema (available on every
+   Supabase plan). On a project that still has the v0 schema (the current hosted database),
+   first run `scripts/db/archive-v0-hosted.sql` by hand after a backup, and mark the v0
+   versions as reverted; the steps are at the top of that script and in
+   `supabase/migrations_v0/README.md`.
 4. **Auth**: Authentication → URL configuration: set *Site URL* to your Vercel URL and add
    `https://<your-domain>/**` to redirect URLs. Keep email confirmation on for real users.
 5. **API keys**: Project settings → API keys: copy the *publishable* key

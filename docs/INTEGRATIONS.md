@@ -19,7 +19,7 @@ offline ingestion pipeline and hike pages (`docs/PLAN.md`):
 ## Real and verified locally
 | Area | Implementation | Notes |
 |---|---|---|
-| Database schema, RLS, column grants | `supabase/migrations/*.sql` | Verified on PostgreSQL 16 with a local shim of Supabase's `auth` schema; integration tests cover cross-user isolation. Not yet applied to a hosted Supabase project. |
+| Database schema, RLS, column grants, licence gate | `supabase/migrations/*.sql` | Verified on PostgreSQL 16 with a local shim of Supabase's `auth` schema; integration tests cover cross-user isolation, the licence gate, the publish gate and the go-live archive of the v0 schema. Not yet applied to the hosted Supabase project (it still runs the v0 schema until go-live). |
 | Demo authentication | scrypt passwords + HMAC-signed cookie | For local demos only (`AUTH_PROVIDER=demo`). |
 | Background jobs | Postgres job table, `/api/cron/jobs`, `npm run jobs:run` | Dedup keys, `SKIP LOCKED` claiming, backoff, dead-letter, operator retry. |
 | Service-worker kill switch | `public/sw.js` | Deletes the old offline worker's `gg-*` caches, unregisters itself and reloads open tabs. The app registers no worker. |
