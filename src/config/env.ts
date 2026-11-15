@@ -87,8 +87,12 @@ const schema = z.object({
   CATALOG_TILE_TTL_DAYS: z.coerce.number().int().min(1).max(365).default(30),
   /** Most tiles one search may request to load (bigger areas ask the user to zoom in). */
   CATALOG_MAX_TILES_PER_SEARCH: z.coerce.number().int().min(1).max(64).default(16),
-  /** Start loading missing tiles right after a search responds (in addition to the job runner). */
-  CATALOG_INLINE_INGEST: bool.default(true),
+  /**
+   * Start loading missing tiles right after a search responds (in addition to the job runner).
+   * Off by default: visitor searches must not trigger Overpass calls from the web app
+   * (provider terms; ingestion moves to the offline ingest/ pipeline).
+   */
+  CATALOG_INLINE_INGEST: bool.default(false),
   /**
    * Show the fictional demo region (curated trails, demo bookings) in discovery.
    * Default: on in development/test, off in production builds.
