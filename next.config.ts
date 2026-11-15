@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 /**
  * Ghost Guide runs with the classic dynamic rendering model (cacheComponents off).
  * Many pages read per-user, RLS-scoped data at request time, so we opt in to
- * caching explicitly (e.g. the trail pages' hourly ISR) instead of opting out.
+ * caching explicitly (e.g. hourly ISR) instead of opting out.
  */
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },

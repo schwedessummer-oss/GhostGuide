@@ -227,8 +227,5 @@ export function isUuid(v: unknown): v is string {
   return uuidSchema.safeParse(v).success;
 }
 
-export const requiredText = (min: number, max: number, label = "This field") =>
-  z.string().trim().min(min, `${label} is required${min > 1 ? ` (at least ${min} characters)` : ""}.`).max(max, `${label} is too long.`);
-
 /** "YYYY-MM-DD" calendar date. */
 export const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Use YYYY-MM-DD.").refine((v) => !Number.isNaN(Date.parse(`${v}T00:00:00Z`)), "Not a real date.");

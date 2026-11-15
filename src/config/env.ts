@@ -40,43 +40,20 @@ const schema = z.object({
   /** api.weather.gov requires an identifying User-Agent (app name + operator contact). */
   WEATHER_USER_AGENT: z.string().optional(),
 
-  // ---- Real-data providers (trail catalog, geocoding, elevation, trail weather).
-  // Base URLs are configurable so tests can point at local mocks and production
-  // can move to self-hosted / commercial instances without code changes.
+  // ---- Data providers (elevation, weather). Not called by any page today: the
+  // clients are kept for the offline ingestion pipeline and for weather, which
+  // is hidden for now (docs/PLAN.md §2). Base URLs are configurable so tests
+  // can point at local mocks and production can move to other instances.
   /**
-   * Identifying User-Agent sent to OpenStreetMap services (Overpass, Nominatim),
-   * MET Norway and NWS. Their usage policies require an app name plus a contact
-   * (URL or email), e.g. "GhostGuide/1.0 (+https://ghostguide.app; ops@ghostguide.app)".
+   * Identifying User-Agent sent to data providers (terrain tiles, MET Norway,
+   * NWS). Their usage policies require an app name plus a contact URL, e.g.
+   * "GhostGuide/1.0 (+https://ghostguide.app/contact)".
    */
   DATA_PROVIDER_USER_AGENT: z.string().min(8).optional(),
-  /**
-   * Comma-separated Overpass API endpoints, tried in order: the main public
-   * instance first, then public mirrors when it is busy or refuses a request.
-   */
-  OVERPASS_URLS: z
-    .string()
-    .min(8)
-    .default(
-      "https://overpass-api.de/api/interpreter,https://overpass.private.coffee/api/interpreter,https://overpass.kumi.systems/api/interpreter",
-    ),
-  NOMINATIM_URL: z.string().url().default("https://nominatim.openstreetmap.org"),
   METNO_URL: z.string().url().default("https://api.met.no/weatherapi"),
   NWS_URL: z.string().url().default("https://api.weather.gov"),
   /** Terrarium-encoded terrain tiles ({z}/{x}/{y}); default: AWS Open Data Terrain Tiles. */
   TERRAIN_TILES_URL: z.string().min(8).default("https://elevation-tiles-prod.s3.amazonaws.com/terrarium/{z}/{x}/{y}.png"),
-  RIDB_URL: z.string().url().default("https://ridb.recreation.gov/api/v1"),
-  /** Recreation.gov RIDB API key (free). Enables US facilities/permit enrichment. */
-  RIDB_API_KEY: z.string().optional(),
-  /** Days before a loaded catalog tile is refreshed from its provider. */
-  CATALOG_TILE_TTL_DAYS: z.coerce.number().int().min(1).max(365).default(30),
-  /** Most tiles one search may request to load (bigger areas ask the user to zoom in). */
-  CATALOG_MAX_TILES_PER_SEARCH: z.coerce.number().int().min(1).max(64).default(16),
-  /**
-   * Start loading missing tiles right after a search responds (in addition to the job runner).
-   * Off by default: visitor searches must not trigger Overpass calls from the web app
-   * (provider terms; ingestion moves to the offline ingest/ pipeline).
-   */
-  CATALOG_INLINE_INGEST: bool.default(false),
 
   CRON_SECRET: z.string().min(16).default("dev-only-cron-secret"),
   /** Multiplies every rate limit. Automated tests only; must be 1 in live mode. */
@@ -150,12 +127,5 @@ export function integrationStatus() {
   return {
     mode: e.APP_MODE,
     auth: e.AUTH_PROVIDER === "supabase" ? "live" : "simulated",
-    trailData: "live (OpenStreetMap via Overpass, loaded on demand)",
-    usFacilities: e.RIDB_API_KEY ? "live (Recreation.gov RIDB)" : "not configured (needs RIDB_API_KEY)",
-    geocoding: "live (Nominatim, OpenStreetMap)",
-    elevation: "live (AWS Terrain Tiles; estimates)",
-    maps: "live (MapLibre + OpenFreeMap vector tiles)",
-    trailWeather: "live (MET Norway forecasts; NWS alerts in the US)",
-    weather: e.WEATHER_PROVIDER === "nws" ? "live (api.weather.gov)" : "simulated",
   } as const;
 }

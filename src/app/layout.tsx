@@ -2,11 +2,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
-import { TabBar } from "@/components/site/primary-nav";
 
 export const metadata: Metadata = {
-  title: { default: "Ghost Guide — find a hike, plan the day", template: "%s · Ghost Guide" },
-  description: "Find real trails anywhere with honest distance, climb and time estimates, and check the forecast and daylight before you go.",
+  title: { default: "Ghost Guide — the world's best hikes", template: "%s · Ghost Guide" },
+  description: "Ghost Guide is being rebuilt as a guide to the world's best hikes. The catalog is coming soon.",
   applicationName: "Ghost Guide",
   appleWebApp: { capable: true, title: "Ghost Guide", statusBarStyle: "default" },
   icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
@@ -20,32 +19,25 @@ export const viewport: Viewport = {
 };
 
 /*
- * Layout notes
- * - Phones get a fixed bottom tab bar; the body reserves its height (plus the
- *   safe-area inset) so no content hides behind it.
- * - Full-height app pages (Explore) mark their root with data-app-fullscreen:
- *   the body then becomes exactly one viewport tall and <main> a flex column
- *   the page fills, so the map never scrolls with the page.
- * - Nothing here reads cookies, headers or the session (directly or in the
- *   header/footer): one request-time read would make EVERY route dynamic and
- *   silently disable the trail pages' hourly ISR/CDN caching. The signed-in
- *   chrome and the units choice are applied in the browser (see
- *   components/site/session.ts and units-toggle.tsx).
- *   tests/unit/site/static-shell.test.ts enforces this.
+ * Layout note: nothing here reads cookies, headers or the session (directly
+ * or in the header/footer). One request-time read would make EVERY route
+ * dynamic and disable static rendering and CDN caching of public pages. The
+ * signed-in chrome is applied in the browser (see
+ * components/site/session.ts). tests/unit/site/static-shell.test.ts
+ * enforces this.
  */
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="flex min-h-dvh flex-col pb-[calc(3.5rem+env(safe-area-inset-bottom))] antialiased md:pb-0 has-[[data-app-fullscreen]]:h-dvh has-[[data-app-fullscreen]]:overflow-hidden print:pb-0">
+      <body className="flex min-h-dvh flex-col antialiased">
         <a href="#main" className="skip-link">
           Skip to content
         </a>
         <SiteHeader />
-        <main id="main" className="flex-1 has-[[data-app-fullscreen]]:flex has-[[data-app-fullscreen]]:min-h-0 has-[[data-app-fullscreen]]:flex-col">
+        <main id="main" className="flex-1">
           {children}
         </main>
         <SiteFooter />
-        <TabBar />
       </body>
     </html>
   );

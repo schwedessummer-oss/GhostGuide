@@ -4,10 +4,10 @@ import { env } from "@/config/env";
 import { AuthForm } from "../auth-form";
 
 /**
- * Not indexed: every trail page links here with its own ?next=… (the Save
- * button for signed-out visitors), and each of those URLs is the same page.
- * Links on it are still followed. (robots.txt deliberately does not disallow
- * /login: a crawler must fetch the page to see this noindex.)
+ * Not indexed: pages that need sign-in send visitors here with their own
+ * ?next=…, and each of those URLs is the same page. Links on it are still
+ * followed. (robots.txt deliberately does not disallow /login: a crawler
+ * must fetch the page to see this noindex.)
  */
 export const metadata: Metadata = { title: "Sign in", robots: { index: false, follow: true } };
 

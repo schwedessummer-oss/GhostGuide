@@ -4,12 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
-import { ClipboardList, Flag, Gauge, LifeBuoy, ListChecks, Map as MapIcon, Menu, Users, UserCog } from "lucide-react";
+import { ClipboardList, Flag, Gauge, LifeBuoy, ListChecks, Menu, Users, UserCog } from "lucide-react";
 import type { AdminIcon } from "./nav-items";
 
 const ICONS: Record<AdminIcon, typeof Gauge> = {
   overview: Gauge,
-  trails: MapIcon,
   customers: Users,
   support: LifeBuoy,
   jobs: ListChecks,

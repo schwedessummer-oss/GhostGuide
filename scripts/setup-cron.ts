@@ -1,5 +1,5 @@
 /**
- * Schedule Ghost Guide's background job runners on Supabase (pg_cron + pg_net).
+ * Schedule Ghost Guide's background job runner on Supabase (pg_cron + pg_net).
  *
  *   npm run setup:cron
  *
@@ -7,9 +7,10 @@
  * which never leave your machine except to your own Supabase project):
  *   1. checks the deployed site accepts your CRON_SECRET
  *   2. enables pg_cron + pg_net, stores the site URL and CRON_SECRET in Supabase Vault
- *   3. schedules two every-minute calls:
- *        ghostguide-job-runner      → /api/cron/jobs     (housekeeping jobs; fast)
- *        ghostguide-catalog-runner  → /api/cron/catalog  (trail data loading; slow)
+ *   3. schedules one every-minute call:
+ *        ghostguide-job-runner  → /api/cron/jobs  (housekeeping jobs)
+ *      and removes the old trail-data runner (ghostguide-catalog-runner) if an
+ *      earlier version scheduled it: its endpoint no longer exists.
  * Safe to run again (updates secrets and schedules in place).
  */
 import { existsSync, readFileSync } from "node:fs";
@@ -31,10 +32,9 @@ function readEnvFile(): Record<string, string> {
   return out;
 }
 
-const RUNNERS = [
-  { name: "ghostguide-job-runner", path: "/api/cron/jobs", timeoutMs: 58_000 },
-  { name: "ghostguide-catalog-runner", path: "/api/cron/catalog", timeoutMs: 290_000 },
-] as const;
+const RUNNERS = [{ name: "ghostguide-job-runner", path: "/api/cron/jobs", timeoutMs: 58_000 }] as const;
+/** Runners scheduled by earlier versions whose endpoints are gone. */
+const RETIRED_RUNNERS = ["ghostguide-catalog-runner"] as const;
 
 function cronCommand(runnerPath: string, timeoutMs: number): string {
   // No secrets in the command text: both values are read from Vault at run time.
@@ -112,13 +112,17 @@ async function main() {
       else await sql`select vault.create_secret(${value}, ${name})`;
     }
 
-    console.log("→ Scheduling the every-minute runners…");
+    console.log("→ Scheduling the every-minute runner…");
     for (const r of RUNNERS) {
       await sql`select cron.schedule(${r.name}, '* * * * *', ${cronCommand(r.path, r.timeoutMs)})`;
       console.log(`  ✓ ${r.name} → ${r.path}`);
     }
+    for (const name of RETIRED_RUNNERS) {
+      const removed = await sql`select cron.unschedule(jobid) from cron.job where jobname = ${name}`;
+      if (removed.length) console.log(`  ✓ removed the retired ${name}`);
+    }
     console.log("\n✓ Done. Within a minute, /status on your site should show background checks as Running.");
-    console.log("  To stop later (Supabase SQL editor): select cron.unschedule('ghostguide-job-runner'); select cron.unschedule('ghostguide-catalog-runner');");
+    console.log("  To stop later (Supabase SQL editor): select cron.unschedule('ghostguide-job-runner');");
   } catch (err) {
     console.log(`\n✗ Setup stopped: ${err instanceof Error ? err.message : String(err)}`);
     process.exitCode = 1;

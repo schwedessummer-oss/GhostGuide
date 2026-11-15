@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { hintFromCookie, parseSessionResponse } from "@/components/site/session";
 
 /*
- * The header/tab bar learn the session in the browser (the root layout reads
+ * The header learns the session in the browser (the root layout reads
  * no cookies so public pages stay cacheable; finding #3). These cover the
  * pure parts and the refresh rules: ask once per page load, again only when
  * the device's sign-in hint changes, never trust anything but the answer for

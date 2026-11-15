@@ -1,5 +1,5 @@
 import "server-only";
-import type { DailyForecastDto, HourlyForecastDto } from "@/domain/catalog";
+import type { DailyForecastDto, HourlyForecastDto } from "@/domain/weather";
 import { addDaysToKey, localDateKey, zonedTimeToUtc } from "@/server/geo/timezone";
 import { toHourlyDto, type MetnoStep } from "./metno";
 

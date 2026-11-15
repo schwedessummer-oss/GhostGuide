@@ -69,10 +69,6 @@ export async function getApiUser(): Promise<SessionUser | null> {
   return getCurrentUser();
 }
 
-export function jsonError(status: number, message: string) {
-  return Response.json({ error: message }, { status });
-}
-
 // ---------------------------------------------------------------------------
 // Sign in / sign up / sign out
 // ---------------------------------------------------------------------------
@@ -147,7 +143,7 @@ export async function signUpWithPassword(email: string, password: string, fullNa
   const { data, error } = await supabase.auth.signUp({
     email: normalized,
     password,
-    options: { data: { full_name: fullName }, emailRedirectTo: `${env().NEXT_PUBLIC_APP_URL}/saved` },
+    options: { data: { full_name: fullName }, emailRedirectTo: `${env().NEXT_PUBLIC_APP_URL}/account` },
   });
   if (error) return { ok: false, error: error.message };
   if (data.session && data.user?.id) await setOwnerHintCookie(data.user.id);

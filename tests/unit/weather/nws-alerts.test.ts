@@ -3,7 +3,7 @@
  * alert collections, coverage decisions, and the service's control flow
  * with the database and provider client mocked (failure paths that a real
  * database cannot easily produce). Cache semantics against real tables are
- * in tests/integration/trails/conditions.test.ts.
+ * in tests/integration/weather/provider-cache.test.ts.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

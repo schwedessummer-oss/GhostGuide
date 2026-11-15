@@ -13,7 +13,7 @@ before changing code.
 | Auth | Supabase Auth (`@supabase/ssr` 0.12, `getClaims()`), or local demo auth | `AUTH_PROVIDER=supabase|demo` |
 | Payments | Stripe Checkout adapter (stripe-node 23, API `2026-10-28.endive`), or simulated | `PAYMENTS_PROVIDER`. Adapter only: no checkout uses it until Phase 6 |
 | Jobs | Postgres job table + cron-invoked runner (`/api/cron/jobs`) | Vercel Cron or Supabase pg_cron |
-| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade on wide maps only (≥ 768 px, zoom ≥ 10, never on Explore or with Save-Data) | Never cache basemap tiles |
+| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade on wide maps only (≥ 768 px, zoom ≥ 10, never with Save-Data) | Never cache basemap tiles |
 | Validation | zod **4** (`z.email()`, `z.uuid()` are top-level) | Validate every server input |
 | Icons | lucide-react 1.x | |
 | Tests | Vitest 5 (`unit` + `integration` projects), Playwright (preinstalled) for e2e | |
@@ -21,7 +21,7 @@ before changing code.
 ### Why `cacheComponents` is off
 Many pages read per-user, RLS-scoped data at request time. The classic dynamic
 model is simpler and avoids stale per-user data. Pages opt into caching
-explicitly (the trail pages use hourly ISR).
+explicitly.
 
 ### Next.js 16 specifics you must follow
 - `params` and `searchParams` are **Promises**: `const { id } = await params`.
@@ -41,7 +41,7 @@ src/
   app/                    routes (pages, route handlers, server actions)
   components/ui/          accessible primitives (Button, Card, Field, Alert, Badge, SimulatedBadge…)
   components/maps/        MapLibre map wrapper + hillshade
-  components/explore|trail|account|admin/   feature components
+  components/account|admin/   feature components
   components/site/        header/footer/navigation
   config/env.ts           zod-validated server config; integrationStatus(); assertSimulationAllowed()
   domain/                 PURE business logic (no I/O, no provider imports) — unit tested
@@ -51,7 +51,8 @@ src/
     auth/                 session, RBAC, tokens
     jobs/                 queue, periodic, registry, handlers/<slice>.ts
     audit.ts  log.ts  rate-limit.ts  flags.ts  integration-log.ts
-    trails/               trail catalog: providers, ingestion, search, saved trails
+    providers/http.ts     provider HTTP client (User-Agent, throttling, retries)
+    geo/  weather/       elevation sampling, sun times, geodesy; weather clients (unused by pages)
     admin/                admin use-cases (RBAC-checked, audited)
 supabase/migrations/      SQL migrations (Supabase CLI compatible)
 db/local/                 local-only Supabase shim (auth schema, roles)
@@ -66,12 +67,12 @@ Provider SDKs are imported only inside `src/integrations/*`.**
 
 ```ts
 import { withUser, withAnon, withSystem } from "@/server/db";
-await withUser(user, (tx) => tx`select … from public.saved_trails`);       // RLS applies
-await withAnon((tx) => tx`select … from public.catalog_trails`);           // public catalog
+await withUser(user, (tx) => tx`select … from public.profiles`);           // RLS applies
+await withAnon((tx) => tx`select … from public.app_settings`);        // public reads
 await withSystem((tx) => …);   // trusted code ONLY, bypasses RLS — authorize first!
 ```
 
-- Rows come back **camelCase** (`trail_id` → `trailId`). JSON column contents
+- Rows come back **camelCase** (`user_id` → `userId`). JSON column contents
   are returned as stored — use camelCase keys inside JSON.
 - **JSONB params:** `${tx.json(obj as JsonValue)}`. Never `JSON.stringify(...)::jsonb`
   (postgres.js v4 stores a JSON *string*).
@@ -81,8 +82,8 @@ await withSystem((tx) => …);   // trusted code ONLY, bypasses RLS — authoriz
 - Lifecycle tables (audit, jobs, integration events) are **not writable by API
   roles**; write them in `withSystem` inside a use-case that has already
   authorized the actor.
-- Customers can write their own profiles (limited columns) and saved trails.
-- The current migrations still create tables for removed features (check-ins,
+- Customers can write their own profiles (limited columns).
+- The current migrations still create tables for removed features (the OSM trail catalog and its caches, saved trails, check-ins,
   emergency contacts, hike sessions and locations, downloads, trip shares,
   marketing drafts, the demo region's regions/trails/POIs/narrations/permits,
   trips, bookings, payments, refunds, add-ons, gear, fulfillments, pricing
@@ -105,7 +106,7 @@ await withSystem((tx) => …);   // trusted code ONLY, bypasses RLS — authoriz
 ```ts
 import { getCurrentUser, requireUser, requirePermission, getApiUser, jsonError } from "@/server/auth";
 import { can } from "@/server/auth/rbac";
-const user = await requireUser("/saved");             // pages/actions; redirects to /login
+const user = await requireUser("/account");             // pages/actions; redirects to /login
 const staff = await requirePermission("jobs.manage");  // admin pages/actions; redirects to /forbidden
 const apiUser = await getApiUser(); if (!apiUser) return jsonError(401, "Sign in required");
 ```
@@ -130,14 +131,13 @@ await enqueueJob(tx, kind, payload, { dedupKey: `${area}:${entity}:${id}` }); //
   re-load current state, compare versions, and return `{ outcome: "noop" }` when obsolete.
 - Throwing = retry with exponential backoff; after `maxAttempts` the job is `dead`
   and appears in the admin retry queue.
-- Periodic kinds (enqueued by every cron tick): `ops.purge_rate_limits` (daily); the catalog
-  runner adds `catalog.refresh_stale` (60 min) and `catalog.purge_caches` (daily).
+- Periodic kinds (enqueued by every cron tick): `ops.purge_rate_limits` (daily).
 - Run locally: `npm run jobs:run` (once) or `npm run jobs:run -- --watch`.
 
 ## Cross-cutting helpers
 - `recordAudit(tx, actor, action, entityType, entityId, metadata)` — every sensitive staff action.
 - `recordIntegrationEvent({providerKind, providerKey, operation, outcome, …})` — every provider call (incl. simulated).
-- `checkRateLimit(key, limit, windowSec)` — auth, saving trails, public trail APIs.
+- `checkRateLimit(key, limit, windowSec)` — auth and public APIs.
 - `isEnabled(key)` — feature flags (`src/server/flags.ts`; none are defined today).
 - `log.info/warn/error(event, data)` — redacts secrets, contact details, coordinates.
 - `assertSimulationAllowed("payments")` — every demo adapter calls this; throws in live mode.

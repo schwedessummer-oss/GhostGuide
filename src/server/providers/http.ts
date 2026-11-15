@@ -5,7 +5,7 @@ import { log } from "@/server/log";
 
 /**
  * One HTTP client for every external data provider:
- *  - identifying User-Agent (required by OSM, Nominatim, MET Norway, NWS policies)
+ *  - identifying User-Agent (required by provider policies, e.g. MET Norway, NWS)
  *  - per-attempt timeout, bounded retries with backoff for retryable failures
  *  - optional global request spacing across all server instances (DB-backed;
  *    a slot is reserved only when the caller will wait for it, and an
@@ -13,21 +13,15 @@ import { log } from "@/server/log";
  *  - `signal` aborts every wait (retry backoff, throttle slot) as well as
  *    the request itself
  *  - usage accounting per provider per UTC day (public.external_api_usage),
- *    shown in the admin "Data providers" view for cost control
+ *    for cost control
  *
- * Callers own caching; this client never caches.
+ * Callers own caching; this client never caches. Web pages never call
+ * providers on a visitor's behalf; the callers are the elevation sampler and
+ * the weather clients (hidden for now), and later the offline ingestion
+ * pipeline, which adds its own provider keys.
  */
 
-export type ProviderKey = "overpass" | "nominatim" | "metno" | "nws" | "terrain_tiles" | "ridb";
-
-export const PROVIDER_LABELS: Record<ProviderKey, string> = {
-  overpass: "OpenStreetMap Overpass API",
-  nominatim: "Nominatim (OpenStreetMap geocoding)",
-  metno: "MET Norway Locationforecast",
-  nws: "US National Weather Service",
-  terrain_tiles: "AWS Terrain Tiles (elevation)",
-  ridb: "Recreation.gov RIDB",
-};
+export type ProviderKey = "metno" | "nws" | "terrain_tiles";
 
 export class ProviderError extends Error {
   constructor(

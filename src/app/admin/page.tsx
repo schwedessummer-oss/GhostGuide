@@ -11,8 +11,6 @@ export const metadata: Metadata = { title: "Overview" };
 const INTEGRATION_LABELS: Record<string, string> = {
   mode: "App mode",
   auth: "Authentication",
-  maps: "Maps",
-  weather: "Weather",
 };
 
 export default async function AdminOverviewPage() {

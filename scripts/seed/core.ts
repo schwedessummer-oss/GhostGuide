@@ -1,7 +1,7 @@
 /**
  * Core seed: the demo accounts (customers and one account per staff role)
- * used for local runs and automated tests. No trail data: trails come from
- * the catalog (and, later, the ingest pipeline), never from seeds.
+ * used for local runs and automated tests. No hike data: hikes will come
+ * from the offline ingestion pipeline (docs/PLAN.md §6), never from seeds.
  */
 import type postgres from "postgres";
 import { createClient } from "@supabase/supabase-js";

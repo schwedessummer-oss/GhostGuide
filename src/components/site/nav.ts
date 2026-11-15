@@ -1,36 +1,21 @@
 /**
- * Primary navigation model (pure): the same three destinations in the
- * desktop header and the phone tab bar.
+ * Site navigation model (pure): the links the header shows. While the hike
+ * catalog is being rebuilt the public site is the home page plus accounts,
+ * so the header carries only account links (and Admin for staff).
  */
-export type NavKey = "explore" | "saved" | "profile";
-
-export interface NavItem {
-  key: NavKey;
+export interface NavLink {
   href: string;
   label: string;
 }
 
-export function primaryNav(signedIn: boolean): NavItem[] {
-  return [
-    { key: "explore", href: "/explore", label: "Explore" },
-    { key: "saved", href: "/saved", label: "Saved" },
-    { key: "profile", href: signedIn ? "/account" : "/login", label: "Profile" },
-  ];
+/** Header links for a visitor; Sign in / Sign out are rendered separately. */
+export function siteNav({ signedIn, canAdmin }: { signedIn: boolean; canAdmin: boolean }): NavLink[] {
+  if (!signedIn) return [];
+  return [{ href: "/account", label: "Account" }, ...(canAdmin ? [{ href: "/admin", label: "Admin" }] : [])];
 }
 
-const under = (path: string, base: string) => path === base || path.startsWith(`${base}/`);
-
-/** Which primary destination a path belongs to (null for pages outside the three, e.g. /admin). */
-export function activeNavKey(pathname: string | null | undefined): NavKey | null {
+/** Whether `pathname` is the page a link points to, or a page below it. */
+export function isCurrentPath(pathname: string | null | undefined, href: string): boolean {
   const p = (pathname ?? "").split(/[?#]/)[0].replace(/\/+$/, "") || "/";
-  if (under(p, "/explore") || under(p, "/trail")) return "explore";
-  if (under(p, "/saved")) return "saved";
-  if (under(p, "/account") || under(p, "/login") || under(p, "/signup")) return "profile";
-  return null;
-}
-
-/** Routes that render as a full-height app (no footer, no page scroll). */
-export function isFullscreenRoute(pathname: string | null | undefined): boolean {
-  const p = (pathname ?? "").split(/[?#]/)[0].replace(/\/+$/, "");
-  return p === "/explore";
+  return p === href || (href !== "/" && p.startsWith(`${href}/`));
 }

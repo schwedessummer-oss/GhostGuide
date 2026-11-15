@@ -3,7 +3,7 @@
  * weather unit tests. Values are invented for tests only.
  */
 import { readFileSync } from "node:fs";
-import type { HourlyForecastDto } from "@/domain/catalog";
+import type { HourlyForecastDto } from "@/domain/weather";
 import type { MetnoStep } from "@/server/weather/metno";
 
 export const HOUR = 3_600_000;

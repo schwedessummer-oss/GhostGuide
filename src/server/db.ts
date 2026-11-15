@@ -11,7 +11,7 @@ import { assertDatabaseConfigured, env } from "@/config/env";
  *                           role with `request.jwt.claims.sub = user.id`, so
  *                           every RLS policy applies. Default for anything a
  *                           signed-in customer or staff member does.
- *  withAnon(tx => …)        Same, as the `anon` role (public catalog reads).
+ *  withAnon(tx => …)        Same, as the `anon` role (public reads).
  *  withSystem(tx => …)      Trusted server code only (webhooks, jobs, and
  *                           use-cases that need row locks / lifecycle writes).
  *                           Runs as the table owner and BYPASSES RLS — the
@@ -111,7 +111,3 @@ export function withSystem<T>(fn: (tx: Tx) => Promise<T>): Promise<T> {
   return sql().begin((tx) => fn(tx)) as Promise<T>;
 }
 
-/** True if the error is a Postgres unique-violation (23505). */
-export function isUniqueViolation(err: unknown): boolean {
-  return typeof err === "object" && err !== null && (err as { code?: string }).code === "23505";
-}

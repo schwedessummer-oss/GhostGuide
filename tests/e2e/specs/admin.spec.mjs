@@ -219,7 +219,6 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
       ["/admin/customers", "Customers"],
       ["/admin/support", "Support tickets"],
       ["/admin/jobs", "Jobs & integrations"],
-      ["/admin/data", "Trail data"],
       ["/admin/flags", "Feature flags"],
       ["/admin/staff", "Staff roles"],
       ["/admin/audit", "Audit log"],
@@ -248,7 +247,7 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
     await gotoOk(page, "/admin");
     await page.getByText("Admin menu").click();
     const nav = page.getByRole("navigation", { name: "Admin sections" }).first();
-    for (const label of ["Overview", "Customers", "Support", "Jobs & integrations", "Trail data", "Feature flags", "Staff roles", "Audit log"]) {
+    for (const label of ["Overview", "Customers", "Support", "Jobs & integrations", "Feature flags", "Staff roles", "Audit log"]) {
       await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
     }
     // Simulated integrations are labeled on the overview.
@@ -290,7 +289,7 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
       await page.getByRole("heading", { level: 1, name: "Overview" }).waitFor({ timeout: UI });
       const nav = page.getByRole("navigation", { name: "Admin sections" }).last();
       for (const label of ["Customers", "Support"]) await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
-      for (const label of ["Feature flags", "Staff roles", "Audit log", "Jobs & integrations", "Trail data"]) {
+      for (const label of ["Feature flags", "Staff roles", "Audit log", "Jobs & integrations"]) {
         assert.equal(await nav.getByRole("link", { name: label, exact: true }).count(), 0, `support@ should not see "${label}" in the admin menu`);
       }
       for (const p of ["/admin/flags", "/admin/staff", "/admin/audit", "/admin/jobs"]) await expectForbidden(page, p);

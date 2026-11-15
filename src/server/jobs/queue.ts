@@ -40,55 +40,16 @@ export interface EnqueueOptions {
 export type JobOutcome = { outcome: "done" | "noop"; note?: string } | void;
 export interface JobContext {
   now: Date;
-  /** When set by the runner: the handler should finish (or give up) before this instant. */
-  deadline?: Date;
 }
 export type JobHandler = (job: Job, ctx: JobContext) => Promise<JobOutcome>;
 export type JobHandlers = Record<string, JobHandler>;
-
-/**
- * Thrown by a handler that cannot run YET for reasons that are not a failure
- * of the job (e.g. a provider's global concurrency limit is reached, or the
- * runner has too little time left). The job is re-queued after `delayMs`
- * WITHOUT consuming an attempt. Handlers must only defer for conditions that
- * clear on their own, otherwise the job never finishes.
- */
-export class JobDeferredError extends Error {
-  readonly delayMs: number;
-  constructor(delayMs: number, message = "deferred") {
-    super(message);
-    this.name = "JobDeferredError";
-    this.delayMs = Number.isFinite(delayMs) ? Math.min(6 * 3600_000, Math.max(0, Math.round(delayMs))) : 60_000;
-  }
-}
 
 export interface RunJobsOptions {
   limit?: number;
   workerId?: string;
   /** Only claim these kinds. */
   kinds?: string[];
-  /** Never claim kinds starting with any of these prefixes (e.g. "catalog."). */
-  excludeKindPrefixes?: string[];
-  /** Passed to handlers as ctx.deadline. */
-  deadline?: Date;
-  /** Claim order (default "run_at"); see ClaimOrder. */
-  order?: ClaimOrder;
 }
-
-/**
- * Which due jobs are claimed first.
- *   run_at          oldest due first (FIFO): the default.
- *   recent_request  for on-demand work that users wait for (catalog tile
- *                   loads): jobs whose payload carries a numeric
- *                   `requestedAt` (epoch ms of the latest user request for
- *                   it) run newest request first, so a backlog of areas
- *                   nobody is looking at any more never delays the area a
- *                   user is looking at now. Jobs without `requestedAt`
- *                   (maintenance, small) come before them, and background
- *                   work (`requestedAt` 0) after them; ties run oldest due
- *                   first.
- */
-export type ClaimOrder = "run_at" | "recent_request";
 
 const LOCK_TIMEOUT_SEC = 300;
 
@@ -124,24 +85,7 @@ export function backoffSeconds(attempts: number): number {
   return Math.round(base * (0.8 + Math.random() * 0.4));
 }
 
-/** LIKE patterns matching kinds that start with each prefix (metacharacters escaped). */
-function prefixPatterns(prefixes: string[] | undefined): string[] {
-  return (prefixes ?? []).filter((p) => typeof p === "string" && p.length > 0).map((p) => p.replace(/[\\%_]/g, "\\$&") + "%");
-}
-
-export async function claimDueJobs(
-  limit: number,
-  workerId: string,
-  kinds?: string[],
-  excludeKindPrefixes?: string[],
-  order: ClaimOrder = "run_at",
-): Promise<Job[]> {
-  const excluded = prefixPatterns(excludeKindPrefixes);
-  const orderBy =
-    order === "recent_request"
-      ? sql()`order by (case when jsonb_typeof(payload->'requestedAt') = 'number' then (payload->>'requestedAt')::float8 end) desc nulls first,
-                run_at asc, id asc`
-      : sql()`order by run_at`;
+export async function claimDueJobs(limit: number, workerId: string, kinds?: string[]): Promise<Job[]> {
   return sql()<Job[]>`
     update public.jobs j
     set status = 'running', locked_at = now(), locked_by = ${workerId}, attempts = j.attempts + 1
@@ -152,8 +96,7 @@ export async function claimDueJobs(
         or (status = 'running' and locked_at < now() - make_interval(secs => ${LOCK_TIMEOUT_SEC}))
       )
       ${kinds?.length ? sql()`and kind = any(${kinds}::text[])` : sql()``}
-      ${excluded.length ? sql()`and not (kind like any(${excluded}::text[]))` : sql()``}
-      ${orderBy}
+      order by run_at
       for update skip locked
       limit ${limit}
     )
@@ -180,32 +123,18 @@ async function markFailed(job: Job, error: string) {
     where id = ${job.id}`;
 }
 
-/** Re-queue a deferred job without consuming the attempt claimDueJobs counted. */
-async function markDeferred(job: Job, delayMs: number, message: string) {
-  await sql()`
-    update public.jobs set
-      status = 'queued',
-      run_at = now() + make_interval(secs => ${delayMs / 1000}),
-      attempts = greatest(0, attempts - 1),
-      locked_at = null,
-      last_error = ${`deferred: ${message}`.slice(0, 2000)}
-    where id = ${job.id} and status = 'running'`;
-}
-
 export interface RunSummary {
   claimed: number;
   succeeded: number;
   noop: number;
   retried: number;
   dead: number;
-  /** Re-queued by JobDeferredError (no attempt consumed). */
-  deferred: number;
 }
 
 export async function runDueJobs(handlers: JobHandlers, opts: RunJobsOptions = {}): Promise<RunSummary> {
   const workerId = opts.workerId ?? `worker-${process.pid}-${Math.random().toString(36).slice(2, 8)}`;
-  const jobs = await claimDueJobs(opts.limit ?? 25, workerId, opts.kinds, opts.excludeKindPrefixes, opts.order);
-  const summary: RunSummary = { claimed: jobs.length, succeeded: 0, noop: 0, retried: 0, dead: 0, deferred: 0 };
+  const jobs = await claimDueJobs(opts.limit ?? 25, workerId, opts.kinds);
+  const summary: RunSummary = { claimed: jobs.length, succeeded: 0, noop: 0, retried: 0, dead: 0 };
   for (const job of jobs) {
     const handler = handlers[job.kind];
     if (!handler) {
@@ -215,16 +144,11 @@ export async function runDueJobs(handlers: JobHandlers, opts: RunJobsOptions = {
       continue;
     }
     try {
-      const result = await handler(job, { now: new Date(), deadline: opts.deadline });
+      const result = await handler(job, { now: new Date() });
       await markSucceeded(job, result?.note);
       if (result?.outcome === "noop") summary.noop++;
       else summary.succeeded++;
     } catch (err) {
-      if (err instanceof JobDeferredError) {
-        await markDeferred(job, err.delayMs, err.message);
-        summary.deferred++;
-        continue;
-      }
       const message = err instanceof Error ? err.message : String(err);
       await markFailed(job, message);
       if (job.attempts >= job.maxAttempts) summary.dead++;

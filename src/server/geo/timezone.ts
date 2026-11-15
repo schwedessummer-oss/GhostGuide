@@ -1,5 +1,4 @@
 import "server-only";
-import tzLookup from "@photostructure/tz-lookup";
 
 /**
  * Time zone helpers built on the platform Intl API (IANA zones, DST-aware).
@@ -52,35 +51,6 @@ export function isValidTimeZone(timeZone: unknown): timeZone is string {
     return true;
   } catch {
     return false;
-  }
-}
-
-/**
- * IANA time zone at a location, from @photostructure/tz-lookup's compact
- * boundary model. Over the open ocean it returns the nautical zone
- * (e.g. "Etc/GMT+2"), which is a valid IANA zone with the correct offset;
- * that value is passed through. Returns null for invalid coordinates, a
- * lookup error, or a zone the runtime does not know. The model is
- * approximate within a few kilometres of zone borders (see the package docs).
- */
-export function timezoneAt(lat: number, lng: number): string | null {
-  if (
-    typeof lat !== "number" ||
-    typeof lng !== "number" ||
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lng) ||
-    lat < -90 ||
-    lat > 90 ||
-    lng < -180 ||
-    lng > 180
-  ) {
-    return null;
-  }
-  try {
-    const zone = tzLookup(lat, lng);
-    return isValidTimeZone(zone) ? zone : null;
-  } catch {
-    return null;
   }
 }
 

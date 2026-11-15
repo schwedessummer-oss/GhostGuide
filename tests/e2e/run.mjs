@@ -1,25 +1,22 @@
 #!/usr/bin/env node
 /**
  * End-to-end test harness (no extra dependencies):
- *  1. start the mock data providers (tests/e2e/mock-providers.mjs): Overpass,
- *     Nominatim, MET Norway, NWS, terrain tiles and a blank map style, so the
- *     suite never touches the internet and always sees the same recorded data
- *  2. recreate + migrate + seed a dedicated e2e database
- *  3. build (unless --no-build) and start `next start` against it, both
- *     pointed at the mocks (NEXT_PUBLIC_* values are inlined by the build)
- *  4. run Playwright-driven specs with Node's built-in test runner
+ *  1. recreate + migrate + seed a dedicated e2e database
+ *  2. build (unless --no-build) and start `next start` against it
+ *     (NEXT_PUBLIC_* values are inlined by the build)
+ *  3. run Playwright-driven specs with Node's built-in test runner
  *
- * Usage: npm run test:e2e [-- --no-build] [-- --headed] [-- explore trail ...]
+ * No page calls an external data provider, so the suite needs no provider
+ * mocks and never touches the internet.
+ *
+ * Usage: npm run test:e2e [-- --no-build] [-- --headed] [-- site admin ...]
  *        (bare names / paths select spec files; default: every spec)
- * Env:   E2E_DATABASE_URL (default local ghostguide_e2e), E2E_PORT (3200),
- *        E2E_MOCK_PORT (3299; another free port is used when it is taken and
- *        the app is being built), E2E_MOCK_LOG=1 prints every mock request.
+ * Env:   E2E_DATABASE_URL (default local ghostguide_e2e), E2E_PORT (3200).
  */
 import { spawn } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { mockProviderEnv, startMockProviders } from "./mock-providers.mjs";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const port = process.env.E2E_PORT ?? "3200";
@@ -27,7 +24,7 @@ const baseUrl = `http://localhost:${port}`;
 const dbUrl = process.env.E2E_DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:54322/ghostguide_e2e";
 const args = process.argv.slice(2);
 const noBuild = args.includes("--no-build");
-/** Records which mock URL the current build inlined (NEXT_PUBLIC_MAP_STYLE_URL). */
+/** Records which base URL the current build inlined (NEXT_PUBLIC_APP_URL). */
 const buildMarker = path.join(root, ".next", "e2e-build.json");
 
 function selectedSpecs() {
@@ -41,11 +38,7 @@ function selectedSpecs() {
   });
 }
 
-/**
- * Run a command to completion WITHOUT blocking this process: the mock
- * providers live in this process's event loop and must keep answering the
- * app server (and the browser) while builds and specs run.
- */
+/** Run a command to completion (inherits stdio). */
 function run(cmd, env = process.env) {
   console.log(`$ ${cmd}`);
   return new Promise((resolve, reject) => {
@@ -78,50 +71,18 @@ async function assertPortFree(url) {
   throw new Error(`Something already answers at ${url}; stop it (or set E2E_PORT) so the suite tests this build.`);
 }
 
-/** The mock on the preferred port; with a build, any free port when that one is taken. */
-async function startMock() {
-  const preferred = Number(process.env.E2E_MOCK_PORT ?? 3299);
-  const quiet = !process.env.E2E_MOCK_LOG;
-  let built = null;
-  if (noBuild) {
-    try {
-      built = JSON.parse(readFileSync(buildMarker, "utf8"));
-    } catch {
-      throw new Error("--no-build: the current build was not made by this harness (no .next/e2e-build.json). Run without --no-build once.");
-    }
-  }
-  const wanted = built ? Number(new URL(built.mockUrl).port) : preferred;
+/** With --no-build, the existing build must have been made by this harness for this base URL. */
+function assertReusableBuild() {
+  let built;
   try {
-    return await startMockProviders({ port: wanted, quiet });
-  } catch (err) {
-    if (err?.code !== "EADDRINUSE") throw err;
-    if (built) throw new Error(`--no-build: the build expects the mock providers on port ${wanted}, which is in use. Free it or rebuild.`);
-    console.warn(`Port ${wanted} is in use; starting the mock providers on a free port.`);
-    return startMockProviders({ port: 0, quiet });
+    built = JSON.parse(readFileSync(buildMarker, "utf8"));
+  } catch {
+    throw new Error("--no-build: the current build was not made by this harness (no .next/e2e-build.json). Run without --no-build once.");
   }
+  if (built.baseUrl !== baseUrl) throw new Error(`--no-build: the build was made for ${built.baseUrl}, not ${baseUrl}. Rebuild.`);
 }
 
-/**
- * Catalog trail pages are ISR pages generated on first request. Their cached
- * HTML embeds trail ids from the database of an earlier run, so a run that
- * reuses a build (--no-build) with a fresh database drops them first. Next.js
- * 16.4 keeps runtime ISR entries in .next/server/route-cache/APP_PAGE/<route
- * hash>/$/<path> (earlier versions: next to the build output in server/app).
- */
-function dropRuntimeTrailPages() {
-  const dir = path.join(root, ".next", "server", "app", "trail");
-  if (existsSync(dir)) {
-    for (const entry of readdirSync(dir)) {
-      if (!entry.startsWith("[")) rmSync(path.join(dir, entry), { recursive: true, force: true });
-    }
-  }
-  const routeCache = path.join(root, ".next", "server", "route-cache", "APP_PAGE");
-  if (existsSync(routeCache)) {
-    for (const route of readdirSync(routeCache)) rmSync(path.join(routeCache, route, "$", "trail"), { recursive: true, force: true });
-  }
-}
-
-/** Requests to the local mocks must never go through an outbound proxy. */
+/** Requests to the local app must never go through an outbound proxy. */
 function withoutProxyForLocalhost(env) {
   const out = { ...env };
   delete out.NODE_USE_ENV_PROXY;
@@ -136,7 +97,6 @@ function withoutProxyForLocalhost(env) {
 }
 
 let server;
-let mock;
 let exitCode = 1;
 
 /** `next start` runs in its own process group so the whole tree stops with the suite. */
@@ -158,8 +118,7 @@ for (const signal of ["SIGINT", "SIGTERM"]) {
 try {
   const specs = selectedSpecs();
   await assertPortFree(`${baseUrl}/status`);
-  mock = await startMock();
-  console.log(`Mock data providers at ${mock.url}`);
+  if (noBuild) assertReusableBuild();
 
   const serverEnv = withoutProxyForLocalhost({
     ...process.env,
@@ -174,24 +133,13 @@ try {
     CRON_SECRET: "e2e-cron-secret-0123456789",
     // The suite signs in many times from one IP; production limits stay at x1.
     RATE_LIMIT_SCALE: "50",
-    // Real-data providers → local mocks (server URLs read at runtime, map URLs inlined by the build).
-    ...mockProviderEnv(mock.url),
-    // Provider policies require an identifying User-Agent; the mocks record what is sent.
-    DATA_PROVIDER_USER_AGENT: process.env.DATA_PROVIDER_USER_AGENT || "GhostGuide/e2e (+http://localhost; e2e tests)",
-    // US facilities enrichment (Recreation.gov) has no mock: keep it disabled.
-    RIDB_API_KEY: "",
-    // The specs exercise on-demand loading (search → inline ingestion through the mock Overpass).
-    // Production keeps it off by default (src/config/env.ts).
-    CATALOG_INLINE_INGEST: "true",
   });
 
   await run("npx tsx scripts/db/reset.ts", { ...process.env, DATABASE_URL: dbUrl, AUTH_PROVIDER: "demo" });
   if (!noBuild) {
     await run("npx next build", serverEnv);
     mkdirSync(path.dirname(buildMarker), { recursive: true });
-    writeFileSync(buildMarker, JSON.stringify({ mockUrl: mock.url, builtAt: new Date().toISOString() }, null, 2));
-  } else {
-    dropRuntimeTrailPages();
+    writeFileSync(buildMarker, JSON.stringify({ baseUrl, builtAt: new Date().toISOString() }, null, 2));
   }
   server = spawn("npx", ["next", "start", "-p", port], { cwd: root, env: serverEnv, stdio: ["ignore", "inherit", "inherit"], detached: true });
   await waitForServer(`${baseUrl}/status`);
@@ -200,7 +148,6 @@ try {
     E2E_BASE_URL: baseUrl,
     E2E_DATABASE_URL: dbUrl,
     E2E_CRON_SECRET: serverEnv.CRON_SECRET,
-    E2E_MOCK_URL: mock.url,
     E2E_HEADED: args.includes("--headed") ? "1" : "",
   };
   try {
@@ -214,6 +161,5 @@ try {
   exitCode = 1;
 } finally {
   stopServer();
-  if (mock) await mock.close();
 }
 process.exit(exitCode);

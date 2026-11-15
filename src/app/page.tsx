@@ -1,31 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Bookmark, CloudSun, Map as MapIcon, Route, Search } from "lucide-react";
 import { Container } from "@/components/ui";
-import { NearMeLink } from "@/components/explore/near-me-link";
 
 export const metadata: Metadata = {
-  title: { absolute: "Ghost Guide — find a hike, plan the day" },
-  description: "Real trails from OpenStreetMap with honest distance, climb and time estimates, and the forecast and daylight for your hike.",
+  title: { absolute: "Ghost Guide — the world's best hikes, coming soon" },
+  description: "Ghost Guide is being rebuilt as a guide to the world's best hikes. The catalog is coming soon.",
 };
-
-const VALUES = [
-  {
-    icon: Route,
-    title: "Real trails, honest numbers",
-    body: "Trails worldwide come from OpenStreetMap. Distance and climb are measured from the mapped route; times and difficulty are clearly marked as estimates.",
-  },
-  {
-    icon: CloudSun,
-    title: "Plan the day",
-    body: "Each trail page shows the forecast, daylight and a sensible start time, official US weather alerts, and fuel, food and services nearby.",
-  },
-  {
-    icon: Bookmark,
-    title: "Save trails",
-    body: "Keep a list of trails you want to hike and come back to it whenever you are planning your next trip.",
-  },
-] as const;
 
 /** Decorative ridgelines (solid fills, no images). */
 function Ridges({ className }: { className?: string }) {
@@ -34,85 +13,26 @@ function Ridges({ className }: { className?: string }) {
       <path d="M0 150 L110 95 L210 130 L330 55 L450 120 L560 75 L670 125 L790 45 L910 115 L1020 80 L1120 120 L1200 95 L1200 240 L0 240 Z" fill="#2a5a3e" opacity="0.55" />
       <path d="M0 190 L95 150 L200 178 L310 130 L430 172 L545 138 L655 182 L770 140 L890 186 L1005 150 L1110 182 L1200 160 L1200 240 L0 240 Z" fill="#1f4630" />
       <path d="M0 240 L0 214 Q220 186 430 208 T840 202 T1200 196 L1200 240 Z" fill="#173524" />
-      <path d="M150 240 C260 214 330 204 430 206 S600 214 690 200 S860 184 960 190" fill="none" stroke="#e7dfd0" strokeWidth="4" strokeLinecap="round" strokeDasharray="2 13" opacity="0.8" />
     </svg>
   );
 }
 
+/**
+ * Placeholder home page while the hike catalog is rebuilt (docs/PLAN.md):
+ * it says what Ghost Guide is becoming and nothing more. No hikes, numbers
+ * or features are shown until the curated catalog is loaded and reviewed.
+ */
 export default function HomePage() {
   return (
-    <>
-      <section className="relative overflow-hidden bg-forest-900 text-white">
-        <Ridges className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full sm:h-52" />
-        <Container className="relative pt-12 pb-44 sm:pt-20 sm:pb-60">
-          <h1 className="max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Find a hike. Plan the day.
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg text-forest-100 sm:text-xl">
-            Real trails with honest numbers, plus the forecast and daylight for your hike.
-          </p>
-
-          <form action="/explore" method="get" role="search" className="mt-8 flex max-w-xl flex-col gap-2 sm:flex-row">
-            <label htmlFor="home-q" className="sr-only">
-              Where do you want to hike?
-            </label>
-            <div className="flex min-h-13 flex-1 items-center gap-2 rounded-xl bg-white px-4 text-ink focus-within:ring-3 focus-within:ring-forest-500">
-              <Search aria-hidden className="size-5 shrink-0 text-muted" />
-              <input
-                id="home-q"
-                name="q"
-                type="search"
-                required
-                minLength={2}
-                maxLength={120}
-                enterKeyHint="search"
-                autoComplete="off"
-                placeholder="Town, park or mountain"
-                className="min-h-13 w-full bg-transparent text-base placeholder:text-muted/80 focus:outline-none focus-visible:outline-none"
-              />
-            </div>
-            <button type="submit" className="inline-flex min-h-13 items-center justify-center gap-2 rounded-xl bg-[#e7dfd0] px-6 font-semibold text-forest-950 hover:bg-white">
-              Find trails <ArrowRight aria-hidden className="size-5" />
-            </button>
-          </form>
-
-          <div className="mt-4 flex flex-wrap items-start gap-x-2 gap-y-2">
-            <NearMeLink
-              className="min-h-11 rounded-xl px-4 font-semibold text-white ring-1 ring-white/50 hover:bg-white/10 disabled:opacity-70"
-              messageClassName="max-w-sm text-forest-100"
-            />
-            <Link href="/explore" className="inline-flex min-h-11 items-center gap-2 rounded-xl px-4 font-semibold text-white hover:bg-white/10">
-              <MapIcon aria-hidden className="size-5" /> Explore the map
-            </Link>
-          </div>
-        </Container>
-      </section>
-
-      <section aria-labelledby="values-heading" className="py-14 sm:py-20">
-        <Container>
-          <h2 id="values-heading" className="sr-only">
-            What Ghost Guide does today
-          </h2>
-          <ul className="grid gap-10 sm:grid-cols-3 sm:gap-8">
-            {VALUES.map((v) => (
-              <li key={v.title}>
-                <span className="inline-flex size-11 items-center justify-center rounded-xl bg-forest-100 text-forest-800">
-                  <v.icon aria-hidden className="size-6" />
-                </span>
-                <h3 className="mt-4 text-lg font-bold text-ink">{v.title}</h3>
-                <p className="mt-2 text-muted">{v.body}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-12 border-t border-sand-200 pt-6 text-sm text-muted">
-            Ghost Guide is not an emergency service. Conditions change and mapped data can be incomplete: check with the land manager and official
-            sources before you go.{" "}
-            <Link href="/how-it-works" className="font-semibold text-forest-800 underline underline-offset-2">
-              How it works &amp; its limits
-            </Link>
-          </p>
-        </Container>
-      </section>
-    </>
+    <section className="relative overflow-hidden bg-forest-900 text-white">
+      <Ridges className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full sm:h-52" />
+      <Container className="relative pt-16 pb-48 sm:pt-24 sm:pb-64">
+        <p className="text-sm font-semibold tracking-wide text-forest-100 uppercase">Coming soon</p>
+        <h1 className="mt-3 max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl lg:text-6xl">The world&apos;s best hikes.</h1>
+        <p className="mt-5 max-w-2xl text-lg text-forest-100 sm:text-xl">
+          Ghost Guide is being rebuilt as a guide to the world&apos;s best hikes. The catalog is coming soon.
+        </p>
+      </Container>
+    </section>
   );
 }

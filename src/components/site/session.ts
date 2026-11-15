@@ -2,13 +2,13 @@ import { useEffect, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 
 /**
- * Who is signed in, for the site chrome only (header links, tab bar, Admin).
+ * Who is signed in, for the site chrome only (header links, Admin).
  *
  * The root layout must not read cookies or headers: that would make every
- * page render per request, including the trail pages that are meant to be
- * cached for an hour (ISR) and shared by every visitor. So the server HTML
- * of the chrome is the same for everyone (the signed-out links), and the
- * browser asks GET /api/session (never cached) once it has hydrated.
+ * page render per request, including public pages that are meant to be
+ * static and shared by every visitor. So the server HTML of the chrome is
+ * the same for everyone (the signed-out links), and the browser asks
+ * GET /api/session (never cached) once it has hydrated.
  *
  * Until that answer arrives, the readable `gg_owner` device hint (set at
  * sign-in, deleted at sign-out; see src/server/auth/owner-hint.ts) is the

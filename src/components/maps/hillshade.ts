@@ -4,11 +4,12 @@
  * Hillshade costs one Terrarium DEM tile (~100–140 KB PNG) per visible tile,
  * roughly 0.5–1.5 MB per map view, only to draw a light shade. So it is
  * drawn only where it helps:
- *  - `"wide"` (MapView's default): only on wide maps, e.g. a trail page on a
- *    desktop, never on phones; `false`: never (Explore, where every pan
- *    would fetch more); `true`: at any width, where the device allows;
+ *  - `"wide"` (MapView's default): only on wide maps, e.g. a detail page on
+ *    a desktop, never on phones; `false`: never (maps people pan a lot,
+ *    where every pan would fetch more); `true`: at any width, where the
+ *    device allows;
  *  - never drawn when the browser asks to save data (Save-Data / reduced data);
- *  - only from HILLSHADE_MIN_ZOOM, where relief helps read a trail (MapLibre
+ *  - only from HILLSHADE_MIN_ZOOM, where relief helps read a route (MapLibre
  *    fetches no DEM tiles for a layer hidden at the current zoom);
  *  - off everywhere when NEXT_PUBLIC_MAP_TERRAIN_TILES_URL is "off".
  */

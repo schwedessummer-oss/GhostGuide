@@ -10,8 +10,6 @@ export const PERMISSIONS = {
   "customers.view": ["admin", "operator", "support"],
   "jobs.manage": ["admin", "operator"],
   "integrations.view": ["admin", "operator"],
-  /** Trail-catalog data: ingestion status, retries, moderation (hide a trail). */
-  "catalog.manage": ["admin", "operator"],
   "flags.manage": ["admin"],
   "support.manage": ["admin", "operator", "support"],
   "audit.view": ["admin"],

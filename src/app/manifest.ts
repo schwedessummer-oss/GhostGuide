@@ -5,15 +5,15 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Ghost Guide",
     short_name: "Ghost Guide",
-    description: "Find real trails with honest distance, climb and time estimates, and plan your hike.",
+    description: "A guide to the world's best hikes, being rebuilt. The catalog is coming soon.",
     id: "/",
-    start_url: "/explore",
+    start_url: "/",
     scope: "/",
     display: "standalone",
     orientation: "portrait",
     background_color: "#faf7f1",
     theme_color: "#1f4630",
-    categories: ["travel", "sports", "navigation"],
+    categories: ["travel", "sports"],
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
       { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },

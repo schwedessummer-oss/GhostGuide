@@ -1,6 +1,6 @@
 import "server-only";
 import { env } from "@/config/env";
-import type { AttributionDto, WeatherAlertDto } from "@/domain/catalog";
+import type { AttributionDto, WeatherAlertDto } from "@/domain/weather";
 import { withSystem, type JsonValue } from "@/server/db";
 import { log } from "@/server/log";
 import { ProviderError, providerFetch, recordProviderCacheHit } from "@/server/providers/http";

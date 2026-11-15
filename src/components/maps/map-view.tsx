@@ -3,7 +3,7 @@
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { Map as MlMap, StyleSpecification } from "maplibre-gl";
-import type { Bbox, LngLat } from "@/domain/catalog";
+import type { Bbox, LngLat } from "@/domain/geo";
 import { MAP_ATTRIBUTION, MAP_STYLE_URL, MAP_TERRAIN_TILES_URL } from "@/config/public";
 import { HILLSHADE_MIN_ZOOM, browserSavesData, wantsHillshade, type HillshadeMode } from "./hillshade";
 
@@ -17,8 +17,11 @@ export type MapLibreModule = typeof import("maplibre-gl");
  *
  * Hillshade downloads ~1 MB of terrain tiles per view, so it is opt-in and
  * conditional (see hillshade.ts): the default "wide" draws it only on wide
- * maps (e.g. a trail page on a desktop), never on phones or when the browser
- * asks to save data, and only from zoom 10. Explore turns it off.
+ * maps (e.g. a detail page on a desktop), never on phones or when the
+ * browser asks to save data, and only from zoom 10.
+ *
+ * No page renders a map while the hike catalog is rebuilt; this component is
+ * kept for the hike pages (docs/PLAN.md, Phase 3).
  *
  * Tiles are never prefetched or stored for offline use. Pages must always
  * offer a text alternative (list) for what the map shows.

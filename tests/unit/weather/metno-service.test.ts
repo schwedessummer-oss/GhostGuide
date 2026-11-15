@@ -2,7 +2,7 @@
  * getMetnoForecast control flow with the database and provider client
  * mocked: request shape (terms of service), conditional requests, 203/304,
  * stale-if-error, and "never throws" on database and provider failures.
- * Real cache-table behaviour is in tests/integration/trails/conditions.test.ts.
+ * Real cache-table behaviour is in tests/integration/weather/provider-cache.test.ts.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

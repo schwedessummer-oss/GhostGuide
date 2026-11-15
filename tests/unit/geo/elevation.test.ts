@@ -20,7 +20,7 @@ import {
   type TileFetcher,
 } from "@/server/geo/elevation";
 import { providerFetch, ProviderError } from "@/server/providers/http";
-import type { Line } from "@/server/trails/types";
+import type { Line } from "@/server/geo/geodesy";
 
 vi.mock("@/server/providers/http", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/server/providers/http")>();

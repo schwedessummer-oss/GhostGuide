@@ -9,13 +9,6 @@ export const dynamic = "force-dynamic";
 const LABELS: Record<string, string> = {
   mode: "App mode",
   auth: "Authentication",
-  trailData: "Trail data",
-  usFacilities: "US facilities and permits (Recreation.gov)",
-  geocoding: "Place search",
-  elevation: "Elevation",
-  maps: "Maps",
-  trailWeather: "Weather on trail pages",
-  weather: "Weather provider (WEATHER_PROVIDER)",
 };
 
 export default async function StatusPage() {

@@ -1,5 +1,5 @@
 import "server-only";
-import type { HourlyForecastDto } from "@/domain/catalog";
+import type { HourlyForecastDto } from "@/domain/weather";
 import { formatLocalTime, localDateKey, timeZoneOffsetMs } from "@/server/geo/timezone";
 
 /**

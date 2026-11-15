@@ -6,34 +6,24 @@ import {
   localDateKey,
   parseDateKey,
   timeZoneOffsetMs,
-  timezoneAt,
   zonedTimeToUtc,
 } from "@/server/geo/timezone";
 
 const H = 3_600_000;
 const iso = (d: Date) => d.toISOString();
 
-describe("timezoneAt", () => {
-  it("finds the IANA zone for places on land", () => {
-    expect(timezoneAt(39.7392, -104.9903)).toBe("America/Denver");
-    expect(timezoneAt(35.6762, 139.6503)).toBe("Asia/Tokyo");
-    expect(timezoneAt(-33.8688, 151.2093)).toBe("Australia/Sydney");
-    expect(timezoneAt(46.8529, -121.7604)).toBe("America/Los_Angeles");
-    expect(timezoneAt(51.5074, -0.1278)).toBe("Europe/London");
+describe("isValidTimeZone", () => {
+  it("accepts zones the runtime knows, including nautical ones", () => {
+    expect(isValidTimeZone("America/Denver")).toBe(true);
+    expect(isValidTimeZone("Etc/GMT+2")).toBe(true);
+    expect(isValidTimeZone("UTC")).toBe(true);
   });
 
-  it("passes through nautical zones over the ocean", () => {
-    const zone = timezoneAt(0, -30);
-    expect(zone).toBe("Etc/GMT+2");
-    expect(isValidTimeZone(zone)).toBe(true);
-  });
-
-  it("returns null for invalid coordinates instead of throwing", () => {
-    expect(timezoneAt(NaN, 0)).toBeNull();
-    expect(timezoneAt(0, Infinity)).toBeNull();
-    expect(timezoneAt(91, 0)).toBeNull();
-    expect(timezoneAt(0, -181)).toBeNull();
-    expect(timezoneAt("40" as unknown as number, 0)).toBeNull();
+  it("rejects unknown zones and non-strings", () => {
+    expect(isValidTimeZone("Mars/Olympus_Mons")).toBe(false);
+    expect(isValidTimeZone("")).toBe(false);
+    expect(isValidTimeZone(42)).toBe(false);
+    expect(isValidTimeZone(null)).toBe(false);
   });
 });
 

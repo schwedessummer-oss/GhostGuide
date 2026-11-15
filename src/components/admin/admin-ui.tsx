@@ -15,12 +15,8 @@ export { formatAdminDateTime };
 type Tone = "neutral" | "forest" | "amber" | "red" | "blue";
 
 const STATUS_TONES: Record<string, Tone> = {
-  // catalog trails and tiles
-  published: "forest",
-  closed: "red",
-  retired: "neutral",
-  pending: "neutral",
   // jobs / integrations / flags
+  retired: "neutral",
   queued: "blue",
   running: "blue",
   succeeded: "forest",
@@ -33,6 +29,7 @@ const STATUS_TONES: Record<string, Tone> = {
   active: "blue",
   // support tickets
   open: "blue",
+  pending: "neutral",
   resolved: "neutral",
   urgent: "red",
   high: "amber",

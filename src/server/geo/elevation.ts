@@ -1,11 +1,10 @@
 import "server-only";
 import { PNG } from "pngjs";
 import { env } from "@/config/env";
-import type { LngLat } from "@/domain/catalog";
+import type { LngLat } from "@/domain/geo";
 import { log } from "@/server/log";
 import { providerFetch } from "@/server/providers/http";
-import type { Line } from "@/server/trails/types";
-import { cleanLines, isValidCoord, lineLengthM, resampleLine } from "./geodesy";
+import { cleanLines, isValidCoord, lineLengthM, resampleLine, type Line } from "./geodesy";
 
 /**
  * Elevation from Terrarium-encoded terrain tiles (default: AWS Open Data

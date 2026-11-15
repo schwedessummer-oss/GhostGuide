@@ -3,10 +3,10 @@ import { createServerClient } from "@supabase/ssr";
 
 /**
  * Next.js 16 Proxy (formerly middleware).
- *  - Trail pages live at lower-case paths: /trail/US/South-Carolina/Table-Rock-Trail
- *    answers one permanent redirect (308) to /trail/us/south-carolina/table-rock-trail
- *    here, before the page and without the database. (Old paths of moved
- *    trails need the database; the trail page redirects those.)
+ *  - Old OpenStreetMap trail pages (/trail/...) are gone for good: they
+ *    answer 410 Gone here, without the database, so search engines drop
+ *    them (docs/PLAN.md §2). Where a curated hike matches an old trail, a
+ *    redirect can be added once the new catalog is published.
  *  - In Supabase auth mode, refreshes the auth session cookie on navigation
  *    (official Supabase SSR pattern: getClaims() immediately after creating
  *    the client).
@@ -14,16 +14,11 @@ import { createServerClient } from "@supabase/ssr";
  *    check the session and permissions themselves.
  */
 export async function proxy(request: NextRequest) {
-  const trailPath = lowerCaseTrailPath(request.nextUrl.pathname);
-  if (trailPath) {
-    const url = request.nextUrl.clone();
-    url.pathname = trailPath;
-    return NextResponse.redirect(url, 308);
-  }
+  if (isRemovedTrailPath(request.nextUrl.pathname)) return goneResponse();
 
   if (process.env.AUTH_PROVIDER !== "supabase") return NextResponse.next({ request });
   // Signed-out visitors have no Supabase session to refresh. Skipping them
-  // keeps Set-Cookie off public pages, so the CDN can cache ISR trail pages.
+  // keeps Set-Cookie off public pages, so the CDN can cache them.
   if (!request.cookies.getAll().some((c) => c.name.startsWith("sb-"))) return NextResponse.next({ request });
 
   let response = NextResponse.next({ request });
@@ -48,22 +43,31 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-/**
- * A trail page path (/trail/<country>/<region>/<slug> in ASCII letters,
- * digits and hyphens, like every stored path) written with upper-case
- * letters → the same path in lower case; otherwise null. Other shapes and
- * characters are left to the page, which answers 404 when no trail has the path.
- *
- * Done here, not in the ISR trail page: Next.js 16.4 sends a redirect thrown
- * during an ISR page's first (uncached) render with its Location header twice
- * (prerenderToStream sets it on the live response and records it in the cache
- * entry, and the entry's headers are then appended to that same response).
- */
-const MIXED_CASE_TRAIL_PATH_RE = /^\/trail\/[A-Za-z]{2}\/[A-Za-z0-9-]{1,80}\/[A-Za-z0-9-]{1,120}$/;
-export function lowerCaseTrailPath(pathname: string): string | null {
-  if (!MIXED_CASE_TRAIL_PATH_RE.test(pathname)) return null;
-  const lower = pathname.toLowerCase();
-  return lower === pathname ? null : lower;
+/** /trail and every path below it, in any letter case (old URLs were redirected to lower case). */
+const REMOVED_TRAIL_PATH_RE = /^\/trail(?:\/|$)/i;
+export function isRemovedTrailPath(pathname: string): boolean {
+  return REMOVED_TRAIL_PATH_RE.test(pathname);
+}
+
+const GONE_HTML = `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Page removed · Ghost Guide</title></head>
+<body style="font-family:system-ui,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem;line-height:1.5">
+<h1>This page has been removed</h1>
+<p>Ghost Guide no longer has these trail pages. It is being rebuilt as a guide to the world&apos;s best hikes.</p>
+<p><a href="/">Go to the home page</a></p>
+</body>
+</html>`;
+
+function goneResponse(): Response {
+  return new Response(GONE_HTML, {
+    status: 410,
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "public, max-age=3600",
+      "x-robots-tag": "noindex",
+    },
+  });
 }
 
 export const config = {

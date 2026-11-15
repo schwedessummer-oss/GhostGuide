@@ -27,7 +27,7 @@ until you configure real providers.
    npx supabase db push
    ```
    The Phase 1 migrations (`20261112*`) enable **PostGIS** in the `extensions` schema (available
-   on every Supabase plan) and add the trail catalog. They are additive.
+   on every Supabase plan). They are additive.
 4. **Auth**: Authentication → URL configuration: set *Site URL* to your Vercel URL and add
    `https://<your-domain>/**` to redirect URLs. Keep email confirmation on for real users.
 5. **API keys**: Project settings → API keys: copy the *publishable* key
@@ -41,7 +41,7 @@ until you configure real providers.
    NEXT_PUBLIC_SUPABASE_URL=… SUPABASE_SECRET_KEY=… SEED_DEMO_PASSWORD='<choose one>' npm run db:seed
    ```
    This creates demo customer and staff accounts (`admin@demo.ghostguide.test`, …) through the
-   Supabase Auth admin API, and no trail data. **Do not seed demo accounts into a production project.**
+   Supabase Auth admin API, and no hike data. **Do not seed demo accounts into a production project.**
 8. **Staff roles** for real staff: insert rows into `public.staff_roles` (SQL editor) or use
    `/admin/staff` once one admin exists:
    `insert into public.staff_roles (user_id, role) select id, 'admin' from auth.users where email = 'you@company.com';`
@@ -66,10 +66,8 @@ until you configure real providers.
    | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` | from Supabase |
    | `CRON_SECRET` | random ≥ 16 chars (Vercel sends it as `Authorization: Bearer …` to cron routes) |
    | `PAYMENTS_PROVIDER` | `demo` (no checkout uses the payments adapter until Phase 6) |
-   | `WEATHER_PROVIDER` | `demo` or `nws`: the `src/integrations/weather` adapter, unused since marketing drafts were removed (trail pages always use real MET Norway + NWS data) |
-   | `DATA_PROVIDER_USER_AGENT` | `GhostGuide/1.0 (+https://<your-domain>; <contact email>)`. Required by OSM/Nominatim, MET Norway and NWS policies. Without it, the app sends `GhostGuide/0.1 (+<site URL>)` |
-   | `RIDB_API_KEY` | optional, free: US federal facilities (ridb.recreation.gov → Profile → API Keys) |
-   | `OVERPASS_URLS`, `NOMINATIM_URL`, … | optional: only to switch to self-hosted/commercial instances (defaults are the public services) |
+   | `WEATHER_PROVIDER` | `demo` or `nws`: the `src/integrations/weather` adapter, unused by any page for now |
+   | `DATA_PROVIDER_USER_AGENT` | `GhostGuide/1.0 (+https://<your-domain>; <contact email>)`, sent to data providers by the provider HTTP client. Without it, the app sends `GhostGuide/0.1 (+<site URL>)` |
 
    **If Supabase's Vercel integration is connected**, it adds `POSTGRES_*` and `SUPABASE_*` variables
    (plus `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`) but
@@ -82,23 +80,17 @@ until you configure real providers.
    for Preview (and Production while in demo).
 4. Deploy. Visit `/status` to confirm which integrations are live vs simulated.
 
-## 3. Background jobs (required for trail data)
-- Two runners:
-  - `/api/cron/jobs` (60 s): housekeeping jobs (rate-limit purges).
-  - `/api/cron/catalog` (300 s): trail-data downloads, stale refresh and cache purge, kept separate
-    so slow provider downloads never delay other background work.
-- `vercel.json` registers a **daily** cron on `/api/cron/jobs` (allowed on every plan; Hobby
-  plans reject anything more frequent).
-- Trail refreshes and queued jobs should run within about a **minute**. Either:
+## 3. Background jobs
+- `/api/cron/jobs` runs the job queue (housekeeping such as rate-limit purges).
+- `vercel.json` registers a **daily** cron on it (allowed on every plan; Hobby plans reject anything
+  more frequent).
+- For a per-minute runner, either:
   - **Supabase pg_cron + pg_net (works on any Vercel plan)**: run `npm run setup:cron` on your
     computer. It reads `DATABASE_URL` and `CRON_SECRET` from `.env.local`, checks that the deployed
-    site accepts the secret, stores the site URL and secret in Supabase Vault, and schedules both
-    runners every minute. It is safe to re-run. `supabase/cron/schedule-job-runner.sql` documents
+    site accepts the secret, stores the site URL and secret in Supabase Vault, and schedules the
+    runner every minute. It is safe to re-run. `supabase/cron/schedule-job-runner.sql` documents
     the same SQL, or
-  - **Vercel Pro**: change the schedule in `vercel.json` to `* * * * *` and add a cron for
-    `/api/cron/catalog`.
-- Without per-minute cron, trails still load on demand right after a search (after-response work),
-  but stale areas are not refreshed and the other background jobs wait for the daily run.
+  - **Vercel Pro**: change the schedule in `vercel.json` to `* * * * *`.
 - Verify: `curl -H "Authorization: Bearer $CRON_SECRET" https://<domain>/api/cron/jobs` returns
   `{"ok":true,…}`. Admin → Jobs shows queued/dead jobs.
 - Note: Vercel only runs cron jobs on **Production** deployments.

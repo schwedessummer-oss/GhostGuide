@@ -12,7 +12,7 @@ Owners are suggestions; adapt them to your organization.
 - [ ] Per-minute job trigger (Supabase pg_cron script or Vercel Pro cron) running; alert if `/api/cron/jobs` has not succeeded in 5 minutes.
 - [ ] Stripe: live account activated, business verification complete, live keys + live webhook endpoint/secret, Radar rules reviewed, statement descriptor, refund policy published, test-mode end-to-end run (incl. duplicate webhook replay from the Stripe dashboard).
 - [ ] Maps: confirm OpenFreeMap (or your chosen tile provider) terms for your traffic; no tile caching.
-- [ ] Data providers: set `DATA_PROVIDER_USER_AGENT` with a real contact; review Overpass/Nominatim usage in Admin → Trail data and move to self-hosted or commercial instances before heavy traffic; ODbL attribution present on maps and trail pages.
+- [ ] Data providers: set `DATA_PROVIDER_USER_AGENT` with a real contact; every data source used by the ingestion pipeline is licensed for this use (`docs/PLAN.md` §4) and attributed on hike pages and maps.
 - [ ] Weather: NWS User-Agent with operator contact; fallback behavior reviewed.
 - [ ] Error monitoring/alerting (e.g. Sentry or Vercel log drains) with the redacting logger; uptime checks for `/status` and `/api/cron/jobs`.
 

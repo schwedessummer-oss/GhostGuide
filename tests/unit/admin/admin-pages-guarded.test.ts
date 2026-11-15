@@ -23,7 +23,7 @@ describe("admin pages guard themselves with their own return path", () => {
   const files = pages(ADMIN_DIR);
 
   it("finds the admin pages", () => {
-    expect(files.length).toBeGreaterThanOrEqual(9);
+    expect(files.length).toBeGreaterThanOrEqual(8);
   });
 
   for (const file of files) {

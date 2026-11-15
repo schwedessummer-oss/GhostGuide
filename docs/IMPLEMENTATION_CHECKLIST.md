@@ -64,4 +64,4 @@ the end. Everything removed is preserved on the `archive/v0-hiking-companion` br
   availability and pricing admin pages); partner add-ons (gear lockers, shuttles, meal packs, satellite devices,
   their demo adapters, fulfillment and admin pages); trip permit tracking and `permits.remind` reminders. The Stripe
   Checkout adapter (`src/integrations/payments`) stays for Phase 6.
-- Pass 3 (next): live OSM loading; the trail catalog, explore and trail pages and weather are dealt with there (`PLAN.md` §2).
+- Pass 3: the on-demand OpenStreetMap trail catalog (Overpass and Nominatim loading, tile coverage, ingestion, search, Explore, `/trail/...` pages, saved trails, the `/api/trails`, `/api/geocode` and `/api/cron/catalog` routes, catalog jobs, the admin Trail data page), trail weather and daylight panels, the old home page and `/how-it-works`. Old `/trail/...` URLs answer 410. Kept for later phases: `src/server/providers/http.ts`, `src/server/geo/elevation.ts`, `src/components/maps`, the weather clients and `src/server/geo/sun.ts`.

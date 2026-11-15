@@ -5,17 +5,17 @@ import path from "node:path";
 /*
  * Finding #3: with cacheComponents off, ONE request-time read (cookies(),
  * headers(), the session) anywhere in the root layout makes every route
- * dynamic, and the trail pages' `revalidate = 3600` (ISR/CDN caching) is
- * silently ignored. This walks the server-side import graph of the root
- * layout and of the pages meant to be cached, stopping at client components
- * ("use client": they cannot read request data on the server), and fails on
- * any module that reads request data.
+ * dynamic, so no public page can be static or cached. This walks the
+ * server-side import graph of the root layout and of the pages meant to be
+ * static, stopping at client components ("use client": they cannot read
+ * request data on the server), and fails on any module that reads request
+ * data.
  */
 const SRC = path.resolve(import.meta.dirname, "../../../src");
 
 /** Server modules that read request data (cookies/headers/session). */
-const REQUEST_MODULES = ["next/headers", "@/server/auth", "@/components/site/units-server", "@/lib/supabase/server"];
-const REQUEST_CALLS = /\b(cookies|headers|draftMode|connection|getCurrentUser|getApiUser|requireUser|requirePermission|getUnitsPreference)\s*\(/;
+const REQUEST_MODULES = ["next/headers", "@/server/auth", "@/lib/supabase/server"];
+const REQUEST_CALLS = /\b(cookies|headers|draftMode|connection|getCurrentUser|getApiUser|requireUser|requirePermission)\s*\(/;
 
 function resolveImport(from: string, spec: string): string | null {
   let base: string;
@@ -67,7 +67,7 @@ function walk(entry: string): { visited: string[]; offenders: string[] } {
 }
 
 describe("the root layout renders without request data (pages can be static / ISR)", () => {
-  it("walks the header, footer and tab bar", () => {
+  it("walks the header and footer", () => {
     const { visited } = walk(path.join(SRC, "app/layout.tsx"));
     expect(visited).toEqual(expect.arrayContaining(["app/layout.tsx", "components/site/site-header.tsx", "components/site/site-footer.tsx"]));
   });
@@ -86,12 +86,12 @@ describe("the root layout renders without request data (pages can be static / IS
   });
 });
 
-describe("pages meant to be cached read no request data either", () => {
-  it("the walk reaches the trail page's data layer", () => {
-    expect(walk(path.join(SRC, "app/trail/[country]/[region]/[slug]/page.tsx")).visited).toContain("server/trails/read.ts");
+describe("pages meant to be static read no request data either", () => {
+  it("the walk follows imports into server modules (self-check)", () => {
+    expect(walk(path.join(SRC, "app/status/page.tsx")).visited).toEqual(expect.arrayContaining(["config/env.ts", "server/jobs/health.ts"]));
   });
 
-  for (const page of ["app/trail/[country]/[region]/[slug]/page.tsx", "app/how-it-works/page.tsx"]) {
+  for (const page of ["app/page.tsx", "app/sitemap.ts", "app/robots.ts"]) {
     it(page, () => {
       expect(walk(path.join(SRC, page)).offenders).toEqual([]);
     });

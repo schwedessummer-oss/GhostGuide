@@ -15,23 +15,9 @@ async function main() {
   const watch = process.argv.includes("--watch");
   do {
     await ensurePeriodicJobs();
-    // Same split as production: fast jobs first, then at most one slow
-    // trail-catalog job (provider downloads) per pass.
-    const summary = await runDueJobs(allJobHandlers(), { limit: 50, workerId: "local-runner", excludeKindPrefixes: ["catalog."] });
+    const summary = await runDueJobs(allJobHandlers(), { limit: 50, workerId: "local-runner" });
     await recordRunnerHeartbeat({ ...summary });
-    // Mirrors /api/cron/catalog: drop loads nobody is waiting for, then
-    // claim the most recently requested area first.
-    const { catalogHandlers, claimableCatalogKinds } = await import("@/server/jobs/handlers/catalog");
-    const { dropAbandonedIngestJobs } = await import("@/server/trails/repository");
-    await dropAbandonedIngestJobs(Date.now());
-    const catalog = await runDueJobs(catalogHandlers, {
-      limit: 1,
-      kinds: claimableCatalogKinds(240_000),
-      workerId: "local-catalog-runner",
-      deadline: new Date(Date.now() + 240_000),
-      order: "recent_request",
-    });
-    console.log(new Date().toISOString(), JSON.stringify({ jobs: summary, catalog }));
+    console.log(new Date().toISOString(), JSON.stringify({ jobs: summary }));
     if (watch) await new Promise((r) => setTimeout(r, 15_000));
   } while (watch);
   await closeDb();
