@@ -317,8 +317,7 @@ export default async function TrailPage({ params }: PageProps<"/trails/[slug]">)
           {stops.length ? (
             <>
               <p className="mb-3 text-muted">
-                Approved, source-cited narration that plays when your phone&apos;s GPS reports you near each stop (with the companion open; background
-                playback isn&apos;t guaranteed on every phone).
+                Approved, source-cited stories about each stop along the route.
               </p>
               <ol className="space-y-2">
                 {stops.map(({ narration, poi }) => (

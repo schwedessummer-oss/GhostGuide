@@ -401,7 +401,7 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     assert.match(text, /4 hikers/, "My trips card should show the booked party size");
   });
 
-  await t.test("after booking, the trip itself is re-planned for the booked date and group (itinerary, summary, labels)", async () => {
+  await t.test("after booking, the trip itself is re-planned for the booked date and group (itinerary, labels)", async () => {
     await owner.goto(`/trips/${tripId}`);
     const text = await mainText(owner);
     assert.match(text, new RegExp(`${longDay(saturday)}, \\d{4} · start 08:30 · 4 hikers`), "header shows the booked date and group");
@@ -409,14 +409,8 @@ test("booking journey: simulated payment, real status, idempotent webhook, add-o
     if (latestFinishFor(saturday) !== latestFinishFor(plannedDate)) {
       assert.ok(!text.includes(`Plan to be off the trail by ${latestFinishFor(plannedDate)}`), "no stale latest-finish estimate from the planned month");
     }
-    // The template summary names the booked date and is labeled as simulated, not "AI-generated".
-    assert.ok(text.includes(`on ${saturday}`), "trip summary names the booked date");
-    assert.ok(!text.includes(`on ${plannedDate}.`), "trip summary no longer names the originally planned date");
-    assert.ok(text.includes("Simulated AI (template)"));
-    assert.ok(!text.includes("AI-generated"), "template text is not labeled AI-generated");
-    // The prepare page agrees.
-    await owner.goto(`/trips/${tripId}/prepare`);
-    assert.ok((await mainText(owner)).includes(longDay(saturday)), "Prepare shows the booked date");
+    // No AI summary is shown any more.
+    assert.ok(!/AI-generated|Simulated AI/.test(text), "no AI text on the trip page");
     // A stale "cancel" return URL for a paid booking does not say the checkout failed.
     await owner.goto(`/checkout/cancelled?booking=${bookingId}`);
     assert.equal(await owner.getByRole("heading", { level: 1 }).innerText(), "Your booking is confirmed");

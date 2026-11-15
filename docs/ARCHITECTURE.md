@@ -14,15 +14,15 @@ before changing code.
 | Storage | Supabase Storage or local FS with HMAC-signed URLs | `src/integrations/storage` |
 | Payments | Stripe Checkout (stripe-node 23, API `2026-10-28.endive`), or simulated | `PAYMENTS_PROVIDER` |
 | Jobs | Postgres job table + cron-invoked runner (`/api/cron/jobs`) | Vercel Cron or Supabase pg_cron |
-| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade on wide maps only (≥ 768 px, zoom ≥ 10, never on Explore or with Save-Data); offline SVG `RouteView` on the hike screen | Never cache basemap tiles offline |
+| Maps | MapLibre GL JS + OpenFreeMap vector tiles (`NEXT_PUBLIC_MAP_STYLE_URL`), terrain hillshade on wide maps only (≥ 768 px, zoom ≥ 10, never on Explore or with Save-Data); tile-free SVG `RouteView` in admin | Never cache basemap tiles |
 | Validation | zod **4** (`z.email()`, `z.uuid()` are top-level) | Validate every server input |
 | Icons | lucide-react 1.x | |
 | Tests | Vitest 5 (`unit` + `integration` projects), Playwright (preinstalled) for e2e | |
 
 ### Why `cacheComponents` is off
-Nearly every page reads per-user, RLS-scoped, safety-relevant data at request
-time. The classic dynamic model is simpler and avoids stale safety/booking
-data. Opt into caching explicitly if ever needed.
+Many pages read per-user, RLS-scoped data at request time. The classic dynamic
+model is simpler and avoids stale booking data. Pages opt into caching
+explicitly (the trail pages use hourly ISR).
 
 ### Next.js 16 specifics you must follow
 - `params` and `searchParams` are **Promises**: `const { id } = await params`.
@@ -41,8 +41,8 @@ data. Opt into caching explicitly if ever needed.
 src/
   app/                    routes (pages, route handlers, server actions)
   components/ui/          accessible primitives (Button, Card, Field, Alert, Badge, SimulatedBadge…)
-  components/map/         RouteView (offline SVG) + map wrappers
-  components/site/        header/footer/SW registrar
+  components/map/         RouteView (tile-free SVG) + map wrappers
+  components/site/        header/footer/navigation
   config/env.ts           zod-validated server config; integrationStatus(); assertSimulationAllowed()
   domain/                 PURE business logic (no I/O, no provider imports) — unit tested
   integrations/<kind>/    provider adapters behind interfaces (live + demo implementations)
@@ -78,12 +78,15 @@ await withSystem((tx) => …);   // trusted code ONLY, bypasses RLS — authoriz
 - Arrays: `${ids}::uuid[]`, `${tags}::text[]`. Dates: always `timestamptz`; cast
   ambiguous params (`${d}::timestamptz`, `${s}::date`).
 - `numeric`/`bigint` come back as JS numbers (custom parsers in db.ts).
-- Lifecycle tables (bookings, payments, refunds, fulfillments, check-ins,
-  notifications, audit, jobs) are **not writable by API roles**; write them in
-  `withSystem` inside a use-case that has already authorized the actor.
+- Lifecycle tables (bookings, payments, refunds, fulfillments, notifications,
+  audit, jobs) are **not writable by API roles**; write them in `withSystem`
+  inside a use-case that has already authorized the actor.
 - Customers can write their own trips (limited columns), profiles (limited
-  columns), emergency contacts, hike sessions/points/events, feedback,
-  downloads, trip shares, trip permits.
+  columns) and trip permits.
+- The current migrations still create tables for removed features (check-ins,
+  emergency contacts, hike sessions and locations, downloads, trip shares,
+  marketing drafts). No code reads or writes them; the Phase 2 schema
+  (`docs/PLAN.md` §3) replaces them.
 - Row locks: `select … for update` inside `withSystem` for inventory / state transitions.
 - Return 404 (not 403) when a customer asks for a resource they don't own.
 
@@ -106,7 +109,8 @@ const staff = await requirePermission("bookings.refund"); // admin pages/actions
 const apiUser = await getApiUser(); if (!apiUser) return jsonError(401, "Sign in required");
 ```
 `SessionUser = { id, email, roles: StaffRole[], isStaff }`. Roles: admin, operator,
-safety, content_editor, support. Permission matrix: `src/server/auth/rbac.ts`.
+content_editor, support (the database enum still lists `safety`; the app no longer
+grants or honours it). Permission matrix: `src/server/auth/rbac.ts`.
 
 **Testability rule:** use-case functions take an explicit `user: SessionUser`
 argument and never read cookies themselves. Pages/actions/handlers resolve the
@@ -116,40 +120,34 @@ user, then call the use-case. Integration tests call use-cases directly.
 
 ```ts
 import { enqueueJob, cancelQueuedJobs } from "@/server/jobs/queue";
-await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupKey: `checkin:${id}:v${version}:overdue` });
+await enqueueJob(tx, "fulfillment.process", { fulfillmentId }, { dedupKey: `fulfill:${fulfillmentId}:attempt` });
 ```
 - Enqueue in the **same transaction** as the state change (outbox pattern).
 - Dedup keys make enqueue idempotent. Conventions:
-  `webhook:<provider>:<eventId>`, `fulfill:<fulfillmentId>:attempt`, `checkin:<id>:v<version>:<step>`,
-  `notify:<notificationId>`, `periodic:<kind>:<bucket>`.
+  `webhook:<provider>:<eventId>`, `fulfill:<fulfillmentId>:attempt`, `booking:<id>:<step>`,
+  `periodic:<kind>:<bucket>`.
 - Handlers live in `src/server/jobs/handlers/<slice>.ts` and must be idempotent:
   re-load current state, compare versions, and return `{ outcome: "noop" }` when obsolete.
 - Throwing = retry with exponential backoff; after `maxAttempts` the job is `dead`
   and appears in the admin retry queue.
-- Periodic kinds (enqueued by every cron tick): `checkins.scan_overdue` (1 min),
-  `bookings.expire_holds` (5 min), `payments.reconcile` (60 min),
-  `locations.purge_expired` (daily), `ops.purge_rate_limits` (daily).
+- Periodic kinds (enqueued by every cron tick): `bookings.expire_holds` (5 min),
+  `payments.reconcile` (60 min), `ops.purge_rate_limits` (daily), `permits.remind` (daily);
+  the catalog runner adds `catalog.refresh_stale` (60 min) and `catalog.purge_caches` (daily).
 - Run locally: `npm run jobs:run` (once) or `npm run jobs:run -- --watch`.
 
 ## Cross-cutting helpers
 - `recordAudit(tx, actor, action, entityType, entityId, metadata)` — every sensitive staff action.
 - `recordIntegrationEvent({providerKind, providerKey, operation, outcome, …})` — every provider call (incl. simulated).
-- `checkRateLimit(key, limit, windowSec)` — AI, notifications, auth, sharing endpoints.
+- `checkRateLimit(key, limit, windowSec)` — auth, checkout, saving trips, public trail APIs.
 - `isEnabled("checkout_enabled")` — feature flags (`src/server/flags.ts`).
 - `log.info/warn/error(event, data)` — redacts secrets, contact details, coordinates.
 - `assertSimulationAllowed("payments")` — every demo adapter calls this; throws in live mode.
 
 ## Honesty & safety rules (product requirements — non-negotiable)
 - Label every simulated integration and demo datum (`<SimulatedBadge />`, "Demonstration").
-- Never present browser background GPS, screen-locked audio or offline
-  notifications as guaranteed. Never claim continuous monitoring or guaranteed rescue.
-- An overdue check-in means "we have not received confirmation" — never "emergency".
-- Never auto-contact 911/SAR. Never imply the app provides satellite SOS.
-- AI output is untrusted display text: it can explain/summarize approved data,
-  never decide routes, bookings, closures, permits, safety or emergency actions.
-  Never let an LLM invent geometry, access, closures, permits or route safety.
+- Ghost Guide is not an emergency service: never claim monitoring, tracking or rescue.
 - Narration shown to customers must be `approved` with a cited source.
-- Pacing/hydration prompts are general reminders, not personalized medical advice.
+- Itinerary reminders are general prompts, not personalized medical advice.
 - Transportation: customer confirms pickup location, price and time before any paid ride request.
 - Permits: official links, requirements, reminders and status tracking only — no queue/CAPTCHA bots.
 
@@ -163,78 +161,34 @@ await enqueueJob(tx, "checkins.overdue", { checkinId, version }, { runAt, dedupK
 ## Cross-slice contracts (fixed signatures)
 | Contract | Implemented by | Used by |
 |---|---|---|
-| `src/server/checkins/service.ts` `onHikeStarted`, `onCheckinConfirmedFromDevice`, `onTripFinished` | safety | hike |
-| `src/components/checkin/checkin-setup-card.tsx` `CheckinSetupCard({tripId})` | safety | hike (prepare page) |
-| `src/components/checkin/checkin-status-card.tsx` `CheckinStatusCard({tripId})` | safety | commerce (trip dashboard) |
-| `src/components/trip/hike-actions-card.tsx` `HikeActionsCard({tripId})` | hike | commerce (trip dashboard) |
 | `src/server/commerce/staff-actions.ts` cancel/refund/retry/set-status | commerce | admin |
 | `src/domain/pricing.ts` `quotePrice` | foundation | commerce, admin, discover |
 | `src/server/catalog/trails.ts`, `src/server/trips/queries.ts`, `src/lib/time.ts` (zone-aware dates), `src/lib/format.ts` | foundation | all |
 
 ## Slice-specific semantics worth knowing
-- **Check-ins**: `contact_notified` means the notice was handed to the provider (set by
-  `notifications.send`), not merely queued; between the overdue job and the send the status is
-  `overdue`. Check-in jobs keep running when the `checkins_enabled` flag is turned off (the flag
-  only blocks new opt-ins). "I'm okay" after the expected return auto-extends the return by 60 min.
-  Booking/trip cancellation calls `cancelCheckinForTrip` in the same transaction.
-- **Notification dedup keys**: notification rows `notify:<checkinId>:v<version>:<step>:<recipient>`;
-  send jobs `notify:<notificationId>`. Rows store masked recipients only; the real address is
-  resolved at send time and consent is re-checked.
-- **Service worker** (`public/sw.js`): caches `gg-static-*` / `gg-shell-*` (versioned by
-  `SW_VERSION`, bump when caching rules change) and one `gg-trip-v1-<tripId>` cache per downloaded
-  trip. Never caches basemap tiles or `/api/*` except the explicit trip bundle and narration audio.
-  Not registered under `next dev` unless `NEXT_PUBLIC_ENABLE_SW_IN_DEV=true`.
-- **Hike sessions**: `hike.close_stale_session` (enqueued at session start) marks sessions
-  `abandoned` after prolonged silence; trip stays `active`. Simulated-GPS sessions are marked by a
-  `simulator_on` / `start {simulated:true}` event. `hike_events` payloads may not contain coordinates
-  (CHECK constraint) because operators can read events.
 - **Narration revisions**: editing an approved narration creates a new `in_review` row with
   `supersedes_id`; approving it retires the original. Customer queries filter `status = 'approved'`.
 - **Permits**: `permits.remind` runs daily (periodic safety net + self-scheduling) and writes
-  in-app notifications; no automated permit purchasing.
+  in-app notifications (shown on the trip page); no automated permit purchasing.
 - **Trips JSON**: `trips.recommendation` = `{version, trailId, score, breakdown[], reasons[], warnings[], …}`;
-  `trips.itinerary` = `Itinerary` v1; `ai_provider` = `demo-template` or `anthropic:<model>`.
+  `trips.itinerary` = `Itinerary` v1. The `ai_*` columns are no longer written or read.
 - **Trip re-plan on confirmation**: when a booking is confirmed with a different date, start time or
   party size than the saved trip, commerce updates `trips.planned_date/start_time/party_size` and rebuilds
   `trips.itinerary` (with partial-closure notes) in the payment transaction (`src/server/commerce/trip-plan.ts`).
   Checkout refuses days overlapping a full closure (active or scheduled) and warns on partial closures.
 - **Demo payments** are delivered in-process only (no HTTP self-call from request headers);
   `/api/webhooks/demo-payments` remains for external probes/tests.
-- **Hike start window**: `POST /api/hike/start` only starts on the booked date (region time zone,
-  continuing past midnight allowed); `demoStartAnyway: true` is honoured only when `APP_MODE=demo`.
-  Days with a full closure can never be started.
-- **Offline data ownership**: bundles (`schemaVersion 2`) and hike state carry an `ownerHint`
-  (`src/server/auth/owner-hint.ts`); offline pages refuse and purge data whose hint differs from the
-  `gg_owner` cookie. Sign-out wipes `gg-*` caches, IndexedDB `ghostguide` and `gg*` localStorage, and
-  the service worker handles `CLEAR_ALL`. The SW never falls back to a cached trip page on 404.
-- **Overdue safety net**: `checkins.scan_overdue` pulls forward an overdue job still queued for later
-  than the due time and caps retry delay for undelivered overdue notices (~1 min while overdue).
-- **Finish trip** from the check-in page also finishes the hike session and completes the trip
-  (`finishHike`), then the check-in.
-- **Share links** show no location once the trip or check-in is finished; finished trips cannot get new links.
-- **Location deletion / retention** also redacts coordinates and map links stored in notification bodies.
 - **Job-runner heartbeat**: every runner invocation writes `app_settings.job_runner_heartbeat`;
-  `getRunnerHealth()` (`src/server/jobs/health.ts`) reports staleness (> 5 min) to `/status`, admin and
-  check-in screens.
+  `getRunnerHealth()` (`src/server/jobs/health.ts`) reports staleness (> 5 min) to `/status` and the
+  admin overview.
 - **Bookings freeze the hike start** in `bookings.hike_start_at` (insert trigger); refund tiers and partner
   timing use it. Once a trip is no longer `saved`, customers cannot change its date, start time or party size
   (trigger `trips_guard_booked_changes`). Late payments for deliberately ended bookings are refunded
   automatically and raised to operators; they never resurrect the booking. Lock order: trip → booking →
   trail day → add-on days.
-- **Device check-in events**: an "I'm okay" tapped before the due time that syncs after the check-in went
-  overdue is recorded (`ok_recorded_late`) but does not clear overdue. "Extend my trip" can be queued offline
-  (`checkin_extend` → `onCheckinExtendedFromDevice`); stale extensions never move the time backwards.
-  Hike sync corrects device clock skew instead of dropping safety events.
-- **Staff resolution**: `staffResolveCheckin` (admin → /admin/safety) adds notes or marks a check-in
-  resolved after staff confirmed the hiker is safe; it never contacts emergency services.
-- **Contact opt-out**: every notice to an emergency contact carries a one-click opt-out link
-  (`/contact/opt-out/<token>`, hashed tokens in `contact_optout_tokens`) that withdraws consent immediately.
-  Customers write `emergency_contacts` through column-level grants only.
-- **Service worker** `SW_VERSION 2026-11-11.2`: narration audio cached under stable keys
-  (`/__gg/audio/<narrationId>/v<version>`), outbox flushed from any page and via Background Sync
-  (`gg-outbox`, best effort); the header's sign-out button warns before unsynced hike updates are wiped.
-- **Hike start and closures**: a full closure active now or scheduled later the same day blocks the start;
-  closures that already ended do not.
+- **Service worker**: none. `public/sw.js` is a kill switch for browsers that installed the old offline
+  worker: on install/activate it deletes every `gg-*` cache, unregisters itself and reloads open tabs. The
+  app never registers a worker.
 
 ## Testing
 - `npm run test:unit` — pure domain logic (`tests/unit/<slice>/…`).

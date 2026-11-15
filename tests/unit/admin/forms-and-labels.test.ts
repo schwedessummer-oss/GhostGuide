@@ -56,13 +56,13 @@ describe("overview copy", () => {
   it("pluralizes without (s)", () => {
     expect(plural(1, "dead job")).toBe("1 dead job");
     expect(plural(2, "dead job")).toBe("2 dead jobs");
-    expect(plural(0, "check-in")).toBe("0 check-ins");
+    expect(plural(0, "booking")).toBe("0 bookings");
   });
 
   it("alerts when the job runner is stale, with the delay and its consequence", () => {
     const now = new Date("2026-11-11T12:00:00Z");
     const stale = runnerAlert({ lastRunAt: new Date(now.getTime() - 17 * 60_000), minutesSinceRun: 17, stale: true }, true);
-    expect(stale?.title).toBe("Background jobs have not run for 17 min — check-in reminders and overdue notices are delayed");
+    expect(stale?.title).toBe("Background jobs have not run for 17 min — refunds, partner requests and checkout holds are delayed");
     expect(stale?.href).toBe("/admin/jobs");
     expect(runnerAlert({ lastRunAt: null, minutesSinceRun: null, stale: true }, false)?.href).toBe("/status");
     expect(runnerAlert({ lastRunAt: now, minutesSinceRun: 1, stale: false }, true)).toBeNull();

@@ -25,7 +25,7 @@ const schema = z.object({
   DATABASE_SSL: bool.default(false),
 
   AUTH_PROVIDER: z.enum(["demo", "supabase"]).default("demo"),
-  /** HMAC secret for demo sessions, demo webhooks, share tokens, access codes. */
+  /** HMAC secret for demo sessions, demo webhooks and access codes. */
   AUTH_SECRET: z.string().min(32).default("dev-only-insecure-secret-change-me-0123456789"),
 
   NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
@@ -39,18 +39,6 @@ const schema = z.object({
   PAYMENTS_PROVIDER: z.enum(["demo", "stripe"]).default("demo"),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
-
-
-  AI_PROVIDER: z.enum(["demo", "anthropic"]).default("demo"),
-  ANTHROPIC_API_KEY: z.string().optional(),
-  AI_MODEL: z.string().default("claude-sonnet-5-5"),
-
-  NOTIFY_PROVIDER: z.enum(["demo", "live"]).default("demo"),
-  TWILIO_ACCOUNT_SID: z.string().optional(),
-  TWILIO_AUTH_TOKEN: z.string().optional(),
-  TWILIO_FROM_NUMBER: z.string().optional(),
-  RESEND_API_KEY: z.string().optional(),
-  NOTIFY_FROM_EMAIL: z.string().optional(),
 
   WEATHER_PROVIDER: z.enum(["demo", "nws"]).default("demo"),
   /** api.weather.gov requires an identifying User-Agent (app name + operator contact). */
@@ -101,7 +89,6 @@ const schema = z.object({
 
   CRON_SECRET: z.string().min(16).default("dev-only-cron-secret"),
   LAUNCH_REGION_SLUG: z.string().default("demo-ghost-ridge"),
-  LOCATION_RETENTION_DAYS_DEFAULT: z.coerce.number().int().min(1).max(365).default(30),
   /** Multiplies every rate limit. Automated tests only; must be 1 in live mode. */
   RATE_LIMIT_SCALE: z.coerce.number().int().min(1).max(1000).default(1),
 });
@@ -168,7 +155,7 @@ export function showDemoFixtures(): boolean {
 /**
  * Throw if a simulated integration is about to run in live mode. Simulated
  * adapters call this so a misconfigured production deploy fails loudly rather
- * than pretending to send a notification or take a payment.
+ * than pretending to take a payment or book a partner service.
  */
 export function assertSimulationAllowed(integration: string) {
   if (env().APP_MODE === "live") {
@@ -190,8 +177,6 @@ export function integrationStatus() {
     elevation: "live (AWS Terrain Tiles; estimates)",
     maps: "live (MapLibre + OpenFreeMap vector tiles)",
     trailWeather: "live (MET Norway forecasts; NWS alerts in the US)",
-    ai: e.AI_PROVIDER === "anthropic" && e.ANTHROPIC_API_KEY ? "live (Anthropic)" : "simulated templates",
-    notifications: e.NOTIFY_PROVIDER === "live" ? "live" : "simulated",
     weather: e.WEATHER_PROVIDER === "nws" ? "live (api.weather.gov)" : "simulated",
     partners: "simulated (no partner APIs integrated)",
   } as const;

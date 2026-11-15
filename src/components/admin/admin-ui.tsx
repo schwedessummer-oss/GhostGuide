@@ -48,23 +48,13 @@ const STATUS_TONES: Record<string, Tone> = {
   failed: "red",
   quote_pending: "neutral",
   quoted: "amber",
-  // hikes / check-ins
+  // trips / flags
   active: "blue",
-  paused: "amber",
-  finished: "neutral",
-  abandoned: "neutral",
-  scheduled: "neutral",
-  confirmed_ok: "forest",
-  overdue: "amber",
-  contact_notified: "red",
-  // jobs / notifications / integrations
+  // jobs / integrations
   queued: "blue",
   running: "blue",
   dead: "red",
   simulated: "amber",
-  sent: "forest",
-  delivered: "forest",
-  suppressed: "neutral",
   success: "forest",
   failure: "red",
   processed: "forest",
@@ -189,22 +179,6 @@ export function KpiCard({ label, value, hint, href, tone = "neutral", badge }: {
   ) : (
     <div className={cls}>
       <dl>{body}</dl>
-    </div>
-  );
-}
-
-/** Mandatory wording for overdue check-ins. */
-export function OverdueBanner() {
-  return (
-    <div role="note" className="rounded-xl border border-[#f1d9b0] bg-amber-bg p-4 text-amber-ink">
-      <p className="font-semibold">
-        Overdue means Ghost Guide has not received confirmation. It is not proof of an emergency. Ghost Guide does not contact emergency services
-        automatically.
-      </p>
-      <p className="mt-1 text-sm">
-        Monitoring depends on the hiker&apos;s phone having signal and the app open; it is not continuous. If you believe someone is in danger, staff
-        follow the region&apos;s escalation procedure (call 911 yourself) — the app never does.
-      </p>
     </div>
   );
 }

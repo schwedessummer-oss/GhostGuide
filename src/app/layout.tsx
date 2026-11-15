@@ -3,12 +3,10 @@ import "./globals.css";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { TabBar } from "@/components/site/primary-nav";
-import { ServiceWorkerRegistrar } from "@/components/site/service-worker-registrar";
 
 export const metadata: Metadata = {
-  title: { default: "Ghost Guide — find a hike, plan the day, get home safely", template: "%s · Ghost Guide" },
-  description:
-    "Find real trails anywhere with honest distance, climb and time estimates, check the forecast and daylight, and hike with optional check-ins.",
+  title: { default: "Ghost Guide — find a hike, plan the day", template: "%s · Ghost Guide" },
+  description: "Find real trails anywhere with honest distance, climb and time estimates, and check the forecast and daylight before you go.",
   applicationName: "Ghost Guide",
   appleWebApp: { capable: true, title: "Ghost Guide", statusBarStyle: "default" },
   icons: { icon: "/icons/icon-192.png", apple: "/icons/apple-touch-icon.png" },
@@ -48,7 +46,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </main>
         <SiteFooter />
         <TabBar />
-        <ServiceWorkerRegistrar />
       </body>
     </html>
   );

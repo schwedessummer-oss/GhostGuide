@@ -8,7 +8,7 @@
  *   1. checks the deployed site accepts your CRON_SECRET
  *   2. enables pg_cron + pg_net, stores the site URL and CRON_SECRET in Supabase Vault
  *   3. schedules two every-minute calls:
- *        ghostguide-job-runner      → /api/cron/jobs     (safety + commerce jobs; fast)
+ *        ghostguide-job-runner      → /api/cron/jobs     (commerce and housekeeping jobs; fast)
  *        ghostguide-catalog-runner  → /api/cron/catalog  (trail data loading; slow)
  * Safe to run again (updates secrets and schedules in place).
  */

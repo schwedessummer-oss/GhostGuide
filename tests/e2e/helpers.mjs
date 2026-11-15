@@ -23,17 +23,6 @@ export async function newBrowser() {
   return chromium.launch({ headless: !process.env.E2E_HEADED });
 }
 
-/** Mobile-ish context with geolocation permission for the hike flow. */
-export async function newContext(browser, opts = {}) {
-  return browser.newContext({
-    viewport: { width: 390, height: 844 },
-    baseURL: BASE,
-    permissions: ["geolocation"],
-    geolocation: { latitude: 47.5052, longitude: -121.7021, accuracy: 10 },
-    ...opts,
-  });
-}
-
 export async function login(page, email) {
   await page.goto("/login");
   await page.fill("#email", email);
@@ -47,7 +36,7 @@ export async function runJobs() {
   return res.json();
 }
 
-/** The trail-catalog job runner (tile ingestion), separate from the safety job runner. */
+/** The trail-catalog job runner (tile ingestion), separate from the general job runner. */
 export async function runCatalogJobs() {
   const res = await fetch(`${BASE}/api/cron/catalog`, { headers: { authorization: `Bearer ${process.env.E2E_CRON_SECRET}` } });
   if (!res.ok) throw new Error(`catalog cron failed: ${res.status}`);

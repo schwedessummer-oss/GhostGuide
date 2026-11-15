@@ -1,8 +1,8 @@
 # Deployment guide (Supabase + Vercel)
 
 This takes the project from a local demo to a **private preview** on Vercel backed
-by Supabase. Everything runs in demo mode (simulated payments, partners and
-notifications) until you configure real providers.
+by Supabase. Everything runs in demo mode (simulated payments and partners)
+until you configure real providers.
 
 > Nothing here has been run against your accounts yet: no Supabase, Vercel,
 > Stripe or Mapbox credentials were available while this was built. The steps
@@ -65,14 +65,12 @@ notifications) until you configure real providers.
    | `DATABASE_URL` | Supabase transaction pooler URL |
    | `DATABASE_TRANSACTION_POOLER` / `DATABASE_SSL` | `true` / `true` |
    | `AUTH_PROVIDER` | `supabase` |
-   | `AUTH_SECRET` | `openssl rand -hex 32` (signs share links, demo webhooks, locker codes) |
+   | `AUTH_SECRET` | `openssl rand -hex 32` (signs demo sessions, demo webhooks, locker codes) |
    | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY` | from Supabase |
    | `STORAGE_PROVIDER` | `supabase` |
    | `CRON_SECRET` | random ≥ 16 chars (Vercel sends it as `Authorization: Bearer …` to cron routes) |
    | `PAYMENTS_PROVIDER` | `demo`, or `stripe` with keys below |
-   | `AI_PROVIDER` | `demo`, or `anthropic` with `ANTHROPIC_API_KEY` |
-   | `NOTIFY_PROVIDER` | `demo` (recorded, never delivered) or `live` with Twilio/Resend |
-   | `WEATHER_PROVIDER` | marketing drafts only: `demo` or `nws` (trail pages always use real MET Norway + NWS data) |
+   | `WEATHER_PROVIDER` | `demo` or `nws`: the `src/integrations/weather` adapter, unused since marketing drafts were removed (trail pages always use real MET Norway + NWS data) |
    | `DATA_PROVIDER_USER_AGENT` | `GhostGuide/1.0 (+https://<your-domain>; <contact email>)`. Required by OSM/Nominatim, MET Norway and NWS policies. Without it, the app sends `GhostGuide/0.1 (+<site URL>)` |
    | `RIDB_API_KEY` | optional, free: US federal facilities (ridb.recreation.gov → Profile → API Keys) |
    | `OVERPASS_URLS`, `NOMINATIM_URL`, … | optional: only to switch to self-hosted/commercial instances (defaults are the public services) |
@@ -89,14 +87,16 @@ notifications) until you configure real providers.
    for Preview (and Production while in demo).
 4. Deploy. Visit `/status` to confirm which integrations are live vs simulated.
 
-## 3. Background jobs (required for check-ins and trail data)
+## 3. Background jobs (required for bookings and trail data)
 - Two runners:
-  - `/api/cron/jobs` (60 s): safety and commerce jobs.
+  - `/api/cron/jobs` (60 s): commerce and housekeeping jobs (holds, reconciliation, refunds, partner
+    fulfilment, permit reminders).
   - `/api/cron/catalog` (300 s): trail-data downloads, stale refresh and cache purge, kept separate
-    so slow provider downloads never delay a safety notice.
+    so slow provider downloads never delay a refund or partner request.
 - `vercel.json` registers a **daily** cron on `/api/cron/jobs` (allowed on every plan; Hobby
   plans reject anything more frequent).
-- Check-in reminders, overdue notices and trail refreshes need **minute** precision. Either:
+- Refunds, partner requests, expired checkout holds and trail refreshes should run within about a
+  **minute**. Either:
   - **Supabase pg_cron + pg_net (works on any Vercel plan)**: run `npm run setup:cron` on your
     computer. It reads `DATABASE_URL` and `CRON_SECRET` from `.env.local`, checks that the deployed
     site accepts the secret, stores the site URL and secret in Supabase Vault, and schedules both
@@ -105,7 +105,7 @@ notifications) until you configure real providers.
   - **Vercel Pro**: change the schedule in `vercel.json` to `* * * * *` and add a cron for
     `/api/cron/catalog`.
 - Without per-minute cron, trails still load on demand right after a search (after-response work),
-  but stale areas are not refreshed and check-in notices wait for the daily run.
+  but stale areas are not refreshed and the other background jobs wait for the daily run.
 - Verify: `curl -H "Authorization: Bearer $CRON_SECRET" https://<domain>/api/cron/jobs` returns
   `{"ok":true,…}`. Admin → Jobs shows queued/dead jobs.
 - Note: Vercel only runs cron jobs on **Production** deployments.
@@ -125,18 +125,10 @@ notifications) until you configure real providers.
 ## 5. Maps
 Maps use MapLibre GL JS with OpenFreeMap vector tiles (free, no key) and AWS terrain hillshade on wide maps (set `NEXT_PUBLIC_MAP_TERRAIN_TILES_URL=off` to disable it).
 To use another provider (MapTiler, Stadia, self-hosted Protomaps), set
-`NEXT_PUBLIC_MAP_STYLE_URL` to its MapLibre style URL (public value) and rebuild. The PWA never
-stores basemap tiles for offline use.
+`NEXT_PUBLIC_MAP_STYLE_URL` to its MapLibre style URL (public value) and rebuild. The app never
+stores basemap tiles.
 
-## 6. Notifications (live)
-Only after legal/ops review (see `docs/LAUNCH_CHECKLIST.md`):
-- SMS: `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_FROM_NUMBER` (complete A2P 10DLC / toll-free
-  verification for US SMS first).
-- Email: `RESEND_API_KEY`, `NOTIFY_FROM_EMAIL` on a verified sending domain.
-- Set `NOTIFY_PROVIDER=live`. In live mode a channel without a configured provider **fails loudly**
-  (visible in Admin → Notifications) rather than pretending to send.
-
-## 7. Local demo (no credentials)
+## 6. Local demo (no credentials)
 ```bash
 cp .env.example .env.local   # then set AUTH_SECRET and CRON_SECRET
 # Postgres 15+ on 127.0.0.1:54322 (or change DATABASE_URL)
@@ -146,5 +138,5 @@ npm run dev                  # http://localhost:3000
 npm run jobs:run -- --watch  # in another terminal: runs due jobs every 15 s (stand-in for cron)
 ```
 Demo accounts (local only): `hiker@demo.ghostguide.test`, `admin@demo.ghostguide.test`,
-`safety@demo.ghostguide.test`, `operator@demo.ghostguide.test`, `editor@demo.ghostguide.test`,
-`support@demo.ghostguide.test`, all with password `ghostguide-demo`.
+`operator@demo.ghostguide.test`, `editor@demo.ghostguide.test`, `support@demo.ghostguide.test`,
+all with password `ghostguide-demo`.

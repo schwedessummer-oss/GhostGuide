@@ -2,10 +2,11 @@ import "server-only";
 import { withSystem, type JsonValue } from "@/server/db";
 
 /**
- * Job-runner heartbeat. Check-in reminders and overdue notices depend on the
- * runner being invoked about once a minute (Supabase pg_cron or Vercel Pro
- * cron; see docs/DEPLOYMENT.md). Every run records a heartbeat so operators
- * and customers can be told honestly when background checks are delayed.
+ * Job-runner heartbeat. Checkout holds, payment reconciliation, refunds and
+ * partner fulfilment depend on the runner being invoked about once a minute
+ * (Supabase pg_cron or Vercel Pro cron; see docs/DEPLOYMENT.md). Every run
+ * records a heartbeat so operators can be told honestly when background work
+ * is delayed.
  */
 const KEY = "job_runner_heartbeat";
 export const RUNNER_STALE_AFTER_MIN = 5;

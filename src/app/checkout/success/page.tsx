@@ -42,7 +42,7 @@ export default async function CheckoutSuccessPage({ searchParams }: PageProps<"/
                 Receipt <span className="font-mono font-semibold">{b.receiptNumber}</span> · {formatMoney(b.totalCents, b.currency)} paid
               </p>
               {b.paymentProvider === "demo" ? <SimulatedBadge label="Simulated payment — nothing was charged" /> : null}
-              <p className="text-muted">Next: review add-on statuses, download your trip for offline use, and set up optional check-ins from your trip page.</p>
+              <p className="text-muted">Next: review your add-on statuses and permit reminders on your trip page.</p>
               <div className="flex flex-wrap gap-3">
                 <ButtonLink href={tripHref} size="lg">
                   Go to your trip

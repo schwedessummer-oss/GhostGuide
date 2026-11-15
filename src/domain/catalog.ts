@@ -385,17 +385,3 @@ export interface NearbyResponse {
   notes: string[];
   attribution: AttributionDto[];
 }
-
-// ---------------------------------------------------------------------------
-// Emergency information
-// ---------------------------------------------------------------------------
-export interface EmergencyNumbersDto {
-  countryCode: string | null;
-  /** The number to call first; null when Ghost Guide has no verified number for the country. */
-  primary: string | null;
-  police: string | null;
-  ambulance: string | null;
-  fire: string | null;
-  notes: string[];
-  source: string;
-}

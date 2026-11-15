@@ -32,22 +32,6 @@ describe("security hardening", () => {
     ).rejects.toThrow(/row-level security/);
   });
 
-  it("support staff cannot read customer phone numbers; safety staff and the owner can", async () => {
-    const support = await demoUser("support");
-    const safety = await demoUser("safety");
-    const customer = await createCustomer("phone");
-    await withSystem((tx) => tx`update public.profiles set phone = '+15550001111' where id = ${customer.id}`);
-    await expect(withUser(support, (tx) => tx`select phone from public.profiles where id = ${customer.id}`)).rejects.toThrow(/permission denied/);
-    const [s] = await withUser(support, (tx) => tx<{ phone: string | null }[]>`select public.profile_phone(${customer.id}) as phone`);
-    expect(s.phone).toBeNull();
-    const [has] = await withUser(support, (tx) => tx<{ has: boolean }[]>`select public.profile_has_phone(${customer.id}) as has`);
-    expect(has.has).toBe(true);
-    const [sa] = await withUser(safety, (tx) => tx<{ phone: string | null }[]>`select public.profile_phone(${customer.id}) as phone`);
-    expect(sa.phone).toBe("+15550001111");
-    const [own] = await withUser(customer, (tx) => tx<{ phone: string | null }[]>`select public.profile_phone(${customer.id}) as phone`);
-    expect(own.phone).toBe("+15550001111");
-  });
-
   it("only admins can change prices", async () => {
     const operator = await demoUser("operator");
     const editor = await demoUser("editor");
@@ -62,20 +46,6 @@ describe("security hardening", () => {
     const rows = await withUser(operator, (tx) => tx`update public.addons set price_cents = 1 returning id`);
     expect(rows).toHaveLength(0);
     await withUser(admin, (tx) => tx`update public.trails set base_price_cents = ${trail.basePriceCents} where id = ${trail.id}`);
-  });
-
-  it("content editors cannot approve or publish marketing drafts", async () => {
-    const editor = await demoUser("editor");
-    const trail = await trailBySlug("lantern-creek-loop");
-    const [d] = await withUser(editor, (tx) =>
-      tx<{ id: string }[]>`insert into public.marketing_drafts (trail_id, title, body, created_by) values (${trail.id}, 'T', 'B', ${editor.id}) returning id`,
-    );
-    await expect(
-      withUser(editor, (tx) => tx`update public.marketing_drafts set status = 'published', approved_at = now() where id = ${d.id}`),
-    ).rejects.toThrow(/Only admins and operators/);
-    await expect(
-      withUser(editor, (tx) => tx`insert into public.marketing_drafts (trail_id, title, body, status, approved_at) values (${trail.id}, 'T', 'B', 'approved', now())`),
-    ).rejects.toThrow(/Only admins and operators/);
   });
 
   it("locker access-code material is not readable through the API roles", async () => {

@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Ghost Guide",
     short_name: "Ghost Guide",
-    description: "Self-guided hikes with a personalized itinerary, offline trip download and GPS-triggered audio narration.",
+    description: "Find real trails with honest distance, climb and time estimates, and plan your hike.",
     id: "/",
     start_url: "/trips",
     scope: "/",

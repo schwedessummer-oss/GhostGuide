@@ -10,7 +10,6 @@ import { recommendTrails } from "@/domain/recommendation";
 import { getLatestFinishTable, getVisibleTrailRegionId, loadCandidates, partialClosuresOn } from "./catalog";
 import { permitNotes } from "./plan";
 import { parseTripPreferences, validatePlanTiming } from "./preferences";
-import { summarizeItineraryText } from "./ai";
 
 export type SaveTripErrorCode = "invalid" | "not_found" | "excluded" | "date";
 
@@ -76,23 +75,6 @@ export async function saveTrip(user: SessionUser, prefsInput: unknown, trailId: 
     extraNotes: permitNotes(permits),
   });
 
-  const trailheadIds = new Set((regional.pois.get(trailId) ?? []).filter((p) => p.kind === "trailhead").map((p) => p.id));
-  const ai = await summarizeItineraryText(user, {
-    trailId,
-    trailName: trail.name,
-    isDemo: trail.isDemo,
-    plannedDate: itinerary.plannedDate,
-    startTime: itinerary.startTime,
-    estimatedFinishTime: itinerary.estimatedFinishTime,
-    estimatedDurationMin: itinerary.estimatedDurationMin,
-    turnaroundBy: itinerary.turnaroundBy,
-    stops: itinerary.stops
-      .filter((s) => !trailheadIds.has(s.poiId))
-      .map((s) => ({ name: s.name, etaOffsetMin: s.etaOffsetMin })),
-    reminders: itinerary.reminders,
-    partialClosures,
-  });
-
   const recommendation = {
     version: 1,
     trailId,
@@ -110,12 +92,10 @@ export async function saveTrip(user: SessionUser, prefsInput: unknown, trailId: 
   const [row] = await withUser(
     user,
     (tx) => tx<{ id: string }[]>`
-      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size,
-                                preferences, recommendation, itinerary, ai_summary, ai_provider, ai_generated_at)
+      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size, preferences, recommendation, itinerary)
       values (${user.id}, ${trail.regionId}, ${trailId}, ${prefs.plannedDate}::date, ${prefs.startTime}::time, ${prefs.partySize},
               ${tx.json(JSON.parse(JSON.stringify(prefs)) as JsonValue)}, ${tx.json(recommendation as unknown as JsonValue)},
-              ${tx.json(itinerary as unknown as JsonValue)}, ${ai.text},
-              ${ai.model ? `${ai.provider}:${ai.model}` : ai.provider}, ${now}::timestamptz)
+              ${tx.json(itinerary as unknown as JsonValue)})
       returning id`,
   );
   log.info("discover.trip_saved", { tripId: row.id, trailId, score: ranked.score });

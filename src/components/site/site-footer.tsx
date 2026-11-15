@@ -17,7 +17,7 @@ export function SiteFooter() {
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 text-sm text-muted sm:grid-cols-[1.2fr_1.5fr_1fr] sm:px-6">
           <div>
             <p className="font-semibold text-ink">Ghost Guide</p>
-            <p className="mt-2">Find a hike, plan the day, and get home safely.</p>
+            <p className="mt-2">Find a hike and plan the day.</p>
             <div className="mt-4 flex items-center gap-3">
               <span className="font-medium text-ink">Units</span>
               <SiteUnitsToggle size="sm" />
@@ -26,8 +26,8 @@ export function SiteFooter() {
           <div>
             <p className="font-semibold text-ink">Safety</p>
             <p className="mt-2">
-              Ghost Guide is not an emergency service, does not monitor you continuously, and cannot contact Search and Rescue for you. In an
-              emergency, call your local emergency number (911 in the US) or use a satellite communicator.
+              Ghost Guide is not an emergency service. In an emergency, call your local emergency number (911 in the US) or use a satellite
+              communicator.
             </p>
             <p className="mt-3">
               Trail and map data{" "}
@@ -41,11 +41,6 @@ export function SiteFooter() {
             <li>
               <Link className={linkClass} href="/how-it-works">
                 How it works &amp; limitations
-              </Link>
-            </li>
-            <li>
-              <Link className={linkClass} href="/account/privacy">
-                Privacy &amp; location data
               </Link>
             </li>
             <li>

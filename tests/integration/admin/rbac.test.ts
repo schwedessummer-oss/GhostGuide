@@ -1,12 +1,10 @@
 import { afterAll, describe, expect, it } from "vitest";
-import { closeDb, sql, withSystem, withUser } from "@/server/db";
-import type { SessionUser } from "@/server/auth";
+import { closeDb, sql, withUser } from "@/server/db";
 import { parsePage } from "@/server/admin/common";
 import { savePricingRule, updateTrailBasePrice, updateAddon, createAddon, getPricingData, deletePricingRule } from "@/server/admin/pricing";
 import { setFlag, listFlags } from "@/server/admin/feature-flags";
 import { grantStaffRole, listStaff, revokeStaffRole } from "@/server/admin/staff";
-import { getCustomerDetail, revealCustomerSensitive, searchCustomers } from "@/server/admin/customers";
-import { listActiveHikes, listNotifications, revealHikeLocation } from "@/server/admin/safety";
+import { getCustomerDetail, searchCustomers } from "@/server/admin/customers";
 import { cancelJobAsStaff, listJobs, retryJobAsStaff, listIntegrationEvents } from "@/server/admin/jobs";
 import { createTrail, listAdminTrails, setTrailStatus, updateTrailFact } from "@/server/admin/trails";
 import { approveNarration, listNarrations } from "@/server/admin/content";
@@ -15,7 +13,6 @@ import { listBookings, getBookingDetail } from "@/server/admin/bookings";
 import { getGearOverview, setReservationStatus } from "@/server/admin/gear";
 import { listFulfillments } from "@/server/admin/fulfillment";
 import { getAvailability, setDayInventory } from "@/server/admin/availability";
-import { generateMarketingDraft, publishMarketingDraft, approveMarketingDraft } from "@/server/admin/marketing";
 import { listUpcomingTripPermits, updateTripPermit, createPermitRequirement } from "@/server/admin/permits";
 import { listTickets, updateTicket } from "@/server/admin/support";
 import { listAuditLogs } from "@/server/admin/audit-log";
@@ -44,56 +41,21 @@ const rule = {
   active: false,
 };
 
-async function activeSessionFor(user: SessionUser) {
-  const trail = await trailBySlug("lantern-creek-loop");
-  return withSystem(async (tx) => {
-    const [trip] = await tx<{ id: string }[]>`
-      insert into public.trips (user_id, region_id, trail_id, status, planned_date, start_time) values (${user.id}, ${trail.regionId}, ${trail.id}, 'active', current_date, '09:00') returning id`;
-    const [s] = await tx<{ id: string }[]>`
-      insert into public.hike_sessions (trip_id, user_id, status, last_sync_at, last_location_at) values (${trip.id}, ${user.id}, 'active', now(), now()) returning id`;
-    await tx`insert into public.hike_last_locations (hike_session_id, user_id, lat, lng, accuracy_m, recorded_at) values (${s.id}, ${user.id}, 47.5051, -121.7019, 8, now())`;
-    return s.id;
-  });
-}
-
 describe("admin RBAC matrix", () => {
-  it("support cannot change pricing, nor see precise locations or emergency contacts", async () => {
+  it("support cannot change pricing", async () => {
     const support = await demoUser("support");
     const hiker = await demoUser("hiker");
     const trail = await trailBySlug("lantern-creek-loop");
     await expectForbidden(savePricingRule(support, null, rule));
     await expectForbidden(updateTrailBasePrice(support, trail.id, "10"));
     await expectForbidden(getPricingData(support));
-    await expectForbidden(revealCustomerSensitive(support, hiker.id, "checking on the customer"));
-    await expectForbidden(revealHikeLocation(support, ZERO, "check"));
-    await expectForbidden(listActiveHikes(support));
-    await expectForbidden(listNotifications(support, {}, page));
 
-    // support CAN view customers, but the detail is flagged restricted and RLS returns no contacts
+    // support CAN view customers
     const detail = await getCustomerDetail(support, hiker.id);
-    expect(detail?.canSeeSensitive).toBe(false);
-    const contacts = await withUser(support, (tx) => tx`select id from public.emergency_contacts where user_id = ${hiker.id}`);
-    expect(contacts).toHaveLength(0);
+    expect(detail?.profile.email).toBe(hiker.email);
     // defense in depth: even a direct write to pricing through RLS changes nothing
     const updated = await withUser(support, (tx) => tx`update public.pricing_rules set value = 99 returning id`);
     expect(updated).toHaveLength(0);
-  });
-
-  it("safety and admin can reveal a precise location; the access is audited", async () => {
-    const safety = await demoUser("safety");
-    const hiker = await createCustomer("located");
-    const sessionId = await activeSessionFor(hiker);
-    await expect(revealHikeLocation(safety, sessionId, "")).resolves.toMatchObject({ ok: false });
-    const r = await revealHikeLocation(safety, sessionId, "Overdue follow-up");
-    expectOk(r);
-    expect(r.data?.lat).toBeCloseTo(47.5051, 4);
-    const [a] = await sql()<{ action: string; actorId: string }[]>`
-      select action, actor_id from public.audit_logs where entity_type = 'hike_session' and entity_id = ${sessionId} order by id desc limit 1`;
-    expect(a).toMatchObject({ action: "safety.view_location", actorId: safety.id });
-    // operators may monitor hikes but not see coordinates
-    const operator = await demoUser("operator");
-    expect((await listActiveHikes(operator)).some((h) => h.id === sessionId)).toBe(true);
-    await expectForbidden(revealHikeLocation(operator, sessionId, "curious"));
   });
 
   it("content editors cannot change flags or pricing", async () => {
@@ -151,15 +113,11 @@ describe("admin RBAC matrix", () => {
       () => approveNarration(c, ZERO, { sourceId: ZERO, sourceCitation: "x" }),
       () => searchCustomers(c, "", page),
       () => getCustomerDetail(c, c.id),
-      () => revealCustomerSensitive(c, c.id, "because"),
       () => listBookings(c, {}, page),
       () => getBookingDetail(c, ZERO),
       () => getGearOverview(c),
       () => setReservationStatus(c, ZERO, "returned"),
       () => listFulfillments(c, {}, page),
-      () => listActiveHikes(c),
-      () => revealHikeLocation(c, ZERO, "because"),
-      () => listNotifications(c, {}, page),
       () => listJobs(c, {}, page),
       () => retryJobAsStaff(c, 1),
       () => cancelJobAsStaff(c, 1),
@@ -171,9 +129,6 @@ describe("admin RBAC matrix", () => {
       () => setDayInventory(c, trail.id, { day: "2030-01-01", capacity: "", blocked: false, note: "" }),
       () => listFlags(c),
       () => setFlag(c, "checkout_enabled", false),
-      () => generateMarketingDraft(c, { trailId: trail.id, channel: "web" }),
-      () => approveMarketingDraft(c, ZERO, true),
-      () => publishMarketingDraft(c, ZERO),
       () => listUpcomingTripPermits(c),
       () => updateTripPermit(c, ZERO, ZERO, { status: "obtained" }),
       () => listTickets(c, {}, page),

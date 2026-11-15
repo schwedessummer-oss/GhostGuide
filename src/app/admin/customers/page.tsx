@@ -18,7 +18,7 @@ export default async function CustomersPage({ searchParams }: PageProps<"/admin/
   const data = await searchCustomers(user, term, page);
   return (
     <>
-      <AdminHeader title="Customers" description="Search by email or name. Emergency contacts and precise locations are restricted to safety staff and admins." />
+      <AdminHeader title="Customers" description="Search by email or name." />
       <FilterBar action="/admin/customers" resetHref="/admin/customers">
         <TextField id="c-q" name="q" type="search" label="Email or name" defaultValue={term ?? ""} className="sm:min-w-80" />
       </FilterBar>

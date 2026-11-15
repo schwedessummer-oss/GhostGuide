@@ -1,14 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Bell, ChevronLeft, Sparkles } from "lucide-react";
+import { Bell, ChevronLeft } from "lucide-react";
 import { Alert, Badge, ButtonLink, Card, Container, PageHeader, SimulatedBadge } from "@/components/ui";
 import { BookingStatusBadge, DemoTrailBadge, TripStatusBadge } from "@/components/commerce/status-badges";
 import { PriceBreakdown } from "@/components/commerce/price-breakdown";
 import { FulfillmentList } from "@/components/commerce/fulfillment-list";
 import { ItinerarySummary } from "@/components/commerce/itinerary-summary";
-import { HikeActionsCard } from "@/components/trip/hike-actions-card";
-import { CheckinStatusCard } from "@/components/checkin/checkin-status-card";
 import { getCurrentUser, requireUser } from "@/server/auth";
 import { getOwnedTrip } from "@/server/trips/queries";
 import { getRegionById, getTrailById } from "@/server/catalog/trails";
@@ -61,8 +59,6 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
     ...(dayClosures?.notices ?? []).map((c, i) => ({ key: `n${i}`, text: `${c.severity === "partial" ? "Partial closure" : "Advisory"} on your hike date: ${c.reason}` })),
     ...(trail?.activeClosures ?? []).map((c) => ({ key: c.id, text: c.reason })),
   ].filter((n, i, all) => all.findIndex((m) => m.text.endsWith(n.text) || n.text.endsWith(m.text)) === i);
-  const realAi = !!trip.aiProvider?.startsWith("anthropic");
-  const showHikeCards = trip.status === "booked" || trip.status === "active" || trip.status === "completed";
   const canCancel = (trip.status === "saved" && b?.status !== "pending_payment") || (trip.status === "booked" && b?.status === "confirmed");
   const flash = typeof sp.cancelled === "string" ? "cancelled" : typeof sp.shuttle === "string" ? "shuttle" : null;
   const lines = b?.priceBreakdown?.lines ?? [];
@@ -111,8 +107,6 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          {showHikeCards ? <HikeActionsCard tripId={trip.id} /> : null}
-
           <Card aria-labelledby="booking-heading">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h2 id="booking-heading" className="text-xl font-bold">
@@ -208,30 +202,9 @@ export default async function TripDashboardPage({ params, searchParams }: PagePr
               <ItinerarySummary itinerary={trip.itinerary} startTime={startTime} />
             </div>
           </Card>
-
-          {trip.aiSummary ? (
-            <Card aria-labelledby="ai-heading">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 id="ai-heading" className="flex items-center gap-2 text-xl font-bold">
-                  <Sparkles aria-hidden className="size-5 text-forest-700" /> Trip summary
-                </h2>
-                <div className="flex gap-1.5">
-                  {/* Only text from a real model is labeled AI-generated; template text is labeled as simulated. */}
-                  {realAi ? <Badge tone="blue">AI-generated</Badge> : <SimulatedBadge label="Simulated AI (template)" />}
-                </div>
-              </div>
-              <p className="mt-3 whitespace-pre-line">{trip.aiSummary}</p>
-              <p className="mt-3 text-sm text-muted">
-                {realAi ? "Written by an AI model" : "Assembled from a fixed template (no AI model)"} to explain your plan. It can be wrong and never
-                changes your route, booking or safety information — rely on the trail details, closures and itinerary above.
-              </p>
-            </Card>
-          ) : null}
         </div>
 
         <aside className="space-y-6" aria-label="Trip tools">
-          {showHikeCards ? <CheckinStatusCard tripId={trip.id} /> : null}
-
           {reminders.length ? (
             <Card aria-labelledby="reminders-heading">
               <h2 id="reminders-heading" className="flex items-center gap-2 text-lg font-bold">

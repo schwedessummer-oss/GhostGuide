@@ -7,12 +7,11 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import type { ReactElement, ReactNode } from "react";
 import { prerenderToNodeStream } from "react-dom/static";
-import { closeDb, sql, withSystem } from "@/server/db";
+import { closeDb, sql } from "@/server/db";
 import { signSession } from "@/server/auth/tokens";
 import type { SessionUser } from "@/server/auth";
 import { createNarration } from "@/server/admin/content";
-import { createCustomer, demoUser, trailBySlug } from "../../helpers/db";
-import { bookedTrip, consentedContact, optIn } from "../safety/helpers";
+import { demoUser, trailBySlug } from "../../helpers/db";
 
 const jar = vi.hoisted(() => ({ token: undefined as string | undefined }));
 vi.mock("next/headers", () => ({
@@ -75,7 +74,7 @@ describe("admin layout and access", () => {
     expect(html).toContain('href="/admin/bookings"');
     expect(html).not.toContain('href="/admin/pricing"');
     expect(html).not.toContain('href="/admin/flags"');
-    expect(html).not.toContain('href="/admin/safety"');
+    expect(html).not.toContain('href="/admin/jobs"');
   });
 
   it("signed out: the layout leaves the redirect to the page, which keeps the deep link", async () => {
@@ -105,26 +104,6 @@ describe("admin layout and access", () => {
   });
 });
 
-describe("safety monitor page", () => {
-  it("shows an overdue check-in in the trail's zone with a readable timeline and the staff follow-up form", async () => {
-    const hiker = await createCustomer("safety-page");
-    const trip = await bookedTrip(hiker, { status: "active" });
-    const c = await optIn(hiker, trip.id, await consentedContact(hiker), { minutesAhead: 90 });
-    await withSystem((tx) => tx`update public.trip_checkins set status = 'overdue', overdue_at = now() where id = ${c.id}`);
-    signIn(await demoUser("safety"));
-    const { default: Safety } = await import("@/app/admin/safety/page");
-    const html = await render(await Safety());
-    expect(html).toContain("Times are shown in the trail&#x27;s local time zone");
-    expect(html).toMatch(/Expected back <time[^>]*>[^<]*\b(PST|PDT)\b/);
-    expect(html).toContain("Check-ins turned on");
-    expect(html).toContain("Record a staff follow-up");
-    expect(html).toContain("never contacts emergency services or search and rescue");
-    expect(html).toContain('value="hiker_confirmed_safe"');
-    expect(html).toContain('value="note_only"');
-    expect(html).not.toMatch(/opted_in|clientEventId/);
-  });
-});
-
 describe("admin pages render for an admin", () => {
   it("overview, catalog and operations pages", async () => {
     const admin = await demoUser("admin");
@@ -146,13 +125,10 @@ describe("admin pages render for an admin", () => {
       ["/admin/bookings", async () => (await import("@/app/admin/bookings/page")).default(props()), ["Echo Basin Traverse", "Simulated"]],
       ["/admin/gear", async () => (await import("@/app/admin/gear/page")).default(props()), ["Lantern Creek Locker Bank", "Simulated partner", "Daypack #6"]],
       ["/admin/fulfillment", async () => (await import("@/app/admin/fulfillment/page")).default(props()), ["Partner fulfillment", "staff cannot confirm on their behalf"]],
-      ["/admin/safety", async () => (await import("@/app/admin/safety/page")).default(), ["It is not proof of an emergency", "does not contact emergency services automatically", "Active hikes"]],
-      ["/admin/notifications", async () => (await import("@/app/admin/notifications/page")).default(props({}, { status: "failed" })), ["Notification delivery log"]],
       ["/admin/jobs", async () => (await import("@/app/admin/jobs/page")).default(props()), ["Run due jobs now", "Integration health", "Failed webhook deliveries", "evt_demo_admin_seed_failed"]],
       ["/admin/pricing", async () => (await import("@/app/admin/pricing/page")).default(), ["Live preview", "Weekend surcharge", "Trail base prices", "Add an add-on", "Daily capacity (units per day)", "Pricing unit", "Offered in"]],
       ["/admin/availability", async () => (await import("@/app/admin/availability/page")).default(props({}, { trail: trail.id })), ["Capacity", "Remaining", "(today)"]],
-      ["/admin/flags", async () => (await import("@/app/admin/flags/page")).default(), ["checkout_enabled", "marketing_drafts"]],
-      ["/admin/marketing", async () => (await import("@/app/admin/marketing/page")).default(props()), ["Generate a draft", "no AI"]],
+      ["/admin/flags", async () => (await import("@/app/admin/flags/page")).default(), ["checkout_enabled", "addon_meal_pack"]],
       ["/admin/permits", async () => (await import("@/app/admin/permits/page")).default(props()), ["No permit bots", "Echo Basin Traverse", "Queue reminder run now"]],
       ["/admin/support", async () => (await import("@/app/admin/support/page")).default(props()), ["Do I need one permit per person? (demo)", "Update ticket"]],
       ["/admin/staff", async () => (await import("@/app/admin/staff/page")).default(), ["Grant a role", "Last admin — cannot be revoked"]],
@@ -164,7 +140,7 @@ describe("admin pages render for an admin", () => {
     }
   });
 
-  it("booking, customer, narration and marketing detail pages", async () => {
+  it("booking, customer and narration detail pages", async () => {
     const admin = await demoUser("admin");
     signIn(admin);
     const [booking] = await sql()<{ id: string }[]>`select id from public.bookings where receipt_number = 'GG-DEMO-ADMIN-0001'`;
@@ -173,7 +149,7 @@ describe("admin pages render for an admin", () => {
 
     const hiker = await demoUser("hiker");
     const customerHtml = await render(await (await import("@/app/admin/customers/[id]/page")).default(props({ id: hiker.id })));
-    expect(customerHtml).toContain("Show restricted details");
+    for (const t of ["hiker@demo.ghostguide.test", "Trips", "Bookings", "Support tickets"]) expect(customerHtml).toContain(t);
 
     const trail = await trailBySlug("whisper-falls");
     const created = await createNarration(admin, trail.id, { title: "Imported text", transcript: '<script>alert("x")</script> Imported narration text.', poiId: "", sourceId: "", sourceCitation: "", submit: true });
@@ -183,25 +159,13 @@ describe("admin pages render for an admin", () => {
     expect(narrationHtml).not.toContain('<script>alert("x")</script>');
     expect(narrationHtml).toContain("Approve narration");
 
-    const { generateDraftAction } = await import("@/app/admin/marketing/actions");
-    const digest = await thrownDigest(generateDraftAction(undefined, form({ trailId: trail.id, channel: "web" })));
-    const draftId = /\/admin\/marketing\/([0-9a-f-]{36})/.exec(digest)?.[1];
-    expect(draftId).toBeDefined();
-    const draftHtml = await render(await (await import("@/app/admin/marketing/[id]/page")).default(props({ id: draftId! }, { generated: "1" })));
-    for (const t of ["Freshness and honesty warnings", "Simulated weather", "Sources used", "Submit for review"]) expect(draftHtml).toContain(t);
-
     const missing = await thrownDigest((await import("@/app/admin/bookings/[id]/page")).default(props({ id: "00000000-0000-4000-8000-000000000000" })));
     expect(missing).toMatch(/NEXT_HTTP_ERROR_FALLBACK;404/);
   });
 
-  it("support staff see restricted placeholders instead of contacts and payments", async () => {
+  it("support staff see restricted placeholders instead of payments", async () => {
     const support = await demoUser("support");
     signIn(support);
-    const hiker = await demoUser("hiker");
-    const html = await render(await (await import("@/app/admin/customers/[id]/page")).default(props({ id: hiker.id })));
-    expect(html).toContain("Restricted");
-    expect(html).not.toContain("Show restricted details");
-    expect(html).not.toContain("Casey Contact");
     const [booking] = await sql()<{ id: string }[]>`select id from public.bookings where receipt_number = 'GG-DEMO-ADMIN-0001'`;
     const bHtml = await render(await (await import("@/app/admin/bookings/[id]/page")).default(props({ id: booking.id })));
     expect(bHtml).toContain("payments and refunds are visible to operators and admins");
@@ -211,7 +175,7 @@ describe("admin pages render for an admin", () => {
 });
 
 describe("admin server actions (form field names)", () => {
-  it("closure, flag, role and reveal actions work end to end", async () => {
+  it("closure and flag actions work end to end", async () => {
     const admin = await demoUser("admin");
     signIn(admin);
     const trail = await trailBySlug("miners-meadow-loop");
@@ -224,19 +188,6 @@ describe("admin server actions (form field names)", () => {
     const { setFlagAction } = await import("@/app/admin/flags/actions");
     expect(await setFlagAction("addon_meal_pack", false, undefined, form({}))).toMatchObject({ ok: true });
     expect(await setFlagAction("addon_meal_pack", true, undefined, form({}))).toMatchObject({ ok: true });
-
-    const { revealCustomerAction } = await import("@/app/admin/customers/actions");
-    const hiker = await demoUser("hiker");
-    expect(await revealCustomerAction(hiker.id, undefined, form({ reason: "" }))).toMatchObject({ ok: false });
-    const rev = await revealCustomerAction(hiker.id, undefined, form({ reason: "Support call about check-in contact" }));
-    expect(rev).toMatchObject({ ok: true, data: { contacts: [expect.objectContaining({ name: "Casey Contact (demo)" })] } });
-    const [a] = await sql()<{ action: string }[]>`
-      select action from public.audit_logs where entity_id = ${hiker.id} and action = 'customer.view_emergency_contacts' order by id desc limit 1`;
-    expect(a.action).toBe("customer.view_emergency_contacts");
-
-    // a support user calling the reveal action is turned away (redirect to /forbidden)
-    signIn(await demoUser("support"));
-    expect(await thrownDigest(revealCustomerAction(hiker.id, undefined, form({ reason: "curious" })))).toMatch(/\/forbidden/);
   });
 
   it("the route upload handler validates, stores and reports", async () => {

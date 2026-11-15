@@ -2,7 +2,7 @@
  * Discover slice e2e: landing, trail browsing + filters, map fallback, trail
  * detail (facts, provenance, sources, permits, closures, demo labels),
  * planning questionnaire validation, ranked results + score breakdown +
- * itinerary + AI label, exclusions, no-match + relax suggestions, and the
+ * itinerary, exclusions, no-match + relax suggestions, and the
  * signed-out "Save" -> sign in -> back to results -> Save -> /trips/<id> flow
  * with cross-customer isolation (404).
  *
@@ -133,9 +133,9 @@ test("landing page explains the product honestly; its search, map and demo-regio
   try {
     const res = await page.goto("/");
     assert.equal(res.status(), 200);
-    await page.getByRole("heading", { level: 1, name: "Find a hike. Plan the day. Get home safely." }).waitFor();
+    await page.getByRole("heading", { level: 1, name: "Find a hike. Plan the day." }).waitFor();
     // What the product does today, stated honestly.
-    for (const t of ["Real trails, honest numbers", "Plan the day", "Save trails, set a check-in"]) {
+    for (const t of ["Real trails, honest numbers", "Plan the day", "Save trails"]) {
       assert.equal(await page.getByRole("heading", { level: 3, name: t }).count(), 1, `missing value card: ${t}`);
     }
     const main = await page.locator("main").innerText();
@@ -144,7 +144,7 @@ test("landing page explains the product honestly; its search, map and demo-regio
     assert.match(main, /Ghost Guide is not an emergency service\./);
     assert.equal(await page.getByRole("link", { name: /How it works & its limits/ }).getAttribute("href"), "/how-it-works");
     // The site-wide demo banner says what is real and what is simulated.
-    assert.match(await page.locator("body").innerText(), /Demo: trail, map, weather and place data are real; payments, notifications, partner services and AI\s+text are simulated\./);
+    assert.match(await page.locator("body").innerText(), /Demo: trail, map, weather and place data are real; payments and partner services are simulated\./);
 
     // The fictional demo region is a clearly labeled development fixture (SHOW_DEMO_FIXTURES).
     const demo = page.getByRole("region", { name: /Demo region \(fictional\)/ });
@@ -179,7 +179,7 @@ test("landing page explains the product honestly; its search, map and demo-regio
   }
 });
 
-test("navigation: Explore, Trips, Hike, Saved and Profile in the desktop header and the phone tab bar", { timeout: 60_000 }, async () => {
+test("navigation: Explore, Trips, Saved and Profile in the desktop header and the phone tab bar", { timeout: 60_000 }, async () => {
   const desktop = await openPage();
   try {
     const { page } = desktop;
@@ -187,9 +187,9 @@ test("navigation: Explore, Trips, Hike, Saved and Profile in the desktop header 
     const header = page.getByRole("navigation", { name: "Main" });
     const links = header.getByRole("link");
     const labels = (await links.allInnerTexts()).map((s) => s.trim()).filter(Boolean);
-    assert.deepEqual(labels.slice(0, 7), ["Ghost Guide", "Explore", "Trips", "Hike", "Saved", "Profile", "Sign in"]);
+    assert.deepEqual(labels.slice(0, 6), ["Ghost Guide", "Explore", "Trips", "Saved", "Profile", "Sign in"]);
     const hrefs = await links.evaluateAll((as) => as.map((a) => a.getAttribute("href")));
-    assert.deepEqual(hrefs.slice(0, 7), ["/", "/explore", "/trips", "/hike", "/saved", "/login", "/login"]);
+    assert.deepEqual(hrefs.slice(0, 6), ["/", "/explore", "/trips", "/saved", "/login", "/login"]);
     // The phone tab bar is hidden on desktop.
     assert.equal(await page.getByRole("navigation", { name: "Primary" }).isVisible(), false);
     // The current destination is marked (client-side, once the page has hydrated).
@@ -210,7 +210,7 @@ test("navigation: Explore, Trips, Hike, Saved and Profile in the desktop header 
     await page.goto("/how-it-works");
     const tabs = page.getByRole("navigation", { name: "Primary" });
     assert.ok(await tabs.isVisible(), "phones get the bottom tab bar");
-    assert.deepEqual((await tabs.getByRole("link").allInnerTexts()).map((s) => s.trim()), ["Explore", "Trips", "Hike", "Saved", "Profile"]);
+    assert.deepEqual((await tabs.getByRole("link").allInnerTexts()).map((s) => s.trim()), ["Explore", "Trips", "Saved", "Profile"]);
     assert.equal(await tabs.getByRole("link", { name: "Explore" }).getAttribute("aria-current"), null, "no tab is current on /how-it-works");
     const box = await tabs.boundingBox();
     assert.ok(Math.abs(box.y + box.height - 844) <= 1, `fixed to the bottom of the screen (bottom at ${box.y + box.height})`);
@@ -723,7 +723,7 @@ test("plan validation: the full advertised distance range (up to 50 miles) is ac
 
 const STRONG_HIKER = { experience: "regular", fitness: "high", pace: "brisk", hours: "8", start: "07:00", party: "2" };
 
-test("results: ranked suggestions with score breakdown, itinerary and simulated-AI label", { timeout: 90_000 }, async () => {
+test("results: ranked suggestions with score breakdown and itinerary, no AI text", { timeout: 90_000 }, async () => {
   const { context, page, pageErrors } = await openPage();
   try {
     await page.goto("/plan");
@@ -779,10 +779,8 @@ test("results: ranked suggestions with score breakdown, itinerary and simulated-
       assert.match(itinText, /≈ \d{2}:\d{2} · Finish \(about .+\)/);
       assert.match(itinText, /Reminders are general prompts, not medical advice\./);
 
-      // AI label: template, clearly simulated
-      const ai = card.getByRole("region", { name: /Simulated AI \(template\)/ });
-      assert.match(await ai.innerText(), /Simulated/);
-      assert.match(await ai.innerText(), /no AI model was used/);
+      // No AI-written explanations.
+      assert.ok(!/AI-generated|Simulated AI/.test(text), "no AI text on the suggestion card");
 
       // Save CTA for signed-out visitors
       assert.equal(await card.getByRole("button", { name: /Sign in to save this trip/ }).count(), 1);

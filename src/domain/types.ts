@@ -168,11 +168,3 @@ export type FulfillmentStatus =
   | "failed"
   | "cancelled"
   | "needs_attention";
-export type CheckinStatus =
-  | "scheduled"
-  | "active"
-  | "confirmed_ok"
-  | "completed"
-  | "overdue"
-  | "contact_notified"
-  | "cancelled";

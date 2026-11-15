@@ -11,7 +11,6 @@ import { ElevationProfile } from "@/components/trail/elevation-profile";
 import { locationParts } from "@/components/trail/format";
 import { NearbyPanel } from "@/components/trail/nearby-panel";
 import { PoiList } from "@/components/trail/poi-list";
-import { SafetySection } from "@/components/trail/safety-section";
 import { SaveTrailButton } from "@/components/trail/save-button";
 import { canonicalUrl, serializeJsonLd, trailJsonLd, trailMetaDescription, trailPageTitle } from "@/components/trail/seo";
 import { ShareButton } from "@/components/trail/share-button";
@@ -22,7 +21,6 @@ import { TrailStats } from "@/components/trail/trail-stats";
 import { UnitsToggle } from "@/components/trail/units-toggle";
 import { env } from "@/config/env";
 import type { TrailDetailDto } from "@/domain/catalog";
-import { GENERAL_NOTES, emergencyNumbersFor } from "@/server/safety/emergency-numbers";
 import { getTrailDetailByPath } from "@/server/trails/read";
 import { findTrailRedirect } from "@/server/trails/redirects";
 
@@ -130,9 +128,6 @@ export default async function TrailPage({ params }: { params: Promise<Params> })
   if (!trail) notFound();
 
   const url = canonicalUrl(env().NEXT_PUBLIC_APP_URL, trail.path);
-  const numbers = emergencyNumbersFor(trail.countryCode);
-  // The generic notes (no signal on trails; Ghost Guide can't call for you) are said by the Safety section itself.
-  const emergency = { ...numbers, notes: numbers.notes.filter((n) => !GENERAL_NOTES.includes(n)) };
   const location = locationParts(trail);
   const altName = trail.nameEn && trail.nameEn.trim().toLowerCase() !== trail.name.trim().toLowerCase() ? trail.nameEn.trim() : null;
   const actionCount = trail.trailhead ? 3 : 2;
@@ -256,11 +251,6 @@ export default async function TrailPage({ params }: { params: Promise<Params> })
             <section aria-labelledby="details-heading" className={sectionClass}>
               <SectionHeading id="details-heading">Trail details</SectionHeading>
               <TrailFacts trail={trail} />
-            </section>
-
-            <section aria-labelledby="safety-heading" className={sectionClass}>
-              <SectionHeading id="safety-heading">Safety</SectionHeading>
-              <SafetySection trail={trail} emergency={emergency} />
             </section>
           </div>
         </div>

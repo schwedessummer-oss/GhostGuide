@@ -76,8 +76,8 @@ export async function seedAdmin(sql: postgres.Sql) {
     values
       (${hiker2.id}, ${trip.id}, ${booking.id}, 'Do I need one permit per person? (demo)',
        'Demonstration ticket: I applied for the Echo Basin permit but I am not sure if my friend needs their own.', 'open', 'urgent'),
-      (${hiker?.id ?? hiker2.id}, null, null, 'Audio did not play with my screen locked (demo)',
-       'Demonstration ticket: narration stopped when my phone screen locked. Is that expected?', 'pending', 'normal')`;
+      (${hiker?.id ?? hiker2.id}, null, null, 'Can I change the date of my hike? (demo)',
+       'Demonstration ticket: I booked for Saturday but would like to go on Sunday instead.', 'pending', 'normal')`;
 
   // ---- operations examples (simulated failures) --------------------------------
   await sql`

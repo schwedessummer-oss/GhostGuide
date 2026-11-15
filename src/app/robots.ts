@@ -13,7 +13,7 @@ import { generateSitemaps } from "./sitemap";
  */
 export const revalidate = 3600;
 
-const DISALLOW = ["/admin", "/api", "/account", "/trips", "/share", "/saved", "/checkout", "/bookings"];
+const DISALLOW = ["/admin", "/api", "/account", "/trips", "/saved", "/checkout", "/bookings"];
 
 export default async function robots(): Promise<MetadataRoute.Robots> {
   const base = env().NEXT_PUBLIC_APP_URL.replace(/\/+$/, "");

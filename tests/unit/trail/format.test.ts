@@ -26,7 +26,6 @@ import {
   formatZonedMoment,
   hikeFormLabel,
   humanize,
-  isPoorVisibility,
   listLabel,
   localDateKey,
   locationParts,
@@ -180,9 +179,6 @@ describe("fact labels say when a value is unknown", () => {
     expect(trailVisibilityLabel(null)).toBe("Not mapped");
     expect(trailVisibilityLabel("bad")).toMatch(/^Poor/);
     expect(trailVisibilityLabel("odd_value")).toBe("Odd value");
-    expect(isPoorVisibility("horrible")).toBe(true);
-    expect(isPoorVisibility("good")).toBe(false);
-    expect(isPoorVisibility(null)).toBe(false);
     expect(accessLabel("permissive")).toMatch(/permission/);
     expect(accessLabel(null)).toBe("Not mapped");
     expect(publicAccessFromTag("yes")).toBe(true);

@@ -116,7 +116,7 @@ describe("discover pages render", () => {
     expect(text(out)).toMatch(/check Hollow Pine Ridge first/);
   });
 
-  it("results page ranks trails with breakdowns, itinerary, labeled AI text and save buttons", async () => {
+  it("results page ranks trails with breakdowns, itinerary and save buttons", async () => {
     const { default: Results } = await import("@/app/plan/results/page");
     const q = {
       experience: "regular",
@@ -133,7 +133,7 @@ describe("discover pages render", () => {
     const t = text(out);
     expect(t).toMatch(/Your hike suggestions/);
     expect(t).toMatch(/#\s*1 suggestion/);
-    expect(t).toMatch(/Simulated AI \(template\)/);
+    expect(t).not.toMatch(/AI-generated|Simulated AI/);
     expect(t).toMatch(/How the score of \d+ was calculated/);
     expect(t).toMatch(/Turn around by \d\d:\d\d/);
     expect(t).toMatch(/Sign in to save this trip/);

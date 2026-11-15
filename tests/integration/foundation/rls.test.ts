@@ -1,23 +1,20 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { closeDb, withAnon, withSystem, withUser } from "@/server/db";
-import { createCustomer, demoUser, trailBySlug } from "../../helpers/db";
+import { createCustomer, trailBySlug } from "../../helpers/db";
 
 afterAll(closeDb);
 
 describe("row-level security", () => {
-  it("customers cannot read another customer's trips, contacts or locations", async () => {
+  it("customers cannot read or update another customer's trips", async () => {
     const alice = await createCustomer("alice");
     const bob = await createCustomer("bob");
     const trail = await trailBySlug("lantern-creek-loop");
     const [trip] = await withUser(alice, (tx) =>
       tx<{ id: string }[]>`insert into public.trips (user_id, region_id, trail_id) values (${alice.id}, ${trail.regionId}, ${trail.id}) returning id`,
     );
-    await withUser(alice, (tx) => tx`insert into public.emergency_contacts (user_id, name, phone) values (${alice.id}, 'Mom', '+15550000000')`);
 
     const bobTrips = await withUser(bob, (tx) => tx`select id from public.trips where id = ${trip.id}`);
     expect(bobTrips).toHaveLength(0);
-    const bobContacts = await withUser(bob, (tx) => tx`select id from public.emergency_contacts where user_id = ${alice.id}`);
-    expect(bobContacts).toHaveLength(0);
     // Bob cannot update Alice's trip either (RLS filters the row: 0 rows updated)
     const updated = await withUser(bob, (tx) => tx`update public.trips set party_size = 5 where id = ${trip.id} returning id`);
     expect(updated).toHaveLength(0);
@@ -58,18 +55,6 @@ describe("row-level security", () => {
     expect(rows.length).toBeGreaterThanOrEqual(5);
     const audit = await withAnon((tx) => tx`select * from public.audit_logs`);
     expect(audit).toHaveLength(0);
-  });
-
-  it("precise locations and emergency contacts are visible to safety staff but not support staff", async () => {
-    const hiker = await demoUser("hiker");
-    const safety = await demoUser("safety");
-    const support = await demoUser("support");
-    const safetySees = await withUser(safety, (tx) => tx`select id from public.emergency_contacts where user_id = ${hiker.id}`);
-    expect(safetySees.length).toBeGreaterThan(0);
-    const supportSees = await withUser(support, (tx) => tx`select id from public.emergency_contacts where user_id = ${hiker.id}`);
-    expect(supportSees).toHaveLength(0);
-    const supportLocations = await withUser(support, (tx) => tx`select * from public.hike_last_locations`);
-    expect(supportLocations).toHaveLength(0);
   });
 
   it("a customer cannot grant themselves a staff role", async () => {

@@ -125,7 +125,7 @@ export function pointAtDistance(coords: Position[], alongM: number, cumulative?:
   return { lat: a.lat + t * (b.lat - a.lat), lng: a.lng + t * (b.lng - a.lng) };
 }
 
-/** Offset a point by metres east/north (used by the GPS simulator and tests). */
+/** Offset a point by metres east/north (used by the seed geometry and tests). */
 export function offsetMeters(p: LatLng, eastM: number, northM: number): LatLng {
   const dLat = (northM / EARTH_RADIUS_M) * (180 / Math.PI);
   const dLng = (eastM / (EARTH_RADIUS_M * Math.cos(toRad(p.lat)))) * (180 / Math.PI);

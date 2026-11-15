@@ -23,7 +23,6 @@ export const DEMO_USERS = [
   { email: "hiker2@demo.ghostguide.test", name: "Ravi Rambler", roles: [] as string[] },
   { email: "admin@demo.ghostguide.test", name: "Ada Admin", roles: ["admin"] },
   { email: "operator@demo.ghostguide.test", name: "Omar Operator", roles: ["operator"] },
-  { email: "safety@demo.ghostguide.test", name: "Sam Safety", roles: ["safety"] },
   { email: "editor@demo.ghostguide.test", name: "Eda Editor", roles: ["content_editor"] },
   { email: "support@demo.ghostguide.test", name: "Sue Support", roles: ["support"] },
 ];
@@ -299,12 +298,6 @@ export async function seedCore(sql: postgres.Sql) {
   const adminId = userIds["admin@demo.ghostguide.test"];
   const editorId = userIds["editor@demo.ghostguide.test"];
 
-  // emergency contact for the demo hiker (consent attested by the hiker)
-  await sql`
-    insert into public.emergency_contacts (user_id, name, phone, email, relationship, consent_confirmed_at, consent_statement)
-    values (${userIds["hiker@demo.ghostguide.test"]}, 'Casey Contact (demo)', '+15555550123', 'casey@demo.ghostguide.test', 'Friend',
-            now(), 'I confirm this person agreed to receive Ghost Guide check-in notices about my trips.')`;
-
   // ---- region & sources ----------------------------------------------------
   const [region] = await sql<{ id: string }[]>`
     insert into public.regions (slug, name, timezone, center_lat, center_lng, default_zoom, is_active, is_demo, emergency_number, emergency_guidance)
@@ -455,24 +448,17 @@ export async function seedCore(sql: postgres.Sql) {
   // ---- flags & settings -----------------------------------------------------
   const flags: [string, boolean, string][] = [
     ["checkout_enabled", true, "Allow customers to start checkout"],
-    ["ai_explanations", true, "Use the AI provider for itinerary explanations (falls back to templates)"],
     ["addon_gear_locker", true, "Offer gear-locker add-on"],
     ["addon_shuttle", true, "Offer shuttle add-on"],
     ["addon_meal_pack", true, "Offer meal-pack add-on"],
     ["addon_satellite_device", true, "Offer satellite-communicator rental add-on"],
-    ["trip_sharing", true, "Allow customers to create expiring trip-share links"],
-    ["checkins_enabled", true, "Allow customers to opt in to trip check-ins"],
-    ["marketing_drafts", true, "Enable the marketing-draft workflow in admin"],
   ];
   for (const [key, enabled, description] of flags) {
     await sql`insert into public.feature_flags (key, enabled, description) values (${key}, ${enabled}, ${description})`;
   }
   const settings: [string, unknown, string][] = [
-    ["checkin_defaults", { graceMinutes: 60, reminderOffsetsMin: [60, 15] }, "Default check-in grace period and reminder offsets"],
     ["checkout_hold_minutes", 30, "Minutes a pending checkout holds inventory"],
     ["cancellation_policy", { fullRefundHours: 48, partialRefundPct: 50, partialRefundHours: 12 }, "Customer cancellation refund policy"],
-    ["location_retention_default_days", 30, "Default days to keep precise hike location history"],
-    ["stale_location_minutes", 15, "A last-known location older than this is labeled stale"],
   ];
   for (const [key, value, description] of settings) {
     await sql`insert into public.app_settings (key, value, description) values (${key}, ${sql.json(value as postgres.JSONValue)}, ${description})`;

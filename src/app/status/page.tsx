@@ -17,9 +17,7 @@ const LABELS: Record<string, string> = {
   elevation: "Elevation",
   maps: "Maps",
   trailWeather: "Weather on trail pages",
-  ai: "AI explanations",
-  notifications: "Check-in notifications",
-  weather: "Weather in marketing drafts",
+  weather: "Weather provider (WEATHER_PROVIDER)",
   partners: "Partner services (lockers, shuttle, meals, satellite rental)",
 };
 
@@ -33,9 +31,10 @@ export default async function StatusPage() {
         description="Which parts of Ghost Guide are connected to real services in this deployment and which are simulated."
       />
       <Card className="mb-6">
-        <h2 className="text-lg font-bold">Background checks</h2>
+        <h2 className="text-lg font-bold">Background jobs</h2>
         <p className="mt-1 text-[0.95rem] text-muted">
-          Check-in reminders and overdue notices are sent by a background job runner that should run about once a minute.
+          Refunds, partner requests, payment checks and expired checkout holds are handled by a background job runner that should run about once a
+          minute.
         </p>
         <p className="mt-3 flex flex-wrap items-center gap-2">
           <Badge tone={runner.stale ? "red" : "forest"}>{runner.stale ? "Delayed" : "Running"}</Badge>
@@ -43,7 +42,7 @@ export default async function StatusPage() {
             {runner.lastRunAt
               ? `Last run ${formatAge(runner.lastRunAt)}.`
               : "The job runner has not run yet in this deployment."}
-            {runner.stale ? ` Notices may be late until it runs again (expected at least every ${RUNNER_STALE_AFTER_MIN} minutes).` : ""}
+            {runner.stale ? ` This work may be late until it runs again (expected at least every ${RUNNER_STALE_AFTER_MIN} minutes).` : ""}
           </span>
         </p>
       </Card>

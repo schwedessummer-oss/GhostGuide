@@ -140,5 +140,7 @@ describe("route file upload, validation and activation", () => {
     expect(t.status).toBe("published");
     const [demo] = await sql()<{ isDemo: boolean }[]>`select is_demo from public.trails where id = ${trailId}`;
     expect(demo.isDemo).toBe(true);
+    // Clean up: a published test trail would show up in other suites' catalog queries.
+    expectOk(await setTrailStatus(admin, trailId, "archived"));
   });
 });

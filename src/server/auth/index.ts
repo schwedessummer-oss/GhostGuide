@@ -80,7 +80,7 @@ export function jsonError(status: number, message: string) {
 export type AuthResult = { ok: true } | { ok: false; error: string };
 
 /** Tag this device with the signed-in user's (non-secret) owner hint; see owner-hint.ts. */
-export async function setOwnerHintCookie(userId: string) {
+async function setOwnerHintCookie(userId: string) {
   const e = env();
   (await cookies()).set(OWNER_HINT_COOKIE, ownerHint(e.AUTH_SECRET, userId), {
     httpOnly: false,

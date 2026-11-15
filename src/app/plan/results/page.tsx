@@ -10,11 +10,8 @@ import { ReturnToCard } from "@/components/discover/focus-helpers";
 import { clock12 } from "@/components/discover/format";
 import { getCurrentUser } from "@/server/auth";
 import { getLaunchRegion, getTrailBySlug } from "@/server/catalog/trails";
-import { planTrip, type PlanSuggestion } from "@/server/discover/plan";
-import { explainSuggestion } from "@/server/discover/ai";
+import { planTrip } from "@/server/discover/plan";
 import { parsePlanQuery, toPlanQuery, toRawParams, validatePlanTiming, type RawParams } from "@/server/discover/preferences";
-import { templateProvider } from "@/integrations/ai/template";
-import type { ExplainInput } from "@/integrations/ai/types";
 import { formatDate } from "@/lib/format";
 import { localDateInZone } from "@/lib/time";
 import { formatDuration } from "@/domain/geo";
@@ -51,9 +48,6 @@ export async function generateMetadata({ searchParams }: PageProps<"/plan/result
   return { title, robots: { index: false } };
 }
 
-/** Live AI is used for the top suggestions only; the rest use the template. */
-const LIVE_AI_SUGGESTIONS = 3;
-
 const SAVE_ERRORS: Record<string, string> = {
   excluded: "We didn't save this trip: it no longer fits your answers (we re-check everything on the server).",
   date: "We didn't save this trip: that date or start time has passed. Choose a new date.",
@@ -63,22 +57,6 @@ const SAVE_ERRORS: Record<string, string> = {
 };
 
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
-
-function explainInput(s: PlanSuggestion): ExplainInput {
-  return {
-    trailId: s.trail.id,
-    trailName: s.trail.name,
-    isDemo: s.trail.isDemo,
-    rank: s.rank,
-    score: s.result.score,
-    breakdown: s.result.breakdown,
-    reasons: s.result.reasons,
-    warnings: s.result.warnings,
-    estimatedDurationMin: s.result.estimatedDurationMin,
-    estimatedFinishTime: s.result.estimatedFinishTime,
-    paceFactor: s.result.paceFactor,
-  };
-}
 
 export default async function PlanResultsPage({ searchParams }: PageProps<"/plan/results">) {
   // Planning runs on the fictional demo region only (a development fixture).
@@ -106,11 +84,6 @@ export default async function PlanResultsPage({ searchParams }: PageProps<"/plan
   const { prefs, trailSlug } = parsed;
   const plan = planned;
   const query = toPlanQuery(prefs, trailSlug);
-  const explanations = await Promise.all(
-    plan.suggestions.map((s, i) =>
-      i < LIVE_AI_SUGGESTIONS ? explainSuggestion(user, explainInput(s)) : templateProvider.explainRecommendation(explainInput(s)),
-    ),
-  );
   const saveErrorCode = one(raw.saveError);
   const saveErrorTrail = one(raw.saveTrail);
   const focusExcluded = plan.focus?.status === "excluded" ? plan.excluded.find((e) => e.trail.slug === plan.focus!.slug) : null;
@@ -215,11 +188,10 @@ export default async function PlanResultsPage({ searchParams }: PageProps<"/plan
           </h2>
           <ReturnToCard />
           <ol className="space-y-8">
-            {plan.suggestions.map((s, i) => (
+            {plan.suggestions.map((s) => (
               <li key={s.trail.id}>
                 <SuggestionCard
                   suggestion={s}
-                  explanation={explanations[i]}
                   query={query}
                   signedIn={!!user}
                   highlighted={plan.focus?.slug === s.trail.slug}
@@ -272,7 +244,7 @@ export default async function PlanResultsPage({ searchParams }: PageProps<"/plan
       ) : null}
 
       <p className="mt-10 text-sm text-muted">
-        Ghost Guide is not an emergency service and does not monitor you continuously. Read{" "}
+        Ghost Guide is not an emergency service. Read{" "}
         <Link href="/how-it-works" className="font-semibold text-forest-800 underline">
           how it works and its limitations
         </Link>

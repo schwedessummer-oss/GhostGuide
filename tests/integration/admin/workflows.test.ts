@@ -9,20 +9,11 @@ import { cancelJobAsStaff, retryJobAsStaff } from "@/server/admin/jobs";
 import { approveNarration, createNarration, editNarration, getNarration, rejectNarration } from "@/server/admin/content";
 import { createClosure, endClosure } from "@/server/admin/closures";
 import { setDayInventory, getAvailability } from "@/server/admin/availability";
-import {
-  approveMarketingDraft,
-  generateMarketingDraft,
-  getMarketingDraft,
-  publishMarketingDraft,
-  submitMarketingDraft,
-  updateMarketingDraft,
-} from "@/server/admin/marketing";
 import { listUpcomingTripPermits, permitReminderDedupKey, updateTripPermit } from "@/server/admin/permits";
 import { opsHandlers } from "@/server/jobs/handlers/ops";
 import { enqueueJob, runDueJobs } from "@/server/jobs/queue";
 import { activeClosures, isTrailAvailable } from "@/server/catalog/trails";
 import { listAuditLogs } from "@/server/admin/audit-log";
-import { createDemoWeatherProvider } from "@/integrations/weather/demo";
 import { localDateInZone } from "@/lib/time";
 import { demoUser, trailBySlug } from "../../helpers/db";
 import { expectOk } from "./helpers";
@@ -59,11 +50,11 @@ describe("audit entries for sensitive actions", () => {
     const admin = await demoUser("admin");
     const operator = await demoUser("operator");
 
-    expectOk(await setFlag(admin, "trip_sharing", false));
-    const flag = await lastAudit("flag.toggled", "trip_sharing");
+    expectOk(await setFlag(admin, "checkout_enabled", false));
+    const flag = await lastAudit("flag.toggled", "checkout_enabled");
     expect(flag).toMatchObject({ actorId: admin.id, metadata: { from: true, to: false } });
     expect(flag.actorRoles).toContain("admin");
-    expectOk(await setFlag(admin, "trip_sharing", true));
+    expectOk(await setFlag(admin, "checkout_enabled", true));
 
     const created = await savePricingRule(admin, null, rule());
     expectOk(created);
@@ -221,59 +212,6 @@ describe("closures and inventory", () => {
     expect(after!.rows[5]).toMatchObject({ blocked: true, capacity: 5, remaining: 0 });
     expect((await lastAudit("inventory.day_blocked", trail.id)).metadata).toMatchObject({ day });
     expectOk(await setDayInventory(operator, trail.id, { day, capacity: "", blocked: false, note: "" }));
-  });
-});
-
-describe("marketing drafts", () => {
-  it("cannot be published before approval; edits after approval send it back to review", async () => {
-    const editor = await demoUser("editor");
-    const operator = await demoUser("operator");
-    const trail = await trailBySlug("lantern-creek-loop");
-    const now = new Date();
-    const gen = await generateMarketingDraft(editor, { trailId: trail.id, channel: "newsletter" }, { provider: createDemoWeatherProvider({ now: () => now }), now });
-    expectOk(gen);
-    const id = gen.data!.id;
-    const view = await getMarketingDraft(editor, id);
-    expect(view?.draft.status).toBe("draft");
-    expect(view?.weather?.isSimulated).toBe(true);
-    expect(view?.draft.body).toMatch(/SIMULATED/);
-    expect(view?.draft.sources.length).toBeGreaterThan(0);
-    expect(view?.warnings.join(" ")).toMatch(/SIMULATED|simulated/);
-
-    // editors cannot approve or publish; nobody can publish an unapproved draft
-    await expect(publishMarketingDraft(editor, id)).rejects.toThrow();
-    const early = await publishMarketingDraft(operator, id);
-    expect(early.ok).toBe(false);
-    await expect(withSystem((tx) => tx`update public.marketing_drafts set status = 'published' where id = ${id}`)).rejects.toThrow(/marketing_publish_requires_approval/);
-
-    expectOk(await submitMarketingDraft(editor, id));
-    expect((await approveMarketingDraft(operator, id, false)).ok).toBe(false); // warnings must be acknowledged
-    expectOk(await approveMarketingDraft(operator, id, true));
-
-    expectOk(await updateMarketingDraft(editor, id, { title: "Edited title", body: view!.draft.body + "\nEdited." }));
-    let [d] = await sql()<{ status: string; approvedAt: Date | null }[]>`select status, approved_at from public.marketing_drafts where id = ${id}`;
-    expect(d).toMatchObject({ status: "in_review", approvedAt: null });
-    expect((await publishMarketingDraft(operator, id)).ok).toBe(false);
-
-    expectOk(await approveMarketingDraft(operator, id, true));
-    expectOk(await publishMarketingDraft(operator, id));
-    [d] = await sql()<{ status: string; approvedAt: Date | null }[]>`select status, approved_at from public.marketing_drafts where id = ${id}`;
-    expect(d.status).toBe("published");
-    expect((await lastAudit("marketing.draft_published", id)).actorId).toBe(operator.id);
-    const [snap] = await sql()<{ n: number }[]>`select count(*)::int as n from public.integration_events where provider_kind = 'weather' and outcome = 'simulated'`;
-    expect(snap.n).toBeGreaterThan(0);
-  });
-
-  it("respects the marketing_drafts feature flag", async () => {
-    const admin = await demoUser("admin");
-    const trail = await trailBySlug("lantern-creek-loop");
-    expectOk(await setFlag(admin, "marketing_drafts", false));
-    try {
-      const r = await generateMarketingDraft(admin, { trailId: trail.id, channel: "web" });
-      expect(r.ok).toBe(false);
-    } finally {
-      expectOk(await setFlag(admin, "marketing_drafts", true));
-    }
   });
 });
 

@@ -15,7 +15,6 @@ import {
 import type { BookingStatus, TripStatus } from "@/domain/types";
 import { zonedTimeToUtc } from "@/lib/time";
 import { cancelFulfillmentsForBooking } from "@/server/fulfillment/cancel";
-import { cancelCheckinForTrip } from "@/server/checkins/service";
 import { getCommerceSettings } from "./settings";
 import { refundBalance, requestRefund } from "./refunds";
 import { tripStartTime } from "./checkout";
@@ -99,17 +98,7 @@ export async function cancelBookingCore(
   }
   const fulfillments = await cancelFulfillmentsForBooking(tx, b.id);
   await cancelQueuedJobs(tx, `booking:${b.id}:`);
-  const cancelledTrip = await tx`
-    update public.trips set status = 'cancelled' where id = ${b.tripId} and status in ('saved', 'booked') returning id`;
-  // Only when the TRIP is cancelled are its check-in and queued reminder /
-  // overdue jobs obsolete. A booking cancelled by staff while the hike is in
-  // progress (trip 'active') must never switch off the hiker's check-in.
-  if (cancelledTrip.length) {
-    const checkins = await tx<{ id: string }[]>`select id from public.trip_checkins where trip_id = ${b.tripId}`;
-    for (const c of checkins) await cancelQueuedJobs(tx, `checkin:${c.id}:`);
-    // Safety contract: mark the check-in cancelled (version bump, undelivered notices suppressed).
-    await cancelCheckinForTrip(tx, b.tripId, "booking_cancelled");
-  }
+  await tx`update public.trips set status = 'cancelled' where id = ${b.tripId} and status in ('saved', 'booked')`;
   await recordAudit(tx, opts.actor, opts.auditAction, "booking", b.id, {
     from: b.status,
     to,
@@ -172,7 +161,7 @@ export async function getCancellationPreview(user: SessionUser, tripId: string, 
   const start = data ? bookedHikeStart(data.b, tz) : plannedStart;
   let blockedReason: string | null = null;
   if (trip.status === "cancelled") blockedReason = "This trip is already cancelled.";
-  else if (trip.status === "active") blockedReason = "Your hike is in progress, so it can't be cancelled here. Finish or end the hike from the trip page.";
+  else if (trip.status === "active") blockedReason = "Your hike is in progress, so it can't be cancelled here. Please contact support.";
   else if (trip.status === "completed") blockedReason = "This trip is already completed.";
   else if (data?.b.status === "pending_payment") blockedReason = "A checkout is in progress for this trip. Finish paying, or release the held spots from the checkout page, before cancelling.";
   else if (data?.b.status === "needs_attention") blockedReason = "Our team is reviewing this booking. Please contact support to cancel it.";
@@ -223,8 +212,7 @@ export async function cancelTripByCustomer(user: SessionUser, tripId: string, no
     const b = await lockBookingForCancel(tx, { tripId: trip.id });
     const actor = { id: user.id, roles: user.roles };
     if (!b) {
-      const cancelled = await tx`update public.trips set status = 'cancelled' where id = ${trip.id} and status in ('saved', 'booked') returning id`;
-      if (cancelled.length) await cancelCheckinForTrip(tx, trip.id, "trip_cancelled");
+      await tx`update public.trips set status = 'cancelled' where id = ${trip.id} and status in ('saved', 'booked')`;
       await recordAudit(tx, actor, "trip.cancelled_by_customer", "trip", trip.id, { booking: null });
       return { ok: true, alreadyCancelled: false, refundCents: 0, bookingStatus: null };
     }

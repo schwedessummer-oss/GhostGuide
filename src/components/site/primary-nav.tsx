@@ -4,14 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSyncExternalStore } from "react";
 import clsx from "clsx";
-import { Bookmark, CalendarDays, CircleUserRound, Compass, Footprints, type LucideIcon } from "lucide-react";
+import { Bookmark, CalendarDays, CircleUserRound, Compass, type LucideIcon } from "lucide-react";
 import { activeNavKey, primaryNav, type NavKey } from "./nav";
 import { useSession } from "./session";
 
 const ICONS: Record<NavKey, LucideIcon> = {
   explore: Compass,
   trips: CalendarDays,
-  hike: Footprints,
   saved: Bookmark,
   profile: CircleUserRound,
 };
@@ -20,10 +19,10 @@ const ICONS: Record<NavKey, LucideIcon> = {
 const noopSubscribe = () => () => {};
 
 /**
- * The current path, but only after hydration. Server HTML (and the service
- * worker's cached /offline shell, which is served under other URLs) never
- * carries route-specific "current" markup, so it always hydrates cleanly; the
- * highlight appears right after hydration.
+ * The current path, but only after hydration. Server HTML never carries
+ * route-specific "current" markup (trail pages are cached and shared by every
+ * visitor), so it always hydrates cleanly; the highlight appears right after
+ * hydration.
  */
 function useHydratedPathname(): string {
   const pathname = usePathname();
@@ -85,7 +84,7 @@ export function TabBar() {
       aria-label="Primary"
       className="fixed inset-x-0 bottom-0 z-40 border-t border-sand-200 bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur supports-[backdrop-filter]:bg-surface/90 md:hidden print:hidden"
     >
-      <ul className="mx-auto grid max-w-lg grid-cols-5">
+      <ul className="mx-auto grid max-w-lg grid-cols-4">
         {primaryNav(signedIn).map((item) => {
           const Icon = ICONS[item.key];
           const current = active === item.key;

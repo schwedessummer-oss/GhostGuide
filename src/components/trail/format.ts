@@ -294,11 +294,6 @@ export function trailVisibilityLabel(v: string | null): string {
   return VISIBILITY[v.trim().toLowerCase()] ?? humanize(v);
 }
 
-/** True when mapped visibility warrants a hazard note (bad or worse). */
-export function isPoorVisibility(v: string | null): boolean {
-  return !!v && ["bad", "horrible", "no"].includes(v.trim().toLowerCase());
-}
-
 const ACCESS: Record<string, string> = {
   yes: "Open to the public",
   permissive: "Open with the owner's permission (may be withdrawn)",

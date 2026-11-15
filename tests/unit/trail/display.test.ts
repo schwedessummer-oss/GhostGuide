@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { PoiDto } from "@/domain/catalog";
 import { groupPoisByCategory, mapViewBounds, poiGroupOf } from "@/components/trail/poi";
-import { knownHazards } from "@/components/trail/safety-section";
 import { MET_SYMBOL_CODES, weatherSymbol } from "@/components/trail/weather";
 import { symbolSeverity } from "@/server/weather/forecast";
 
@@ -124,16 +123,5 @@ describe("mapViewBounds", () => {
     const [w, s, e, n] = mapViewBounds([10, 46, 10.0001, 46.0001], [{ lng: Number.NaN, lat: 0 }]);
     expect(e - w).toBeGreaterThanOrEqual(0.003);
     expect(n - s).toBeGreaterThanOrEqual(0.0045);
-  });
-});
-
-describe("knownHazards", () => {
-  it("reports only what the map data says", () => {
-    expect(knownHazards({ sacScale: null, trailVisibility: null })).toEqual([]);
-    expect(knownHazards({ sacScale: "mountain_hiking", trailVisibility: "good" })).toEqual([]);
-    const h = knownHazards({ sacScale: "demanding_mountain_hiking", trailVisibility: "bad" });
-    expect(h).toHaveLength(2);
-    expect(h[0]).toMatch(/SAC T3/);
-    expect(h[1]).toMatch(/hard to follow.*poor/);
   });
 });

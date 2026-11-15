@@ -81,17 +81,15 @@ export async function savedTrip(
     partySize?: number;
     preferences?: Record<string, unknown>;
     itinerary?: Record<string, unknown>;
-    aiSummary?: string;
   } = {},
 ): Promise<{ id: string; trailId: string; regionId: string; plannedDate: string }> {
   const trail = await trailBySlug(opts.trail ?? "lantern-creek-loop");
   const plannedDate = opts.plannedDate ?? (await freshDate());
   const [trip] = await withUser(user, (tx) =>
     tx<{ id: string }[]>`
-      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size, preferences, itinerary, ai_summary, ai_provider)
+      insert into public.trips (user_id, region_id, trail_id, planned_date, start_time, party_size, preferences, itinerary)
       values (${user.id}, ${trail.regionId}, ${trail.id}, ${plannedDate}::date, ${opts.startTime ?? "09:00"}::time, ${opts.partySize ?? 2},
-              ${tx.json((opts.preferences ?? {}) as JsonValue)}, ${tx.json((opts.itinerary ?? {}) as JsonValue)},
-              ${opts.aiSummary ?? null}, ${opts.aiSummary ? "demo-template" : null})
+              ${tx.json((opts.preferences ?? {}) as JsonValue)}, ${tx.json((opts.itinerary ?? {}) as JsonValue)})
       returning id`,
   );
   return { id: trip.id, trailId: trail.id, regionId: trail.regionId, plannedDate };

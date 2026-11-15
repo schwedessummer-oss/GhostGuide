@@ -3,7 +3,7 @@
  * handler (success, deferral when the provider's concurrency cap is reached
  * or time is short, retryable vs final failures, invalid payloads),
  * refresh_stale, purge_caches, the periodic schedule, and both cron routes
- * (Bearer auth; the safety runner never runs catalog jobs, the catalog
+ * (Bearer auth; the general job runner never runs catalog jobs, the catalog
  * runner does).
  *
  * The provider registry and the elevation / reverse-geocoding services are
@@ -44,7 +44,7 @@ vi.mock("@/server/jobs/queue", async (importOriginal) => {
       orig.runDueJobs(handlers, { ...opts, kinds: opts.kinds ?? fake.routeScope ?? undefined }),
   };
 });
-// The safety runner's periodic scheduling and heartbeat are not under test here
+// The general job runner's periodic scheduling and heartbeat are not under test here
 // (and would change state other suites rely on).
 vi.mock("@/server/jobs/periodic", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/jobs/periodic")>()),
@@ -466,13 +466,13 @@ describe("cron runners", () => {
     expect(fake.calls).toHaveLength(0);
   });
 
-  it("the safety runner never runs catalog jobs; the catalog runner does", async () => {
+  it("the general job runner never runs catalog jobs; the catalog runner does", async () => {
     const t = freshTile();
     respondFor(t, () => ({ trails: [trailIn(t, "Cron Loaded Track")], pois: [], dataTimestamp: null }));
     await ensureCoverage("outdoor", inner(t));
     await onlyJobsOf(t);
     const purge = await enqueueJob(null, "catalog.purge_caches", {});
-    // A harmless safety-runner job, to prove the route does run what it may run.
+    // A harmless general-runner job, to prove the route does run what it may run.
     const ops = await enqueueJob(null, "ops.purge_rate_limits", {}, { dedupKey: `test:catalog-jobs:${seq++}` });
 
     fake.routeScope = ["ops.purge_rate_limits", repo.INGEST_JOB_KIND, "catalog.purge_caches"];

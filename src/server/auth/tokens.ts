@@ -1,8 +1,8 @@
-import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
 
 /**
- * Small HMAC helpers shared by demo sessions, demo webhooks, trip-share links
- * and locker access codes. Pure functions (secret passed in) so they are unit
+ * Small HMAC helpers shared by demo sessions, demo webhooks and locker access
+ * codes. Pure functions (secret passed in) so they are unit
  * testable without the Next.js runtime.
  */
 export function hmac(secret: string, data: string): string {
@@ -13,14 +13,6 @@ export function safeEqual(a: string, b: string): boolean {
   const ab = Buffer.from(a);
   const bb = Buffer.from(b);
   return ab.length === bb.length && timingSafeEqual(ab, bb);
-}
-
-export function sha256(data: string): string {
-  return createHash("sha256").update(data).digest("hex");
-}
-
-export function randomToken(bytes = 24): string {
-  return randomBytes(bytes).toString("base64url");
 }
 
 export interface SessionPayload {

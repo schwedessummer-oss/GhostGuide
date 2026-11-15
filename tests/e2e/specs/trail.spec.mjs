@@ -5,7 +5,7 @@
  * Norway forecast, recorded (empty) NWS alerts, recorded terrain tiles.
  *
  * Header stats, elevation profile, weather + alerts + daylight planning,
- * emergency number, trailhead amenities, sources/attribution, JSON-LD and
+ * trailhead amenities, sources/attribution, JSON-LD and
  * canonical metadata, Save (signed out → sign in → save → /saved → remove),
  * honest "unavailable" states when the weather providers fail, and 404s.
  *
@@ -72,7 +72,7 @@ async function conditionsSettled(page) {
 // The page
 // ---------------------------------------------------------------------------
 
-test("Table Rock Trail: header stats, map, elevation, weather, alerts, daylight, emergency number and sources", { timeout: 90_000 }, async () => {
+test("Table Rock Trail: header stats, map, elevation, weather, alerts, daylight and sources", { timeout: 90_000 }, async () => {
   const { context, page, pageErrors } = await openPage();
   try {
     const res = await page.goto(TABLE_ROCK_TRAIL_PATH);
@@ -143,12 +143,8 @@ test("Table Rock Trail: header stats, map, elevation, weather, alerts, daylight,
     await nearby.getByRole("heading", { name: "Nearby services" }).waitFor({ timeout: 30_000 });
     await nearby.getByText(/No gas, food, lodging or medical care is mapped within \d+ km\.|Nearby places for this area are still loading|Loading nearby places/).first().waitFor({ timeout: 60_000 });
 
-    // Safety: the US emergency number as a tel: link; no claim that Ghost Guide calls anyone.
-    const safety = section(page, "Safety");
-    const call = safety.getByRole("link", { name: /911/ });
-    assert.equal(await call.getAttribute("href"), "tel:911");
-    assert.match(await safety.innerText(), /Emergency number in United States/);
-    assert.match(await safety.innerText(), /Ghost Guide does not contact emergency services\./);
+    // No Safety section (emergency numbers were removed with Ghost Guard).
+    assert.equal(await section(page, "Safety").count(), 0);
 
     // Sources: OSM attribution with the licence and freshness, elevation credit, how to fix data.
     const sources = section(page, "Sources");
@@ -306,7 +302,7 @@ test("when the weather providers fail, the page says so (no invented forecast) a
   }
 });
 
-test("phone (390×844): the trail page fits the screen, with the tab bar and a tappable emergency number", { timeout: 60_000 }, async () => {
+test("phone (390×844): the trail page fits the screen, with the tab bar and tappable actions", { timeout: 60_000 }, async () => {
   const { context, page, pageErrors } = await openPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
   try {
     await page.goto(TABLE_ROCK_TRAIL_PATH);
@@ -317,9 +313,9 @@ test("phone (390×844): the trail page fits the screen, with the tab bar and a t
     const tabs = page.getByRole("navigation", { name: "Primary" });
     assert.ok(await tabs.isVisible());
     assert.equal(await tabs.getByRole("link", { name: "Explore" }).getAttribute("aria-current"), "page");
-    const call = section(page, "Safety").getByRole("link", { name: /911/ });
-    const box = await call.boundingBox();
-    assert.ok(box.height >= 44, `emergency call target is ${box.height}px tall`);
+    const save = page.getByRole("link", { name: /^Save Table Rock Trail \(sign in to save trails\)/ });
+    const box = await save.boundingBox();
+    assert.ok(box.height >= 44, `Save target is ${box.height}px tall`);
     assert.deepEqual(pageErrors, []);
   } finally {
     await context.close();

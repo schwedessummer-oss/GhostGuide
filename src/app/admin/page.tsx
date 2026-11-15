@@ -14,8 +14,6 @@ const INTEGRATION_LABELS: Record<string, string> = {
   storage: "File storage",
   payments: "Payments",
   maps: "Maps",
-  ai: "AI explanations",
-  notifications: "Notifications (SMS / email)",
   weather: "Weather",
   partners: "Partner services",
 };
@@ -104,10 +102,6 @@ export default async function AdminOverviewPage() {
             ) : null}
           </ul>
         </Card>
-        <p className="mt-2 text-sm text-muted">
-          Ghost Guide never contacts emergency services or search and rescue, and does not provide satellite SOS. Check-in notices go only to the
-          hiker&apos;s chosen contact.
-        </p>
       </Section>
     </>
   );

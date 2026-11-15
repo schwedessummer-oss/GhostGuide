@@ -12,11 +12,8 @@ Owners are suggestions; adapt them to your organization.
 - [ ] Vercel production env vars set; `APP_MODE=live`; strong unique `AUTH_SECRET` and `CRON_SECRET`.
 - [ ] Per-minute job trigger (Supabase pg_cron script or Vercel Pro cron) running; alert if `/api/cron/jobs` has not succeeded in 5 minutes.
 - [ ] Stripe: live account activated, business verification complete, live keys + live webhook endpoint/secret, Radar rules reviewed, statement descriptor, refund policy published, test-mode end-to-end run (incl. duplicate webhook replay from the Stripe dashboard).
-- [ ] Maps: confirm OpenFreeMap (or your chosen tile provider) terms for your traffic; no offline tile caching in the PWA.
+- [ ] Maps: confirm OpenFreeMap (or your chosen tile provider) terms for your traffic; no tile caching.
 - [ ] Data providers: set `DATA_PROVIDER_USER_AGENT` with a real contact; review Overpass/Nominatim usage in Admin → Trail data and move to self-hosted or commercial instances before heavy traffic; ODbL attribution present on maps and trail pages.
-- [ ] Emergency-number table (`src/server/safety/emergency-numbers.ts`) re-verified for every launch country.
-- [ ] AI provider: API key in server env only; spend limits; prompt/guard reviewed; `ai_explanations` flag decision.
-- [ ] Notifications: Twilio A2P 10DLC or toll-free verification approved; Resend domain verified (SPF/DKIM/DMARC); STOP/HELP handling; test delivery to real phones/inboxes; failure alerting on `notifications.status = failed`.
 - [ ] Weather: NWS User-Agent with operator contact; fallback behavior reviewed.
 - [ ] Error monitoring/alerting (e.g. Sentry or Vercel log drains) with the redacting logger; uptime checks for `/status` and `/api/cron/jobs`.
 
@@ -27,35 +24,25 @@ Owners are suggestions; adapt them to your organization.
 - [ ] Closures process: who monitors land-manager alerts, how fast closures are entered, how affected bookings are handled.
 - [ ] Narration: every script fact-checked against cited sources, approved in Admin → Content, recorded audio reviewed; cultural/tribal history reviewed with the relevant communities where applicable.
 - [ ] Permits: official links, requirements and lead times verified per trail; reminder cadence decided.
-- [ ] POI trigger radii tuned in the field (GPS accuracy under canopy / in canyons).
 
 ## 3. Field testing (real devices, real trails)
-- [ ] iOS Safari (installed PWA and browser) and Android Chrome, recent and 3-year-old devices.
-- [ ] GPS accuracy, geofence triggering, drift/no-repeat behavior, deviation prompt false-alarm rate on every launch trail.
-- [ ] Screen-lock / app-background behavior documented per platform (expect GPS/audio to pause); wake-lock behavior.
-- [ ] Offline: full download in airplane mode, start/finish offline, queue + sync on reconnect, help screen offline.
-- [ ] Battery drain over a full hike; storage usage of downloads.
-- [ ] Accessibility: VoiceOver/TalkBack walkthrough of plan → book → hike → finish; captions/transcripts; contrast in sunlight; large text.
-- [ ] Check-in drills: late finish, extension, "I'm okay" offline then online, overdue notice content received by a test contact.
-- [ ] Device clock-skew and Background Sync behavior verified on iOS and Android (sync is best effort on the web).
+- [ ] iOS Safari and Android Chrome, recent and 3-year-old devices.
+- [ ] Browsers that installed the old offline service worker pick up the kill switch (`public/sw.js`): caches cleared, worker unregistered, fresh pages served.
+- [ ] Accessibility: VoiceOver/TalkBack walkthrough of explore → plan → book; contrast in sunlight; large text.
 
 ## 4. Operating procedures
-- [ ] Decide whether emergency contacts must confirm (e.g. reply YES / click a link) BEFORE their first notice. Today consent is the hiker's attestation, and contacts can opt out from any notice.
-- [ ] Decide how long unresolved overdue check-ins stay open (they keep the last location until staff resolve them); add an auto-close policy if desired.
-- [ ] Safety desk runbook: what staff do when a check-in becomes overdue (notice already sent to the contact; staff may call the customer/contact; staff never claim to dispatch rescue; when staff should advise contacting 911).
-- [ ] Hours of operation for the safety desk stated honestly in the product (no "24/7 monitoring" claims).
 - [ ] Partner runbooks: gear locker failures, access-code resets, maintenance, shuttle no-shows, meal-pack failures, satellite-device returns; escalation contacts.
 - [ ] Payments runbook: needs_attention bookings, refunds, disputes/chargebacks, reconciliation review cadence.
-- [ ] Integration failure triage: dead jobs, failed notifications, failed webhooks (Admin → Jobs).
+- [ ] Integration failure triage: dead jobs, failed webhooks (Admin → Jobs).
 - [ ] Customer support: response targets, ticket handling, data-deletion requests.
 - [ ] Incident response & on-call; status communication.
 - [ ] Staff access reviews (roles least-privilege; quarterly review of `staff_roles` and audit logs).
 
 ## 5. Business & legal approvals
 - [ ] Terms of service, liability waiver/assumption-of-risk, and refund/cancellation policy reviewed by counsel for each launch jurisdiction.
-- [ ] Privacy policy covering precise location, emergency contacts, retention, deletion; consent language for emergency contacts; COPPA/age policy.
+- [ ] Privacy policy covering accounts, bookings, retention and deletion; COPPA/age policy.
 - [ ] Insurance (general liability, professional/outfitter as applicable).
 - [ ] Land-manager permits / commercial use authorizations; partner contracts and API access approvals (lockers, shuttles, meal packs, satellite rentals) with documented API terms.
-- [ ] Marketing claims reviewed (no "guaranteed", "monitoring", "rescue", "SOS" claims); marketing drafts approved in Admin before publication.
+- [ ] Marketing claims reviewed (no "guaranteed", "monitoring", "rescue", "SOS" claims).
 - [ ] Accessibility statement and WCAG 2.2 AA audit.
 - [ ] Tax collection/registration for sales of experiences and add-ons.

@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it } from "vitest";
-import { closeDb, sql, withUser } from "@/server/db";
+import { closeDb, withUser } from "@/server/db";
 import { saveTrip, SaveTripError } from "@/server/discover/save-trip";
 import { planTrip } from "@/server/discover/plan";
 import { parsePlanQuery, toPlanQuery } from "@/server/discover/preferences";
@@ -56,23 +56,12 @@ describe("saveTrip", () => {
     expect(trip!.recommendation).toMatchObject({ version: 1, trailId: lantern.id, score: expected.score });
     expect(saved.score).toBe(expected.score);
 
-    // AI text: display-only, labeled with its provider (template in tests)
-    expect(trip!.aiProvider).toBe("demo-template");
-    expect(trip!.aiSummary).toMatch(/Start Lantern Creek Loop at 09:00/);
-    expect(trip!.aiGeneratedAt).toBeInstanceOf(Date);
-
     // RLS: Bob cannot see Alice's trip by any path
     expect(await getOwnedTrip(bob, saved.tripId)).toBeNull();
     expect(await withUser(bob, (tx) => tx`select id from public.trips where id = ${saved.tripId}`)).toHaveLength(0);
-
-    // every AI call is recorded (simulated template here)
-    const [ev] = await sql()<{ n: number }[]>`
-      select count(*)::int as n from public.integration_events
-      where provider_kind = 'ai' and operation = 'summarizeItinerary' and entity_id = ${lantern.id} and outcome = 'simulated'`;
-    expect(ev.n).toBeGreaterThan(0);
   });
 
-  it("persists the partial closure in the saved itinerary and summary", async () => {
+  it("persists the partial closure in the saved itinerary", async () => {
     const fran = await createCustomer("fran");
     const signal = await trailBySlug("old-signal-summit");
     const p = prefs({ experience: "regular", fitness: "high", pace: "brisk", availableHours: 8, startTime: "07:00", accessibilityNeeds: [], preferredTerrain: [] });
@@ -85,8 +74,6 @@ describe("saveTrip", () => {
     const plan = await planTrip(p);
     const shown = plan.suggestions.find((s) => s.trail.id === signal.id)!.itinerary;
     expect(itinerary.notes).toEqual(shown.notes);
-    expect(trip!.aiSummary).toMatch(/partial closure on your date: follow the closure notice/);
-    expect(trip!.aiSummary).not.toMatch(/even if you have not reached the far end/);
   });
 
   it("refuses a trail that the recommendation excludes for these preferences", async () => {

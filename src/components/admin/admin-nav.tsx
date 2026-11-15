@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import {
-  Activity,
   BadgeDollarSign,
   BookOpenCheck,
   CalendarDays,
@@ -16,10 +15,8 @@ import {
   LifeBuoy,
   ListChecks,
   Map as MapIcon,
-  Megaphone,
   Menu,
   Package,
-  Bell,
   Ticket,
   Users,
   UserCog,
@@ -37,10 +34,7 @@ const ICONS: Record<AdminIcon, typeof Gauge> = {
   pricing: BadgeDollarSign,
   fulfillment: Package,
   gear: Wrench,
-  safety: Activity,
-  notifications: Bell,
   permits: FileBadge,
-  marketing: Megaphone,
   support: LifeBuoy,
   jobs: ListChecks,
   flags: Flag,

@@ -90,11 +90,9 @@ export async function seedCommerce(sql: postgres.Sql) {
   const startTime = "09:00";
   const partySize = 2;
   const [bookedTrip] = await sql<{ id: string }[]>`
-    insert into public.trips (user_id, region_id, trail_id, status, planned_date, start_time, party_size, itinerary, ai_summary, ai_provider, ai_generated_at)
+    insert into public.trips (user_id, region_id, trail_id, status, planned_date, start_time, party_size, itinerary)
     values (${hiker.id}, ${wf.regionId}, ${wf.id}, 'booked', ${bookedDate}::date, ${startTime}::time, ${partySize},
-            ${sql.json((await itineraryFor(sql, wf, bookedDate, startTime)) as unknown as postgres.JSONValue)},
-            ${"A relaxed river walk to a two-tier waterfall (demonstration trail). Start at 9:00, take the seasonal crossing carefully, and plan to be back by early afternoon. This summary is simulated AI text."},
-            'demo', now())
+            ${sql.json((await itineraryFor(sql, wf, bookedDate, startTime)) as unknown as postgres.JSONValue)})
     returning id`;
 
   const addons = await sql<{ id: string; code: string; name: string; kind: string; providerKey: string; priceCents: number; pricingUnit: "per_person" | "per_booking" }[]>`

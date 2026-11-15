@@ -15,7 +15,7 @@ export function nextPermitRemindRun(now: Date): Date {
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 16, 0, 0));
 }
 
-/** Job handlers for operations: marketing drafts, permit reminders, housekeeping (owned by the admin slice). Handlers must be idempotent. */
+/** Job handlers for operations: permit reminders and housekeeping (owned by the admin slice). Handlers must be idempotent. */
 export const opsHandlers: JobHandlers = {
   "ops.purge_rate_limits": async () => {
     await purgeOldRateLimitWindows();

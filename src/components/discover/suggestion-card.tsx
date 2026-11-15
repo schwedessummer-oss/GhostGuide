@@ -1,12 +1,11 @@
 import Link from "next/link";
 import clsx from "clsx";
-import { Bot, Check, Clock, Droplets, Flag, Footprints, Gauge, MapPin, RotateCcw, Sparkles, TriangleAlert } from "lucide-react";
-import { Badge, SimulatedBadge } from "@/components/ui";
+import { Check, Clock, Droplets, Flag, Footprints, Gauge, MapPin, RotateCcw, TriangleAlert } from "lucide-react";
+import { Badge } from "@/components/ui";
 import { formatDuration } from "@/domain/geo";
 import { routeTypeLabel } from "@/domain/recommendation";
 import { addMinutesToClock } from "@/lib/time";
 import { formatMoney } from "@/lib/format";
-import type { AiText } from "@/integrations/ai/types";
 import type { PlanSuggestion } from "@/server/discover/plan";
 import { saveTripAction } from "@/app/plan/actions";
 import { DemoBadge, DifficultyBadge } from "./badges";
@@ -30,14 +29,12 @@ function ScoreMeter({ score }: { score: number }) {
 
 export function SuggestionCard({
   suggestion,
-  explanation,
   query,
   signedIn,
   highlighted,
   saveError,
 }: {
   suggestion: PlanSuggestion;
-  explanation: AiText;
   query: string;
   signedIn: boolean;
   highlighted: boolean;
@@ -245,27 +242,6 @@ export function SuggestionCard({
                 ))}
               </ul>
             </details>
-          </section>
-
-          <section aria-labelledby={`${headingId}-ai`} className="rounded-xl border border-sand-200 p-4">
-            <h3 id={`${headingId}-ai`} className="mb-2 flex flex-wrap items-center gap-2 text-sm font-bold">
-              {explanation.simulated ? (
-                <>
-                  <Sparkles aria-hidden className="size-4 text-amber-ink" /> Simulated AI (template)
-                  <SimulatedBadge />
-                </>
-              ) : (
-                <>
-                  <Bot aria-hidden className="size-4 text-forest-700" /> AI-generated explanation of the checks above
-                </>
-              )}
-            </h3>
-            <p className="text-[0.95rem]">{explanation.text}</p>
-            <p className="mt-2 text-xs text-muted">
-              {explanation.simulated
-                ? "Built from the score breakdown by a fixed template; no AI model was used."
-                : "Written by an AI model from the computed checks only. It can be wrong; the checks and notes above are what count."}
-            </p>
           </section>
 
           <form action={saveTripAction} className="space-y-2">

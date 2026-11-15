@@ -272,16 +272,14 @@ describe("overview", () => {
 
   it("warns when background jobs have not run, to the roles that depend on them", async () => {
     const admin = await demoUser("admin");
-    const safety = await demoUser("safety");
     const support = await demoUser("support");
     try {
       await setHeartbeat(20);
       const o = await getOverview(admin);
       const a = o.alerts.find((x) => x.key === "jobRunner");
-      expect(a?.title).toBe("Background jobs have not run for 20 min — check-in reminders and overdue notices are delayed");
+      expect(a?.title).toBe("Background jobs have not run for 20 min — refunds, partner requests and checkout holds are delayed");
       expect(o.alerts[0].key).toBe("jobRunner");
       expect(a?.href).toBe("/admin/jobs");
-      expect((await getOverview(safety)).alerts.find((x) => x.key === "jobRunner")?.href).toBe("/status");
       const forSupport = await getOverview(support);
       expect(forSupport.runner).toBeNull();
       expect(forSupport.alerts.find((x) => x.key === "jobRunner")).toBeUndefined();

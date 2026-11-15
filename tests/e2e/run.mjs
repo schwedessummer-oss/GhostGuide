@@ -167,8 +167,6 @@ try {
     APP_MODE: "demo",
     AUTH_PROVIDER: "demo",
     PAYMENTS_PROVIDER: "demo",
-    AI_PROVIDER: "demo",
-    NOTIFY_PROVIDER: "demo",
     WEATHER_PROVIDER: "demo",
     STORAGE_PROVIDER: "local",
     LOCAL_STORAGE_DIR: ".data/e2e-storage",
@@ -178,7 +176,7 @@ try {
     CRON_SECRET: "e2e-cron-secret-0123456789",
     // The suite signs in many times from one IP; production limits stay at x1.
     RATE_LIMIT_SCALE: "50",
-    // The fictional demo region (bookings, hike, safety specs) is a development fixture.
+    // The fictional demo region (bookings, admin specs) is a development fixture.
     SHOW_DEMO_FIXTURES: "true",
     // Real-data providers → local mocks (server URLs read at runtime, map URLs inlined by the build).
     ...mockProviderEnv(mock.url),
@@ -186,6 +184,9 @@ try {
     DATA_PROVIDER_USER_AGENT: process.env.DATA_PROVIDER_USER_AGENT || "GhostGuide/e2e (+http://localhost; e2e tests)",
     // US facilities enrichment (Recreation.gov) has no mock: keep it disabled.
     RIDB_API_KEY: "",
+    // The specs exercise on-demand loading (search → inline ingestion through the mock Overpass).
+    // Production keeps it off by default (src/config/env.ts).
+    CATALOG_INLINE_INGEST: "true",
   });
 
   await run("npx tsx scripts/db/reset.ts", { ...process.env, DATABASE_URL: dbUrl, AUTH_PROVIDER: "demo" });

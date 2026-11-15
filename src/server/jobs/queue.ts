@@ -16,7 +16,7 @@ import { log } from "@/server/log";
  *    marked `dead` and surfaces in the admin retry queue.
  *  - A job stuck in `running` (crashed worker) is reclaimed after
  *    LOCK_TIMEOUT. Handlers therefore MUST be idempotent and re-check current
- *    state (e.g. a check-in's version) before acting.
+ *    state (e.g. a booking's status) before acting.
  */
 export interface Job<P = Record<string, unknown>> {
   id: number;

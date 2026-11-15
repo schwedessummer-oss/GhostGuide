@@ -15,8 +15,8 @@ export const maxDuration = 60;
  * `Authorization: Bearer $CRON_SECRET`) or by Supabase pg_cron + pg_net.
  *
  * Trail-catalog jobs ("catalog.*": slow provider fetches) are excluded and
- * run by /api/cron/catalog, so they can never delay check-in reminders or
- * overdue notices.
+ * run by /api/cron/catalog, so they can never delay checkout holds, payment
+ * reconciliation, refunds or partner fulfilment.
  */
 async function handle(request: Request) {
   const auth = request.headers.get("authorization") ?? "";

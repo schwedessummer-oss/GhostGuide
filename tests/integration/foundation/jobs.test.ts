@@ -63,9 +63,9 @@ describe("durable job queue", () => {
 
   it("cancels superseded queued jobs by dedup-key prefix", async () => {
     const kind = uniqueKind();
-    const prefix = `checkin:${randomUUID()}:v1:`;
-    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}reminder:60`, runAt: new Date(Date.now() + 3600_000) });
-    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}overdue`, runAt: new Date(Date.now() + 7200_000) });
+    const prefix = `booking:${randomUUID()}:`;
+    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}fulfillment`, runAt: new Date(Date.now() + 3600_000) });
+    await enqueueJob(null, kind, {}, { dedupKey: `${prefix}refund`, runAt: new Date(Date.now() + 7200_000) });
     const cancelled = await withSystem((tx) => cancelQueuedJobs(tx, prefix));
     expect(cancelled).toBe(2);
   });

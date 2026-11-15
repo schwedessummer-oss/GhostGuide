@@ -3,7 +3,8 @@
 -- your Supabase project AFTER deploying the app). NOT a migration: it needs
 -- your deployment URL and CRON_SECRET, which must not be committed.
 --
--- Why: check-in reminders and overdue notices need ~1-minute precision.
+-- Why: checkout holds, payment reconciliation, refunds and partner fulfilment
+-- jobs should run within about a minute.
 -- Vercel Hobby crons run at most daily (Pro allows per-minute), so this uses
 -- Supabase pg_cron + pg_net (documented Supabase pattern) to call the app's
 -- protected /api/cron/jobs endpoint every minute. The Vercel daily cron in

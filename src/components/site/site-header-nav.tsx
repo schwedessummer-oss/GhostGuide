@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Compass, Menu } from "lucide-react";
-import { SignOutButton } from "@/components/hike/sign-out-guard";
 import { HeaderNavLinks } from "./primary-nav";
 import { useSession } from "./session";
 
@@ -30,7 +29,7 @@ export function SiteHeaderNav() {
       <div className="hidden items-center gap-1 md:flex">
         <HeaderNavLinks signedIn={signedIn} extra={extra} />
         {signedIn ? (
-          <SignOutButton className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-muted hover:bg-forest-50">Sign out</SignOutButton>
+          <SignOutButton className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-muted hover:bg-forest-50" />
         ) : (
           <Link href="/login" className="ml-2 inline-flex min-h-11 items-center rounded-xl bg-forest-700 px-4 font-semibold text-white hover:bg-forest-800">
             Sign in
@@ -60,7 +59,7 @@ export function SiteHeaderNav() {
             ))}
             <li>
               {signedIn ? (
-                <SignOutButton className="flex min-h-11 w-full items-center rounded-lg px-3 text-left font-medium hover:bg-forest-50">Sign out</SignOutButton>
+                <SignOutButton className="flex min-h-11 w-full items-center rounded-lg px-3 text-left font-medium hover:bg-forest-50" />
               ) : (
                 <Link href="/signup" className="flex min-h-11 items-center rounded-lg px-3 font-medium hover:bg-forest-50">
                   Create an account
@@ -71,5 +70,16 @@ export function SiteHeaderNav() {
         </details>
       </div>
     </nav>
+  );
+}
+
+/** Sign out: a plain POST form to /auth/logout (works without JavaScript). */
+function SignOutButton({ className }: { className: string }) {
+  return (
+    <form action="/auth/logout" method="post">
+      <button className={className} data-testid="sign-out">
+        Sign out
+      </button>
+    </form>
   );
 }

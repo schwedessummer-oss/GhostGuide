@@ -36,8 +36,8 @@ describe("RBAC", () => {
   it("grants by role and denies customers", () => {
     expect(can(["admin"], "pricing.manage")).toBe(true);
     expect(can(["operator"], "pricing.manage")).toBe(false);
-    expect(can(["support"], "safety.sensitive")).toBe(false);
-    expect(can(["safety"], "safety.sensitive")).toBe(true);
+    expect(can(["support"], "bookings.refund")).toBe(false);
+    expect(can(["operator"], "bookings.refund")).toBe(true);
     expect(can([], "admin.access")).toBe(false);
     expect(can(undefined, "admin.access")).toBe(false);
   });

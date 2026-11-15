@@ -38,8 +38,6 @@ export default defineConfig({
             APP_MODE: "demo",
             AUTH_PROVIDER: "demo",
             PAYMENTS_PROVIDER: "demo",
-            AI_PROVIDER: "demo",
-            NOTIFY_PROVIDER: "demo",
             WEATHER_PROVIDER: "demo",
             STORAGE_PROVIDER: "local",
             LOCAL_STORAGE_DIR: ".data/test-storage",

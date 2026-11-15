@@ -234,8 +234,8 @@ async function main() {
   }
 
   say("\n✓ All done. Demo accounts (password = the one you just chose):");
-  say("    admin@demo.ghostguide.test   hiker@demo.ghostguide.test   safety@demo.ghostguide.test");
-  say("    operator@demo.ghostguide.test   editor@demo.ghostguide.test   support@demo.ghostguide.test");
+  say("    admin@demo.ghostguide.test   hiker@demo.ghostguide.test   operator@demo.ghostguide.test");
+  say("    editor@demo.ghostguide.test   support@demo.ghostguide.test");
   say("\nFor Vercel, use the TRANSACTION pooler: the same DATABASE_URL with :6543 instead of :5432,");
   say("plus DATABASE_TRANSACTION_POOLER=true and DATABASE_SSL=true.");
 }

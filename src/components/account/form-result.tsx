@@ -11,7 +11,7 @@ export type AccountFormState =
        * React resets a form to its default values after every action, so the
        * forms use these as defaults to keep the customer's input.
        */
-      values?: Record<string, string | boolean>;
+      values?: Record<string, string>;
     }
   | undefined;
 
@@ -19,12 +19,6 @@ export type AccountFormState =
 export function echoed(state: AccountFormState, field: string): string | undefined {
   const v = state?.ok ? undefined : state?.values?.[field];
   return typeof v === "string" ? v : undefined;
-}
-
-/** A submitted checkbox state to use as its default after a rejected submit (undefined after success). */
-export function echoedChecked(state: AccountFormState, field: string): boolean | undefined {
-  const v = state?.ok ? undefined : state?.values?.[field];
-  return typeof v === "boolean" ? v : undefined;
 }
 
 /** Polite live region announcing a form's outcome. */

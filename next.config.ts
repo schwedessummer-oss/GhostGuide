@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 /**
  * Ghost Guide runs with the classic dynamic rendering model (cacheComponents off).
- * Almost every page reads per-user, RLS-scoped, safety-relevant data at request
- * time, so we opt in to caching explicitly instead of opting out of it.
+ * Many pages read per-user, RLS-scoped data at request time, so we opt in to
+ * caching explicitly (e.g. the trail pages' hourly ISR) instead of opting out.
  */
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -11,7 +11,7 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   {
     key: "Permissions-Policy",
-    // Geolocation is needed by the hike companion on our own origin only.
+    // Geolocation is needed by "Near me" on our own origin only.
     value: "camera=(), microphone=(), geolocation=(self), payment=(self)",
   },
 ];
@@ -30,6 +30,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
+      // The kill-switch service worker (public/sw.js) must always be fetched fresh.
       {
         source: "/sw.js",
         headers: [

@@ -5,19 +5,16 @@
  *  - every /admin page (incl. trail edit sub-pages and detail pages) loads for admin@ with
  *    no error boundary, no console errors and no horizontal scrolling at 390 px;
  *  - RBAC: signed-out → login (with the deep link kept), a customer gets /forbidden,
- *    support@ cannot open pricing / safety and never sees restricted contacts or coordinates,
- *    admin@ can reveal them only through the audited break-glass form, operator@ cannot
- *    manage flags / staff, editor@ can approve in-review narration only once a source is set;
+ *    support@ cannot open pricing / flags, operator@ cannot manage flags / staff, editor@ can
+ *    approve in-review narration only once a source is set;
  *  - a closure created in admin shows on the public trail page and removes the trail from
  *    /plan results; ending it restores both;
- *  - GeoJSON route upload: a valid file (built from the trail's seeded geometry, fetched
- *    through the owner's offline bundle) validates and activates; an invalid one shows its
- *    errors and offers no activation;
+ *  - GeoJSON route upload: a valid file (built from the trail's seeded geometry, read from
+ *    the e2e database) validates and activates; an invalid one shows its errors and offers
+ *    no activation;
  *  - a pricing-rule edit updates the live preview and the customer's checkout quote;
  *  - the addon_meal_pack flag hides the add-on at checkout and is audit-logged;
  *  - a dead job is re-queued from /admin/jobs and then runs;
- *  - marketing draft: generate (simulated weather labeled with its fetched time), submit,
- *    approve, mark published;
  *  - staff role grant + revoke (takes effect on the next request), the last admin role
  *    cannot be removed (even from a stale page), and the audit log records all of it;
  *  - admin action confirmations stay announced (aria-live) after the page re-renders;
@@ -25,8 +22,7 @@
  *  - availability: saving a day with an empty capacity override keeps the trail default
  *    (it used to store capacity 0 and close the day);
  *  - add-ons: an admin creates an (inactive) add-on and edits its daily capacity; audited;
- *  - overview shows the background job runner's health; safety monitor times carry a zone
- *    label and the staff follow-up form says it never contacts emergency services;
+ *  - overview shows the background job runner's health;
  *  - form errors use plain language (no internal field keys); the audit filter lists the
  *    exact action codes.
  *
@@ -56,8 +52,7 @@ const ADMIN = "admin@demo.ghostguide.test";
 const SUPPORT = "support@demo.ghostguide.test";
 const OPERATOR = "operator@demo.ghostguide.test";
 const EDITOR = "editor@demo.ghostguide.test";
-const HIKER = "hiker@demo.ghostguide.test"; // seeded with emergency contacts
-const HIKER2 = "hiker2@demo.ghostguide.test"; // seeded with a completed Hollow Pine Ridge trip
+const HIKER = "hiker@demo.ghostguide.test";
 const CLOSE_TRAIL = { slug: "hollow-pine-ridge", name: "Hollow Pine Ridge" };
 const PRICE_TRAIL = { slug: "miners-meadow-loop", name: "Miner's Meadow Loop" };
 const SEEDED_NARRATION = "Creek insects (draft)";
@@ -297,29 +292,12 @@ async function openCheckout(page, tripId, { date, party = 2, addons = "" }) {
   await page.getByRole("table", { name: "Price quote" }).getByText(`Self-guided experience × ${party}`).waitFor({ timeout: UI });
 }
 
-/** Seeded route coordinates for Hollow Pine Ridge: via hiker2's offline bundle, else psql (only against E2E_DATABASE_URL). */
-async function seededGeometry(browser) {
-  try {
-    const { ctx, page } = await staffPage(browser, HIKER2);
-    try {
-      await gotoOk(page, "/trips");
-      const href = await page.locator('main a[href^="/trips/"]').filter({ hasText: CLOSE_TRAIL.name }).first().getAttribute("href", { timeout: UI });
-      const res = await ctx.request.get(`/api/trips/${href.split("/")[2]}/bundle`);
-      if (res.ok()) {
-        const b = await res.json();
-        const g = typeof b.geometryJson === "string" ? JSON.parse(b.geometryJson) : b.geometry;
-        if (g?.type === "LineString" && g.coordinates?.length > 1) return g;
-      }
-    } finally {
-      await ctx.close();
-    }
-  } catch {
-    /* fall back to psql */
-  }
+/** Seeded route coordinates for Hollow Pine Ridge, read from the e2e database (E2E_DATABASE_URL). */
+function seededGeometry() {
   const url = process.env.E2E_DATABASE_URL;
-  assert.ok(url, "the offline bundle did not return geometry and E2E_DATABASE_URL is not set for the psql fallback");
+  assert.ok(url, "E2E_DATABASE_URL is not set (run.mjs sets it)");
   const r = spawnSync("psql", [url, "-Atc", `select geometry::text from public.trails where slug = '${CLOSE_TRAIL.slug}'`], { encoding: "utf8" });
-  assert.equal(r.status, 0, `psql fallback failed: ${r.stderr}`);
+  assert.equal(r.status, 0, `psql failed: ${r.stderr}`);
   return JSON.parse(r.stdout.trim());
 }
 
@@ -377,14 +355,11 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
       ["/admin/bookings", "Bookings"],
       ["/admin/gear", "Gear lockers"],
       ["/admin/fulfillment", "Partner fulfillment"],
-      ["/admin/safety", "Safety monitor"],
-      ["/admin/notifications", "Notification delivery log"],
       ["/admin/jobs", "Jobs & integrations"],
       ["/admin/data", "Trail data"],
       ["/admin/pricing", "Pricing"],
       ["/admin/availability", "Availability"],
       ["/admin/flags", "Feature flags"],
-      ["/admin/marketing", "Marketing drafts"],
       ["/admin/permits", "Permits"],
       ["/admin/support", "Support tickets"],
       ["/admin/staff", "Staff roles"],
@@ -417,7 +392,7 @@ test("every /admin page loads for admin@ (mobile 390px): no error boundary, no c
     await gotoOk(page, "/admin");
     await page.getByText("Admin menu").click();
     const nav = page.getByRole("navigation", { name: "Admin sections" }).first();
-    for (const label of ["Overview", "Safety monitor", "Bookings", "Trails", "Pricing", "Jobs & integrations", "Feature flags", "Staff roles", "Audit log"]) {
+    for (const label of ["Overview", "Bookings", "Trails", "Pricing", "Jobs & integrations", "Feature flags", "Staff roles", "Audit log"]) {
       await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
     }
     // Simulated integrations are labeled on the overview.
@@ -451,7 +426,7 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
     await expectForbidden(customer, "/admin/customers");
   });
 
-  await t.test("support@ cannot open pricing/safety/flags and never sees contacts or coordinates", async () => {
+  await t.test("support@ cannot open pricing/flags and never sees phone numbers or coordinates", async () => {
     const { ctx, page } = await staffPage(browser, SUPPORT);
     const errors = watchErrors(page);
     try {
@@ -459,19 +434,18 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
       await page.getByRole("heading", { level: 1, name: "Overview" }).waitFor({ timeout: UI });
       const nav = page.getByRole("navigation", { name: "Admin sections" }).last();
       for (const label of ["Customers", "Bookings", "Support"]) await nav.getByRole("link", { name: label, exact: true }).waitFor({ timeout: UI });
-      for (const label of ["Pricing", "Safety monitor", "Notifications", "Feature flags", "Staff roles", "Audit log", "Jobs & integrations"]) {
+      for (const label of ["Pricing", "Feature flags", "Staff roles", "Audit log", "Jobs & integrations"]) {
         assert.equal(await nav.getByRole("link", { name: label, exact: true }).count(), 0, `support@ should not see "${label}" in the admin menu`);
       }
-      for (const p of ["/admin/pricing", "/admin/safety", "/admin/notifications", "/admin/flags", "/admin/staff", "/admin/audit"]) await expectForbidden(page, p);
+      for (const p of ["/admin/pricing", "/admin/flags", "/admin/staff", "/admin/audit"]) await expectForbidden(page, p);
 
-      // Customer detail: restricted, no reveal control, no phone numbers / precise coordinates in the page.
+      // Customer detail: no phone numbers / precise coordinates in the page.
       await gotoOk(page, `/admin/customers?q=${encodeURIComponent(HIKER)}`);
       const link = page.locator('main a[href^="/admin/customers/"]').first();
       await link.waitFor({ timeout: UI });
       await Promise.all([page.waitForURL(/\/admin\/customers\/[0-9a-f-]{36}$/, { timeout: NAV }), link.click()]);
       await ready(page);
-      await assertText(page.locator("main"), /emergency contacts and precise location are visible to safety staff and admins only/);
-      assert.equal(await page.getByRole("button", { name: "Show restricted details" }).count(), 0, "support@ must not get a reveal button");
+      await assertText(page.locator("main"), /Support tickets/);
       const text = await page.locator("main").innerText();
       assert.doesNotMatch(text, /-?\d{2,3}\.\d{4,}/, "no precise coordinates on the customer page for support@");
       assert.doesNotMatch(text, /\+?\d[\d\s().-]{8,}\d/, "no phone numbers on the customer page for support@");
@@ -479,21 +453,6 @@ test("RBAC: signed-out → login, customers get /forbidden, support@ and operato
     } finally {
       await ctx.close();
     }
-  });
-
-  await t.test("admin@ (safety.sensitive) reveals the same customer's contacts only with a reason, and the access is audited", async () => {
-    await gotoOk(admin, `/admin/customers?q=${encodeURIComponent(HIKER)}`);
-    const link = admin.locator('main a[href^="/admin/customers/"]').first();
-    await link.waitFor({ timeout: UI });
-    await Promise.all([admin.waitForURL(/\/admin\/customers\/[0-9a-f-]{36}$/, { timeout: NAV }), link.click()]);
-    await ready(admin);
-    const customerId = admin.url().split("/").pop();
-    const reason = `QA admin spec ${run}: verifying audited access`;
-    await admin.getByLabel("Reason for access (recorded in the audit log)").fill(reason);
-    await submitAndExpect(admin.locator("main"), "Show restricted details", /This access was recorded in the audit log/);
-    await assertText(admin.locator("main"), /Emergency contacts/);
-    const rows = await auditRows(admin, { action: "customer.view_emergency_contacts", entityId: customerId });
-    assert.ok(rows.some((r) => r.actor.includes(ADMIN) && r.metadata?.reason === reason), `audited reveal missing:\n${fmtRows(rows)}`);
   });
 
   await t.test("operator@ cannot manage flags, staff, pricing or the audit log, but can run jobs", async () => {
@@ -687,7 +646,7 @@ test("a closure created in admin shows on the public trail page and excludes the
 // ---------------------------------------------------------------------------
 test("GeoJSON route upload: a valid file validates and activates; an invalid one shows errors and cannot be activated", { timeout: 240_000 }, async (t) => {
   const trailId = await adminTrailId(admin, CLOSE_TRAIL.name);
-  const geometry = await seededGeometry(browser);
+  const geometry = seededGeometry();
   const sha = (buf) => createHash("sha256").update(buf).digest("hex");
   const fileRow = (checksum) => admin.locator("#files tr").filter({ hasText: `${checksum.slice(0, 12)}…` });
   const upload = async (name, buffer) => {
@@ -926,54 +885,6 @@ test("a dead job is re-queued from /admin/jobs, then runs", { timeout: 180_000 }
 });
 
 // ---------------------------------------------------------------------------
-// 9. Marketing draft workflow
-// ---------------------------------------------------------------------------
-test("marketing draft: generate (simulated weather labeled with fetched time) → submit → approve → mark published", { timeout: 240_000 }, async () => {
-  await gotoOk(admin, "/admin/marketing");
-  await admin.locator("#mk-trail").selectOption({ label: `${CLOSE_TRAIL.name} (demo)` });
-  await admin.locator("#mk-channel").selectOption("newsletter");
-  await Promise.all([admin.waitForURL(/\/admin\/marketing\/[0-9a-f-]{36}\?generated=1$/, { timeout: NAV }), admin.getByRole("button", { name: "Generate draft" }).click()]);
-  await ready(admin);
-  const draftId = new URL(admin.url()).pathname.split("/").pop();
-  const main = admin.locator("main");
-  await assertText(main, /Draft generated from sourced facts/);
-
-  // Honesty: simulated weather is labeled, with the fetched time; demo trail warning shown.
-  const weather = admin.locator("#provenance");
-  await assertText(weather, /Simulated weather/);
-  await assertText(weather, /fetched/);
-  assert.ok((await weather.locator("time").count()) >= 1, "fetched time is rendered as <time>");
-  await assertText(admin.locator("#text"), /SIMULATED demo data, not a real forecast \(generated [^)]+\)/);
-  await assertText(main, /Demonstration trail \(fictional\): do not publish as a real place/);
-  await badge(pageHeader(admin), "draft");
-
-  await submit(admin.locator("#edit"), "Submit for review");
-  await assertText(pageHeader(admin), /in review/i);
-
-  // Approval requires acknowledging the warnings (server also refuses without it).
-  await admin.evaluate(() => document.querySelector("#md-ack")?.removeAttribute("required"));
-  await submitAndExpect(admin.locator("#review"), "Approve draft", /Review the warnings and tick the acknowledgement before approving/);
-  await admin.locator("#md-ack").check();
-  await submit(admin.locator("#review"), "Approve draft");
-  await assertText(pageHeader(admin), /approved/i);
-
-  await admin.locator("#md-pub").check();
-  await submit(admin.locator("#review"), "Mark as published");
-  await assertText(pageHeader(admin), /published/i);
-  await reloadReady(admin);
-  await assertText(pageHeader(admin), /published/i);
-  assert.equal(await admin.locator("#edit").count(), 0, "published drafts are no longer editable");
-  await assertText(main, /Marked published/);
-
-  const rows = await auditRows(admin, { entityId: draftId });
-  for (const a of ["marketing.draft_generated", "marketing.draft_submitted", "marketing.draft_approved", "marketing.draft_published"]) {
-    assert.ok(rows.some((r) => r.action === a), `${a} missing from audit:\n${fmtRows(rows)}`);
-  }
-  const generated = rows.find((r) => r.action === "marketing.draft_generated");
-  assert.equal(generated.metadata?.weather, "simulated", "the audit records that the weather was simulated");
-});
-
-// ---------------------------------------------------------------------------
 // 10. Staff roles
 // ---------------------------------------------------------------------------
 test("staff roles: grant then revoke (effective on the next request); the last admin cannot be removed", { timeout: 240_000 }, async (t) => {
@@ -1174,30 +1085,16 @@ test("add-ons: admin creates an inactive add-on and edits its daily capacity; bo
 });
 
 // ---------------------------------------------------------------------------
-// 14. Overview job-runner health, safety monitor wording, audit filter labels
+// 14. Overview job-runner health, audit filter labels
 // ---------------------------------------------------------------------------
-test("overview shows job-runner health; safety monitor times carry a zone and follow-ups never contact emergency services; audit filter shows exact codes", { timeout: 120_000 }, async () => {
+test("overview shows job-runner health; audit filter shows exact codes", { timeout: 120_000 }, async () => {
   await gotoOk(admin, "/admin");
   const runnerRow = admin.locator("main li").filter({ hasText: "Background job runner" });
   await assertText(runnerRow, /On schedule|Delayed/);
   if ((await runnerRow.innerText()).includes("Delayed")) {
-    await assertText(admin.locator("#alerts"), /Background jobs have not run (for \d+ min|yet in this deployment) — check-in reminders and overdue notices are delayed/);
+    await assertText(admin.locator("#alerts"), /Background jobs have not run (for \d+ min|yet in this deployment) — refunds, partner requests and checkout holds are delayed/);
   }
   assert.doesNotMatch(await admin.locator("#alerts").innerText(), /\(s\)/, "alert titles are pluralized properly");
-
-  await gotoOk(admin, "/admin/safety");
-  await assertText(admin.locator("main header"), /Times are shown in the trail's local time zone/);
-  for (const t of await admin.locator("main time").allInnerTexts()) {
-    assert.match(t.split("\n")[0], /\b(PST|PDT|UTC|GMT[+-]?\d*)\b/, `time without a zone label: ${t}`);
-  }
-  const followUps = admin.locator("details").filter({ has: admin.locator("summary", { hasText: "Record a staff follow-up" }) });
-  if (await followUps.count()) {
-    const f = followUps.first();
-    await f.locator("summary").click();
-    await assertText(f, /never contacts emergency services or search and rescue/);
-    await f.getByRole("radio", { name: /hiker is confirmed safe/ }).waitFor({ timeout: UI });
-    assert.equal(await f.getByLabel(/^Note/).getAttribute("required"), "");
-  }
 
   await gotoOk(admin, "/admin/audit");
   const options = await admin.locator("#au-action option").evaluateAll((os) => os.filter((o) => o.value).map((o) => [o.value, o.textContent.trim()]));

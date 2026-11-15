@@ -1,12 +1,10 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { closeDb, sql } from "@/server/db";
 import { getOwnedTrip } from "@/server/trips/queries";
-import { getCheckinDefaults } from "@/server/checkins/manage";
 import { getTripBookingView, listTripBookingSummaries } from "@/server/commerce/queries";
 import { replanForBooking } from "@/domain/booking";
-import { localDateInZone, localTimeInZone } from "@/lib/time";
 import { createCustomer } from "../../helpers/db";
-import { booking, checkoutFor, freshDateInMonth, payAndDeliver, savedTrip, TZ, upcomingMonth } from "./helpers";
+import { booking, checkoutFor, freshDateInMonth, payAndDeliver, savedTrip, upcomingMonth } from "./helpers";
 
 afterAll(closeDb);
 
@@ -21,7 +19,7 @@ const PREFS = {
   startTime: "08:30",
 };
 
-/** A trip saved the way the planner saves it: answers, itinerary and summary for the planned day. */
+/** A trip saved the way the planner saves it: answers and itinerary for the planned day. */
 async function plannerTrip(label: string, plannedDate: string, partySize = 2) {
   const user = await createCustomer(label);
   const [lc] = await sql()<
@@ -46,7 +44,6 @@ async function plannerTrip(label: string, plannedDate: string, partySize = 2) {
     startTime: "08:30",
     preferences: { ...PREFS, plannedDate, partySize },
     itinerary: plan.itinerary as unknown as Record<string, unknown>,
-    aiSummary: `Start Lantern Creek Loop at 08:30 on ${plannedDate}. Template summary.`,
   });
   return { user, trip, plan };
 }
@@ -61,11 +58,9 @@ async function tripRow(id: string) {
       itinerary: { plannedDate: string; paceFactor: number; notes: string[]; generatedAt: string; estimatedFinishTime: string };
       preferences: Record<string, unknown>;
       recommendation: Record<string, unknown>;
-      aiSummary: string | null;
-      aiProvider: string | null;
     }[]
   >`select to_char(planned_date, 'YYYY-MM-DD') as planned_date, to_char(start_time, 'HH24:MI') as start_time, party_size, status,
-           itinerary, preferences, recommendation, ai_summary, ai_provider
+           itinerary, preferences, recommendation
     from public.trips where id = ${id}`;
   return t;
 }
@@ -104,18 +99,10 @@ describe("booking a different date or group than the saved plan", () => {
     // Saved answers are kept; only date / start / group change.
     expect(after.preferences).toMatchObject({ pace: "steady", fitness: "moderate", availableHours: 6, plannedDate: december, partySize: 4 });
     expect(after.recommendation).toMatchObject({ latestFinishEstimate: "15:45", replannedFor: { bookingId: r.bookingId, hikeDate: december, partySize: 4 } });
-    // The summary no longer names the old date; it is labeled as template text.
-    expect(after.aiSummary).toContain(december);
-    expect(after.aiSummary).not.toContain(june);
-    expect(after.aiProvider).toBe("demo-template");
 
     // Customer surfaces that read the trip now agree with the booking.
     const owned = await getOwnedTrip(user, trip.id);
     expect(owned).toMatchObject({ plannedDate: december, partySize: 4 });
-    const defaults = await getCheckinDefaults(owned!);
-    expect(defaults.expectedReturnAt).not.toBeNull();
-    expect(localDateInZone(defaults.expectedReturnAt!, TZ)).toBe(december);
-    expect(localTimeInZone(defaults.expectedReturnAt!, TZ) <= "15:45").toBe(true);
     const view = await getTripBookingView(user, trip.id);
     expect(view?.booking).toMatchObject({ hikeDate: december, partySize: 4, status: "confirmed" });
 
@@ -135,7 +122,6 @@ describe("booking a different date or group than the saved plan", () => {
     const after = await tripRow(trip.id);
     expect(after.status).toBe("booked");
     expect(after.itinerary).toEqual(before.itinerary);
-    expect(after.aiSummary).toBe(before.aiSummary);
     expect(await sql()`select 1 from public.audit_logs where action = 'trip.replanned_for_booking' and entity_id = ${trip.id}`).toHaveLength(0);
   });
 

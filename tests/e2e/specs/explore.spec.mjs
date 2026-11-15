@@ -275,10 +275,10 @@ test("phone (390×844): map with a bottom sheet, list toggle and the primary tab
   try {
     await gotoPlace(page);
 
-    // Primary tab bar: the five destinations, Explore current.
+    // Primary tab bar: the four destinations, Explore current.
     const tabs = page.getByRole("navigation", { name: "Primary" });
     assert.ok(await tabs.isVisible());
-    assert.deepEqual((await tabs.getByRole("link").allInnerTexts()).map((s) => s.trim()), ["Explore", "Trips", "Hike", "Saved", "Profile"]);
+    assert.deepEqual((await tabs.getByRole("link").allInnerTexts()).map((s) => s.trim()), ["Explore", "Trips", "Saved", "Profile"]);
     assert.equal(await tabs.getByRole("link", { name: "Explore" }).getAttribute("aria-current"), "page");
     assert.equal(await tabs.getByRole("link", { name: "Profile" }).getAttribute("href"), "/login", "signed out: Profile signs in");
     // The desktop header links are hidden on phones.

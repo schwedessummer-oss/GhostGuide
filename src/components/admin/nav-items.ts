@@ -18,10 +18,7 @@ export type AdminIcon =
   | "pricing"
   | "fulfillment"
   | "gear"
-  | "safety"
-  | "notifications"
   | "permits"
-  | "marketing"
   | "support"
   | "jobs"
   | "flags"
@@ -33,8 +30,6 @@ export const ADMIN_NAV: { group: string; items: AdminNavItem[] }[] = [
     group: "Operations",
     items: [
       { href: "/admin", label: "Overview", icon: "overview", permission: "admin.access" },
-      { href: "/admin/safety", label: "Safety monitor", icon: "safety", permission: "trips.monitor" },
-      { href: "/admin/notifications", label: "Notifications", icon: "notifications", permission: "notifications.view" },
       { href: "/admin/bookings", label: "Bookings", icon: "bookings", permission: "bookings.view" },
       { href: "/admin/fulfillment", label: "Fulfillment", icon: "fulfillment", permission: "fulfillment.manage" },
       { href: "/admin/gear", label: "Gear lockers", icon: "gear", permission: "gear.manage" },
@@ -50,7 +45,6 @@ export const ADMIN_NAV: { group: string; items: AdminNavItem[] }[] = [
       { href: "/admin/content", label: "Narration review", icon: "content", permission: "trails.manage" },
       { href: "/admin/permits", label: "Permits", icon: "permits", permission: "permits.manage" },
       { href: "/admin/pricing", label: "Pricing", icon: "pricing", permission: "pricing.manage" },
-      { href: "/admin/marketing", label: "Marketing drafts", icon: "marketing", permission: "marketing.draft" },
     ],
   },
   {

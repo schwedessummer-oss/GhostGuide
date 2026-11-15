@@ -1,9 +1,9 @@
 import type { Position } from "@/domain/geo";
 
 /**
- * Offline-capable vector route view: draws validated route geometry, POIs,
- * the hiker's position and accuracy radius. No basemap tiles (works offline
- * and has no tile-licensing constraints). Pure render; safe on server/client.
+ * Vector route view: draws validated route geometry and POIs with their
+ * trigger radii. No basemap tiles (no tile-licensing constraints). Pure
+ * render; safe on server/client.
  */
 export interface RouteViewPoi {
   id: string;
@@ -11,15 +11,11 @@ export interface RouteViewPoi {
   lat: number;
   lng: number;
   triggerRadiusM?: number;
-  state?: "pending" | "triggered";
 }
 
 export interface RouteViewProps {
   coordinates: Position[];
   pois?: RouteViewPoi[];
-  current?: { lat: number; lng: number; accuracyM?: number | null; stale?: boolean } | null;
-  /** distance completed (m), to draw the walked portion */
-  progressIndex?: number;
   label: string;
   className?: string;
   height?: number;
@@ -27,10 +23,10 @@ export interface RouteViewProps {
 
 const W = 600;
 
-export function RouteView({ coordinates, pois = [], current, progressIndex, label, className, height = 360 }: RouteViewProps) {
+export function RouteView({ coordinates, pois = [], label, className, height = 360 }: RouteViewProps) {
   if (coordinates.length < 2) return null;
-  const lats = coordinates.map((c) => c[1]).concat(current ? [current.lat] : []);
-  const lngs = coordinates.map((c) => c[0]).concat(current ? [current.lng] : []);
+  const lats = coordinates.map((c) => c[1]);
+  const lngs = coordinates.map((c) => c[0]);
   const minLat = Math.min(...lats);
   const maxLat = Math.max(...lats);
   const minLng = Math.min(...lngs);
@@ -49,13 +45,6 @@ export function RouteView({ coordinates, pois = [], current, progressIndex, labe
   const metresToPx = (m: number) => (m / 111_320) * scale;
 
   const path = coordinates.map((c, i) => `${i ? "L" : "M"}${project(c[1], c[0]).map((n) => n.toFixed(1)).join(" ")}`).join(" ");
-  const walked =
-    progressIndex && progressIndex > 0
-      ? coordinates
-          .slice(0, progressIndex + 1)
-          .map((c, i) => `${i ? "L" : "M"}${project(c[1], c[0]).map((n) => n.toFixed(1)).join(" ")}`)
-          .join(" ")
-      : null;
   const [sx, sy] = project(coordinates[0][1], coordinates[0][0]);
   const last = coordinates[coordinates.length - 1];
   const [ex, ey] = project(last[1], last[0]);
@@ -77,14 +66,13 @@ export function RouteView({ coordinates, pois = [], current, progressIndex, labe
       <rect width={W} height={H} fill="url(#gg-grid)" />
       <path d={path} fill="none" stroke="#ffffff" strokeWidth="9" strokeLinejoin="round" strokeLinecap="round" />
       <path d={path} fill="none" stroke="#2a5a3e" strokeWidth="5" strokeLinejoin="round" strokeLinecap="round" />
-      {walked ? <path d={walked} fill="none" stroke="#8fbf9f" strokeWidth="5" strokeLinejoin="round" strokeLinecap="round" /> : null}
       {pois.map((p) => {
         const [x, y] = project(p.lat, p.lng);
         const r = p.triggerRadiusM ? Math.max(4, metresToPx(p.triggerRadiusM)) : 0;
         return (
           <g key={p.id}>
             {r ? <circle cx={x} cy={y} r={r} fill="#2a5a3e" fillOpacity="0.08" stroke="#2a5a3e" strokeOpacity="0.3" strokeDasharray="3 3" /> : null}
-            <circle cx={x} cy={y} r="7" fill={p.state === "triggered" ? "#8fbf9f" : "#ffffff"} stroke="#173524" strokeWidth="2.5" />
+            <circle cx={x} cy={y} r="7" fill="#ffffff" stroke="#173524" strokeWidth="2.5" />
           </g>
         );
       })}
@@ -102,19 +90,6 @@ export function RouteView({ coordinates, pois = [], current, progressIndex, labe
           </>
         ) : null}
       </g>
-      {current
-        ? (() => {
-            const [cx, cy] = project(current.lat, current.lng);
-            const acc = current.accuracyM ? Math.max(6, metresToPx(current.accuracyM)) : 0;
-            const color = current.stale ? "#8a4b08" : "#1e4f9c";
-            return (
-              <g>
-                {acc ? <circle cx={cx} cy={cy} r={acc} fill={color} fillOpacity="0.12" stroke={color} strokeOpacity="0.4" /> : null}
-                <circle cx={cx} cy={cy} r="8" fill={color} stroke="#fff" strokeWidth="3" />
-              </g>
-            );
-          })()
-        : null}
     </svg>
   );
 }

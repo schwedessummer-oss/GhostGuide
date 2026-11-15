@@ -17,7 +17,6 @@ import {
 import type { ItineraryPoi, ItineraryTrail } from "@/domain/itinerary";
 import { DEFAULT_LATEST_FINISH_BY_MONTH } from "@/domain/recommendation";
 import type { Itinerary, TripPreferences } from "@/domain/types";
-import { templateSummary, TEMPLATE_PROVIDER_KEY } from "@/integrations/ai/template";
 import { zonedTimeToUtc } from "@/lib/time";
 
 /**
@@ -34,11 +33,9 @@ import { zonedTimeToUtc } from "@/lib/time";
  *  - When the payment is confirmed (inside the webhook transaction), the trip
  *    is rewritten for the booked date, start time and group: planned_date,
  *    start_time, party_size, preferences, a REBUILT itinerary (same builder and
- *    latest-finish table as the planner), refreshed recommendation estimates,
- *    and — if the trip had one — a deterministic template summary (no model
- *    call inside a payment transaction). Every customer surface that reads the
- *    trip (itinerary, check-in defaults, Prepare, My trips, offline bundle,
- *    share page, permit reminders) then uses the booked values.
+ *    latest-finish table as the planner) and refreshed recommendation
+ *    estimates. Every customer surface that reads the trip (itinerary, My
+ *    trips, permit reminders) then uses the booked values.
  */
 const SYSTEM_ACTOR = { id: null, roles: ["system"] as string[] };
 
@@ -138,13 +135,8 @@ interface TripForSync {
   preferences: Partial<TripPreferences> | null;
   recommendation: Record<string, unknown> | null;
   itinerary: Partial<Itinerary> | null;
-  aiSummary: string | null;
   regionSlug: string;
   timezone: string;
-}
-
-interface TrailForSync extends ItineraryTrail {
-  isDemo: boolean;
 }
 
 /**
@@ -159,7 +151,7 @@ export async function syncTripToBooking(
 ): Promise<boolean> {
   const [trip] = await tx<TripForSync[]>`
     select tr.id, tr.status, to_char(tr.planned_date, 'YYYY-MM-DD') as planned_date, to_char(tr.start_time, 'HH24:MI') as start_time,
-           tr.party_size, tr.preferences, tr.recommendation, tr.itinerary, tr.ai_summary, r.slug as region_slug, r.timezone
+           tr.party_size, tr.preferences, tr.recommendation, tr.itinerary, r.slug as region_slug, r.timezone
     from public.trips tr join public.regions r on r.id = tr.region_id
     where tr.id = ${b.tripId}
     for update of tr`;
@@ -169,8 +161,8 @@ export async function syncTripToBooking(
   const startTime = /^\d{2}:\d{2}/.test(rawStart) ? rawStart.slice(0, 5) : "08:00";
   if (!planDiffersFromBooking(trip, { hikeDate: b.hikeDate, partySize: b.partySize, startTime })) return false;
 
-  const [trail] = await tx<TrailForSync[]>`
-    select id, name, is_demo, distance_km, elevation_gain_m, terrain, route_type, estimated_duration_min, permit_required, geometry
+  const [trail] = await tx<ItineraryTrail[]>`
+    select id, name, distance_km, elevation_gain_m, terrain, route_type, estimated_duration_min, permit_required, geometry
     from public.trails where id = ${b.trailId}`;
   if (!trail) return false;
   const [pois, permits, table, closures] = await Promise.all([
@@ -203,25 +195,6 @@ export async function syncTripToBooking(
     replannedFor: { bookingId: b.id, hikeDate: b.hikeDate, partySize: b.partySize, startTime, at: now.toISOString() },
     replanNote: "Estimates recomputed for the booked date and group. The score and reasons describe the original plan.",
   };
-  const trailheadIds = new Set(pois.filter((p) => p.kind === "trailhead").map((p) => p.id));
-  // Deterministic template text from the rebuilt itinerary: the old summary
-  // named the old date and times. No model is called in a payment transaction.
-  const summary = trip.aiSummary
-    ? templateSummary({
-        trailId: trail.id,
-        trailName: trail.name,
-        isDemo: trail.isDemo,
-        plannedDate: it.plannedDate,
-        startTime: it.startTime,
-        estimatedFinishTime: it.estimatedFinishTime,
-        estimatedDurationMin: it.estimatedDurationMin,
-        turnaroundBy: it.turnaroundBy,
-        stops: it.stops.filter((s) => !trailheadIds.has(s.poiId)).map((s) => ({ name: s.name, etaOffsetMin: s.etaOffsetMin })),
-        reminders: it.reminders,
-        partialClosures,
-      })
-    : null;
-
   await tx`
     update public.trips set
       planned_date = ${b.hikeDate}::date,
@@ -230,7 +203,6 @@ export async function syncTripToBooking(
       preferences = ${tx.json(plan.preferences as unknown as JsonValue)},
       itinerary = ${tx.json(it as unknown as JsonValue)},
       recommendation = ${tx.json(recommendation as unknown as JsonValue)}
-      ${summary ? tx`, ai_summary = ${summary}, ai_provider = ${TEMPLATE_PROVIDER_KEY}, ai_generated_at = ${now}::timestamptz` : tx``}
     where id = ${trip.id}`;
   await recordAudit(tx, SYSTEM_ACTOR, "trip.replanned_for_booking", "trip", trip.id, {
     bookingId: b.id,

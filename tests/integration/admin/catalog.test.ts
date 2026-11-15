@@ -166,10 +166,10 @@ async function auditFor(entityId: string) {
 // Permissions
 // ---------------------------------------------------------------------------
 describe("trail data: permissions", () => {
-  it("support, safety and content editors can neither view nor change catalog data", async () => {
+  it("support and content editors can neither view nor change catalog data", async () => {
     const tile = await insertTile({ status: "failed", attempts: 1, lastError: "HTTP 504" });
     const trail = await insertTrail();
-    for (const key of ["support", "safety", "editor"] as const) {
+    for (const key of ["support", "editor"] as const) {
       const u = await demoUser(key);
       await expectForbidden(getProviderUsage(u));
       await expectForbidden(getCoverageOverview(u));

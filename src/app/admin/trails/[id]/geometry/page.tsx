@@ -40,7 +40,7 @@ export default async function TrailGeometryPage({ params, searchParams }: PagePr
         <Alert tone={upload === "valid" ? "forest" : "red"} live="polite" className="mb-4" title={upload === "valid" ? "Uploaded: the route is valid. Activate it below." : "Uploaded, but the route is invalid. See the errors below."} />
       ) : null}
 
-      <Section id="current" title="Active geometry" description="The geometry customers' maps, downloads and GPS triggers use. Changing it updates the checksum that trip downloads verify.">
+      <Section id="current" title="Active geometry" description="The geometry customers' maps and itineraries use.">
         {trail.geometry ? (
           <Card>
             <RouteView

@@ -107,7 +107,7 @@ export default async function CancelTripPage({ params }: PageProps<"/trips/[id]/
                 </ul>
               </>
             ) : null}
-            {b ? <p className="mt-3 text-sm text-muted">Any check-ins and reminders for this trip will stop.</p> : null}
+            {b ? <p className="mt-3 text-sm text-muted">Any reminders for this trip will stop.</p> : null}
           </Card>
 
           <Card>

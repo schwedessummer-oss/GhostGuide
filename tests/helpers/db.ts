@@ -12,7 +12,6 @@ export const DEMO_EMAILS = {
   hiker2: "hiker2@demo.ghostguide.test",
   admin: "admin@demo.ghostguide.test",
   operator: "operator@demo.ghostguide.test",
-  safety: "safety@demo.ghostguide.test",
   editor: "editor@demo.ghostguide.test",
   support: "support@demo.ghostguide.test",
 } as const;

@@ -2,7 +2,7 @@ import type { CSSProperties } from "react";
 import type { Position } from "@/domain/geo";
 
 /**
- * Offline overview of every route in the region (no basemap tiles), using
+ * Tile-free overview of every route in the region (no basemap tiles), using
  * the same equirectangular projection as RouteView. Each trailhead carries a
  * number and a name; the page always renders a text list alternative with
  * the same numbers. Routes are links (keyboard focusable).

@@ -103,8 +103,6 @@ async function main() {
     ["AUTH_SECRET", authSecret],
     ["CRON_SECRET", cronSecret],
     ["PAYMENTS_PROVIDER", "demo"],
-    ["AI_PROVIDER", "demo"],
-    ["NOTIFY_PROVIDER", "demo"],
     ["WEATHER_PROVIDER", "demo"],
     ["LAUNCH_REGION_SLUG", "demo-ghost-ridge"],
   ];

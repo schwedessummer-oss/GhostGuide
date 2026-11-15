@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BellRing, CloudSun, Map as MapIcon, Route, Search, TriangleAlert } from "lucide-react";
+import { ArrowRight, Bookmark, CloudSun, Map as MapIcon, Route, Search, TriangleAlert } from "lucide-react";
 import { Container } from "@/components/ui";
 import { TrailCard, type TrailCardData } from "@/components/discover/trail-card";
 import { NearMeLink } from "@/components/explore/near-me-link";
@@ -12,9 +12,8 @@ import { log } from "@/server/log";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: { absolute: "Ghost Guide — find a hike, plan the day, get home safely" },
-  description:
-    "Real trails from OpenStreetMap with honest distance, climb and time estimates, the forecast and daylight for your hike, and optional check-ins on Ghost Guide trips.",
+  title: { absolute: "Ghost Guide — find a hike, plan the day" },
+  description: "Real trails from OpenStreetMap with honest distance, climb and time estimates, and the forecast and daylight for your hike.",
 };
 
 const VALUES = [
@@ -29,9 +28,9 @@ const VALUES = [
     body: "Each trail page shows the forecast, daylight and a sensible start time, official US weather alerts, and fuel, food and services nearby.",
   },
   {
-    icon: BellRing,
-    title: "Save trails, set a check-in",
-    body: "Keep a list of trails you want to hike. On Ghost Guide trips, set an expected return time and the contact you choose is told if you don’t check in.",
+    icon: Bookmark,
+    title: "Save trails",
+    body: "Keep a list of trails you want to hike and come back to it whenever you are planning your next trip.",
   },
 ] as const;
 
@@ -67,10 +66,10 @@ export default async function HomePage() {
         <Ridges className="pointer-events-none absolute inset-x-0 bottom-0 h-40 w-full sm:h-52" />
         <Container className="relative pt-12 pb-44 sm:pt-20 sm:pb-60">
           <h1 className="max-w-3xl text-4xl leading-[1.1] font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Find a hike. Plan the day. Get home safely.
+            Find a hike. Plan the day.
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-forest-100 sm:text-xl">
-            Real trails with honest numbers, the forecast and daylight for your hike, and check-ins for the trips that need them.
+            Real trails with honest numbers, plus the forecast and daylight for your hike.
           </p>
 
           <form action="/explore" method="get" role="search" className="mt-8 flex max-w-xl flex-col gap-2 sm:flex-row">
@@ -147,8 +146,7 @@ export default async function HomePage() {
                   Demo region (fictional): {demo.regionName}
                 </h2>
                 <p className="mt-2 text-muted">
-                  These trails do not exist. They demonstrate trip planning, booking, offline download and audio narration, and are not for
-                  navigation.
+                  These trails do not exist. They demonstrate trip planning and booking, and are not for navigation.
                 </p>
               </div>
               <Link href="/trails" className="inline-flex min-h-11 items-center gap-1 font-semibold text-forest-800 underline-offset-2 hover:underline">

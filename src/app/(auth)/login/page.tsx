@@ -41,9 +41,6 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
               Admin: <code>admin@demo.ghostguide.test</code>
             </li>
             <li>
-              Safety desk: <code>safety@demo.ghostguide.test</code>
-            </li>
-            <li>
               Password for all: <code>ghostguide-demo</code>
             </li>
           </ul>

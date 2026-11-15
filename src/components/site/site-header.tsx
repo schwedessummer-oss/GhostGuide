@@ -2,7 +2,7 @@ import { env } from "@/config/env";
 import { SiteHeaderNav } from "./site-header-nav";
 
 /**
- * Site header. Desktop (md+): the five primary destinations plus Admin for
+ * Site header. Desktop (md+): the four primary destinations plus Admin for
  * staff. Phones use the bottom tab bar (TabBar in the root layout) for the
  * primary destinations; the header keeps the brand and a small menu for
  * secondary items.
@@ -20,8 +20,8 @@ export function SiteHeader() {
       {demo ? (
         <div className="bg-amber-bg text-amber-ink print:hidden">
           <p className="mx-auto max-w-6xl px-4 py-1.5 text-center text-xs font-medium sm:px-6 sm:text-sm">
-            <span className="font-bold">Demo:</span> trail, map, weather and place data are real; payments, notifications, partner services and AI
-            text are simulated. Always check conditions with official sources.
+            <span className="font-bold">Demo:</span> trail, map, weather and place data are real; payments and partner services are simulated.
+            Always check conditions with official sources.
           </p>
         </div>
       ) : null}

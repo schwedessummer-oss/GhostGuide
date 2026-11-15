@@ -3,8 +3,8 @@ import { seedCore } from "./core";
 
 loadEnv();
 
-/** Slice seeds run after the core seed on a fresh database. SEED_ONLY=commerce,hike limits which run. */
-const SLICES = ["discover", "commerce", "hike", "safety", "admin"] as const;
+/** Slice seeds run after the core seed on a fresh database. SEED_ONLY=commerce,admin limits which run. */
+const SLICES = ["discover", "commerce", "admin"] as const;
 
 async function main() {
   const only = (process.env.SEED_ONLY ?? "").split(",").map((s) => s.trim()).filter(Boolean);
