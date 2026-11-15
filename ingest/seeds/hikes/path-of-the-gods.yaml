@@ -1,0 +1,37 @@
+seed_no: 47
+slug: path-of-the-gods
+name: Path of the Gods
+alt_names: [Sentiero degli Dei]
+route_variant: Bomerano (Agerola) to Nocelle/Positano
+region_group: europe
+countries: [IT]
+subdivisions: [IT-72]
+area:
+  name: Parco regionale dei Monti Lattari
+  wikidata: Q1179106
+  official_url: null
+agency:
+  name: Parco Regionale dei Monti Lattari (route also crosses the municipalities of Agerola and Positano)
+  wikidata: null
+hike_wikidata: Q3955426
+official_url: https://www.comune.agerola.na.it/vivere_il_comune/gallerie/galleria_15.html
+anchor:
+  lat: 40.6288001
+  lon: 14.5376822
+  source: nominatim
+osm:
+  relation_ids: [4757514]
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 147150328, name: "Via Sentiero degli Dei", via: nominatim }
+  confidence: probable
+  notes: "Relation 4757514 comes from Wikidata Q3955426 property P402 (via wikidata_P402); not yet checked against OSM. Anchor is the Nominatim point for Via Sentiero degli Dei in Bomerano, because the Wikidata item has no coordinates."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "No official alert or closure page could be read: the Agerola site disallows robots and the Monti Lattari park site was unreachable."
+  source_url: null
+  checked_at: 2026-11-15

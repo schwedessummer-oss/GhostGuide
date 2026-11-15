@@ -1,0 +1,23 @@
+slug: walkers-haute-route
+researched_at: 2026-11-15
+facts:
+  - field: closure
+    value:
+      status: partially_closed
+      note: "This concerns the Europaweg finish variant only. Zermatt Tourismus lists a closed section Springelboden to Eggenstadel (Randa to Täsch) with a marked detour via Attermenzen to Täsch, plus a rockfall detour at Täschgufer going down from Bärgji in Randa to Täsch and back up to Täschalp."
+      as_of: 2026-11-15
+    source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+    source_title: Europaweg | Zermatt
+    publisher: Zermatt Tourismus
+    checked_at: 2026-11-15
+    evidence_heading: Beschreibung (Aktueller Hinweis)
+  - field: hazard
+    value:
+      type: rockfall
+      note: "On the Europaweg variant the original Grächen to Europahütte line was closed for acute rockfall risk and replaced by a new section opened in July 2021."
+    source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+    source_title: Europaweg | Zermatt
+    publisher: Zermatt Tourismus
+    checked_at: 2026-11-15
+    evidence_heading: Beschreibung
+verifier: null

@@ -1,0 +1,37 @@
+seed_no: 23
+slug: volcan-acatenango
+name: Volcán Acatenango
+alt_names: [Acatenango Volcano]
+route_variant: Overnight ascent with base camp and summit climb, facing Volcán de Fuego
+region_group: north-central-america
+countries: [GT]
+subdivisions: []
+# Official CONAP pages (conap.gob.gt) return HTTP 403 to automated clients, so no trail, fee or access facts could be read.
+area:
+  name: Volcán Acatenango
+  wikidata: Q338192
+  official_url: http://www.conap.gob.gt
+agency:
+  name: Consejo Nacional de Áreas Protegidas (CONAP)
+  wikidata: Q5162814
+hike_wikidata: null
+official_url: http://www.conap.gob.gt
+anchor:
+  lat: 14.500833333333333
+  lon: -90.87583333333333
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "Nominatim returned only an unrelated Mexican feature for Acatenango; no usable candidate. The anchor is the summit coordinate of Wikidata Q338192, not the trailhead."
+trip_type: overnight
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: unknown
+  note: "INSIVUMEH reported a new eruptive phase at Volcán de Fuego on 3 August 2026. No official page read states whether Acatenango ascents are currently open or suspended; check CONAP, INSIVUMEH and CONRED before going."
+  source_url: https://insivumeh.gob.gt/insivumeh-mantiene-monitoreo-permanente-ante-fase-eruptiva-del-volcan-de-fuego/
+  checked_at: 2026-11-15

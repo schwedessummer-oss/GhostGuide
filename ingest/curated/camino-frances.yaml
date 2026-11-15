@@ -1,0 +1,50 @@
+slug: camino-frances
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way
+    source_url: https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way
+    source_title: "The French Way - Way of Saint James in Galicia: official web"
+    publisher: Xunta de Galicia
+    checked_at: 2026-11-15
+    evidence_heading: The French Way
+  - field: permit_required
+    value: conditional
+    note: "No government permit is stated. The Pilgrim's Office says the Compostela certificate needs a stamped Credencial and at least the last 100 km on foot or horseback (200 km by bicycle); the Credencial also gives access to pilgrim hostels."
+    source_url: https://oficinadelperegrino.com/en/pilgrimage/the-compostela/
+    source_title: "The Compostela: accreditation of the pilgrimage to Santiago"
+    publisher: Oficina del Peregrino, Santiago Cathedral
+    checked_at: 2026-11-15
+    evidence_heading: Requirements for receiving the Compostela
+  - field: permit
+    value:
+      name: Pilgrim's Credencial (pilgrim passport)
+      kind: other
+      how_to_apply: "Not a government permit. Request it in person at the Pilgrim's Reception Office or at authorised issuers such as parish churches, pilgrim associations and hostels; a digital credential app also exists."
+      official_url: https://oficinadelperegrino.com/en/pilgrimage/the-credencial/
+    source_url: https://oficinadelperegrino.com/en/pilgrimage/the-credencial/
+    source_title: "The Credencial: Pilgrim's Reception Office"
+    publisher: Oficina del Peregrino, Santiago Cathedral
+    checked_at: 2026-11-15
+    evidence_heading: The Pilgrim's Credencial
+  - field: fee
+    value:
+      name: Galician public pilgrim hostel (Ribadiso hostel, per night)
+      amount: 10
+      currency: EUR
+      unit: per_night
+      audience: all
+      note: "Stated for the hostel in Ribadiso (Arzúa); beds are first come, first served and cannot be reserved, one night maximum."
+    source_url: https://www.caminodesantiago.gal/en/discover/the-way-at-the-present/1.4.2.-the-network-of-public-hostels
+    source_title: "The network of public hostels - Way of Saint James in Galicia: official web"
+    publisher: Xunta de Galicia
+    checked_at: 2026-11-15
+    evidence_heading: Hostel in Ribadiso (Arzúa)
+  - field: nearest_town
+    value: { name: Saint-Jean-Pied-de-Port, note: "Start of the route in France; Santiago de Compostela is the finish." }
+    source_url: https://oficinadelperegrino.com/en/pilgrimage/the-compostela/
+    source_title: "The Compostela: accreditation of the pilgrimage to Santiago"
+    publisher: Oficina del Peregrino, Santiago Cathedral
+    checked_at: 2026-11-15
+    evidence_heading: Requirements for receiving the Compostela
+verifier: null

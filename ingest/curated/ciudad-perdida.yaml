@@ -1,0 +1,92 @@
+slug: ciudad-perdida
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna
+    source_title: Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: Parque Arqueológico Teyuna
+  - field: access_mode
+    value: licensed_operator_required
+    note: The trail is unmarked and easy to get lost on, so ICANH, Parques Nacionales Naturales and the indigenous and campesino authorities require a certified guide; book early with an authorised agency.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/como-llegar
+    source_title: ¿Cómo llegar? - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: ¿Cómo llegar?
+  - field: fee
+    value:
+      name: Park entrance (tarifa única de ingreso)
+      amount: 75000
+      currency: COP
+      unit: per_person
+      audience: all
+      note: Single entrance fee stated by ICANH; the unit is not spelled out on the page. Tour operators set their own prices separately.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/horarios-y-tarifas
+    source_title: Horarios y tarifas - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: Horarios y tarifas
+  - field: closure
+    value:
+      status: seasonal
+      note: ICANH announced the park closed from 1 to 31 October 2026. The page also warns of temporary closures for natural-risk, access, maintenance or public-order reasons.
+      as_of: 2026-11-15
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/horarios-y-tarifas
+    source_title: Horarios y tarifas - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: Horarios y tarifas
+  - field: trailhead_access
+    value: From Santa Marta take the Troncal del Caribe to Puerto Nuevo, then an unpaved road by 4x4 for one to two hours to the village of Machete Pelao, where the walk starts.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/como-llegar
+    source_title: ¿Cómo llegar? - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: ¿Cómo llegar?
+  - field: nearest_town
+    value: { name: Santa Marta, note: Gateway city where the trip begins and where authorised operators are based. }
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/como-llegar
+    source_title: ¿Cómo llegar? - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: ¿Cómo llegar?
+  - field: hazard
+    value:
+      type: river_crossing
+      note: The route crosses rivers, including the Buritaca, and passes through indigenous territory.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/como-llegar
+    source_title: ¿Cómo llegar? - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: ¿Cómo llegar?
+  - field: hazard
+    value:
+      type: remoteness
+      note: There is no mobile signal or communications in the park, and no rubbish collection; visitors must carry waste back to Santa Marta.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/informacion-para-la-visita
+    source_title: Información para la visita - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: Recomendaciones para el visitante
+  - field: hazard
+    value:
+      type: weather
+      note: ICANH describes the climate as warm, humid and very rainy, and advises rain gear and non-leather footwear.
+    source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/informacion-para-la-visita
+    source_title: Información para la visita - Parque Arqueológico Teyuna - ICANH
+    publisher: Instituto Colombiano de Antropología e Historia (ICANH)
+    checked_at: 2026-11-15
+    evidence_heading: Recomendaciones para el visitante
+  - field: hazard
+    value:
+      type: security_advisory
+      note: The UK FCDO says to visit the Lost City in the Sierra Nevada de Santa Marta only as part of an organised tour.
+    source_url: https://www.gov.uk/foreign-travel-advice/colombia/regional-risks
+    source_title: Regional risks - Colombia travel advice - GOV.UK
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Ciudad Perdida - 'Lost City'
+verifier: null

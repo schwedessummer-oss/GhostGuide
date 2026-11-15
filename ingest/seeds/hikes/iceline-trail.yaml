@@ -1,0 +1,41 @@
+seed_no: 20
+slug: iceline-trail
+name: Iceline Trail
+alt_names:
+- Iceline via Little Yoho
+route_variant: Iceline via Little Yoho circuit from the Takakkaw Falls parking lot
+region_group: north-central-america
+countries:
+- CA
+subdivisions:
+- CA-BC
+area:
+  name: Yoho National Park
+  wikidata: Q828404
+  official_url: https://parks.canada.ca/pn-np/bc/yoho
+agency:
+  name: Parks Canada
+  wikidata: Q349487
+hike_wikidata: null
+official_url: https://parks.canada.ca/pn-np/bc/yoho/activ/arrierepays-backcountry
+anchor:
+  lat: 51.502081
+  lon: -116.488494
+  source: nominatim
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: Nominatim (3 queries) found no Iceline Trail object; anchor is the Takakkaw Falls Campground way 298735864 beside
+    the trailhead lot. Wikidata has no trail item.
+trip_type: day
+typical_days: null
+access_mode: independent
+flags:
+- seasonal_access
+status:
+  value: seasonal
+  note: Yoho Valley Road to the trailhead closes mid-October to mid-June; shown closed for the season on 2026-10-13.
+  source_url: https://parks.canada.ca/pn-np/bc/yoho/activ/randonnee-hike/etat-sentiers-trail-conditions
+  checked_at: 2026-11-15

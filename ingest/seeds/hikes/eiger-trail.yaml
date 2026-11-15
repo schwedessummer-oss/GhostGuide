@@ -1,0 +1,36 @@
+seed_no: 44
+slug: eiger-trail
+name: Eiger Trail
+alt_names: [Eigertrail]
+route_variant: Eigergletscher station to Alpiglen station along the foot of the Eiger north face (also walkable in reverse)
+region_group: europe
+countries: [CH]
+subdivisions: [CH-BE]
+area:
+  name: Grindelwald (Jungfrau Region)
+  wikidata: null
+  official_url: https://grindelwald.swiss/en/
+agency:
+  name: Jungfraubahnen (Jungfrau Railways) with Grindelwald Tourismus
+  wikidata: Q12027203
+hike_wikidata: null
+official_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+anchor:
+  lat: 46.5686
+  lon: 7.9819
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "Anchor is the Wikidata P625 point of Eiger Glacier (Q582543), near Eigergletscher station, the trail start; no trail item exists on Wikidata (the search only returned an ultramarathon). Nominatim returned no result for 'Eiger Trail Grindelwald'. Q12027203 is Jungfraubahn Holding AG (label verified)."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "The operator's Eiger Trail page states no opening dates or closures. Grindelwald Tourismus publishes a live hiking-trail status, but it loads dynamically and could not be read here."
+  source_url: https://www.jungfrau.ch/en-gb/kleine-scheidegg/eiger-trail/
+  checked_at: 2026-11-15

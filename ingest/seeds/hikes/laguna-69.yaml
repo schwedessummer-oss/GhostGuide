@@ -1,0 +1,49 @@
+seed_no: 29
+slug: laguna-69
+name: Laguna 69
+alt_names:
+- Laguna 69 trail
+route_variant: Via the Llanganuco control post and Cebollapampa
+region_group: south-america
+countries:
+- PE
+subdivisions:
+- PE-ANC
+area:
+  name: Huascarán National Park
+  wikidata: Q917369
+  official_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+agency:
+  name: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  wikidata: Q19521797
+hike_wikidata: null
+official_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+anchor:
+  lat: -9.0097222222222
+  lon: -77.612222222222
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+  - osm_type: way
+    osm_id: 62219858
+    name: Laguna 69
+    via: nominatim
+  - osm_type: relation
+    osm_id: 6135038
+    name: Laguna 69 (lake item, Wikidata P402)
+    via: wikidata_P402
+  confidence: unknown
+  notes: Wikidata Q13190477 is the lake, not the trail; its P625 anchors the lake. Nominatim returned a way named Laguna 69 near the lake. No trail relation known.
+trip_type: day
+typical_days: null
+access_mode: licensed_operator_required
+flags:
+- operator_only
+- seasonal_access
+status:
+  value: unknown
+  note: The park page lists no closure or alert for this route; it is undated, so current conditions are not confirmed.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  checked_at: 2026-11-15

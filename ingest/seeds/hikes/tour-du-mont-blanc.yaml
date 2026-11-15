@@ -1,0 +1,37 @@
+seed_no: 39
+slug: tour-du-mont-blanc
+name: Tour du Mont Blanc
+alt_names: [TMB, Tour du Mont-Blanc]
+route_variant: Classic circuit around the Mont Blanc massif through France, Italy and Switzerland, with the usual variants
+region_group: europe
+countries: [FR, IT, CH]
+subdivisions: [FR-74, IT-23, CH-VS]
+area:
+  name: Mont Blanc massif
+  wikidata: Q671343
+  official_url: https://www.espace-mont-blanc.com/en/
+agency:
+  name: Espace Mont-Blanc (cross-border partnership); official TMB site managed by Fondazione Montagna Sicura
+  wikidata: null
+hike_wikidata: Q24777
+official_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+anchor:
+  lat: 45.78333333
+  lon: 6.96666667
+  source: wikidata
+osm:
+  relation_ids: [9678362]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 9678362, name: "Tour du Mont-Blanc", via: wikidata_P402 }
+  confidence: probable
+  notes: "Relation id comes from Wikidata P402 on the trail item Q24777; not yet checked against OSM. French sections are GR(R) so no route line is published for France until legal sign-off."
+trip_type: multi_day
+typical_days: 10
+access_mode: independent
+flags: [gr_route_geometry_withheld]
+status:
+  value: unknown
+  note: "Official TMB site announces a rerouted section in Switzerland (Prayon to Branche, Treutsebo sector) open from 11 July 2026 because of rockfall risk; the old path is closed. No other alert found."
+  source_url: https://www.autourdumontblanc.com/en/
+  checked_at: 2026-11-15

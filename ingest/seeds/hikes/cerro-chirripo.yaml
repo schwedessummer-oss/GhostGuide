@@ -1,0 +1,39 @@
+seed_no: 24
+slug: cerro-chirripo
+name: Cerro Chirripó
+alt_names: [Chirripó, Chirripó Grande]
+route_variant: Trail from San Gerardo de Rivas to Base Crestones and the summit, Chirripó National Park
+region_group: north-central-america
+countries: [CR]
+subdivisions: []
+# sinac.go.cr serves an incomplete TLS certificate chain, so the helper and curl refuse it and no SINAC page could be read.
+area:
+  name: Chirripó National Park
+  wikidata: Q3244192
+  official_url: https://www.sinac.go.cr/ES
+agency:
+  name: Sistema Nacional de Áreas de Conservación (SINAC)
+  wikidata: Q3304817
+hike_wikidata: Q252362
+official_url: https://www.sinac.go.cr/ES
+anchor:
+  lat: 9.4840833333333
+  lon: -83.488666666667
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 10313715, name: "Chirripó National Park (park boundary, not the trail)", via: wikidata_P402 }
+    - { osm_type: node, osm_id: 5923178557, name: "Cerro Chirripó (peak)", via: nominatim }
+  confidence: unknown
+  notes: "Relation 10313715 comes from Wikidata P402 on the park item Q3244192 and is the park boundary. Q252362 (Cerro Chirripó, the mountain) is used as hike_wikidata because no trail item was found. The anchor is the summit coordinate, not the trailhead. Two Nominatim trail/hut queries returned nothing."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "No official SINAC page could be read (certificate error on sinac.go.cr), so current opening, closures and quota status are unconfirmed."
+  source_url: null
+  checked_at: 2026-11-15

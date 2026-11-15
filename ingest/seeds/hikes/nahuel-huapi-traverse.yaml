@@ -1,0 +1,36 @@
+seed_no: 32
+slug: nahuel-huapi-traverse
+name: Nahuel Huapi Traverse (Frey, Jakob, Laguna Negra, López)
+alt_names: [Travesía de las 5 Lagunas, Frey to Jakob to Laguna Negra traverse]
+route_variant: "Multi-day traverse linking the Club Andino Bariloche refugios near Bariloche: Frey, San Martín (Laguna Jakob), Italia (Laguna Negra) and the Cerro López area. The APN site documents the legs separately; it has no page for the whole traverse."
+region_group: south-america
+countries: [AR]
+subdivisions: [AR-R]
+area:
+  name: Nahuel Huapi National Park
+  wikidata: Q827817
+  official_url: https://nahuelhuapi.gov.ar/
+agency:
+  name: Administración de Parques Nacionales (APN)
+  wikidata: Q661984
+hike_wikidata: null
+official_url: https://nahuelhuapi.gov.ar/trekking-y-actividades-de-montana/
+anchor:
+  lat: -41.00369091533248
+  lon: -71.50145662183579
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "No relation identified. Wikidata has no item for the traverse (Q125364425 is a refugio, not a route; it has no P402). Anchor is the P625 of the national park item Q827817, which is far north of the refugios; refine to Refugio Frey / Colonia Suiza trailheads when searching OSM. Nominatim on 'Refugio Frey Bariloche' returned only unrelated refugio points (Punta Nevada, Lynch) on the Frey por el Filo trail, not recorded as candidates."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "APN lists December to March (Laguna Negra: December to April) as the time to hike these legs. Alerts page shows a yellow storm alert for Sunday 15 November 2026; no trail closure is listed."
+  source_url: https://nahuelhuapi.gov.ar/alertas/
+  checked_at: 2026-11-15

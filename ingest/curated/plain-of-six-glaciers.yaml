@@ -1,0 +1,221 @@
+slug: plain-of-six-glaciers
+researched_at: &id001 2026-11-15
+facts:
+- field: official_url
+  value: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Hiking
+- field: distance_km
+  value: 5.9
+  note: The page lists 5.9 km one way from the Lake Louise Lakeshore lot; it also describes a 14.3 km loop if combined with
+    the Lake Agnes trail.
+  basis: one_way
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: elevation_gain_m
+  value: 595
+  note: Page gives 595 m gain and 250 m loss for the one-way walk.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: duration
+  value:
+    min_hours: 4
+    max_hours: 4
+  note: Estimated round-trip time stated as 4 hours.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: best_months
+  value:
+  - 7
+  - 8
+  - 9
+  note: Park says prime hiking season runs July to mid-September; most alpine passes are snow-free by mid-July.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Hiking
+- field: season_note
+  value: Passes stay snow-bound with avalanche hazard until late June and trails are muddier early on; the teahouse on the
+    route is seasonal.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Hiking
+- field: hazard
+  value:
+    type: avalanche
+    note: Until late June many passes are snow-bound and may be subject to avalanche hazard.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Hiking
+- field: hazard
+  value:
+    type: weather
+    note: Mountain weather changes quickly and snow can fall in any month; carry layers, food and water treatment.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Safety
+- field: rule_dogs
+  value:
+    value: restricted
+    note: Dogs must be kept on a leash and under physical control at all times.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Safety
+- field: parking
+  value: Trailhead is the Lake Louise Lakeshore lot, 4 km from the community of Lake Louise; parking there is paid.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: public_transport
+  value: The trailhead is reachable by transit; the page names the Parks Canada Shuttle and Roam route 8x.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: trailhead_access
+  value: Start at the Lake Louise Lakeshore parking lot about 4 km from Lake Louise village.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: nearest_town
+  value:
+    name: Lake Louise
+    note: Trailhead is 4 km from the community of Lake Louise.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  source_title: Hiking - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Plain of Six Glaciers Trail
+- field: fee
+  value:
+    name: Banff National Park daily admission
+    amount: 12.25
+    currency: CAD
+    unit: per_day
+    audience: adult
+    note: Ages 18 to 64. Currency inferred from the Parks Canada site; the page shows a $ sign only.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Admission - Daily
+- field: fee
+  value:
+    name: Banff National Park daily admission
+    amount: 10.75
+    currency: CAD
+    unit: per_day
+    audience: senior
+    note: Ages 65 and over.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Admission - Daily
+- field: fee
+  value:
+    name: Banff National Park daily admission, family/group
+    amount: 24.5
+    currency: CAD
+    unit: per_vehicle
+    audience: all
+    note: Up to seven people arriving in a single vehicle.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Admission - Daily
+- field: fee
+  value:
+    name: Banff National Park daily admission, youth
+    amount: 0
+    currency: CAD
+    unit: per_day
+    audience: child
+    note: Free for ages 17 and under.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Admission - Daily
+- field: fee
+  value:
+    name: Lake Louise Lakeshore general parking
+    amount: 42.0
+    currency: CAD
+    unit: per_vehicle
+    audience: all
+    valid_from: 2026-05-15
+    valid_to: 2026-10-12
+    note: The date range appears under the parking rates on the page.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Parking - Daily
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 12.75
+    currency: CAD
+    unit: per_person
+    audience: adult
+    note: Ages 18 to 64; plus a non-refundable $3.50 online reservation fee ($5.50 by phone).
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Public transit / transportation services
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 6.0
+    currency: CAD
+    unit: per_person
+    audience: senior
+    note: Ages 65 and over; plus reservation fee.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Public transit / transportation services
+- field: fee
+  value:
+    name: Parks Canada Shuttle to Lake Louise and Moraine Lake
+    amount: 4.0
+    currency: CAD
+    unit: per_person
+    audience: child
+    note: Ages 17 and under; plus reservation fee.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/visit/tarifs-fees
+  source_title: Fees - Banff National Park
+  publisher: Parks Canada
+  checked_at: *id001
+  evidence_heading: Fees - Public transit / transportation services
+verifier: null

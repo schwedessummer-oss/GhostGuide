@@ -1,0 +1,37 @@
+seed_no: 42
+slug: tre-cime-di-lavaredo-circuit
+name: Tre Cime di Lavaredo circuit
+alt_names: [Giro delle Tre Cime, Drei Zinnen loop, Tre Cime loop]
+route_variant: Loop from Rifugio Auronzo via Forcella Lavaredo, Rifugio Locatelli and Malga Langalm
+region_group: europe
+countries: [IT]
+subdivisions: [IT-BL, IT-BZ]
+area:
+  name: Tre Cime Nature Park (Parco naturale Tre Cime, Naturpark Drei Zinnen)
+  wikidata: Q1970453
+  official_url: https://parchi-naturali.provincia.bz.it/it/parco-naturale-tre-cime
+agency:
+  name: Comune di Auronzo di Cadore (toll road and car park)
+  wikidata: Q40153
+hike_wikidata: null
+official_url: https://auronzo.info/tre-cime-di-lavaredo-dolomiti/
+anchor:
+  lat: 46.61222222
+  lon: 12.29416667
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 186519265, name: "Rifugio Auronzo", via: nominatim }
+  confidence: unknown
+  notes: "No Wikidata item for the circuit; Q1257207 is the mountain group. Anchor is the P625 of Rifugio Auronzo (Q681466), the loop start. Nominatim (2 queries) returned only the hut (way 186519265) and a bus stop, no route relation."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: partially_closed
+  note: "The Tre Cime road to Rifugio Auronzo was closed to vehicles from 9 November 2026 at 08:00. Walking access is not addressed by the notice."
+  source_url: https://www.comune.auronzo.bl.it/it/news/apertura-strada-delle-tre-cime-di-lavaredo-370c1459-3e11-47ca-9ac4-f603b8628ed6
+  checked_at: 2026-11-15

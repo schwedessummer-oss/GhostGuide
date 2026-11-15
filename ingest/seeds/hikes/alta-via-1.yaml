@@ -1,0 +1,36 @@
+seed_no: 41
+slug: alta-via-1
+name: Alta Via 1
+alt_names: [Alta Via delle Dolomiti n. 1, Dolomites High Mountain Trail No. 1, Dolomiten-Höhenweg Nr. 1]
+route_variant: Lago di Braies (Pragser Wildsee) to Belluno, north to south
+region_group: europe
+countries: [IT]
+subdivisions: [IT-BZ, IT-BL]
+area:
+  name: Dolomites
+  wikidata: Q1283
+  official_url: https://www.suedtirol.info/en/en/experiences-and-events/nature/special-hikes/dolomites-high-mountain-trails
+agency:
+  name: Ente Parco Nazionale Dolomiti Bellunesi (last four stages; no single body manages the whole route)
+  wikidata: Q1086637
+hike_wikidata: Q1236280
+official_url: https://www.dolomitipark.it/en/visiting-the-park/itineraries/on-foot/selected-itineraries/alta-via-n-1/
+anchor:
+  lat: 46.69772222
+  lon: 12.084
+  source: wikidata
+osm:
+  relation_ids: [177743]
+  way_ids: []
+  candidates: []
+  confidence: probable
+  notes: "Relation 177743 comes from Wikidata Q1236280 property P402 (via wikidata_P402); not yet checked against OSM. Anchor is that item's P625 (northern start near Lago di Braies). Nominatim (2 queries) found no route relation."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "The national park recommends June to September for its section; no official hut opening dates were found. In 2026 the Braies valley road was regulated 1 July to 15 September, 09:00 to 16:00, and had no restriction when checked in November."
+  source_url: https://www.prags.bz/it
+  checked_at: 2026-11-15

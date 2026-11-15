@@ -1,0 +1,38 @@
+seed_no: 38
+slug: vale-do-pati
+name: Vale do Pati
+alt_names: [Pati Valley, Travessia do Vale do Pati]
+route_variant: Multi-day crossing of the Pati valley inside Chapada Diamantina National Park; ICMBio describes crossings from Vale do Capão to Mucugê (3 days), Guiné to Andaraí (4 days) and Vale do Capão to Andaraí (5 days)
+region_group: south-america
+countries: [BR]
+subdivisions: [BR-BA]
+area:
+  name: Chapada Diamantina National Park
+  wikidata: Q2266463
+  official_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina
+agency:
+  name: Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio)
+  wikidata: Q3151725
+hike_wikidata: null
+official_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+anchor:
+  lat: -12.88027778
+  lon: -41.37222222
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 4722289, name: "Chapada Diamantina National Park (park boundary, not the route)", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 198180349, name: "Trilha para o Vale do Pati (Guine, Mucuge)", via: nominatim }
+  confidence: unknown
+  notes: "Wikidata P402 of the park (Q2266463) gives relation 4722289, the park boundary only. Nominatim returned one way near Guine (198180349), an access trail to the valley. No route relation identified. Anchor is the park P625 centroid, not a trailhead."
+trip_type: multi_day
+typical_days: 3
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "The ICMBio visitation page lists the crossings with no closure or alert. No separate official alert page was found."
+  source_url: https://www.gov.br/icmbio/pt-br/assuntos/unidade-de-conservacao/unidades-de-biomas/caatinga/lista-de-ucs/parna-da-chapada-da-diamantina/informacoes-sobre-visitacao-parna-da-chapada-da-diamantina
+  checked_at: 2026-11-15

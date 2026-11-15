@@ -1,0 +1,36 @@
+seed_no: 40
+slug: gr20
+name: GR20
+alt_names: [GR 20, GR®20 Fra Li Monti]
+route_variant: Calenzana to Conca, north to south, using the waymarked variant that bypasses the closed Cirque de la Solitude
+region_group: europe
+countries: [FR]
+subdivisions: [FR-20R]
+area:
+  name: Parc naturel régional de Corse
+  wikidata: Q2385782
+  official_url: https://www.pnr.corsica/
+agency:
+  name: Parc naturel régional de Corse (PnrC)
+  wikidata: Q2385782
+hike_wikidata: Q262374
+official_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+anchor:
+  lat: 42.1271325
+  lon: 9.1327569
+  source: wikidata
+osm:
+  relation_ids: [12484370]
+  way_ids: []
+  candidates: []
+  confidence: probable
+  notes: "Relation 12484370 comes from Wikidata Q262374 property P402 (via wikidata_P402); not yet checked against OSM. Anchor is the P625 point of the trail item, which lies along the route, not at Calenzana. Nominatim (2 queries) returned nothing useful for the route."
+trip_type: multi_day
+typical_days: 16
+access_mode: independent
+flags: [gr_route_geometry_withheld, seasonal_access]
+status:
+  value: seasonal
+  note: "For 2026 the park-run refuges are staffed 16 May to 4 October inclusive. The Cirque de la Solitude is closed to the public by prefectoral and communal order; the official GR20 uses a bypass."
+  source_url: https://www.pnr.corsica/fr/randonnees-decouverte/gr-20-fra-li-monti
+  checked_at: 2026-11-15

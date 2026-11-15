@@ -1,0 +1,40 @@
+seed_no: 26
+slug: salkantay-trek
+name: Salkantay Trek
+alt_names: [Salcantay Trek, Camino del Salkantay]
+route_variant: Mollepata and Soraypampa over the Salkantay pass toward Machu Picchu (standard multi-day route; end point not fixed by any official page read)
+region_group: south-america
+countries: [PE]
+subdivisions: [PE-CUS]
+area:
+  name: Salcantay
+  wikidata: Q730030
+  official_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+agency:
+  name: No single managing agency found; community lands and district municipalities, with Ministerio de Cultura controlling the Inca Trail network variants
+  wikidata: null
+hike_wikidata: Q21051923
+official_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+anchor:
+  lat: -13.5078
+  lon: -72.5296
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 496331433, name: "Salkantay Trek", via: nominatim }
+    - { osm_type: way, osm_id: 300347129, name: "Camino del Salkantay", via: nominatim }
+    - { osm_type: way, osm_id: 237151629, name: "Camino del Salkantay", via: nominatim }
+    - { osm_type: way, osm_id: 1375952769, name: "Camino del Salkantay", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim returned several ways, near Platerirayoc/Collpapampa, Mollepata, Soraypampa and Mesada; no relation found. Wikidata Q21051923 (Salkantay trail) has no P402. Anchor is its P625 near the pass area."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: unknown
+  note: "No official page read gives an operating status for the standard Mollepata route. UK FCDO notes rainy-season landslides on the Salkantay route; the Ministerio de Cultura tariff annex lists the Inca Trail network Salkantay variants (Route 6 entry suspended, Route 3 open)."
+  source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+  checked_at: 2026-11-15

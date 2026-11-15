@@ -1,0 +1,39 @@
+seed_no: 22
+slug: gros-morne-mountain
+name: Gros Morne Mountain
+alt_names: [Gros Morne Mountain Trail, James Callaghan Trail]
+route_variant: Approach Trail and Summit Trail loop from the trailhead parking area, Gros Morne National Park, Newfoundland
+region_group: north-central-america
+countries: [CA]
+subdivisions: [CA-NL]
+area:
+  name: Gros Morne National Park
+  wikidata: Q257598
+  official_url: https://parks.canada.ca/pn-np/nl/grosmorne
+agency:
+  name: Parks Canada
+  wikidata: Q349487
+hike_wikidata: null
+official_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+anchor:
+  lat: 49.5687190
+  lon: -57.8143276
+  source: nominatim
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 1018931463, name: "Gros Morne Mountain Trail", via: nominatim }
+    - { osm_type: way, osm_id: 355574182, name: "Gros Morne Mountain Trail", via: nominatim }
+    - { osm_type: way, osm_id: 168941768, name: "Gros Morne Mountain Trail", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim (2 queries) returned three ways named Gros Morne Mountain Trail; the anchor is the first result and is not confirmed to be the trailhead. No Wikidata item for the trail was found. Wikidata P402 on the park item (Q257598) gives relation 6236296, which is the park boundary, not the trail."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "The Summit Trail is closed to hikers each year from 1 May to 27 June and reopens on 28 June. Parks Canada does not recommend hiking the Summit Trail from mid October to 30 April because of ice, snow and storms."
+  source_url: https://parks.canada.ca/pn-np/nl/grosmorne/activ/experiences/randonnee-hiking/mgm-gmm
+  checked_at: 2026-11-15

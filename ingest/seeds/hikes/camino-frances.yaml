@@ -1,0 +1,37 @@
+seed_no: 45
+slug: camino-frances
+name: Camino Francés
+alt_names: [French Way, Camino de Santiago (French Way)]
+route_variant: Saint-Jean-Pied-de-Port to Santiago de Compostela
+region_group: europe
+countries: [FR, ES]
+subdivisions: [FR-64, ES-NC, ES-LO, ES-CL, ES-GA]
+area:
+  name: French Way (Camino Francés)
+  wikidata: Q1029584
+  official_url: https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way
+agency:
+  name: Regional governments (Xunta de Galicia for the Galician section); Pilgrim's Reception Office of Santiago Cathedral for the Compostela
+  wikidata: Q1779601
+hike_wikidata: Q1029584
+official_url: https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way
+anchor:
+  lat: 43.1632
+  lon: -1.2381
+  source: wikidata
+osm:
+  relation_ids: [2163573]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 2163573, name: "French Way", via: wikidata_P402 }
+  confidence: probable
+  notes: "Relation id from Wikidata P402 on Q1029584 (label: French Way); not checked against OSM. The item's own P625 is a point in León; the anchor here is Saint-Jean-Pied-de-Port (Q270294, label verified), the start."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "The official pages read (Xunta de Galicia Camino site and the Pilgrim's Office) show no closure notice. The Navarre government pages could not be reached, so the Route Napoléon winter restriction could not be checked against an official source and is not recorded."
+  source_url: https://www.caminodesantiago.gal/en/make-plans/the-ways/french-way
+  checked_at: 2026-11-15

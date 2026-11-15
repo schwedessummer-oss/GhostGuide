@@ -1,0 +1,40 @@
+seed_no: 30
+slug: rainbow-mountain-vinicunca
+name: Rainbow Mountain (Vinicunca)
+alt_names:
+- Vinicunca
+- Montaña de Siete Colores
+route_variant: null
+region_group: south-america
+countries:
+- PE
+subdivisions:
+- PE-CUS
+area:
+  name: Cusco Department
+  wikidata: Q205057
+  official_url: null
+agency:
+  name: Local community management (no official agency page found)
+  wikidata: null
+hike_wikidata: Q28025526
+official_url: https://www.peru.travel/
+anchor:
+  lat: -13.869534
+  lon: -71.30296
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: Wikidata Q28025526 has no P402; the Nominatim query for Vinicunca returned nothing.
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: No official page stating the current status was found.
+  source_url: null
+  checked_at: 2026-11-15

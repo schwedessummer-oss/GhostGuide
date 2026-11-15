@@ -1,0 +1,37 @@
+seed_no: 31
+slug: torres-del-paine-w-o
+name: "Torres del Paine: W Trek and O Circuit"
+alt_names: [W Trek, Circuito W, O Circuit, Circuito Macizo Paine, Paine Circuit]
+route_variant: "W Trek (Circuito W) and the full O Circuit (Circuito Macizo Paine, which contains the W), merged into one entry"
+region_group: south-america
+countries: [CL]
+subdivisions: [CL-MA]
+area:
+  name: Torres del Paine National Park
+  wikidata: Q901646
+  official_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+agency:
+  name: Corporación Nacional Forestal (CONAF)
+  wikidata: Q1134658
+hike_wikidata: Q106577165
+official_url: https://www.conaf.cl/parques/parque-nacional-torres-del-paine/
+anchor:
+  lat: -50.98305556
+  lon: -72.96638889
+  source: wikidata
+osm:
+  relation_ids: [2203617]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 2203617, name: "Torres del Paine W Trek", via: wikidata_P402 }
+  confidence: probable
+  notes: "Relation 2203617 comes from Wikidata P402 on Q106577165 (Torres del Paine W Trek) and covers the W only. No OSM relation for the O Circuit was identified; Wikidata has no separate item for it. The anchor is the P625 of the national park item Q901646 (park centre, not a trailhead). Nominatim returned no result for 'Sendero Circuito W Torres del Paine'."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "CONAF and the Pases Parques ticket page list daily opening hours (summer Oct-Apr 07:00-21:00, winter May-Sep 08:00-18:30). The CONAF page marks the O Circuit stretches from Serón to Grey as closed in winter difficulty, and the W stretches in winter as guided only."
+  source_url: https://www.pasesparques.cl/es/torres-del-paine-300/parque-nacional-torres-del-paine-3412
+  checked_at: 2026-11-15

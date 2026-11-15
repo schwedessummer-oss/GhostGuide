@@ -1,0 +1,22 @@
+slug: rainbow-mountain-vinicunca
+researched_at: &id001 2026-11-15
+facts:
+- field: hazard
+  value:
+    type: altitude
+    note: The UK government calls altitude sickness a serious risk in parts of Peru, naming Cusco among them. It does not mention this hike specifically.
+  source_url: https://www.gov.uk/foreign-travel-advice/peru/health
+  source_title: Health - Peru travel advice - GOV.UK
+  publisher: UK Foreign, Commonwealth & Development Office
+  checked_at: *id001
+  evidence_heading: Health
+- field: hazard
+  value:
+    type: security_advisory
+    note: The UK government warns that protests in Peru can turn violent and with no notice cause roadblocks and travel disruption, and that local groups can call strikes at short notice.
+  source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+  source_title: Safety and security - Peru travel advice - GOV.UK
+  publisher: UK Foreign, Commonwealth & Development Office
+  checked_at: *id001
+  evidence_heading: Political situation
+verifier: null

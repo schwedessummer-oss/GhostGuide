@@ -1,0 +1,37 @@
+seed_no: 43
+slug: walkers-haute-route
+name: Walker's Haute Route
+alt_names: [Haute Route Chamonix-Zermatt (summer walking route), Walkers Haute Route]
+route_variant: Chamonix to Zermatt on foot, with the Europaweg (Grächen to Zermatt) as a common finish
+region_group: europe
+countries: [FR, CH]
+subdivisions: [FR-74, CH-VS]
+area:
+  name: Chamonix to Zermatt (Haute-Savoie and Valais)
+  wikidata: null
+  official_url: https://zermatt.swiss/en/
+agency:
+  name: Communes and tourism offices along the route (e.g. Zermatt Tourismus, Valais)
+  wikidata: null
+hike_wikidata: Q18670873
+official_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+anchor:
+  lat: 45.9222
+  lon: 6.8689
+  source: wikidata
+osm:
+  relation_ids: [3020521]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 3020521, name: "Walker's Haute Route", via: wikidata_P402 }
+  confidence: probable
+  notes: "Relation id comes from Wikidata P402 on Q18670873 (label verified: Walker's Haute Route); not checked against OSM. Anchor is the P625 point of Chamonix-Mont-Blanc (Q83236), the western start, not a point on the trail."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: partially_closed
+  note: "Zermatt Tourismus says the Europaweg (Grächen to Zermatt, a finish variant) is only partly walkable, with a closed section between Springelboden and Eggenstadel (Randa to Täsch) and a rockfall detour at Täschgufer. No official status was found for the rest of the route."
+  source_url: https://zermatt.swiss/p/europaweg-01tVj000005EufKIAS
+  checked_at: 2026-11-15

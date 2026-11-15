@@ -1,0 +1,58 @@
+slug: sentiero-azzurro
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://card.parconazionale5terre.it/en/home
+    source_url: https://card.parconazionale5terre.it/en/home
+    source_title: Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: Scegli modalità
+  - field: permit
+    value:
+      name: Cinque Terre Trekking Card
+      kind: trekking_card
+      how_to_apply: Buy the card online from the park's card site, choosing a validity date. It covers the trails, local buses and other park services; the card is valid until midnight on the chosen day.
+      official_url: https://card.parconazionale5terre.it/en/cartaparco
+    source_url: https://card.parconazionale5terre.it/en/cartaparco
+    source_title: Carta Parco - Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: Carta Parco - Trekking Card
+  - field: permit
+    value:
+      name: Cinque Terre Train Card
+      kind: trekking_card
+      how_to_apply: Buy online from the park's card site with a chosen start date. Adds second-class regional trains in the Cinque Terre to the same trail and bus access as the Trekking Card.
+      official_url: https://card.parconazionale5terre.it/en/cartatreno
+    source_url: https://card.parconazionale5terre.it/en/cartatreno
+    source_title: Carta Treno - Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: Carta Treno - Train Card
+  - field: permit
+    value:
+      name: Via dell'Amore access reservation
+      kind: other
+      how_to_apply: Access to Via dell'Amore is limited, so a reservation is needed even with a card. It can be made when buying the card or afterwards, and the site recommends booking online to skip queues.
+      official_url: https://card.parconazionale5terre.it/en/cartaparco
+    source_url: https://card.parconazionale5terre.it/en/cartaparco
+    source_title: Carta Parco - Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: Via dell'Amore access
+  - field: public_transport
+    value: Trains are suspended on 14-15 Nov, 19-20 Dec 2026, 9-10 Jan and 6-7 Feb 2027 for 48 hours between Corniglia and La Spezia, plus Friday and Saturday nights between Levanto and La Spezia (22:30 to 06:30). Check Trenitalia first.
+    source_url: https://card.parconazionale5terre.it/en/home
+    source_title: Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: TRENI SOSPESI / NO TRAINS
+  - field: hazard
+    value: { type: weather, note: "The park says trails and routes can be closed or restricted because of weather and safety, maintenance work, or crowd management at busy times; a card does not override this." }
+    source_url: https://card.parconazionale5terre.it/en/home
+    source_title: Parco Nazionale delle Cinque Terre
+    publisher: Parco Nazionale delle Cinque Terre
+    checked_at: 2026-11-15
+    evidence_heading: Sentieri e percorsi possono essere chiusi o limitati per
+verifier: null

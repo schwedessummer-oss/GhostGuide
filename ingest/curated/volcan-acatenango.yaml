@@ -1,0 +1,44 @@
+slug: volcan-acatenango
+researched_at: 2026-11-15
+facts:
+  - field: hazard
+    value: { type: volcanic, note: "INSIVUMEH, Guatemala's volcano monitoring institute, confirmed a new eruptive phase at the neighbouring Volcán de Fuego on 3 August 2026 and said it keeps permanent monitoring and will issue updates." }
+    source_url: https://insivumeh.gob.gt/insivumeh-mantiene-monitoreo-permanente-ante-fase-eruptiva-del-volcan-de-fuego/
+    source_title: INSIVUMEH mantiene monitoreo permanente ante fase eruptiva del volcán de Fuego
+    publisher: Instituto Nacional de Sismología, Vulcanología, Meteorología e Hidrología (INSIVUMEH)
+    checked_at: 2026-11-15
+    evidence_heading: INSIVUMEH mantiene monitoreo permanente ante fase eruptiva del volcán de Fuego
+
+  - field: hazard
+    value: { type: volcanic, note: "The UK government says eruptions are a risk anywhere in Guatemala and tells travellers to follow local media and their tour operator, and to check the CONRED disaster agency." }
+    source_url: https://www.gov.uk/foreign-travel-advice/guatemala/safety-and-security
+    source_title: Safety and security - Guatemala travel advice
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Volcanic eruptions
+
+  - field: hazard
+    value: { type: cold, note: "UK advice says some Guatemalan volcanoes are high and freezing at night, so warm clothing and waterproofs are essential. It also says there is no mountain rescue service and that deaths have occurred." }
+    source_url: https://www.gov.uk/foreign-travel-advice/guatemala/safety-and-security
+    source_title: Safety and security - Guatemala travel advice
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Climbing volcanoes
+
+  - field: hazard
+    value: { type: remoteness, note: "UK advice says no mountain rescue service exists in Guatemala and that local tour organisers tend to underestimate the risks of volcano climbs." }
+    source_url: https://www.gov.uk/foreign-travel-advice/guatemala/safety-and-security
+    source_title: Safety and security - Guatemala travel advice
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Climbing volcanoes
+
+  - field: hazard
+    value: { type: security_advisory, note: "As checked on 15 November 2026 the UK FCDO advises against all but essential travel only to a strip within 5 km of the Mexican border and three towns in Huehuetenango. The page does not name Acatenango or the Antigua area. It also reports common carjacking and armed robbery on tourist routes between Guatemala City, Antigua and other places." }
+    source_url: https://www.gov.uk/foreign-travel-advice/guatemala
+    source_title: Guatemala travel advice
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Areas where FCDO advises against all but essential travel
+
+verifier: null

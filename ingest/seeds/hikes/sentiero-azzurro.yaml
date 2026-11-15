@@ -1,0 +1,37 @@
+seed_no: 48
+slug: sentiero-azzurro
+name: Sentiero Azzurro
+alt_names: [Blue Trail, Cinque Terre Blue Trail, Trail No. 2]
+route_variant: Coastal path linking the Cinque Terre villages (Monterosso, Vernazza, Corniglia, Manarola, Riomaggiore)
+region_group: europe
+countries: [IT]
+subdivisions: [IT-07]
+area:
+  name: Cinque Terre National Park
+  wikidata: Q1886487
+  official_url: https://www.parconazionale5terre.it/
+agency:
+  name: Parco Nazionale delle Cinque Terre (Ente Parco)
+  wikidata: null
+hike_wikidata: Q3955423
+official_url: https://card.parconazionale5terre.it/en/home
+anchor:
+  lat: 44.11948
+  lon: 9.71221
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 374802590, name: "Sentiero Azzurro", via: nominatim }
+  confidence: unknown
+  notes: "Wikidata Q3955423 has no P402. Nominatim found one way named Sentiero Azzurro near Corniglia; no route relation found. Anchor is Wikidata P625 (near Corniglia)."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: unknown
+  note: "The park's card site says trails can be closed or limited for weather, maintenance or crowd control. The park's trail-status pages are blocked to automated readers, so current section closures (including Manarola to Corniglia) could not be checked."
+  source_url: https://card.parconazionale5terre.it/en/home
+  checked_at: 2026-11-15

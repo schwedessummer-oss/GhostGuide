@@ -1,0 +1,128 @@
+slug: tour-du-mont-blanc
+researched_at: '2026-11-15'
+facts:
+- field: official_url
+  value: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Tour du Mont Blanc
+- field: distance_km
+  value: 170
+  note: Length the official TMB site gives for the full circuit.
+  basis: loop
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Tour du Mont Blanc
+- field: elevation_gain_m
+  value: 10000
+  note: The page lists this as the altitude difference of the route; it is not stated whether it is total
+    ascent only.
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Tour du Mont Blanc
+- field: duration
+  value:
+    min_days: 10
+    max_days: 10
+  note: The welcome text gives about 10 days and roughly 60 hours of walking for the circuit.
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Welcome to the Tour du Mont Blanc (TMB)
+- field: route_type
+  value: loop
+  note: The route is described as a circuit that can be walked in either direction from several start
+    points.
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Description
+- field: difficulty_official
+  value:
+    label: Difficult
+    scale: Autour du Mont-Blanc
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Tour du Mont Blanc
+- field: public_transport
+  value: The route page says public transport and lifts can be used to shorten the walk, and that many
+    villages around the massif work as start points.
+  source_url: https://www.autourdumontblanc.com/en/routes/all-routes/tour-du-mont-blanc
+  source_title: Tour du Mont Blanc - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Description
+- field: rule_camping
+  value:
+    value: restricted
+    note: Wild camping is largely banned along the route. Aosta Valley bans camping and bivouacs below
+      2,500 m. Swiss Valais municipalities on the route prohibit bivouacs and allow camping only at designated
+      sites. Chamonix bans camping outside designated sites and tolerates only high-altitude bivouacs
+      from sunset to sunrise. Booking a pitch is mandatory in the Aiguilles Rouges nature reserves from
+      1 June to 30 September.
+  source_url: https://www.autourdumontblanc.com/en/accomodations/bivouac
+  source_title: Bivouac and wild camping - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Bivouac and wild camping
+- field: hazard
+  value:
+    type: rockfall
+    note: A Swiss section between Prayon and Branche (Treutsebo sector) was rerouted because of rockfall
+      risk; the signposted new path was due to open on 11 July 2026 and the old path is closed.
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Route diversion in the Swiss sector: path between Prayon and Branche (Treutsebo sector)'
+- field: hazard
+  value:
+    type: lightning
+    note: The site warns that storms can build quickly on hot summer days and gives guidance on seeking
+      shelter away from ridges and water.
+  source_url: https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment
+  source_title: Mountain hazards and equipment - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Mountain hazards / Storms
+- field: hazard
+  value:
+    type: weather
+    note: Snowfields can persist on trails even early in the season; they can hide markings and be slippery,
+      and snow bridges over streams can collapse. The site advises crampons, ice axe and navigation tools.
+  source_url: https://www.autourdumontblanc.com/en/safety/mountain-hazards-and-equipment
+  source_title: Mountain hazards and equipment - Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Mountain hazards / Snow and snowfields
+- field: closure
+  value:
+    status: partially_closed
+    note: Old path between Prayon and Branche (Les Treutsebo, Switzerland) is closed for rockfall risk
+      and must not be used; a signposted diversion was to open on 11 July 2026. Camping and bivouacking
+      are banned in that area.
+    as_of: '2026-11-15'
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: 'Route diversion in the Swiss sector: path between Prayon and Branche (Treutsebo sector)'
+- field: season_note
+  value: The Casermetta Espace Mont-Blanc visitor centre at Col de la Seigne was announced as open daily
+    from 25 June to 13 September 2026.
+  source_url: https://www.autourdumontblanc.com/en/
+  source_title: Autour du Mont-Blanc
+  publisher: Fondazione Montagna Sicura (Autour du Mont-Blanc, with Espace Mont-Blanc partners)
+  checked_at: '2026-11-15'
+  evidence_heading: Summer 2026 - Opening of Casermetta Espace Mont-Blanc
+verifier: null

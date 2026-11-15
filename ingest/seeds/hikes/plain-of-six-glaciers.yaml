@@ -1,0 +1,50 @@
+seed_no: 19
+slug: plain-of-six-glaciers
+name: Plain of Six Glaciers
+alt_names:
+- Plain of Six Glaciers Trail
+route_variant: Lake Louise Lakeshore to the Plain of Six Glaciers teahouse and viewpoint (out and back)
+region_group: north-central-america
+countries:
+- CA
+subdivisions:
+- CA-AB
+area:
+  name: Banff National Park
+  wikidata: Q41858
+  official_url: https://parks.canada.ca/pn-np/ab/banff
+agency:
+  name: Parks Canada
+  wikidata: Q349487
+hike_wikidata: null
+official_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+anchor:
+  lat: 51.41167
+  lon: -116.22806
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+  - osm_type: way
+    osm_id: 179152440
+    name: Plain of Six Glaciers Trail
+    via: nominatim
+  - osm_type: way
+    osm_id: 128099165
+    name: Plain of Six Glaciers Trail
+    via: nominatim
+  confidence: unknown
+  notes: Nominatim returned two ways named Plain of Six Glaciers Trail (a path and a footway), probably segments only. Anchor
+    is the P625 of Lake Louise (Q1367398), next to the trailhead.
+trip_type: day
+typical_days: null
+access_mode: independent
+flags:
+- seasonal_access
+status:
+  value: seasonal
+  note: Park says prime hiking season is July to mid-September; passes can be snow-bound until late June. No closure of this
+    trail is listed on the page.
+  source_url: https://parks.canada.ca/pn-np/ab/banff/activ/randonnee-hiking
+  checked_at: 2026-11-15

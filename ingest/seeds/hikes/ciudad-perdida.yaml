@@ -1,0 +1,36 @@
+seed_no: 35
+slug: ciudad-perdida
+name: Ciudad Perdida
+alt_names: [Teyuna, Lost City Trek, Parque Arqueológico Teyuna]
+route_variant: Guided trek from Machete Pelao to Teyuna-Ciudad Perdida and back
+region_group: south-america
+countries: [CO]
+subdivisions: [CO-MAG]
+area:
+  name: Parque Arqueológico Teyuna - Ciudad Perdida (Sierra Nevada de Santa Marta)
+  wikidata: Q1094367
+  official_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna
+agency:
+  name: Instituto Colombiano de Antropología e Historia (ICANH)
+  wikidata: Q3151868
+hike_wikidata: Q1094367
+official_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna
+anchor:
+  lat: 11.037997222222
+  lon: -73.925191666667
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "Nominatim returned nothing for the trail. Wikidata Q1094367 is the archaeological site (end point), with no P402. Anchor is the site, not the Machete Pelao trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: licensed_operator_required
+flags: [operator_only, advisory, seasonal_access]
+status:
+  value: seasonal
+  note: "ICANH's fee page announces the park closed 1-31 October 2026 (now past); the page also says temporary closures can occur for natural-risk, access, maintenance or public-order reasons. No official page checked states whether it is open on 15 Nov 2026, so confirm with ICANH."
+  source_url: https://www.icanh.gov.co/parques-icanh/parque-arqueologico-teyuna/horarios-y-tarifas
+  checked_at: 2026-11-15

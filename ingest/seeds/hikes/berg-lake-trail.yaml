@@ -1,0 +1,54 @@
+seed_no: 21
+slug: berg-lake-trail
+name: Berg Lake Trail
+alt_names: []
+route_variant: Kinney Lake Road trailhead to Berg Lake and Robson Pass
+region_group: north-central-america
+countries:
+- CA
+subdivisions:
+- CA-BC
+area:
+  name: Mount Robson Provincial Park
+  wikidata: Q1950710
+  official_url: https://bcparks.ca/mount-robson-park/
+agency:
+  name: BC Parks
+  wikidata: Q2876928
+hike_wikidata: null
+official_url: https://bcparks.ca/mount-robson-park/berg-lake-trail/
+anchor:
+  lat: 53.067571
+  lon: -119.20047
+  source: nominatim
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+  - osm_type: way
+    osm_id: 183420448
+    name: Berg Lake Trail
+    via: nominatim
+  - osm_type: way
+    osm_id: 1412305411
+    name: Berg Lake Trail
+    via: nominatim
+  confidence: unknown
+  notes: Nominatim returned two ways named Berg Lake Trail (a track and a path), probably segments only. Wikidata Berg Lake
+    Q316442 is the lake, not the trail, so hike_wikidata is null.
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: BC Parks says the entire trail has been repaired after closures from extreme weather. Live advisories load by script
+    and could not be read as page text; the BC Parks advisory feed listed only a watercraft and wading gear prohibition effective
+    May 4 2026.
+  source_url: https://bcparks.ca/mount-robson-park/
+  checked_at: 2026-11-15
+replacement:
+  condition: Berg Lake Trail not open through to Berg Lake
+  fallback_slug: ''
+  recommendation: keep
+  reason: BC Parks states the trail is completely repaired and reopened.

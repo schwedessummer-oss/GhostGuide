@@ -1,0 +1,38 @@
+seed_no: 37
+slug: quilotoa-loop
+name: Quilotoa Loop
+alt_names: [Vuelta a Quilotoa, Quilotoa Crater Lake trek]
+route_variant: Village-to-village trek through the Cotopaxi highlands around the Quilotoa crater lake
+region_group: south-america
+countries: [EC]
+subdivisions: [EC-X]
+area:
+  name: Quilotoa (volcano and crater lake), Zumbahua parish, Cotopaxi Province
+  wikidata: Q1641276
+  official_url: https://ecuador.travel/opciones-turisticas-en-pujili/
+agency:
+  name: Community-managed; no official managing agency confirmed on an official page
+  wikidata: null
+hike_wikidata: Q14230556
+official_url: https://ecuador.travel/opciones-turisticas-en-pujili/
+anchor:
+  lat: -0.86119444
+  lon: -78.89728611
+  source: wikidata
+osm:
+  relation_ids: [20978783]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 20978783, name: "Quilotoa Loop", via: wikidata_P402 }
+    - { osm_type: node, osm_id: 5987139985, name: "inicio de la vuelta a Quilotoa (start point node)", via: nominatim }
+  confidence: probable
+  notes: "Relation id comes from Wikidata P402 on Q14230556 (label Quilotoa Loop); not yet checked against OSM. Anchor is the P625 of the Quilotoa volcano (Q1641276), the crater, not a trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [advisory]
+status:
+  value: unknown
+  note: "No official page found stating an operating status for the trek. The UK FCDO page (updated 1 November 2026) says protests and strikes are common in Ecuador and can disrupt travel."
+  source_url: https://www.gov.uk/foreign-travel-advice/ecuador/safety-and-security
+  checked_at: 2026-11-15

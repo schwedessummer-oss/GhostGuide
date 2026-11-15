@@ -1,0 +1,36 @@
+seed_no: 33
+slug: laguna-de-los-tres
+name: Laguna de los Tres (Fitz Roy)
+alt_names: [Sendero al Fitz Roy, Fitz Roy Trail, Laguna de los Tres trail]
+route_variant: Day hike from El Chaltén to Laguna de los Tres at the foot of Cerro Fitz Roy
+region_group: south-america
+countries: [AR]
+subdivisions: [AR-Z]
+area:
+  name: Los Glaciares National Park (Zona Norte)
+  wikidata: Q215992
+  official_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares
+agency:
+  name: Administración de Parques Nacionales (APN)
+  wikidata: Q661984
+hike_wikidata: null
+official_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+anchor:
+  lat: -49.271388888889
+  lon: -73.043333333333
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "No Wikidata item for the trail or lake. Anchor is the P625 of Mount Fitz Roy (Q215138), near the destination, not the El Chaltén trailhead. Nominatim 'Laguna de los Tres' first returned a same-named lake in Torres del Paine, Chile (way 31346155, wrong); the Argentine lake is way 1362578795 'Lago de los Tres' at about -49.278, -72.990, a place not a trail, so no candidate is recorded."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "No current closure or trail-status page was found for this trail on APN pages. The only trail-status page found is from 2015 and is not used."
+  source_url: https://www.argentina.gob.ar/parquesnacionales/patagonia-austral/parque-nacional-los-glaciares/actividades
+  checked_at: 2026-11-15

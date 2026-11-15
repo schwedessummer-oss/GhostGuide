@@ -1,0 +1,185 @@
+slug: inca-trail
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.machupicchu.gob.pe/camino-inka/
+    source_url: https://www.machupicchu.gob.pe/camino-inka/
+    source_title: CAMINO INKA - Machupicchu
+    publisher: Dirección Desconcentrada de Cultura Cusco (Ministerio de Cultura)
+    checked_at: 2026-11-15
+    evidence_heading: CAMINO INKA
+
+  - field: distance_km
+    value: 33.7
+    basis: one_way
+    note: "SERNANP gives 33.7 km for Route 1 (Main Inka Trail) from Piscacucho (km 82); Route 2 is 29.9 km, Route 3 is 42.1 km, Route 4 is 33 km and Route 5 is 10.5 km."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Route 1 or Main Inka Trail
+
+  - field: duration
+    value: { min_days: 4, max_days: 4 }
+    note: "SERNANP recommends 4 days and 3 nights for Route 1; the shorter Route 5 is a 1-day option and Route 3 is recommended as 5 days."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Route 1 or Main Inka Trail
+
+  - field: route_type
+    value: point_to_point
+    note: "Route 1 starts at Piscacucho (km 82) and ends at Machu Picchu via Wiñaywayna and Intipunku."
+    source_url: https://www.machupicchu.gob.pe/camino-inka/
+    source_title: CAMINO INKA - Machupicchu
+    publisher: Dirección Desconcentrada de Cultura Cusco (Ministerio de Cultura)
+    checked_at: 2026-11-15
+    evidence_heading: Rutas autorizadas
+
+  - field: best_months
+    value: [4, 5, 6, 7, 8, 9, 10]
+    note: "SERNANP names April to October as the recommended season and November to March as the rainy season."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Visiting season
+
+  - field: access_mode
+    value: licensed_operator_required
+    note: "Entry to the Inca Trail network is only through travel agencies authorised by the Sanctuary headquarters."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Type and hours of admission
+
+  - field: licensed_operator_list_url
+    value: https://visitaareasnaturales.sernanp.gob.pe/wp-content/uploads/2022/01/OPERADORES-TURISTICOS-SH-Machupicchu-INGLES-comprimido.pdf
+    note: "Downloadable operator list linked from the SERNANP page; the file path is dated January 2022, so confirm it is current with SERNANP."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Type and hours of admission
+
+  - field: permit_required
+    value: "yes"
+    note: "Entry to the Inca Trail network is controlled; the Ministerio de Cultura opens reservations for operators on its state ticketing platform."
+    source_url: https://www.gob.pe/institucion/culturacusco/noticias/1052354-ministerio-de-cultura-hoy-se-inicio-las-reservas-para-los-ingresos-a-la-red-de-caminos-inka-en-2025
+    source_title: "Ministerio de Cultura: Hoy se inició las reservas para los ingresos a la red de Caminos Inka en 2025"
+    publisher: Ministerio de Cultura, Unidad Ejecutora 002 MC-Cusco (gob.pe)
+    checked_at: 2026-11-15
+    evidence_heading: "Ministerio de Cultura: Hoy se inició las reservas para los ingresos a la red de Caminos Inka en 2025"
+
+  - field: permit
+    value:
+      name: Inca Trail network entry reservation (Route 1)
+      kind: quota
+      how_to_apply: Operators and travel agents book the entry spaces on the state platform tuboleto.cultura.pe; travellers go through an authorised operator rather than booking themselves.
+      booking_window: "Reservations open month by month in a public event; for 2026 the January spaces opened on 17 November 2025."
+      official_url: https://tuboleto.cultura.pe
+    source_url: https://www.gob.pe/institucion/culturacusco/noticias/1052354-ministerio-de-cultura-hoy-se-inicio-las-reservas-para-los-ingresos-a-la-red-de-caminos-inka-en-2025
+    source_title: "Ministerio de Cultura: Hoy se inició las reservas para los ingresos a la red de Caminos Inka en 2025"
+    publisher: Ministerio de Cultura, Unidad Ejecutora 002 MC-Cusco (gob.pe)
+    checked_at: 2026-11-15
+    evidence_heading: "Ministerio de Cultura: Hoy se inició las reservas para los ingresos a la red de Caminos Inka en 2025"
+
+  - field: permit
+    value:
+      name: Inca Trail network daily capacity (2026 opening)
+      kind: quota
+      how_to_apply: Spaces are reserved by agencies through the Ministerio de Cultura system.
+      booking_window: "January 2026 spaces opened 17 November 2025: Routes 1, 2 and 3 had 500 spaces per day each, Route 5 had 250 per day."
+      official_url: https://tuboleto.cultura.pe
+    source_url: https://www.culturacusco.gob.pe/noticia/imagen/con-proceso-publico-y-transparente-se-inicio-la-venta-de-entradas-para-la-llaqta-de-machupicchu-y-para-la-red-de-caminos-inka-2026/
+    source_title: CON PROCESO PÚBLICO Y TRANSPARENTE SE INICIÓ LA VENTA DE ENTRADAS PARA LA LLAQTA DE MACHUPICCHU Y PARA LA RED DE CAMINOS INKA 2026
+    publisher: Dirección Desconcentrada de Cultura de Cusco (Ministerio de Cultura)
+    checked_at: 2026-11-15
+    evidence_heading: CON PROCESO PÚBLICO Y TRANSPARENTE SE INICIÓ LA VENTA DE ENTRADAS PARA LA LLAQTA DE MACHUPICCHU Y PARA LA RED DE CAMINOS INKA 2026
+
+  - field: fee
+    value:
+      name: Inca Trail Route 1 entrance (adult)
+      amount: 292.00
+      currency: PEN
+      unit: per_person
+      audience: adult
+      note: "Same amount listed for Routes 2 and 3; Route 5 is S/ 222.00. The page does not state a year."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Current entrance fees
+
+  - field: fee
+    value:
+      name: Inca Trail Route 1 entrance (student)
+      amount: 147.00
+      currency: PEN
+      unit: per_person
+      audience: student
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Current entrance fees
+
+  - field: fee
+    value:
+      name: Inca Trail Route 1 entrance (schoolchild)
+      amount: 135.00
+      currency: PEN
+      unit: per_person
+      audience: child
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Current entrance fees
+
+  - field: trailhead_access
+    value: "Route 1 starts at Piscacucho (km 82), about 85 km and 2.5 hours from Cusco by tourist bus; SERNANP says this bus is only available through the travel agencies."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: How to get to the PNA?
+
+  - field: public_transport
+    value: "Commercial trains run from Cusco (about 4 h 10 min) and from Ollantaytambo (about 2 h 10 min) to Machu Picchu Pueblo, which is how hikers usually return."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Accesses and distances
+
+  - field: nearest_town
+    value: { name: Machu Picchu Pueblo, note: "SERNANP lists accommodation and restaurants in Machu Picchu Pueblo and Santa Teresa for the Inca Trail routes." }
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Route 1 or Main Inka Trail
+
+  - field: hazard
+    value:
+      type: security_advisory
+      note: "UK FCDO says protests in Peru can turn violent, cause roadblocks and disrupt trains, and trains to and from Machu Picchu are occasionally suspended; local groups can call strikes with little notice."
+    source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+    source_title: Safety and security - Peru travel advice - GOV.UK
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Political situation
+
+  - field: hazard
+    value:
+      type: weather
+      note: "The rainy season runs November to May; rockslides and mudslides can disrupt walking routes and roads and rail around Machu Picchu."
+    source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+    source_title: Safety and security - Peru travel advice - GOV.UK
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Rainy season
+verifier: null

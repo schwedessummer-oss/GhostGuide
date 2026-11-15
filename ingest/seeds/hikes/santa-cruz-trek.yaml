@@ -1,0 +1,46 @@
+seed_no: 28
+slug: santa-cruz-trek
+name: Santa Cruz Trek
+alt_names:
+- Santa Cruz-Llanganuco Trek
+- Circuito de Trekking Santa Cruz - Huaripampa
+route_variant: Llanganuco sector over Punta Unión to the Huaripampa valley
+region_group: south-america
+countries:
+- PE
+subdivisions:
+- PE-ANC
+area:
+  name: Huascarán National Park
+  wikidata: Q917369
+  official_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+agency:
+  name: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  wikidata: Q19521797
+hike_wikidata: Q15101728
+official_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+anchor:
+  lat: -8.92204
+  lon: -77.63266
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+  - osm_type: relation
+    osm_id: 1732163
+    name: Santa Cruz Trek (Wikidata P402)
+    via: wikidata_P402
+  confidence: probable
+  notes: Relation id comes from Wikidata P402 on Q15101728; not checked against OSM here. The anchor is that item's P625 and may not be the trailhead.
+trip_type: multi_day
+typical_days: null
+access_mode: licensed_operator_required
+flags:
+- operator_only
+- seasonal_access
+status:
+  value: unknown
+  note: The park page lists no closure or alert for this route; it is undated, so current conditions are not confirmed.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  checked_at: 2026-11-15

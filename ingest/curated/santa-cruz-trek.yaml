@@ -1,0 +1,259 @@
+slug: santa-cruz-trek
+researched_at: &id001 2026-11-15
+facts:
+- field: duration
+  value:
+    min_days: 3
+    max_days: 4
+  note: Recommended time for the circuit is 3 to 4 days.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Circuito de Trekking Santa Cruz – Huaripampa
+- field: official_url
+  value: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Circuito de Trekking Santa Cruz – Huaripampa
+- field: trailhead_access
+  value: The circuit runs from the Llanganuco sector over Punta Unión pass to the Huaripampa valley. The route has a control and surveillance post, trail signs and a camping area.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Circuito de Trekking Santa Cruz – Huaripampa
+- field: fee
+  value:
+    name: Huascarán National Park entry (1 day)
+    amount: 30
+    currency: PEN
+    unit: per_person
+    audience: non_resident
+    note: Ticket valid 1 day. General rate (the page labels it 'General').
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (1 day)
+    amount: 12
+    currency: PEN
+    unit: per_person
+    audience: adult
+    note: Ticket valid 1 day. Peruvian nationals, adults; the standard rate excludes the Laguna 69 and Pico Mateo trekking route.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (1 day)
+    amount: 5
+    currency: PEN
+    unit: per_person
+    audience: child
+    note: Ticket valid 1 day. Peruvian nationals, minors 5-16; under 5 free.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (1 day)
+    amount: 5
+    currency: PEN
+    unit: per_person
+    audience: resident
+    note: Ticket valid 1 day. Local residents, adults, with DNI.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (1 day)
+    amount: 3
+    currency: PEN
+    unit: per_person
+    audience: resident
+    note: Ticket valid 1 day. Local residents, minors, with DNI.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (2 to 3 days)
+    amount: 60
+    currency: PEN
+    unit: per_person
+    audience: non_resident
+    note: Ticket valid 2 to 3 days. General rate.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (2 to 3 days)
+    amount: 30
+    currency: PEN
+    unit: per_person
+    audience: adult
+    note: Ticket valid 2 to 3 days. Peruvian nationals, adults.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (2 to 3 days)
+    amount: 15
+    currency: PEN
+    unit: per_person
+    audience: child
+    note: Ticket valid 2 to 3 days. Peruvian nationals, minors 5-16.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (2 to 3 days)
+    amount: 15
+    currency: PEN
+    unit: per_person
+    audience: resident
+    note: Ticket valid 2 to 3 days. Local residents, with DNI.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (4 to 30 days)
+    amount: 150
+    currency: PEN
+    unit: per_person
+    audience: non_resident
+    note: Ticket valid 4 to 30 days. General rate.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (4 to 30 days)
+    amount: 75
+    currency: PEN
+    unit: per_person
+    audience: adult
+    note: Ticket valid 4 to 30 days. Peruvian nationals, adults.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (4 to 30 days)
+    amount: 35
+    currency: PEN
+    unit: per_person
+    audience: child
+    note: Ticket valid 4 to 30 days. Peruvian nationals, minors 5-16.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: fee
+  value:
+    name: Huascarán National Park entry (4 to 30 days)
+    amount: 35
+    currency: PEN
+    unit: per_person
+    audience: resident
+    note: Ticket valid 4 to 30 days. Local residents, with DNI.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tarifas de ingreso vigente
+- field: best_months
+  value:
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  note: Recommended season stated as May to October.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Temporada de visita
+- field: season_note
+  value: SERNANP calls May to October the recommended visiting season, with a mostly dry, cold climate and rains from October to April.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Temporada de visita
+- field: access_mode
+  value: licensed_operator_required
+  note: The page says visiting the park requires a tour operator authorised by SERNANP.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Tipo y horarios de ingreso
+- field: licensed_operator_list_url
+  value: https://visitaareasnaturales.sernanp.gob.pe/wp-content/uploads/2021/12/OO.TT_.-AUTORIZADOS-PNH-ESPANOL_compressed.pdf
+  note: PDF list of authorised tour operators linked from the park page.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Operadores Turísticos
+- field: hazard
+  value:
+    type: cold
+    note: SERNANP gives temperatures of -2 to -15 C and a rainy season from October to April.
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Temporada de visita
+- field: official_url
+  value: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_url: https://visitaareasnaturales.sernanp.gob.pe/anps/parque-nacional-huascaran/
+  source_title: Parque Nacional Huascarán - Sernanp
+  publisher: SERNANP (Servicio Nacional de Áreas Naturales Protegidas por el Estado)
+  checked_at: *id001
+  evidence_heading: Parque Nacional Huascarán
+- field: hazard
+  value:
+    type: security_advisory
+    note: The UK government warns that protests in Peru can turn violent and with no notice cause roadblocks and travel disruption, and that local groups can call strikes at short notice.
+  source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+  source_title: Safety and security - Peru travel advice - GOV.UK
+  publisher: UK Foreign, Commonwealth & Development Office
+  checked_at: *id001
+  evidence_heading: Political situation
+verifier: null

@@ -1,0 +1,37 @@
+seed_no: 25
+slug: inca-trail
+name: Inca Trail (Classic)
+alt_names: [Inca Trail to Machu Picchu, Camino Inka, Classic Inca Trail]
+route_variant: Route 1 from Piscacucho (km 82) via Wayllabamba, Warmiwañusca pass and Wiñaywayna to Machu Picchu (4 days, 3 nights)
+region_group: south-america
+countries: [PE]
+subdivisions: [PE-CUS]
+area:
+  name: Historic Sanctuary of Machu Picchu
+  wikidata: Q3331815
+  official_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+agency:
+  name: Ministerio de Cultura (Dirección Desconcentrada de Cultura Cusco) with SERNANP
+  wikidata: Q3315277
+hike_wikidata: Q6014019
+official_url: https://www.machupicchu.gob.pe/camino-inka/
+anchor:
+  lat: -13.2581
+  lon: -72.2633
+  source: wikidata
+osm:
+  relation_ids: [15703494]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 15703494, name: "Inca Trail to Machu Picchu", via: wikidata_P402 }
+  confidence: probable
+  notes: "Relation 15703494 comes from Wikidata P402 on Q6014019 (Inca Trail to Machu Picchu); not checked against OSM here. The anchor is that item's P625, a point on the trail, not Piscacucho (km 82). Wikidata Q3331815 (the Sanctuary) lists P402 3891114 for the protected area."
+trip_type: multi_day
+typical_days: 4
+access_mode: licensed_operator_required
+flags: [operator_only, seasonal_access]
+status:
+  value: unknown
+  note: "The official pages read (Ministerio de Cultura Inca Trail page, SERNANP sanctuary page, tariff annex) show no closure notice for Route 1 on the checked date; the tariff annex says Route 4 and Route 6 entry is suspended for management reasons. No page read states annual closure dates, so none are recorded."
+  source_url: https://www.machupicchu.gob.pe/camino-inka/
+  checked_at: 2026-11-15

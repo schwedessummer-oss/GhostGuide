@@ -1,0 +1,63 @@
+slug: salkantay-trek
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    note: "SERNANP's sanctuary page describes the Inca Trail network routes that start at Soraypampa (Route 3) and Mollepata (Route 6); no official page for the standard independent trek was found."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Route 3
+
+  - field: permit_required
+    value: conditional
+    note: "Only the Inca Trail network variants that start near Salkantay (Route 3 to Machu Picchu via Wayllabamba) need entry through an authorised agency; the pages read do not say what applies to the standard route that ends at Hidroeléctrica or Santa Teresa."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Type and hours of admission
+
+  - field: fee
+    value:
+      name: Inca Trail network Route 3 (Salkantay to Machu Picchu) entrance, adult
+      amount: 292.00
+      currency: PEN
+      unit: per_person
+      audience: adult
+      note: "Applies only to Route 3 through the Inca Trail network, not to the standard independent Salkantay trek. SERNANP recommends 5 days and 4 nights and gives 42.1 km."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Current entrance fees
+
+  - field: public_transport
+    value: "For Route 3, SERNANP says a tourist bus from Cusco goes to Mollepata and Soraypampa, where the walk begins."
+    source_url: https://visitaareasnaturales.sernanp.gob.pe/en/anps/historic-sanctuary-of-machupicchu/
+    source_title: Historic Sanctuary of Machupicchu - Sernanp
+    publisher: SERNANP
+    checked_at: 2026-11-15
+    evidence_heading: Route 3
+
+  - field: hazard
+    value:
+      type: weather
+      note: "UK FCDO names the Salkantay route among walking routes in the Cusco region that rockslides, mudslides and snow can disrupt in the rainy season, which it dates November to May."
+    source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+    source_title: Safety and security - Peru travel advice - GOV.UK
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Rainy season
+
+  - field: hazard
+    value:
+      type: security_advisory
+      note: "UK FCDO says protests in Peru can turn violent and cause roadblocks and travel disruption, and that trains to and from Machu Picchu are occasionally suspended."
+    source_url: https://www.gov.uk/foreign-travel-advice/peru/safety-and-security
+    source_title: Safety and security - Peru travel advice - GOV.UK
+    publisher: UK Foreign, Commonwealth & Development Office
+    checked_at: 2026-11-15
+    evidence_heading: Political situation
+verifier: null

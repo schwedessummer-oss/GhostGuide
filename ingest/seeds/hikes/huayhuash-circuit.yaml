@@ -1,0 +1,36 @@
+seed_no: 27
+slug: huayhuash-circuit
+name: Huayhuash Circuit
+alt_names: [Cordillera Huayhuash Trek, Circuito Huayhuash]
+route_variant: Full multi-day loop around the Cordillera Huayhuash
+region_group: south-america
+countries: [PE]
+subdivisions: [PE-ANC, PE-HUC, PE-LIM]
+area:
+  name: Cordillera Huayhuash Reserved Zone
+  wikidata: Q26916058
+  official_url: https://www.gob.pe/institucion/sernanp/noticias/1473735-mas-de-50-operadores-turisticos-de-ancash-conocen-los-avances-de-la-categorizacion-de-la-cordillera-huayhuash
+agency:
+  name: SERNANP (Zona Reservada Cordillera Huayhuash), with the campesino communities along the route
+  wikidata: Q19521797
+hike_wikidata: null
+official_url: https://www.gob.pe/institucion/sernanp/noticias/1473735-mas-de-50-operadores-turisticos-de-ancash-conocen-los-avances-de-la-categorizacion-de-la-cordillera-huayhuash
+anchor:
+  lat: -10.375641
+  lon: -76.85675
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "One Nominatim query for 'Huayhuash circuit' returned nothing. Wikidata Q26916058 (the Reserved Zone) lists P402 10052837, which is the protected-area boundary, not the trail; Q732567 (Cordillera Huayhuash range) has no P402. Anchor is Q26916058's P625, inside the range, not a trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "The one official page found (SERNANP news, 13 November 2026) says the zone is still a transitional reserved zone being categorised, and says nothing on trail operating status or fees."
+  source_url: https://www.gob.pe/institucion/sernanp/noticias/1473735-mas-de-50-operadores-turisticos-de-ancash-conocen-los-avances-de-la-categorizacion-de-la-cordillera-huayhuash
+  checked_at: 2026-11-15

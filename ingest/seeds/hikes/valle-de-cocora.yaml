@@ -1,0 +1,36 @@
+seed_no: 36
+slug: valle-de-cocora
+name: Valle de Cocora
+alt_names: [Cocora Valley, Valle del Cocora]
+route_variant: Day walk in the Cocora Valley near Salento
+region_group: south-america
+countries: [CO]
+subdivisions: [CO-QUI]
+area:
+  name: Valle de Cocora
+  wikidata: Q965776
+  official_url: https://www.crq.gov.co
+agency:
+  name: Corporación Autónoma Regional del Quindío (CRQ)
+  wikidata: Q141869334
+hike_wikidata: null
+official_url: https://www.crq.gov.co
+anchor:
+  lat: 4.6411111111111
+  lon: -75.541388888889
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "Nominatim found only a node (12767621401, 'Sendero a Cascadas de Cocora'); no route relation or way chain identified. Wikidata Q965776 has two P625 values; the first is used. No official page for the hike was found; the CRQ and Salento municipal sites were checked and did not mention it."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: unknown
+  note: "No official page found that states current status of the walk."
+  source_url: null
+  checked_at: 2026-11-15

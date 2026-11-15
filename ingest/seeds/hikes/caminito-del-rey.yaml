@@ -1,0 +1,38 @@
+seed_no: 46
+slug: caminito-del-rey
+name: Caminito del Rey
+alt_names: [El Caminito del Rey]
+route_variant: One-way walk from the north access (Ardales) to El Chorro (Álora) through the Gaitanes gorge
+region_group: europe
+countries: [ES]
+subdivisions: [ES-AN]
+area:
+  name: Paraje Natural Desfiladero de los Gaitanes
+  wikidata: Q107711340
+  official_url: https://www.caminitodelrey.info/en/
+agency:
+  name: Diputación de Málaga (Provincial Deputation of Málaga)
+  wikidata: Q7252636
+hike_wikidata: Q857763
+official_url: https://www.caminitodelrey.info/en/
+anchor:
+  lat: 36.915833
+  lon: -4.772778
+  source: wikidata
+osm:
+  relation_ids: [4678863]
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 405200482, name: "Caminito del Rey", via: nominatim }
+    - { osm_type: way, osm_id: 333580873, name: "Caminito del Rey", via: nominatim }
+  confidence: probable
+  notes: "Relation 4678863 comes from Wikidata Q857763 property P402 (via wikidata_P402); not yet checked against OSM. Anchor is that item's P625."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: open
+  note: "Open Tuesday to Sunday except 24, 25, 31 December and 1 January; the managers can close it for weather (rain, wind) or repairs. No closure notice seen on the official site on 15 November 2026."
+  source_url: https://www.caminitodelrey.info/en/your-visit/mandatory-standards
+  checked_at: 2026-11-15

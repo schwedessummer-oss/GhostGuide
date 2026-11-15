@@ -1,0 +1,37 @@
+seed_no: 34
+slug: cerro-castillo-circuit
+name: Cerro Castillo Circuit
+alt_names: [Circuito Cerro Castillo, Sendero Las Horquetas]
+route_variant: Sendero Las Horquetas through Cerro Castillo National Park (CONAF lists it as a 3-5 day trail)
+region_group: south-america
+countries: [CL]
+subdivisions: [CL-AI]
+area:
+  name: Cerro Castillo National Park
+  wikidata: Q3738207
+  official_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+agency:
+  name: Corporación Nacional Forestal (CONAF)
+  wikidata: Q1134658
+hike_wikidata: null
+official_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+anchor:
+  lat: -46.05
+  lon: -72.18333333
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 4807841, name: "Cerro Castillo National Park (park boundary, not the route)", via: wikidata_P402 }
+  confidence: unknown
+  notes: "Wikidata P402 of the park (Q3738207) gives relation 4807841, the park boundary only. Nominatim found just a viewpoint node (4703774122, 'Mirador Cerro Castillo, Sendero de Chile Las Horquetas'); no route relation identified. Anchor is the park centroid P625, not a trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: licensed_operator_required
+flags: [operator_only, seasonal_access]
+status:
+  value: partially_closed
+  note: "CONAF page lists the Horquetas trail as closed by resolution and open only with a certified guide; it also closes every year from May to September."
+  source_url: https://www.conaf.cl/parque_nacionales/parque-nacional-cerro-castillo/
+  checked_at: 2026-11-15
