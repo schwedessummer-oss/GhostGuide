@@ -1,0 +1,37 @@
+seed_no: 2
+slug: angels-landing
+name: Angels Landing
+alt_names: [Angels Landing Trail]
+route_variant: West Rim Trail from The Grotto (Shuttle Stop 6) via Scout Lookout and the chains section
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-UT]
+area:
+  name: Zion National Park
+  wikidata: Q205325
+  official_url: https://www.nps.gov/zion/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q98696115
+official_url: https://www.nps.gov/zion/planyourvisit/angels-landing-hiking-permits.htm
+anchor:
+  lat: 37.270506
+  lon: -112.949462
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 14326868, name: "Angels Landing Trail", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim found way 14326868 'Angels Landing Trail' (highway=path, Washington County, UT), likely only the chains section above Scout Lookout; the West Rim Trail approach from The Grotto is not identified yet. Wikidata Q98696115 (Angels Landing Trail) has no P402. Anchor is the P625 of Q98696115 (near the ridge, not The Grotto trailhead)."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "The park is open all year and no closure alert covers this trail on the checked date; a permit is required for the chains section beyond Scout Lookout."
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

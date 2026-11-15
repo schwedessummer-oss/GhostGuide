@@ -1,0 +1,36 @@
+seed_no: 6
+slug: john-muir-trail
+name: John Muir Trail
+alt_names: [JMT]
+route_variant: Southbound from Happy Isles in Yosemite Valley to the summit of Mount Whitney
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-CA]
+area:
+  name: Yosemite National Park
+  wikidata: Q180402
+  official_url: https://www.nps.gov/yose/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q967917
+official_url: https://www.nps.gov/yose/planyourvisit/jmt.htm
+anchor:
+  lat: 37.729926
+  lon: -119.559051
+  source: wikidata
+osm:
+  relation_ids: [1244828]
+  way_ids: []
+  candidates: []
+  confidence: probable
+  notes: "Relation 1244828 is P402 of the hike item Q967917 (John Muir Trail). The trail is co-managed: it runs from Yosemite NP through Inyo NF and Sierra NF wilderness and Sequoia & Kings Canyon NP to the Whitney summit; Yosemite is recorded as the area because the standard start and permit are there. Anchor is the P625 of Q3593534 (Happy Isles); Q967917 has no P625. No Nominatim queries were needed."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: seasonal
+  note: "Yosemite (13 Nov 2026) lists Tioga Road (Highway 120 through the park) as temporarily closed by snow, and warns that open trails may be snowy and hard to follow from about November into May or June. No JMT trail closure is listed."
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

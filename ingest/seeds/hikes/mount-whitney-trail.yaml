@@ -1,0 +1,36 @@
+seed_no: 5
+slug: mount-whitney-trail
+name: Mount Whitney Trail
+alt_names: [Mt. Whitney Trail]
+route_variant: Whitney Portal to the summit of Mount Whitney and back
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-CA]
+area:
+  name: Inyo National Forest
+  wikidata: Q1671852
+  official_url: https://www.fs.usda.gov/r05/inyo
+agency:
+  name: United States Forest Service
+  wikidata: Q1891156
+hike_wikidata: Q6924575
+official_url: https://www.fs.usda.gov/r05/inyo/wilderness/mount-whitney
+anchor:
+  lat: 36.589167
+  lon: -118.225833
+  source: wikidata
+osm:
+  relation_ids: [3289187]
+  way_ids: []
+  candidates: []
+  confidence: probable
+  notes: "Relation 3289187 is P402 of the hike item Q6924575 (Mount Whitney Trail). Anchor is the P625 of Q7996736 (Whitney Portal, the trailhead community); Q6924575's own P625 (36.5656, -118.266) lies part-way up the route. The summit is on the Sequoia National Park boundary. No Nominatim queries were needed."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: seasonal
+  note: "Inyo County's 13 Nov 2026 road report lists Upper Whitney Portal Road as closed for its annual winter closure. Inyo NF alerts show no trail closure; permits are still required year-round, and the quota season ended on 1 Nov."
+  source_url: "https://www.inyocounty.us/sites/default/files/2026-11/CURRENT%20ROAD%20UPDATE%20%20%2011.13.26.pdf"
+  checked_at: 2026-11-15

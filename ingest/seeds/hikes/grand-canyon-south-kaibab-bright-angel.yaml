@@ -1,0 +1,41 @@
+seed_no: 4
+slug: grand-canyon-south-kaibab-bright-angel
+name: South Kaibab to Bright Angel via Phantom Ranch
+alt_names: [South Kaibab and Bright Angel loop, Grand Canyon rim-to-river loop]
+route_variant: Down the South Kaibab Trail to the Colorado River, along the River Trail, and up the Bright Angel Trail to the South Rim
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-AZ]
+area:
+  name: Grand Canyon National Park
+  wikidata: Q220289
+  official_url: https://www.nps.gov/grca/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.nps.gov/places/000/south-kaibab-trail.htm
+anchor:
+  lat: 36.0529
+  lon: -112.083
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 2836796, name: "South Kaibab Trail", via: wikidata_P402 }
+    - { osm_type: relation, osm_id: 2836803, name: "Bright Angel Trail", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 133336295, name: "River Trail", via: nominatim }
+    - { osm_type: way, osm_id: 39703739, name: "River Trail", via: nominatim }
+    - { osm_type: way, osm_id: 133335855, name: "River Trail", via: nominatim }
+  confidence: unknown
+  notes: "No Wikidata item or OSM relation for the loop as a whole. Relation 2836796 is P402 of Q605323 (South Kaibab Trail) and 2836803 is P402 of Q3644685 (Bright Angel Trail). The River Trail ways (Coconino County, postcode 86023) came from Nominatim (query 'River Trail Arizona') and are unconfirmed leads for the riverside link. Anchor is the P625 of Q605323, near the South Kaibab Trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: ["fallback_for:grand-canyon-rim-to-rim"]
+status:
+  value: partially_closed
+  note: "Open on 13 Nov 2026: South Kaibab Trail to Black Bridge, River Trail between River Resthouse and the South Kaibab junction, Bright Angel Trail to River Resthouse. Closed with no reopening estimate: Phantom Ranch incl. Bright Angel Campground, and the Black and Silver bridges. Delays near 3-Mile Resthouse from 18 Nov."
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  checked_at: 2026-11-15

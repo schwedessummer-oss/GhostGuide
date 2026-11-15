@@ -1,0 +1,239 @@
+slug: sky-pond-glacier-gorge
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_title: Exploring the Bear Lake Road Corridor - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Glacier Gorge Trailhead
+
+  - field: distance_km
+    value: 6.8
+    basis: one_way
+    note: "The park's Glacier Gorge Trailhead table gives Sky Pond as 4.2 mi (6.8 km) one way; no round-trip figure is listed."
+    source_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_title: Exploring the Bear Lake Road Corridor - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Glacier Gorge Trailhead
+
+  - field: elevation_gain_m
+    value: 526
+    note: "Table lists 1,726 ft (526 m) of gain from a trailhead elevation of 9,175 ft (2,796 m); the metric value is the park's own and matches 1,726 x 0.3048."
+    source_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_title: Exploring the Bear Lake Road Corridor - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Glacier Gorge Trailhead
+
+  - field: season_note
+    value: "The park counts late May to September as its summer season; trails above 9,000 ft can still be wintry in May and June."
+    source_url: https://www.nps.gov/romo/plan-your-summer-trip-to-rocky.htm
+    source_title: Plan Your Summer Trip to Rocky - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: What's the Weather Like?
+
+  - field: season_note
+    value: "The Loch Vale and Sky Pond area is listed under the park's raptor protection rules (named closures run 15 February to 31 July each year) and can be closed if trail use disturbs breeding birds."
+    source_url: https://www.nps.gov/romo/learn/management/rmnp_compendium.htm
+    source_title: Superintendent's Compendium - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Raptor Closures
+
+  - field: permit_required
+    value: seasonal
+    note: "From 22 May to 18 October 2026, every vehicle entering the Bear Lake Road corridor (where Glacier Gorge Trailhead is) between 5 a.m. and 6 p.m. needed a Timed Entry+ Bear Lake Road reservation; arriving before 5 a.m. or after 6 p.m. needed none."
+    source_url: https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm
+    source_title: Timed Entry Permit System - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: When are Timed Entry+ Bear Lake Road Reservations needed to enter Rocky Mountain National Park?
+
+  - field: permit
+    value:
+      name: Timed Entry+ Bear Lake Road reservation (2026 season)
+      kind: vehicle_reservation
+      how_to_apply: "Book on Recreation.gov (website or app) or by phone on 877-444-6777; none are sold at entrance stations or visitor centers. One reservation per vehicle per day gives a 2-hour entry window, and a park entrance pass is still required."
+      booking_window: "Released at 8 a.m. MDT on May 1 (for May 22 - June 30), June 1 (July), July 1 (August), August 1 (September) and September 1 (October 1 - 18); extra reservations released at 7 p.m. MDT the night before"
+      official_url: https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm
+      price: { amount: 2.00, currency: USD, unit: per_application, audience: all, note: "non-refundable Recreation.gov processing fee; one reservation covers one vehicle for one day" }
+      months: [5, 6, 7, 8, 9, 10]
+    note: "Miss your window and you are sent back until after 2 p.m.; leaving the corridor and coming back is only allowed after 2 p.m. Overnight wilderness permits count as the reservation, and cyclists need none. A reservation does not guarantee parking."
+    source_url: https://www.nps.gov/romo/planyourvisit/timed-entry-permit-system.htm
+    source_title: Timed Entry Permit System - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: I'm Planning a Trip to Rocky During Summer or early Fall, When Can I Make a Timed Entry Reservation?
+
+  - field: fee
+    value: { name: "1-Day private vehicle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers everyone in one private vehicle for one day. Sold at entrance stations (card only) or online on Recreation.gov." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Private Vehicle
+
+  - field: fee
+    value: { name: "7-Day private vehicle entrance pass", amount: 35.00, currency: USD, unit: per_vehicle, audience: all, note: "Covers everyone in one vehicle for 7 consecutive days." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Private Vehicle
+
+  - field: fee
+    value: { name: "1-Day motorcycle entrance pass", amount: 25.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid one day for up to 2 private, non-commercial motorcycles carrying up to 4 people in total." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Motorcycle
+
+  - field: fee
+    value: { name: "7-Day motorcycle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private, non-commercial motorcycles carrying up to 4 people in total." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Motorcycle
+
+  - field: fee
+    value: { name: "1-Day per-person entrance pass (on foot or bicycle)", amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For walk-ins, cyclists and non-commercial groups, one day. Visitors under 16 need no pass." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Per Person
+
+  - field: fee
+    value: { name: "7-Day per-person entrance pass (on foot or bicycle)", amount: 20.00, currency: USD, unit: per_person, audience: all, note: "For walk-ins, cyclists and non-commercial groups, 7 consecutive days. Visitors under 16 need no pass." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Per Person
+
+  - field: fee
+    value: { name: "Rocky Mountain National Park annual pass", amount: 70.00, currency: USD, unit: per_person, audience: resident, note: "For US citizens and residents; valid one year at this park only, for one passholder in any personal vehicle." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Annual Entrance - Park
+
+  - field: fee
+    value: { name: "Nonresident fee", amount: 100.00, currency: USD, unit: per_person, audience: non_resident, note: "Charged to each non-US resident aged 16 or over on top of the standard entrance fee, unless entering on an Annual or America the Beautiful pass; also applies to people on commercial tours." }
+    source_url: https://www.nps.gov/romo/planyourvisit/fees.htm
+    source_title: Fees & Passes - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Nonresident Fees
+
+  - field: parking
+    value: "The Glacier Gorge parking area fills early every day; the park recommends leaving the car at the Park & Ride lot on Bear Lake Road and taking the Bear Lake shuttle to the trailhead."
+    source_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_title: Exploring the Bear Lake Road Corridor - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Glacier Gorge Trailhead
+
+  - field: trailhead_access
+    value: "The trailhead lies on Bear Lake Road, a paved 9.2-mile road that leaves US 36/Trail Ridge Road about 0.2 mi from the Beaver Meadows Entrance and climbs to the Bear Lake parking area; stops along it include Park & Ride and the Glacier Gorge parking area."
+    source_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+    source_title: Exploring the Bear Lake Road Corridor - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Exploring the Bear Lake Road Corridor
+
+  - field: public_transport
+    value: "The free Bear Lake Shuttle ran daily from 22 May to 18 October 2026, 6:30 a.m. to 7:30 p.m. every 10-15 minutes, stopping at Park & Ride, Bierstadt Lake, Glacier Gorge Trailhead and Bear Lake. Service has ended for the season."
+    source_url: https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm
+    source_title: Shuttle Buses and Public Transit - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Bear Lake Shuttle Route
+
+  - field: public_transport
+    value: "A ticketed Hiker Shuttle ran from the Estes Park Visitor Center to Park & Ride (daily 22 May-7 Sep 2026, then weekends to 18 Oct). Tickets come only from Recreation.gov at $2 per reservation of up to 4 riders, and each rider also needs an entrance pass."
+    source_url: https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm
+    source_title: Shuttle Buses and Public Transit - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Staying in Estes Park? Make Reservations to Ride the Hiker Shuttle!
+
+  - field: rule_dogs
+    value: { value: not_allowed, note: "No pets on any trail, tundra or meadow in the park; leashed pets (6 ft maximum) are limited to roads, parking areas, campgrounds and picnic areas." }
+    source_url: https://www.nps.gov/romo/planyourvisit/pets.htm
+    source_title: Pets - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Pets are prohibited on ALL Rocky Mountain National Park trails, tundra, and meadows.
+
+  - field: rule_drones
+    value: { value: not_allowed, note: "Taking off, landing or flying any unmanned aircraft (drones, quadcopters, model planes) inside the park is banned, whatever the purpose." }
+    source_url: https://www.nps.gov/romo/learn/management/unmanned_aircraft.htm
+    source_title: Unmanned Aircraft Prohibited - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Unmanned Aircraft Prohibited
+
+  - field: rule_camping
+    value: { value: restricted, note: "Any overnight stay in the wilderness, bivouacs included, needs a permit that sets the site, nights and party size; parties are capped at 7 people at individual sites and 12 at group sites." }
+    source_url: https://www.nps.gov/romo/learn/management/rmnp_compendium.htm
+    source_title: Superintendent's Compendium - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Camping Activities Requiring a Permit
+
+  - field: rule_fires
+    value: { value: restricted, note: "Campfires only in park-supplied metal grates at auto campgrounds, designated picnic areas and approved residential areas; gas or petroleum stoves may be used for cooking at designated wilderness sites." }
+    source_url: https://www.nps.gov/romo/learn/management/rmnp_compendium.htm
+    source_title: Superintendent's Compendium - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Campfire Regulations
+
+  - field: hazard
+    value: { type: weather, note: "Weather varies with elevation and turns fast; from May to September a clear morning can give way to afternoon rain or even snow." }
+    source_url: https://www.nps.gov/romo/plan-your-summer-trip-to-rocky.htm
+    source_title: Plan Your Summer Trip to Rocky - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: What's the Weather Like?
+
+  - field: hazard
+    value: { type: other, note: "Snow and ice: the ranger report of 22 Oct 2026 found ice and snow on trails above Glacier Gorge Trailhead and suggested traction devices and poles; the park warns high trails can keep snow and ice into summer." }
+    source_url: https://www.nps.gov/romo/planyourvisit/trail_conditions.htm
+    source_title: Trail Conditions - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Rocky Mountain National Park Trail Conditions Report
+
+  - field: hazard
+    value: { type: other, note: "Falling trees and branches: a year-round hazard in the park's forests; they can drop with no warning, so keep an eye on the trees around you." }
+    source_url: https://www.nps.gov/romo/planyourvisit/trail_conditions.htm
+    source_title: Trail Conditions - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Hiking Safety - Pay Attention to Trees and Tree Branches
+
+  - field: nearest_town
+    value: { name: "Estes Park", note: "The summer Hiker Shuttle leaves from the Estes Park Visitor Center in town for the Park & Ride hub on Bear Lake Road, about 45 minutes to an hour away." }
+    source_url: https://www.nps.gov/romo/planyourvisit/shuttle-buses-and-public-transit.htm
+    source_title: Shuttle Buses and Public Transit - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Staying in Estes Park? Make Reservations to Ride the Hiker Shuttle!
+
+  - field: closure
+    value: { status: open, note: "No closure is listed; the ranger report updated 22 Oct 2026 describes the Glacier Gorge trails with ice and some snow above the trailhead, with dry lower sections.", as_of: 2026-11-15 }
+    source_url: https://www.nps.gov/romo/planyourvisit/trail_conditions.htm
+    source_title: Trail Conditions - Rocky Mountain National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Rocky Mountain National Park Trail Conditions Report
+verifier: null

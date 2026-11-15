@@ -1,0 +1,38 @@
+seed_no: 7
+slug: highline-trail-glacier
+name: Highline Trail
+alt_names: [Highline Trail (Logan Pass)]
+route_variant: Logan Pass to The Loop trailhead along Going-to-the-Sun Road (point to point)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-MT]
+area:
+  name: Glacier National Park
+  wikidata: Q373567
+  official_url: https://www.nps.gov/glac/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q5759519
+official_url: https://www.nps.gov/places/highline-trailhead.htm
+anchor:
+  lat: 48.695278
+  lon: -113.717778
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 370273561, name: "Highline Trail", via: nominatim }
+    - { osm_type: way, osm_id: 550724127, name: "Highline/Continental Divide Trail", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim (3 queries) returned way 370273561 'Highline Trail' and way 550724127 'Highline/Continental Divide Trail' (both highway=path, Flathead County, MT); each is probably only one segment of the Logan Pass to The Loop route, and the descent from Granite Park to The Loop is not identified. Wikidata Q5759519 (Highline Trail, Glacier NP) has no P402; its P625 (48.77,-113.763) lies near Granite Park, so the anchor is the P625 of Q6667126 (Logan Pass Visitor Center), next to the trailhead."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "Going-to-the-Sun Road is closed for the season at Avalanche Creek (west) and Jackson Glacier Overlook (east), which leaves Logan Pass and the trailhead without road access until the alpine section reopens."
+  source_url: https://www.nps.gov/glac/park-alerts-glac.json
+  checked_at: 2026-11-15

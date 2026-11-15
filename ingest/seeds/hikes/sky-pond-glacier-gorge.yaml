@@ -1,0 +1,37 @@
+seed_no: 16
+slug: sky-pond-glacier-gorge
+name: Sky Pond
+alt_names: [Sky Pond via Glacier Gorge]
+route_variant: From Glacier Gorge Trailhead on Bear Lake Road through Loch Vale to Sky Pond
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-CO]
+area:
+  name: Rocky Mountain National Park
+  wikidata: Q777183
+  official_url: https://www.nps.gov/romo/index.htm
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.nps.gov/romo/planyourvisit/exploring-the-bear-lake-road-corridor.htm
+anchor:
+  lat: 40.3103442
+  lon: -105.640371
+  source: nominatim
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 110477733, name: "Sky Pond Trail", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim (3 queries): node 1834757861 'Glacier Gorge Trailhead' (highway=trailhead, on 'Glacier Gorge Trail'; used as the anchor), way 110477733 'Sky Pond Trail' (highway=path, probably only the upper segment above The Loch) and relation 5986787 'Sky Pond' (natural lake, the destination, not the route). No Wikidata item exists for the trail: Q49310875 'Sky Pond' is a lake in New Hampshire and Q49804739 'Glacier Gorge' is the valley, without P402."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "No closure is posted for the Glacier Gorge trails and the park alerts feed was empty on 2026-11-15. The ranger trail report updated 22 Oct 2026 describes snow and ice on trails above Glacier Gorge Trailhead and advises traction devices."
+  source_url: https://www.nps.gov/romo/planyourvisit/trail_conditions.htm
+  checked_at: 2026-11-15

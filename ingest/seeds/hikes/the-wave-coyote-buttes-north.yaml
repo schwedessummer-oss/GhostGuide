@@ -1,0 +1,37 @@
+seed_no: 9
+slug: the-wave-coyote-buttes-north
+name: The Wave
+alt_names: [Coyote Buttes North, The Wave (Coyote Buttes North)]
+route_variant: BLM suggested route to The Wave in Coyote Buttes North (6.4-mile round trip)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-UT, US-AZ]
+area:
+  name: Vermilion Cliffs National Monument
+  wikidata: Q653233
+  official_url: https://www.blm.gov/national-conservation-lands/arizona/vermilion-cliffs
+agency:
+  name: Bureau of Land Management
+  wikidata: Q1010556
+hike_wikidata: null
+official_url: https://www.blm.gov/programs/recreation/permits-and-passes/lotteries-and-permit-systems/arizona/coyote-buttes-north
+anchor:
+  lat: 37.0191
+  lon: -112.025
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 191946470, name: "The Wave Trail via Wire Pass", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim (3 queries) found way 191946470 'The Wave Trail via Wire Pass' (highway=path, Kane County, UT), node 821389089 'The Wave' (tourism=attraction, Coconino County, AZ), node 821389059 'Wire Pass Trailhead' and way 168332730 'Coyote Buttes North' (nature reserve boundary). Anchor is the P625 of Q8026750 (Wire Pass Trailhead, Kane County, UT); the BLM pages read do not name the start trailhead, so the Utah start (subdivisions US-UT then US-AZ) is unconfirmed. The Wave itself is Q3032130 (rock formation, not a trail item), so hike_wikidata is null."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "BLM issues Coyote Buttes North permits for every day of the year; road and weather conditions can still make the trip unsafe or impossible on a given day."
+  source_url: https://www.blm.gov/arizona/public-room/fact-sheet/permits-and-regulations
+  checked_at: 2026-11-15

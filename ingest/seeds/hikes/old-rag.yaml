@@ -1,0 +1,37 @@
+seed_no: 14
+slug: old-rag
+name: Old Rag
+alt_names: [Old Rag Mountain, Old Rag Circuit]
+route_variant: Old Rag Circuit from the boundary parking area (Ridge Trail up, Saddle Trail down, back via Weakley Hollow Fire Road and Ridge Access Trail)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-VA]
+area:
+  name: Shenandoah National Park
+  wikidata: Q1137401
+  official_url: https://www.nps.gov/shen/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+anchor:
+  lat: 38.5517157
+  lon: -78.3160343
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 81797725, name: "Saddle Trail", via: nominatim }
+  confidence: unknown
+  notes: "No Wikidata item for the trail itself; Q7084809 (Old Rag Mountain) is the peak and has no P402. Anchor is that item's P625 (the summit), not the boundary trailhead. Nominatim (3 queries): way 81797725 'Saddle Trail' (highway=footway) near the summit; the query for the Ridge Trail returned nothing, and the 'Old Rag Mountain Fee & Information Station' (way 463816486, a building on the Ridge Trail at about 38.5708,-78.2939) marks the trailhead area but is not a trail."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "No trail closure listed. Day-use tickets are required March 1-November 30 on top of an entrance pass. The main Old Rag Trailhead parking lot is closed for infrastructure work the park expected to finish in November 2026; use the overflow lots."
+  source_url: https://www.nps.gov/shen/park-alerts-shen.json
+  checked_at: 2026-11-15

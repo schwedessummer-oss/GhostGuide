@@ -1,0 +1,37 @@
+seed_no: 13
+slug: teton-crest-trail
+name: Teton Crest Trail
+alt_names: [TCT]
+route_variant: Phillips Pass to String Lake (the park's 39-mile point-to-point suggested route)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-WY]
+area:
+  name: Grand Teton National Park
+  wikidata: Q222695
+  official_url: https://www.nps.gov/grte/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q7706161
+official_url: https://www.nps.gov/grte/planyourvisit/backcountryroutesandzones.htm
+anchor:
+  lat: 43.7144
+  lon: -110.855
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 1049574847, name: "Teton Crest Trail", via: nominatim }
+  confidence: unknown
+  notes: "Wikidata Q7706161 (Teton Crest Trail) has no P402. Anchor is that item's P625 (43.7144,-110.855), which lies mid-route rather than at the Phillips Pass start. Nominatim (3 queries) found only way 1049574847 (highway=path, centred about 44.02,-110.87), well north of the NPS-described route; it may be an unrelated Forest Service segment of the same name. The route also crosses Bridger-Teton and Caribou-Targhee national forest land (USFS)."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: seasonal
+  note: "Winter season: the park stops updating trail conditions and expects heavy snow October-April; backcountry permit offices are closed (permits by phone). Death Canyon Trailhead, used by some TCT variants, is closed for construction until June 19, 2027."
+  source_url: https://www.nps.gov/grte/planyourvisit/backcountry-trail-conditions.htm
+  checked_at: 2026-11-15

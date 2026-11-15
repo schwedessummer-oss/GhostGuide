@@ -1,0 +1,41 @@
+seed_no: 12
+slug: wonderland-trail
+name: Wonderland Trail
+alt_names: []
+route_variant: Full circuit of Mount Rainier from Longmire (the park lists camps and trailheads clockwise from Longmire); optional Spray Park alternate
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-WA]
+area:
+  name: Mount Rainier National Park
+  wikidata: Q944329
+  official_url: https://www.nps.gov/mora/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q3498361
+official_url: https://www.nps.gov/mora/planyourvisit/the-wonderland-trail.htm
+anchor:
+  lat: 46.7494
+  lon: -121.809
+  source: wikidata
+osm:
+  relation_ids: [4111743]
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 74762042, name: "Wonderland Trail", via: nominatim }
+    - { osm_type: way, osm_id: 944483693, name: "Wonderland Trail", via: nominatim }
+    - { osm_type: way, osm_id: 74761559, name: "Wonderland Trail", via: nominatim }
+    - { osm_type: way, osm_id: 191009610, name: "Wonderland Trail", via: nominatim }
+    - { osm_type: way, osm_id: 179370571, name: "Wonderland Trail", via: nominatim }
+  confidence: probable
+  notes: "Relation 4111743 is P402 of the hike item Q3498361 (Wonderland Trail; P856 = the NPS Wonderland page, P3018 = Q3326033 Mount Rainier Wilderness); a Nominatim lookup of R4111743 returned nothing, so its OSM tags are unchecked. Anchor is the P625 of Q3259130 (Longmire, the start the park uses); Q3498361 has P625 46.8689,-121.6592 on the northeast side. Nominatim search 'Wonderland Trail, Washington' returned named ways near Longmire and Sunrise (1 search + 1 shared lookup used)."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: partially_closed
+  note: "Park alerts (updated 3 Nov 2026): the Wonderland Trail is closed from the Carbon River Suspension Bridge to White River Campground because of the Wonderland Complex fires (Grand Park 2, West Fork, Garda Falls, Pigeon). Sunrise and White River roads are closed for the winter."
+  source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

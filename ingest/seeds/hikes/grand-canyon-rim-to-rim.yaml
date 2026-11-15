@@ -1,0 +1,46 @@
+seed_no: 4
+slug: grand-canyon-rim-to-rim
+name: Grand Canyon Rim-to-Rim
+alt_names: [Rim-to-Rim, R2R, North Kaibab to Bright Angel]
+route_variant: North Kaibab Trail from the North Rim to Phantom Ranch, then across the river and up the Bright Angel Trail to the South Rim
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-AZ]
+area:
+  name: Grand Canyon National Park
+  wikidata: Q220289
+  official_url: https://www.nps.gov/grca/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.nps.gov/places/000/north-kaibab-trail.htm
+anchor:
+  lat: 36.2171
+  lon: -112.056
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 2836789, name: "North Kaibab Trail", via: wikidata_P402 }
+    - { osm_type: relation, osm_id: 2836803, name: "Bright Angel Trail", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 133336295, name: "River Trail", via: nominatim }
+    - { osm_type: way, osm_id: 39703739, name: "River Trail", via: nominatim }
+    - { osm_type: way, osm_id: 133335855, name: "River Trail", via: nominatim }
+  confidence: unknown
+  notes: "No Wikidata item or OSM relation for the rim-to-rim route as a whole. Relation 2836789 is P402 of Q7055746 (North Kaibab Trail) and 2836803 is P402 of Q3644685 (Bright Angel Trail); together with the river crossing they should make up the route. The three River Trail ways (Coconino County, postcode 86023) came from Nominatim (query 'River Trail Arizona') and are unconfirmed leads for the riverside link. Anchor is the P625 of Q7055746, near the North Kaibab Trailhead."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: closed
+  note: "NPS lists the whole North Kaibab Trail (trailhead to Phantom Ranch, incl. Cottonwood Campground), all of Phantom Ranch with Bright Angel Campground, and the Black and Silver bridges as closed after the 29 Aug 2026 flash flood. No reopening estimate is given."
+  source_url: https://www.nps.gov/grca/planyourvisit/key-messages.htm
+  checked_at: 2026-11-15
+replacement:
+  condition: "North Rim / North Kaibab Trail closed for 2026 (Dragon Bravo Fire of July 2025; the whole North Kaibab Trail has also been closed since the 29 Aug 2026 flash flood)"
+  fallback_slug: grand-canyon-south-kaibab-bright-angel
+  recommendation: use_fallback
+  reason: "NPS pages (updated 10-13 Nov 2026) list the entire North Kaibab Trail as closed with no reopening estimate, so this route cannot be hiked. The fallback's trails (South Kaibab to Black Bridge, River Trail, Bright Angel to River Resthouse) are listed open on 13 Nov 2026, but Phantom Ranch, Bright Angel Campground and both river bridges are closed, so for now it works only as a South Rim route without a night at the river."

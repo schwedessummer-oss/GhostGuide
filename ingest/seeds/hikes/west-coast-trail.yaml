@@ -1,0 +1,39 @@
+seed_no: 18
+slug: west-coast-trail
+name: West Coast Trail
+alt_names: [WCT]
+route_variant: Pachena Bay (north, near Bamfield) to Gordon River (south, near Port Renfrew), with a mid-point access at Balaats’adt (Nitinaht Village)
+region_group: north-central-america
+countries: [CA]
+subdivisions: [CA-BC]
+area:
+  name: Pacific Rim National Park Reserve
+  wikidata: Q1756401
+  official_url: https://parks.canada.ca/pn-np/bc/pacificrim
+agency:
+  name: Parks Canada
+  wikidata: Q349487
+hike_wikidata: Q3434548
+official_url: https://parks.canada.ca/pn-np/bc/pacificrim/activ/sco-wct
+anchor:
+  lat: 48.664475
+  lon: -124.837621
+  source: wikidata
+osm:
+  relation_ids: [6955341]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 6955341, name: "West Coast Trail", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 1409932313, name: "West Coast Trail", via: nominatim }
+    - { osm_type: way, osm_id: 314937836, name: "West Coast Trail", via: nominatim }
+  confidence: probable
+  notes: "Relation 6955341 comes from Wikidata P402 on Q3434548 (West Coast Trail); not checked against OSM here. The anchor is Q3434548's P625, a mid-route point, not a trailhead. One Nominatim query returned many footway/path ways named 'West Coast Trail' (e.g. 1409932313 near Pachena Bay/Anaqtl'a, 314937836 near Gordon River) plus 'Beach Option' ways (300853905, 300853330) near Port Renfrew."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "The trail closes every year from 7 October to 30 April and was closed for the season on 2026-11-15. Only day use between the Pachena Bay trailhead and km 8 is allowed, with a park permit, in and out via Pachena Bay the same day; no overnight use."
+  source_url: https://parks.canada.ca/pn-np/bc/pacificrim/bulletins/2A8FF4A7-9D2D-4D0F-903F-E32D7F583EFC
+  checked_at: 2026-11-15

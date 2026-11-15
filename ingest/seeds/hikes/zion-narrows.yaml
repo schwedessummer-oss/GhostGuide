@@ -1,0 +1,36 @@
+seed_no: 3
+slug: zion-narrows
+name: The Narrows
+alt_names: [Zion Narrows, Virgin River Narrows]
+route_variant: Bottom-up from the Temple of Sinawava (Riverside Walk) upstream to Big Spring
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-UT]
+area:
+  name: Zion National Park
+  wikidata: Q205325
+  official_url: https://www.nps.gov/zion/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.nps.gov/zion/planyourvisit/narrowsbottomup.htm
+anchor:
+  lat: 37.2847
+  lon: -112.948
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates: []
+  confidence: unknown
+  notes: "No Wikidata trail item for the river hike: Q3029053 'The Narrows' is the slot canyon itself (P625 37.30669,-112.94769, no P402), and Q96790196 'Riverside Walk' is the paved approach trail (no P402). Anchor is the P625 of Q49340993 (Temple of Sinawava, the trailhead). Nominatim (3 queries) returned only the Temple of Sinawava shuttle stop node 465620863, no route object."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "No closure alert for The Narrows on the checked date. It closes whenever Virgin River flow exceeds 150 cfs or the National Weather Service issues a Flash Flood Warning, so status can change daily."
+  source_url: https://www.nps.gov/zion/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

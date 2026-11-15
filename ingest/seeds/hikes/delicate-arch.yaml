@@ -1,0 +1,37 @@
+seed_no: 8
+slug: delicate-arch
+name: Delicate Arch
+alt_names: [Delicate Arch Trail]
+route_variant: Delicate Arch Trail from the Wolfe Ranch trailhead
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-UT]
+area:
+  name: Arches National Park
+  wikidata: Q223969
+  official_url: https://www.nps.gov/arch/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q105494977
+official_url: https://www.nps.gov/arch/planyourvisit/delicate-arch.htm
+anchor:
+  lat: 38.735084
+  lon: -109.520484
+  source: official
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 58056958, name: "Delicate Arch Trail", via: nominatim }
+  confidence: unknown
+  notes: "Nominatim (2 queries) found way 58056958 'Delicate Arch Trail' (highway=path, Grand County, UT) plus an information-board node 7921531768. Wikidata Q105494977 (Delicate Arch Trail) has no P402; its P625 (38.74055,-109.50818) is mid-trail. Q2300616 (the arch) has P402 14637765, which is the arch feature, not the trail. Anchor is the Wolfe Ranch Parking Lot coordinate on the park's Parking page."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "The park is generally open 24 hours a day, all year; on very busy days entry may be held temporarily when the entrance line or parking lots are full."
+  source_url: https://www.nps.gov/arch/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

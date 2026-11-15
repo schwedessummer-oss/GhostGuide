@@ -1,0 +1,43 @@
+seed_no: 17
+slug: chilkoot-trail
+name: Chilkoot Trail
+alt_names: [Chilkoot National Historic Trail]
+route_variant: Dyea, Alaska, over Chilkoot Pass to Bennett, British Columbia (in 2026 only out-and-back hikes on either side of the border)
+region_group: north-central-america
+countries: [US, CA]
+subdivisions: [US-AK, CA-BC]
+# The trail straddles the border. Parks Canada manages the Canadian side (Chilkoot Trail National Historic Site,
+# no Wikidata item found); the US side is Klondike Gold Rush National Historical Park (Q1774856), managed by the
+# National Park Service (Q308439), official page https://www.nps.gov/klgo/planyourvisit/chilkoottrail.htm.
+area:
+  name: Chilkoot Trail National Historic Site
+  wikidata: null
+  official_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot
+agency:
+  name: Parks Canada
+  wikidata: Q349487
+hike_wikidata: Q3389258
+official_url: https://parks.canada.ca/lhn-nhs/yt/chilkoot
+anchor:
+  lat: 59.69844194444445
+  lon: -135.23512
+  source: wikidata
+osm:
+  relation_ids: [1225005]
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 1225005, name: "Chilkoot Trail", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 569051774, name: "Chilkoot Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1086555435, name: "Chilkoot Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1086511092, name: "Chilkoot Trail", via: nominatim }
+  confidence: probable
+  notes: "Relation 1225005 comes from Wikidata P402 on Q3389258 (Chilkoot Trail); not checked against OSM here. The anchor is Q3389258's P625, which sits at Chilkoot Pass (the border, mid-route), not at the Dyea trailhead. Nominatim (2 queries) returned path ways near Skagway/Dyea (569051774) and in BC near Bennett (1086511092, 1086555435); the Dyea trailhead query returned nothing."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: partially_closed
+  note: "For 2026 it is illegal to cross the US-Canada border on the trail, so the through-hike from Dyea to Bennett is not possible; hikers may go out and back from either end and must turn around at the border (Chilkoot Pass). Overnight hikers need a validated permit from 1 June to 12 September."
+  source_url: https://www.nps.gov/klgo/planyourvisit/planning-your-hike.htm
+  checked_at: 2026-11-15

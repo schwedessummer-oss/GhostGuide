@@ -1,0 +1,38 @@
+seed_no: 1
+slug: half-dome
+name: Half Dome
+alt_names: [Half Dome Trail, Half Dome Cables and Trail]
+route_variant: Mist Trail and John Muir Trail from Happy Isles
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-CA]
+area:
+  name: Yosemite National Park
+  wikidata: Q180402
+  official_url: https://www.nps.gov/yose/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q96053096
+official_url: https://www.nps.gov/yose/planyourvisit/halfdome.htm
+anchor:
+  lat: 37.729926
+  lon: -119.559051
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 16315186, name: "Half Dome Cables and Trail", via: wikidata_P402 }
+    - { osm_type: relation, osm_id: 6451906, name: "Mist Trail", via: wikidata_P402 }
+  confidence: unknown
+  notes: "Relation 16315186 is P402 of the hike item Q96053096 (Half Dome Cables and Trail); relation 6451906 is P402 of Q6879984 (Mist Trail). Each likely covers only part of the Happy Isles to summit route; the JMT section is not identified yet. Anchor is the P625 of Q3593534 (Happy Isles, the usual start); the hike item Q96053096 has P625 37.746322,-119.530881 near the cables. Nominatim (3 queries) returned no trail objects."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: [seasonal_access]
+status:
+  value: seasonal
+  note: "Cables removed for the winter. A permit is needed to go to the summit whenever the cables are up (normally late May to mid-October)."
+  source_url: https://www.nps.gov/yose/planyourvisit/conditions.htm
+  checked_at: 2026-11-15

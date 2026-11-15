@@ -1,0 +1,235 @@
+slug: old-rag
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Old Rag Circuit
+
+  - field: distance_km
+    value: 15.1
+    basis: loop
+    note: "Page gives a 9.4-mile circuit; converted to km."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Old Rag Circuit
+
+  - field: elevation_gain_m
+    value: 716
+    note: "Page states an elevation gain of 2,348 feet; converted to metres (x0.3048, rounded)."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Old Rag Circuit
+
+  - field: duration
+    value: { min_hours: 7, max_hours: 8 }
+    note: "Average duration listed as 7-8 hours (hiking time given as 7 h 30 min); the park says this leaves out rests, fitness and exploring."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Details
+
+  - field: route_type
+    value: loop
+    note: "Circuit: up the Ridge Trail and over the rock scramble, down the Saddle Trail, then Weakley Hollow Fire Road and the Ridge Access Trail back to the start."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Hike Description
+
+  - field: difficulty_official
+    value: { label: "Very Strenuous", scale: "Shenandoah NP hiking difficulty scale" }
+    note: "Top rating on the park's five-step scale, meant only for fit, well-prepared hikers."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Old Rag Circuit
+
+  - field: season_note
+    value: "Listed as a year-round hike; an advance day-use ticket is needed from March 1 to November 30."
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Details
+
+  - field: season_note
+    value: "Weekends get very crowded, with full lots and long waits at the narrow scrambles; summer and fall are the peak periods, so the park suggests a weekday or a quieter hike then."
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Avoid the Crowds
+
+  - field: permit_required
+    value: seasonal
+    note: "From March 1 to November 30 everyone on Old Rag Mountain, including the Saddle, Ridge and Ridge Access trails, needs a day-use ticket bought in advance as well as a park entrance pass. Weakley Hollow Fire Road needs no ticket."
+    source_url: https://www.nps.gov/shen/planyourvisit/faqs-oldrag.htm
+    source_title: Old Rag Day-Use Ticket - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: About Day-Use Tickets
+
+  - field: permit
+    value:
+      name: Old Rag day-use ticket
+      kind: day_use
+      how_to_apply: "Book online on Recreation.gov (account needed) or by phone on 877-444-6777 before you arrive; no tickets are sold at the Old Rag station. Each person of any age needs one; one account can book up to four a day, and the booker must show photo ID."
+      booking_window: "Up to 30 days ahead: 400 tickets released at 10:00 a.m. 30 days before the date and 400 more at 10:00 a.m. 5 days before; any left can be booked on the day"
+      official_url: https://www.recreation.gov/ticket/10088450/ticket/10088451
+      price: { amount: 2.00, currency: USD, unit: per_person, audience: all, note: "per ticket, valid for one date only; no refunds or fee waivers; changes or cancellation until noon the day before" }
+      months: [3, 4, 5, 6, 7, 8, 9, 10, 11]
+    note: "800 tickets a day. A ticket does not guarantee parking. Backcountry campers inside the ticket area need a ticket for each day there. Holders of the free Access or veterans passes still need tickets."
+    source_url: https://www.nps.gov/shen/planyourvisit/faqs-oldrag.htm
+    source_title: Old Rag Day-Use Ticket - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Frequently Asked Questions
+
+  - field: fee
+    value: { name: "Old Rag day-use ticket", amount: 2.00, currency: USD, unit: per_person, audience: all, note: "Required March 1-November 30 for each hiker, per day; non-refundable; charged in addition to the park entrance fee." }
+    source_url: https://www.nps.gov/shen/planyourvisit/faqs-oldrag.htm
+    source_title: Old Rag Day-Use Ticket - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: How much does an Old Rag day-use ticket cost?
+
+  - field: fee
+    value: { name: "Private vehicle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Unlimited entry for one private vehicle and its occupants for seven consecutive days. Sold card-only at the Old Rag Mountain station among others; the park takes no cash." }
+    source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+    source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Private Vehicle
+
+  - field: fee
+    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For visitors 16 and over entering other than by private vehicle; under-16s free; a family arriving together is capped at the vehicle price." }
+    source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+    source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Per Person
+
+  - field: fee
+    value: { name: "Motorcycle entrance pass", amount: 25.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days for up to 2 private motorcycles with up to 4 riders in total." }
+    source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+    source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Motorcycle
+
+  - field: fee
+    value: { name: "Shenandoah annual park pass", amount: 55.00, currency: USD, unit: per_vehicle, audience: resident, note: "A year of entry for the pass holder plus fellow occupants of one vehicle, up to 4 adults (under-16s free); sold to US citizens and residents." }
+    source_url: https://www.nps.gov/shen/planyourvisit/fees.htm
+    source_title: Fees & Passes - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Annual Entrance - Park
+
+  - field: parking
+    value: "The NPS lot at the Old Rag boundary is free, but a ticket does not reserve a space; carpooling is urged, and October weekends are tight. The main lot has been shut for upgrades (work expected done Nov 2026); use the overflow lots meanwhile."
+    source_url: https://www.nps.gov/shen/planyourvisit/faqs-oldrag.htm
+    source_title: Old Rag Day-Use Ticket - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Is parking included in my Old Rag day-use ticket?
+
+  - field: parking
+    value: "No parking on road shoulders. When the main lots fill, go to the overflow lot, which has an access trail to the ranger station. Nearby landowners sell parking, but paying them does not cover the park entrance fee."
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Parking
+
+  - field: trailhead_access
+    value: "Main trailheads are on the park's eastern boundary, not Skyline Drive (1-1.5 h drive from Dickey Ridge or Byrd VCs). Reach Old Rag parking from Sperryville via Routes 522, 231 and 601, or from Madison via 231 and 602. Set navigation to the named Old Rag Parking lot, not just 'Old Rag'."
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Directions
+
+  - field: rule_dogs
+    value: { value: not_allowed, note: "Pets are barred from the Saddle, Ridge and Ridge Access trails and from the stretch from Post Office Junction to Old Rag Shelter; service animals may come." }
+    source_url: https://www.nps.gov/thingstodo/old-rag-circuit.htm
+    source_title: Old Rag Circuit (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Pets Allowed
+
+  - field: rule_drones
+    value: { value: not_allowed, note: "Launching, landing or operating unmanned aircraft on NPS-administered land and water is prohibited." }
+    source_url: https://www.nps.gov/shen/learn/management/lawsandpolicies.htm
+    source_title: Laws & Policies - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Drones Prohibited
+
+  - field: rule_camping
+    value: { value: restricted, note: "Camping is banned above 2,800 feet, so legal overnight sites around Old Rag are scarce; plan any backcountry trip carefully." }
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Know the Camping Regulations
+
+  - field: hazard
+    value: { type: other, note: "Long, steep hikes with a hard rock scramble that needs good upper-body strength; children and shorter adults often need a hand. The park warns the summit can be dangerous without proper planning." }
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Know Your Limits
+
+  - field: hazard
+    value: { type: weather, note: "In cold weather the trails can be icy or snowy even when lower ground is clear; carry microspikes or other boot traction." }
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Hiking Old Rag in the Winter
+
+  - field: hazard
+    value: { type: remoteness, note: "Mobile signal around Old Rag is unreliable, so load directions or offline maps before leaving. Numbers under the blazes are search-and-rescue references to quote if you report an incident." }
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Note the Numbers
+
+  - field: nearest_town
+    value: { name: Etlan, note: "The park lists Old Rag's location as Etlan, Virginia, at the park boundary; its driving directions start from Sperryville or Madison." }
+    source_url: https://www.nps.gov/places/old-rag.htm
+    source_title: Old Rag Mountain (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Quick Facts
+
+  - field: access_mode
+    value: independent
+    note: "Individual hikers book their own tickets; one person may book for up to three others."
+    source_url: https://www.nps.gov/shen/planyourvisit/faqs-oldrag.htm
+    source_title: Old Rag Day-Use Ticket - Shenandoah National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Can I reserve a ticket for someone else?
+
+  - field: closure
+    value: { status: open, note: "No trail closure listed. Infrastructure work keeps the main Old Rag Trailhead lot closed to vehicles and pedestrians (completion expected November 2026); overflow lots give access. Tickets still required through November 30.", as_of: 2026-11-15 }
+    source_url: https://www.nps.gov/shen/park-alerts-shen.json
+    source_title: Infrastructure Improvements to Old Rag Trailhead (Shenandoah National Park alerts feed shown on the Alerts & Conditions page)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Infrastructure Improvements to Old Rag Trailhead
+verifier: null

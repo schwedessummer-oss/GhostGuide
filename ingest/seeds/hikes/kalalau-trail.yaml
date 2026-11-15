@@ -1,0 +1,37 @@
+seed_no: 10
+slug: kalalau-trail
+name: Kalalau Trail
+alt_names: []
+route_variant: Hāʻena State Park (Kēʻē Beach trailhead) to Kalalau Beach and back, 11 miles each way
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-HI]
+area:
+  name: Nāpali Coast State Wilderness Park
+  wikidata: Q7071561
+  official_url: https://dlnr.hawaii.gov/dsp/parks/kauai/napali-coast-state-wilderness-park/
+agency:
+  name: Hawaiʻi Department of Land and Natural Resources, Division of State Parks
+  wikidata: Q109328405
+hike_wikidata: Q15232863
+official_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+anchor:
+  lat: 22.224722
+  lon: -159.583611
+  source: wikidata
+osm:
+  relation_ids: [9146299]
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 1172668046, name: "Kalalau Trail", via: nominatim }
+  confidence: probable
+  notes: "Relation 9146299 is P402 of the hike item Q15232863 (Kalalau Trail); a Nominatim lookup of R9146299 returned nothing, so its OSM tags are unchecked. Anchor is the P625 of Q4243083 (Haʻena State Park, where the trailhead is); Q15232863 has P625 22.200278,-159.620278, roughly mid-trail. The area item Q7071561 (label 'Nā Pali Coast State Park', P856 = the DLNR park page) has P402 9148212, the park boundary, not the route. Nominatim search 'Kalalau Trail' returned one way near the trailhead (1 search + 1 lookup used)."
+trip_type: multi_day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "State Parks notice dated 12 Nov 2026: after closures linked to storms Nolo and Lowell, the Kalalau Trail reopened to permitted overnight camping on 2 Nov 2026 and day hiking to Hanakāpīʻai has reopened; reservations are required for both. Hāʻena State Park reopened 15 Oct 2026."
+  source_url: https://dlnr.hawaii.gov/dsp/hiking/kauai/kalalau-trail/
+  checked_at: 2026-11-15

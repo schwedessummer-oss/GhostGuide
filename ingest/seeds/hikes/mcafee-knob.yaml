@@ -1,0 +1,39 @@
+seed_no: 15
+slug: mcafee-knob
+name: McAfee Knob
+alt_names: [McAfee's Knob]
+route_variant: Appalachian Trail out and back from the VA 311 McAfee Knob parking lot (optional McAfee fire road section)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-VA]
+area:
+  name: Appalachian National Scenic Trail
+  wikidata: Q620648
+  official_url: https://www.nps.gov/appa/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: null
+official_url: https://www.ratc.org/at-hiking/mcafee-knob-and-the-triple-crown/
+anchor:
+  lat: 37.392777777778
+  lon: -80.036666666667
+  source: wikidata
+osm:
+  relation_ids: []
+  way_ids: []
+  candidates:
+    - { osm_type: relation, osm_id: 156553, name: "Appalachian Trail", via: wikidata_P402 }
+    - { osm_type: way, osm_id: 286275041, name: "Appalachian Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1485128751, name: "Appalachian Trail", via: nominatim }
+  confidence: unknown
+  notes: "Relation 156553 is the P402 of Q620648 (Appalachian Trail) and covers the whole trail, not just this hike. No Wikidata item exists for the McAfee Knob hike; Q6799872 (McAfee Knob) is the peak, and its P625 is used as anchor (the summit, about 4 miles from the VA 311 trailhead). Nominatim: peak node 356573174; AT ways 286275041 (centred near the knob) and 1485128751 (Mason Cove side) are likely parts of the route."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "No closure listed for the McAfee Knob area. A caution alert reports human-habituated black bears frequently seen there; follow food storage rules and use the food lockers."
+  source_url: https://www.nps.gov/appa/park-alerts-appa.json
+  checked_at: 2026-11-15

@@ -1,0 +1,200 @@
+slug: skyline-trail-mount-rainier
+researched_at: 2026-11-15
+facts:
+  - field: official_url
+    value: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Skyline Trail
+
+  - field: distance_km
+    value: 8.8
+    basis: loop
+    note: "The Paradise page lists the Skyline Trail loop as 5.5 mi / 8.8 km."
+    source_url: https://www.nps.gov/mora/planyourvisit/paradise.htm
+    source_title: Paradise - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Hiking
+
+  - field: elevation_gain_m
+    value: 518
+    note: "Page states an elevation gain of 1700 feet; converted to metres (x0.3048, rounded)."
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Skyline Trail
+
+  - field: duration
+    value: { min_hours: 4.5, max_hours: 4.5 }
+    note: "The park gives a round-trip hiking time of 4.5 hours."
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Skyline Trail
+
+  - field: route_type
+    value: loop
+    note: "Described as a loop: about 2 miles of climbing to Panorama Point, on past the Stevens-Van Trump Memorial, then down through Paradise Valley and past Myrtle Falls back to Paradise."
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Trail Description
+
+  - field: season_note
+    value: "Paradise sits at 5,400 feet and is open all year, but its meadows lie under deep snow in winter and snow can stay on the trails well into June or even July."
+    source_url: https://www.nps.gov/mora/planyourvisit/paradise.htm
+    source_title: Paradise - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Hiking
+
+  - field: fee
+    value: { name: "Private vehicle entrance pass", amount: 30.00, currency: USD, unit: per_vehicle, audience: all, note: "Unlimited entry for 7 consecutive days for one private, non-commercial vehicle (up to 15 seats) and its passengers. The park takes no cash." }
+    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Private Vehicle
+
+  - field: fee
+    value: { name: "Motorcycle entrance pass", amount: 25.00, currency: USD, unit: per_vehicle, audience: all, note: "Valid 7 days; covers up to 2 private motorcycles with up to 4 people in total." }
+    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Motorcycle
+
+  - field: fee
+    value: { name: "Per-person entrance pass (on foot or bicycle)", amount: 15.00, currency: USD, unit: per_person, audience: all, note: "For visitors 16 and older arriving without a vehicle; valid 7 consecutive days. Under-16s need no pass." }
+    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Per Person
+
+  - field: fee
+    value: { name: "Mount Rainier annual park pass", amount: 55.00, currency: USD, unit: per_vehicle, audience: resident, note: "One year of entry for the holder and passengers in one private vehicle; sold to US citizens and residents; no camping fees covered." }
+    source_url: https://www.nps.gov/mora/planyourvisit/fees.htm
+    source_title: Fees & Passes - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Annual Entrance - Park
+
+  - field: trailhead_access
+    value: "The Paradise Meadows and Skyline Trailhead is by the entrance of the Jackson Visitor Center at Paradise, at stone steps carved with a John Muir quote."
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Trailhead Location
+
+  - field: trailhead_access
+    value: "Paradise is 19 miles (30 km) east of the Nisqually Entrance and 12 miles (19 km) east of Longmire. The Longmire-Paradise road is plowed in winter but shuts at night."
+    source_url: https://www.nps.gov/mora/planyourvisit/paradise.htm
+    source_title: Paradise - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Paradise
+
+  - field: trailhead_access
+    value: "In winter the Longmire gate on the Paradise road typically opens at 9 am, with uphill traffic stopped at 3 pm and downhill at 4 pm (leave Paradise by 3:30 pm); it may open late or stay shut. Every vehicle must carry tire chains 1 November-1 May."
+    source_url: https://www.nps.gov/mora/planyourvisit/road-status.htm
+    source_title: Road Status - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Road Status
+
+  - field: trailhead_access
+    value: "No timed entry reservation is needed for any part of the park in 2026; the park is managing parking on the day instead and suggests arriving before 7 am or after 4 pm, or on weekdays."
+    source_url: https://www.nps.gov/mora/learn/news/mount-rainier-national-park-will-not-require-timed-entry-reservations-in-2026.htm
+    source_title: Mount Rainier National Park Will Not Require Timed Entry Reservations in 2026 - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Mount Rainier National Park Will Not Require Timed Entry Reservations in 2026
+
+  - field: parking
+    value: "On sunny summer weekends parking at Paradise can be hard or impossible to find. Parking on the road edges is not allowed; come on a weekday, arrive early and carpool."
+    source_url: https://www.nps.gov/mora/planyourvisit/directions.htm
+    source_title: Directions - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Traveling in Summer
+
+  - field: nearest_town
+    value: { name: "Ashford", note: "Town just outside the Nisqually Entrance in the park's southwest corner; 85 miles one way from Seattle." }
+    source_url: https://www.nps.gov/mora/planyourvisit/directions.htm
+    source_title: Directions - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: By Plane
+
+  - field: rule_dogs
+    value: { value: not_allowed, note: "Pets are banned on park trails, in wilderness and off-trail areas, in buildings and on roads closed for winter; service animals are excepted." }
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Pets are not allowed on trails.
+
+  - field: rule_fires
+    value: { value: not_allowed, note: "No fires allowed on this trail." }
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Trail Regulations
+
+  - field: rule_camping
+    value: { value: not_allowed, note: "Paradise is a day-use-only area, closed to overnight camping because of past damage to its fragile meadows; there are no wilderness camps on this trail." }
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Backpacking
+
+  - field: rule_drones
+    value: { value: not_allowed, note: "Launching, landing or flying a drone anywhere on NPS-administered land or water in the park is prohibited under the Superintendent's Compendium." }
+    source_url: https://www.nps.gov/mora/planyourvisit/conditions.htm
+    source_title: Alerts & Conditions - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Drones
+
+  - field: hazard
+    value: { type: other, note: "Snow and ice: hiking it early in the season can be dangerous. Beyond Panorama Point, take the High Skyline Trail to avoid a dangerous icy slope that never melts out." }
+    source_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+    source_title: Skyline Trail - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Trail Description
+
+  - field: hazard
+    value: { type: lightning, note: "Thunderstorms occur on Mount Rainier and can build unseen behind the mountain. Lightning strikes are most often deadly; descend quickly and avoid viewpoints and lone trees if a storm approaches." }
+    source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
+    source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Thunderstorms and Lightning
+
+  - field: hazard
+    value: { type: weather, note: "Weather on the mountain can turn quickly, and hikers unprepared for it are more likely to get lost or hurt. The park also advises carrying the ten essentials, not hiking alone and not going out at all in poor visibility." }
+    source_url: https://www.nps.gov/mora/planyourvisit/hiking-safety.htm
+    source_title: Hiking Safety - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Pay Attention To The Weather
+
+  - field: closure
+    value: { status: open, note: "The park's trail conditions table (entries dated 16 Oct 2026) shows no closure for the Skyline Trail; detailed reports resume in June 2027. In winter the Longmire-Paradise road closes nightly at the Longmire gate.", as_of: 2026-10-16 }
+    source_url: https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm
+    source_title: Trails and Backcountry Camp Conditions - Mount Rainier National Park (U.S. National Park Service)
+    publisher: National Park Service
+    checked_at: 2026-11-15
+    evidence_heading: Trails in the Paradise Area
+verifier: null

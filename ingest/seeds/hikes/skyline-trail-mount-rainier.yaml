@@ -1,0 +1,41 @@
+seed_no: 11
+slug: skyline-trail-mount-rainier
+name: Skyline Trail
+alt_names: [Skyline Trail (Paradise)]
+route_variant: Loop from the Paradise Meadows and Skyline Trailhead by the Jackson Visitor Center, via Panorama Point and the High Skyline Trail (described clockwise by the park)
+region_group: north-central-america
+countries: [US]
+subdivisions: [US-WA]
+area:
+  name: Mount Rainier National Park
+  wikidata: Q944329
+  official_url: https://www.nps.gov/mora/
+agency:
+  name: National Park Service
+  wikidata: Q308439
+hike_wikidata: Q123219431
+official_url: https://www.nps.gov/mora/planyourvisit/skyline-trail.htm
+anchor:
+  lat: 46.786502
+  lon: -121.7365184
+  source: wikidata
+osm:
+  relation_ids: [5199914]
+  way_ids: []
+  candidates:
+    - { osm_type: way, osm_id: 439627177, name: "Skyline Trail", via: nominatim }
+    - { osm_type: way, osm_id: 514662032, name: "Skyline Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1216080541, name: "Skyline Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1216080551, name: "Skyline Trail", via: nominatim }
+    - { osm_type: way, osm_id: 1216080552, name: "Skyline Trail", via: nominatim }
+  confidence: probable
+  notes: "Relation 5199914 is P402 of the hike item Q123219431 (Skyline Trail, Mount Rainier NP; P3018 = Q944329); a Nominatim lookup of R5199914 returned nothing, so its OSM tags are unchecked. Anchor is the P625 of Q123219431, close to the Jackson Visitor Center (Q5725301, P625 46.7843,-121.741). Nominatim search 'Skyline Trail, Pierce County, Washington' returned five named ways around Paradise (1 search + 1 shared lookup used)."
+trip_type: day
+typical_days: null
+access_mode: independent
+flags: []
+status:
+  value: open
+  note: "The park's trail conditions table (entries dated 16 Oct 2026) lists no closure for the Skyline Trail; detailed reports resume in June 2027. In winter the Longmire-Paradise road closes nightly at the Longmire gate."
+  source_url: https://www.nps.gov/mora/planyourvisit/trails-and-backcountry-camp-conditions.htm
+  checked_at: 2026-11-15
