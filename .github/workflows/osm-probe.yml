@@ -10,19 +10,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Probe OSM endpoints
+        shell: bash {0}
         run: |
           mkdir -p ci-out
-          probe() { echo "== $1 | UA=$2" >> ci-out/probe.txt; curl -sS -m 60 -o /tmp/body -w "HTTP %{http_code}\n" -A "$2" -H "Accept: */*" "$1" >> ci-out/probe.txt 2>&1; head -c 300 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt; }
+          probe() { echo "== $1 | UA=$2" >> ci-out/probe.txt; curl -sS -m 60 -o /tmp/body -w "HTTP %{http_code}\n" -A "$2" -H "Accept: */*" "$1" >> ci-out/probe.txt 2>&1 || true; head -c 300 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt; }
           UA1="GhostGuideIngest/0.1 (https://github.com/schwedessummer-oss/GhostGuide)"
           UA2="GhostGuide-ingest/0.1 contact: https://ghost-guide.vercel.app"
           for u in https://overpass-api.de/api/status https://lz4.overpass-api.de/api/status https://z.overpass-api.de/api/status https://overpass.private.coffee/api/status https://overpass.kumi.systems/api/status https://maps.mail.ru/osm/tools/overpass/api/status; do probe "$u" "$UA1"; probe "$u" "$UA2"; done
           echo "== POST interpreter overpass-api.de" >> ci-out/probe.txt
-          curl -sS -m 90 -o /tmp/body -w "HTTP %{http_code}\n" -A "$UA1" --data-urlencode 'data=[out:json][timeout:25];rel(1180979);out tags;' https://overpass-api.de/api/interpreter >> ci-out/probe.txt 2>&1; head -c 400 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt
+          curl -sS -m 90 -o /tmp/body -w "HTTP %{http_code}\n" -A "$UA1" --data-urlencode 'data=[out:json][timeout:25];rel(1180979);out tags;' https://overpass-api.de/api/interpreter >> ci-out/probe.txt 2>&1 || true; head -c 400 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt
           echo "== POST interpreter private.coffee" >> ci-out/probe.txt
-          curl -sS -m 90 -o /tmp/body -w "HTTP %{http_code}\n" -A "$UA1" --data-urlencode 'data=[out:json][timeout:25];rel(1180979);out tags;' https://overpass.private.coffee/api/interpreter >> ci-out/probe.txt 2>&1; head -c 400 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt
+          curl -sS -m 90 -o /tmp/body -w "HTTP %{http_code}\n" -A "$UA1" --data-urlencode 'data=[out:json][timeout:25];rel(1180979);out tags;' https://overpass.private.coffee/api/interpreter >> ci-out/probe.txt 2>&1 || true; head -c 400 /tmp/body >> ci-out/probe.txt; echo >> ci-out/probe.txt
           probe https://download.geofabrik.de/europe/andorra-latest.osm.pbf.md5 "$UA1"
           probe https://planet.openstreetmap.org/ "$UA1"
       - name: Commit result to ci-probe-result
+        shell: bash {0}
         run: |
           git config user.name "ghostguide-ci"
           git config user.email "ci@users.noreply.github.com"
