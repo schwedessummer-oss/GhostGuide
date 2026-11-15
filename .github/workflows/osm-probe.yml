@@ -1,0 +1,23 @@
+name: osm-probe
+on:
+  push:
+    branches: [ci-probe]
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe Overpass
+        run: |
+          mkdir -p ci-out
+          curl -sS -m 60 -A "GhostGuideIngest/0.1 (+https://ghost-guide.vercel.app)" https://overpass-api.de/api/status > ci-out/overpass-status.txt 2>&1 || echo "failed" >> ci-out/overpass-status.txt
+      - name: Commit result to ci-probe-result
+        run: |
+          git config user.name "ghostguide-ci"
+          git config user.email "ci@users.noreply.github.com"
+          git checkout -b ci-probe-result
+          git add ci-out
+          git commit -m "OSM probe result"
+          git push -f origin ci-probe-result
