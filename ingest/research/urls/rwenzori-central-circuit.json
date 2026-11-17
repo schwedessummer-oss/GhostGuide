@@ -34,6 +34,30 @@
   {
    "url": "https://ugandawildlife.org/feedback/",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/faqs/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ugandawildlife.org/wildlife-reserves/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/foreign-travel-advice/uganda/safety-and-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/accessibility-statement",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/help/terms-conditions",
+   "purpose": "crawled"
   }
  ]
 }

@@ -30,6 +30,46 @@
   {
    "url": "https://www.ysnp.gov.tw/En/Folder/MountaineeringEn",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/news_7_1.aspx?ID=1051",
+   "purpose": "rediscovered: Yushan Main (West) Peak day hike application guidelines (group size, daily quota"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/notice_a1.aspx",
+   "purpose": "rediscovered: Application types and entry permit notices for Yushan National Park (park entry "
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/news_7_1.aspx?ID=1147",
+   "purpose": "rediscovered: Directions for Yushan National Ecological Protection Areas entry permit applicat"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/notice_a2.aspx",
+   "purpose": "rediscovered: Yushan National Park application regulations and notices"
+  },
+  {
+   "url": "https://www.ysnp.gov.tw/En/Announcement/E001000?ID=1b795dd2-1996-462b-91bb-6dbd23c9da0c&PageType=1",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/news_7_1.aspx?ID=1048",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/bed_6.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/bed_7.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/bed_8.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://hike.taiwan.gov.tw/en/news_7_1.aspx?ID=1145",
+   "purpose": "crawled"
   }
  ]
 }

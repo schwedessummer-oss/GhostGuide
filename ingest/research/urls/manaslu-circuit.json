@@ -38,6 +38,30 @@
   {
    "url": "https://ntb.gov.np/en/heritage-walk",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/manaslu-conservation-area",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/plan-your-trip/before-you-come/transportation-in-kathmandu-valley-&-nepal",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/plan-your-trip/before-you-come/trekking-permit",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/plan-your-trip/before-you-come/park-entry-fees",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/plan-your-trip/before-you-come/heritage-site-entry-fees",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://ntb.gov.np/en/plan-your-trip/before-you-come/safety-in-the-mountains",
+   "purpose": "crawled"
   }
  ]
 }

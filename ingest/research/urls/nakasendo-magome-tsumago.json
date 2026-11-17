@@ -18,6 +18,38 @@
   {
    "url": "https://nagiso.jp/topics/tsumago-juku-conservation-area/",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.go-nagano.net/en/trip-idea/id16492",
+   "purpose": "rediscovered: Nagano prefectural official travel guide: Walking the Nakasendo, Magome-Tsumago "
+  },
+  {
+   "url": "https://www.japan.travel/en/ph/special-features/nakasendo-trail/",
+   "purpose": "rediscovered: JNTO (national tourism board) Nakasendo page: Magome-Tsumago about 9 km, 2-3 h, "
+  },
+  {
+   "url": "https://www.go-nagano.net/en/travel-guide/bus_timetable/kiso_river_valley/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.go-nagano.net/en/trip-idea/id19913",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://nagiso.jp/topics/magome-pass/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://nagiso.jp/topics/tsumago_touristinformationcenter/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://nagiso.jp/topics/otsumago/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://nagiso.jp/topics/tsumago-juku-honjin/",
+   "purpose": "crawled"
   }
  ]
 }

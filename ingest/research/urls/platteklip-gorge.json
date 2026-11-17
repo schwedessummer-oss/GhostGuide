@@ -26,6 +26,34 @@
   {
    "url": "https://www.gov.uk/help/terms-conditions",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.southafrica.net/za/en/travel/article/head-for-the-table-top-via-the-platteklip-gorge-hiking-route",
+   "purpose": "rediscovered: South African Tourism (national tourism board) article on the Platteklip Gorge r"
+  },
+  {
+   "url": "https://www.southafrica.net/za/en/travel/page/terms-and-conditions-valentines-campaign",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/start-your-business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/business-tax-returns",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/keep-your-business-running",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/grow-your-business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/business-innovation-protection-cyber-security",
+   "purpose": "crawled"
   }
  ]
 }

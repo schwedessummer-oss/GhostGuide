@@ -30,6 +30,38 @@
   {
    "url": "https://www.johnmuirtrust.org/accessibility",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre/tackling-the-ben-faqs",
+   "purpose": "rediscovered: Ben Nevis Visitor Centre FAQs on climbing the Mountain Track (status 200, 9647 c"
+  },
+  {
+   "url": "https://www.johnmuirtrust.org/assets/000/002/520/JMT_Map_A4_WEB_02_Nevis_original.pdf",
+   "purpose": "rediscovered: John Muir Trust Nevis map PDF (status 200, 1090 chars, text says 'Exploring Ben "
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre/glen-nevis-walks",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.johnmuirtrust.org/mountainwoodland",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre/about-us",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre/ben-nevis",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.highlifehighland.com/attractions/ben-nevis-visitor-centre/glen-nevis",
+   "purpose": "crawled"
   }
  ]
 }

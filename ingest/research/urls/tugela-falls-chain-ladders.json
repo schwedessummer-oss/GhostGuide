@@ -14,6 +14,18 @@
   {
    "url": "https://bookings.kznwildlife.com/",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://bookings.kznwildlife.com/MakeABooking.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bookings.kznwildlife.com/MyBookingHistory.aspx",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://bookings.kznwildlife.com/RegisterUser/tabid/73/Default.aspx?returnurl=https%3a%2f%2fbookings.kznwildlife.com%2fMakeABooking.aspx",
+   "purpose": "crawled"
   }
  ]
 }

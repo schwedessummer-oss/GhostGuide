@@ -34,6 +34,46 @@
   {
    "url": "https://preikestolen.no/overnatting-i-naerheten-av-preikestolen/",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen365.com/",
+   "purpose": "rediscovered: Self-described official website for Preikestolen (Preikestolen foundation/Fjells"
+  },
+  {
+   "url": "https://preikestolen365.com/hiking-to-preikestolen/",
+   "purpose": "rediscovered: Hike page: about 8 km round trip, about 4 h, terrain description, trail map (Eng"
+  },
+  {
+   "url": "https://preikestolen365.com/parking-at-preikestolen/",
+   "purpose": "rediscovered: Parking and fees at the trailhead (English, 200, 8088 chars)"
+  },
+  {
+   "url": "https://preikestolen365.com/how-to-get-to-preikestolen/",
+   "purpose": "rediscovered: Access and transport (English, 200, 7661 chars)"
+  },
+  {
+   "url": "https://preikestolen365.com/contact-faq/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen365.com/kjerag-and-preikestolen-are-now-certified-as-norwegian-scenic-hikes/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen365.com/fr/parking-a-preikestolen/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/overnatting-i-naerheten-av-preikestolen",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/about-preikestolen/?lang=en",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://preikestolen.no/accommodation-nearby-preikestolen/?lang=en",
+   "purpose": "crawled"
   }
  ]
 }

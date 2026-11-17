@@ -30,6 +30,22 @@
   {
    "url": "https://georgia.travel/regional-transport",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/villages/ushguli",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/local-rental-and-custom-transport",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/faq",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://georgia.travel/international-transport",
+   "purpose": "crawled"
   }
  ]
 }

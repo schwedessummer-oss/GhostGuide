@@ -30,6 +30,22 @@
   {
    "url": "https://www.unesco.org/en/unesco-access-information-policy",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.unesco.org/en/faq?q=en/culture",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.unesco.org/en/faq?q=en/culture/themes",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.unesco.org/en/faq?q=en/culture/themes/underwater-cultural-heritage",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.unesco.org/en/unesco-access-information-policy/procedure",
+   "purpose": "crawled"
   }
  ]
 }

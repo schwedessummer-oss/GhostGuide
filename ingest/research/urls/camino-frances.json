@@ -26,6 +26,34 @@
   {
    "url": "https://oficinadelperegrino.com",
    "purpose": "Compostela / credential info"
+  },
+  {
+   "url": "https://www.spain.info/en/route/french-way-camino-santiago/",
+   "purpose": "rediscovered: Spain national tourism board French Way route page (24k chars)"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/de/planien-sie/die-routen/der-camino-frances",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/fr/planifiez/les-routes/chemin-francais",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.spain.info/de/route/camino-frances-jakobsweg/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/ko/planifica/las-rutas/camino-frances",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/gl/planifica/as-rutas/camino-frances",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.caminodesantiago.gal/it/organizza/gli-itinerari/cammino-francese",
+   "purpose": "crawled"
   }
  ]
 }

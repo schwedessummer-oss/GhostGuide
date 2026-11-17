@@ -26,6 +26,34 @@
   {
    "url": "https://www.gov.uk/help/terms-conditions",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.tanzaniaparks.go.tz/uploads/publications/en-1633175047-KI-ENG.pdf",
+   "purpose": "rediscovered: Official TANAPA Kilimanjaro National Park brochure (PDF): gates incl. Machame, c"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/start-your-business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/business-tax-returns",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/keep-your-business-running",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/grow-your-business",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/business-innovation-protection-cyber-security",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.gov.uk/browse/business/business-debt-continuity-options",
+   "purpose": "crawled"
   }
  ]
 }

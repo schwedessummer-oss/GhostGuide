@@ -38,6 +38,38 @@
   {
    "url": "https://www.samaria.gr/management-body-organization-chart/",
    "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/tips-for-crossing-samaria/",
+   "purpose": "rediscovered: Park rules, prohibitions, entrance sign instructions, hours and exit time (18k c"
+  },
+  {
+   "url": "https://samaria-tickets.necca.gov.gr/checkout",
+   "purpose": "rediscovered: Official NECCA online ticketing page (short, 1572 chars, ticket issue)"
+  },
+  {
+   "url": "https://samaria-tickets.necca.gov.gr/accessibility-declaration",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://samaria-tickets.necca.gov.gr/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://samaria-tickets.necca.gov.gr/cookie-policy",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/composition-of-the-board-of-administration/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/infrastructure/",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.samaria.gr/2012-volunteer-program/",
+   "purpose": "crawled"
   }
  ]
 }

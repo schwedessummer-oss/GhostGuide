@@ -6,6 +6,34 @@
   {
    "url": "https://necca.gov.gr",
    "purpose": "managing agency home (Greek)"
+  },
+  {
+   "url": "https://www.visitgreece.gr/en/routes/climbing-mount-olympus",
+   "purpose": "rediscovered: Official Greek National Tourism Organisation page: Litochoro-Prionia-Spilios Aga"
+  },
+  {
+   "url": "https://www.visitgreece.gr/el/routes/climbing-mount-olympus",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.visitgreece.gr/fr/routes/climbing-mount-olympus",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.visitgreece.gr/de/routes/climbing-mount-olympus",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.visitgreece.gr/it/routes/climbing-mount-olympus",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.visitgreece.gr/es/routes/climbing-mount-olympus",
+   "purpose": "crawled"
+  },
+  {
+   "url": "https://www.visitgreece.gr/accessibility-policy",
+   "purpose": "crawled"
   }
  ]
 }
